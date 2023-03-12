@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:InitialProject.View"
+        xmlns:local="clr-namespace:InitialProject.View" xmlns:validationrules="clr-namespace:InitialProject.ValidationRules"
         mc:Ignorable="d"
         Title="AddNewAccommodation" Height="450" Width="800">
     <Grid>
@@ -29,7 +29,10 @@
         <TextBox HorizontalAlignment="Left" Margin="129,294,0,0" TextWrapping="Wrap" Text="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
         <Label Content="Max Guests" HorizontalAlignment="Left" Margin="28,321,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.003,0.337"/>
-        <TextBox HorizontalAlignment="Left" Margin="129,329,0,0" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+
+        <TextBox Name="tbMaxGuests" HorizontalAlignment="Left" Margin="129,329,0,0" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" />
+
+
 
         <Label Content="Minimum number of days for reservation" HorizontalAlignment="Left" Margin="28,352,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="280,356,0,0" TextWrapping="Wrap" Text="{Binding Path=MinDaysReservation, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
@@ -38,14 +41,9 @@
         <TextBox HorizontalAlignment="Left" Margin="450,387,0,0" TextWrapping="Wrap" Text="{Binding Path=LeftCancelationDays, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
         <Button Content="SaveAccommodation" HorizontalAlignment="Left" Margin="433,28,0,0" VerticalAlignment="Top" Click="SaveAccommodation"/>
         
-        <Label Content="Slike" HorizontalAlignment="Left" Margin="450,161,0,0" VerticalAlignment="Top"/>
-        <RichTextBox Margin="510,126,84,196">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="RichTextBox"/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <Label Content="Image" HorizontalAlignment="Left" Margin="450,113,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="510,117,0,0" TextWrapping="Wrap" Text="{Binding Path=Image, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Add image" HorizontalAlignment="Left" Margin="685,117,0,0" VerticalAlignment="Top" Click="AddImageToList"/>
 
     </Grid>
 </Window>
