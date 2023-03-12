@@ -27,7 +27,7 @@ namespace InitialProject.View
 
         private readonly AccommodationRepository accommodationRepository;
 
-        private string name;
+        private string accommodationName;
         private string country;
         private string city;
         private string address;
@@ -39,12 +39,12 @@ namespace InitialProject.View
         private int leftCancelationDays;
         private Location location;
 
-        public string Name
+        public string AccommodationName
         {
-            get { return name; }
+            get { return accommodationName; }
             set
             {
-                name = value;
+                accommodationName = value;
                 OnPropertyChanged();
             }
         }
@@ -165,26 +165,19 @@ namespace InitialProject.View
 
         private void SaveAccommodation(object sender, RoutedEventArgs e)
         {
-            /*if (Accommodation != null)
-            {*/
-                /*Accommodation.Name = Name;
-                Accommodation.Location.Country = Country;
-                Accommodation.Location.City = City;
-                Accommodation.Location.Address = Address;
-                Accommodation.Location.Latitude = Latitude;
-                Accommodation.Location.Longitude = Longitude;
-                Accommodation.Type = Type;
-                Accommodation.MaxGuests = MaxGuests;
-                Accommodation.MinDaysReservation = MinDaysReservation;
-                Accommodation.LeftCancelationDays = LeftCancelationDays;*/
-                // id u funkciji
-                Accommodation newAccommodation = new Accommodation(Name, Country, City, Address, Latitude, Longitude, Type, MaxGuests, MinDaysReservation, LeftCancelationDays);
-                //Accommodation newAccommodation = new Accommodation(Name, Country, City, Address, Latitude, Longitude, Type, MaxGuests, MinDaysReservation, LeftCancelationDays);
+            /*Accommodation.Name = Name;
+            Accommodation.Location.Country = Country;
+            Accommodation.Location.City = City;
+            Accommodation.Location.Address = Address;
+            Accommodation.Location.Latitude = Latitude;
+            Accommodation.Location.Longitude = Longitude;
+            Accommodation.Type = Type;
+            Accommodation.MaxGuests = MaxGuests;
+            Accommodation.MinDaysReservation = MinDaysReservation;
+            Accommodation.LeftCancelationDays = LeftCancelationDays;*/
 
-            Accommodation savedAccommodation = accommodationRepository.Save(newAccommodation);
-            //string[] csvValues = { Id.ToString(), Name.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString() };
+            accommodationRepository.Save(AccommodationName, Country, City, Address, Latitude, Longitude, Type, MaxGuests, MinDaysReservation, LeftCancelationDays);
 
-            //}  
         }
     }
 }

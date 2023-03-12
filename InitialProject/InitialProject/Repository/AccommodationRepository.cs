@@ -30,20 +30,23 @@ namespace InitialProject.Repository
             locations = locationSerializer.FromCSV(FilePathLocation);
         }
 
-        public Accommodation Save(Accommodation accommodation)
+        public void Save(string accommodationName, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays)
         {
-            accommodation.Id = NextId();
+
+            Location location = new Location(NextIdLocation(), country, city, address, latitude, longitude);
+            Accommodation accommodation = new Accommodation(NextIdAccommodation(), accommodationName, location, type, maxGuests, minDaysReservation, leftCancelationDays);
+            
+            locations = locationSerializer.FromCSV(FilePathLocation);
+            locations.Add(location);
+            locationSerializer.ToCSV(FilePathLocation, locations);
+            
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
             accommodations.Add(accommodation);
-            foreach(Accommodation a in accommodations)
-            {
-                Console.WriteLine(a.ToString());
-            }
             accommodationSerializer.ToCSV(FilePathAccommodation, accommodations);
-            return accommodation;
         }
+            
 
-        public int NextId()
+        public int NextIdAccommodation()
         {
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
             if(accommodations.Count < 1)
@@ -51,6 +54,16 @@ namespace InitialProject.Repository
                 return 1;
             }
             return accommodations.Max(c => c.Id) + 1;
+        }
+
+        public int NextIdLocation()
+        {
+            locations = locationSerializer.FromCSV(FilePathLocation);
+            if (locations.Count < 1)
+            {
+                return 1;
+            }
+            return locations.Max(c => c.Id) + 1;
         }
 
         //Accommodation registration

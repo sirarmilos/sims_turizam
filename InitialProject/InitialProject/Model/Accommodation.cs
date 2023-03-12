@@ -12,7 +12,7 @@ namespace InitialProject.Model
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string AccommodationName { get; set; }
 
         public Location Location { get; set; }
 
@@ -31,7 +31,7 @@ namespace InitialProject.Model
         public Accommodation(int id, string name, Location location, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
         {
             Id = id;
-            Name = name;
+            AccommodationName = name;
             Location = location;
             Type = type;
             MaxGuests = maxGuests;
@@ -40,10 +40,11 @@ namespace InitialProject.Model
             Images = images;
         }
 
-        public Accommodation(string name, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays)
+        public Accommodation(int id, string name, Location location, string type, int maxGuests, int minDaysReservation, int leftCancelationDays)
         {
-            Name = name;
-            Location = new Location(1, country, city, address, latitude, longitude);
+            Id = id;
+            AccommodationName = name;
+            Location = location;
             Type = type;
             MaxGuests = maxGuests;
             MinDaysReservation = minDaysReservation;
@@ -53,14 +54,14 @@ namespace InitialProject.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), "A", Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString()};
+            string[] csvValues = { Id.ToString(), AccommodationName.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString()};
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
             Id = Convert.ToInt32(values[0]);
-            Name = values[1];
+            AccommodationName = values[1];
             Location = new Location() { Id = Convert.ToInt32(values[2]) };
             Type = values[3];
             MaxGuests = Convert.ToInt32(values[4]);
