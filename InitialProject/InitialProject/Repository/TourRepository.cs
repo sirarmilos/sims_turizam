@@ -2,6 +2,7 @@
 using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -103,6 +104,7 @@ namespace InitialProject.Repository
             }
             #endregion
 
+            #region dutration
             if (duration > 0)
             {
                 foreach (Tour tour in tours)
@@ -117,8 +119,9 @@ namespace InitialProject.Repository
             {
                 longerDuration = tourSerializer.FromCSV(FilePathTour);
             }
+            #endregion
 
-
+            #region languages
             if (language != 0)
             {
                 foreach (Tour tour in tours)
@@ -133,8 +136,10 @@ namespace InitialProject.Repository
             {
                 sameLanguage = tourSerializer.FromCSV(FilePathTour);
             }
+            #endregion
 
-            if(numberOfPeople>0)
+            #region number of people
+            if (numberOfPeople>0)
             {
                 foreach(Tour tour in tours)
                 {
@@ -148,9 +153,11 @@ namespace InitialProject.Repository
             {
                 morePeople = tourSerializer.FromCSV(FilePathTour);
             }
+            #endregion
 
+            List<Tour> asd = new List<Tour>();
+            asd = sameCity.Intersect(longerDuration).ToList();
 
-            List<Tour> asd = sameCity.Intersect(sameCountry).Intersect(morePeople).Intersect(sameLanguage).Intersect(longerDuration).ToList();
             return asd;
         }
 

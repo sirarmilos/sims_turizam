@@ -69,10 +69,36 @@ namespace InitialProject.Model
             Description = values[3];
 
             MaxGuests = Convert.ToInt32(values[4]);//
-            
+
+
+            string[] dateSplit = values[6].Split(',');
+            List<DateTime> dates = new List<DateTime>();
+
+            foreach(string date in dateSplit)
+            {
+                if (!string.IsNullOrEmpty(date))
+                {
+                    DateTime adddate = DateTime.Parse(date);
+                    dates.Add(adddate);
+                }
+            }
+
+            TourDate = dates;
 
 
             Duration = Convert.ToInt32(values[7]);  //
+
+
+            string[] ImagesSplit = values[8].Split(',');
+
+            List<String> images = new List<string>();
+
+            foreach(string image in ImagesSplit)
+            {
+                images.Add(image);
+            }
+
+            Images = images;
             
 
 

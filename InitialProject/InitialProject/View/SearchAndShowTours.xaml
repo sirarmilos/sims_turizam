@@ -17,9 +17,32 @@
                 <DataGridTextColumn Header="Language" Binding="{Binding Languages}"/>
                 <DataGridTextColumn Header="Maximum guests" Binding="{Binding MaxGuests}"/>
                 <DataGridTextColumn Header="Key points" Binding="{Binding TourKeyPoints.Id}"/>
-                <DataGridTextColumn Header="Date" Binding="{Binding TourDate}"/>
+                <DataGridTextColumn x:Name="datum" Header="Date" Binding="{Binding TourDate[0]}"/>
+                <!--<DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding TourDate}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding}"/>
+                                </StackPanel>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn> -->
                 <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
-                <DataGridHyperlinkColumn Header="Pictures" Binding="{Binding Images}"/>
+                <DataGridTemplateColumn Header="Images" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding Images}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding}" Width="200" Height="200"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <TextBox x:Name="tb1" HorizontalAlignment="Left" Margin="637,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
