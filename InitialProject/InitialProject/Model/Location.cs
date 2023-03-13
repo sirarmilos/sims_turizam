@@ -42,13 +42,12 @@ namespace InitialProject.Model
 
         public void FromCSV(string[] values)
         {
-            Id = Convert.ToInt32(values[0]);
-            Country = values[1];
-            City = values[2];
-            Address = values[3];
-            Latitude = Convert.ToDecimal(values[4]);
-            Longitude = Convert.ToDecimal(values[5]);
-
+                Id = Convert.ToInt32(values[0]);
+                Country = values[1];
+                City = values[2];
+                Address = values[3];
+                Latitude = Convert.ToDecimal(values[4]);
+                Longitude = Convert.ToDecimal(values[5]);
         }
     }
 }

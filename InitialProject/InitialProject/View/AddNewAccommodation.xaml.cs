@@ -2,6 +2,7 @@
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -15,6 +16,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
+using System.Diagnostics;
 
 namespace InitialProject.View
 {
@@ -37,7 +40,8 @@ namespace InitialProject.View
         private int maxGuests;
         private int minDaysReservation;
         private int leftCancelationDays;
-        private Location location;
+        private string image;
+        private List<string> images;
 
         public string AccommodationName
         {
@@ -139,14 +143,20 @@ namespace InitialProject.View
             }
         }
 
-        public Location Location
+        public string Image
         {
-            get { return location; }
+            get { return image; }
             set
             {
-                location = value;
+                image = value;
                 OnPropertyChanged();
             }
+        }
+
+        public List<string> Images
+        {
+            get;
+            set;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -158,26 +168,32 @@ namespace InitialProject.View
 
         public AddNewAccommodation()
         {
-            InitializeComponent();
+            InitializeComponent(); 
             DataContext = this;
             accommodationRepository = new AccommodationRepository();
+            Images = new List<string>();
         }
 
         private void SaveAccommodation(object sender, RoutedEventArgs e)
         {
-            /*Accommodation.Name = Name;
-            Accommodation.Location.Country = Country;
-            Accommodation.Location.City = City;
-            Accommodation.Location.Address = Address;
-            Accommodation.Location.Latitude = Latitude;
-            Accommodation.Location.Longitude = Longitude;
-            Accommodation.Type = Type;
-            Accommodation.MaxGuests = MaxGuests;
-            Accommodation.MinDaysReservation = MinDaysReservation;
-            Accommodation.LeftCancelationDays = LeftCancelationDays;*/
-
-            accommodationRepository.Save(AccommodationName, Country, City, Address, Latitude, Longitude, Type, MaxGuests, MinDaysReservation, LeftCancelationDays);
-
+            accommodationRepository.Save(AccommodationName, Country, City, Address, Latitude, Longitude, Type, MaxGuests, MinDaysReservation, LeftCancelationDays, Images);
         }
+
+        private void AddImageToList(object sender, RoutedEventArgs e)
+        {
+            Images.Add(Image.ToString());
+        }
+
+        private void CheckErrorMaxGuests(object sender, RoutedEventArgs e)
+        {
+            /*if(MaxGuests <= 0)
+            {
+                MessageBox.Show("Max Guests must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbMaxGuests.Text = "1";
+                tbMaxGuests.Focus();
+            
+            }*/
+        }
+
     }
 }

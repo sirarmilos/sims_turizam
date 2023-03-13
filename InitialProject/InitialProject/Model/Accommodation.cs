@@ -1,6 +1,7 @@
 ﻿using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,21 +41,21 @@ namespace InitialProject.Model
             Images = images;
         }
 
-        public Accommodation(int id, string name, Location location, string type, int maxGuests, int minDaysReservation, int leftCancelationDays)
-        {
-            Id = id;
-            AccommodationName = name;
-            Location = location;
-            Type = type;
-            MaxGuests = maxGuests;
-            MinDaysReservation = minDaysReservation;
-            LeftCancelationDays = leftCancelationDays;
-            Images = new List<string>();
-        }
-
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), AccommodationName.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString()};
+            string imageToString = "";
+
+            foreach(string image in Images)
+            {
+                imageToString += image;
+                imageToString += ", ";
+            }
+
+            imageToString = imageToString.Substring(0, imageToString.Length - 2);
+
+            Debug.WriteLine(imageToString);
+
+            string[] csvValues = { Id.ToString(), AccommodationName.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString(), imageToString.ToString() };
             return csvValues;
         }
 
@@ -68,6 +69,18 @@ namespace InitialProject.Model
             MinDaysReservation = Convert.ToInt32(values[5]);
             LeftCancelationDays = Convert.ToInt32(values[6]);
 
+            string[] ImagesSplit = values[7].Split(',');
+            
+            List<string> images = new List<string>();
+
+            foreach(string image in ImagesSplit)
+            {
+                images.Add(image);
+            }
+
+            Images = images;
+
+            // unosi sa zarezima i onda ih ovde odvajam
         }
 
     }

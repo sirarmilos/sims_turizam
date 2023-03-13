@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace InitialProject.Repository
 {
@@ -30,19 +31,36 @@ namespace InitialProject.Repository
             locations = locationSerializer.FromCSV(FilePathLocation);
         }
 
-        public void Save(string accommodationName, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays)
+        public void Save(string accommodationName, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
         {
+            int indicator = 0;
+
 
             Location location = new Location(NextIdLocation(), country, city, address, latitude, longitude);
-            Accommodation accommodation = new Accommodation(NextIdAccommodation(), accommodationName, location, type, maxGuests, minDaysReservation, leftCancelationDays);
-            
-            locations = locationSerializer.FromCSV(FilePathLocation);
-            locations.Add(location);
-            locationSerializer.ToCSV(FilePathLocation, locations);
-            
+            Accommodation accommodation = new Accommodation(NextIdAccommodation(), accommodationName, location, type, maxGuests, minDaysReservation, leftCancelationDays, images);
+
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-            accommodations.Add(accommodation);
-            accommodationSerializer.ToCSV(FilePathAccommodation, accommodations);
+
+            foreach (Accommodation temporaryAccommodation in accommodations)
+            {
+                if(temporaryAccommodation.AccommodationName.Equals(accommodationName) == true)
+                {
+                    indicator = 1;
+                    MessageBox.Show("Accommodation with this name already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;
+                }
+            }
+
+            if(indicator == 0)
+            {
+                locations = locationSerializer.FromCSV(FilePathLocation);
+                locations.Add(location);
+                locationSerializer.ToCSV(FilePathLocation, locations);
+
+                accommodations.Add(accommodation);
+                accommodationSerializer.ToCSV(FilePathAccommodation, accommodations);
+            }
+
         }
             
 
@@ -66,6 +84,5 @@ namespace InitialProject.Repository
             return locations.Max(c => c.Id) + 1;
         }
 
-        //Accommodation registration
     }
 }
