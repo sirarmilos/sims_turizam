@@ -8,6 +8,7 @@ namespace InitialProject.Model
 {
     public enum Languages
     {
+        ALL,
         ENGLISH,
         GERMAN,
         SERBIAN,

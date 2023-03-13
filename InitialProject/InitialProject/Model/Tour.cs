@@ -53,16 +53,26 @@ namespace InitialProject.Model
 
         public void FromCSV(string[] values)
         {
+
             Id = Convert.ToInt32(values[0]);
+
             TourName = values[1];
-            Location = new Location() { Id = Convert.ToInt32(values[2]) };
+
+            int IdLocation = Convert.ToInt32(values[2]);
+
+            Location = new Location() 
+            {
+
+                Id = Convert.ToInt32(values[2]) 
+            };
+
             Description = values[3];
 
-            MaxGuests = Convert.ToInt32(values[5]);
+            MaxGuests = Convert.ToInt32(values[4]);//
             
 
 
-            Duration = Convert.ToInt32(values[8]);  
+            Duration = Convert.ToInt32(values[7]);  //
             
 
 

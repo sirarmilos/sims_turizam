@@ -28,10 +28,24 @@ namespace InitialProject.View
         public SearchAndShowTours()
         {
             InitializeComponent();
+            Initializecblang();
             DataContext = this;
             repository = new TourRepository();
             tours = new ObservableCollection<Tour>(repository.SearchAndShow());
         }
 
+        private void Initializecblang()
+        {
+            foreach(string lang in (Enum.GetNames(typeof(Languages))))
+            {
+                cblang.Items.Add(lang);
+            }
+            cblang.SelectedIndex = 0;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
