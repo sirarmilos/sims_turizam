@@ -8,41 +8,41 @@
         Title="AddNewAccommodation" Height="450" Width="800">
     <Grid>
         <Label Content="Name" HorizontalAlignment="Left" Margin="28,24,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="129,28,0,0" TextWrapping="Wrap" Text="{Binding Path=AccommodationName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,28,0,0" TextWrapping="Wrap" Text="{Binding Path=AccommodationName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
         <Label Content="Country" HorizontalAlignment="Left" Margin="28,67,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="129,71,0,0" TextWrapping="Wrap" Text="{Binding Path=Country, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,71,0,0" TextWrapping="Wrap" Text="{Binding Path=Country, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
         <Label Content="City" HorizontalAlignment="Left" Margin="28,113,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="129,117,0,0" TextWrapping="Wrap" Text="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,117,0,0" TextWrapping="Wrap" Text="{Binding Path=City, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
         <Label Content="Address" HorizontalAlignment="Left" Margin="28,161,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="129,165,0,0" TextWrapping="Wrap" Text="{Binding Path=Address, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,165,0,0" TextWrapping="Wrap" Text="{Binding Path=Address, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
         <Label Content="Latitude" HorizontalAlignment="Left" Margin="28,0,0,0" VerticalAlignment="Center"/>
-        <TextBox HorizontalAlignment="Left" Margin="129,0,0,0" TextWrapping="Wrap" Text="{Binding Path=Latitude, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,0,0,0" TextWrapping="Wrap" Text="{Binding Path=Latitude, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="120"/>
 
         <Label Content="Longitude" HorizontalAlignment="Left" Margin="28,248,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="129,252,0,0" TextWrapping="Wrap" Text="{Binding Path=Longitude, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,252,0,0" TextWrapping="Wrap" Text="{Binding Path=Longitude, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
         <Label Content="Type" HorizontalAlignment="Left" Margin="28,290,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="129,294,0,0" TextWrapping="Wrap" Text="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,294,0,0" TextWrapping="Wrap" Text="{Binding Path=Type, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
         <Label Content="Max Guests" HorizontalAlignment="Left" Margin="28,321,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.003,0.337"/>
 
-        <TextBox Name="tbMaxGuests" HorizontalAlignment="Left" Margin="129,329,0,0" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" />
+        <TextBox Name="tbMaxGuests" HorizontalAlignment="Left" Margin="129,329,0,0" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" />
 
 
 
         <Label Content="Minimum number of days for reservation" HorizontalAlignment="Left" Margin="28,352,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="280,356,0,0" TextWrapping="Wrap" Text="{Binding Path=MinDaysReservation, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="280,356,0,0" TextWrapping="Wrap" Text="{Binding Path=MinDaysReservation, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
         <Label Content="Number of days before the reservation until which it is possible to cancel it" HorizontalAlignment="Left" Margin="28,383,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="450,387,0,0" TextWrapping="Wrap" Text="{Binding Path=LeftCancelationDays, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="450,387,0,0" TextWrapping="Wrap" Text="{Binding Path=LeftCancelationDays, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
         <Button Content="SaveAccommodation" HorizontalAlignment="Left" Margin="433,28,0,0" VerticalAlignment="Top" Click="SaveAccommodation"/>
-        
+
         <Label Content="Image" HorizontalAlignment="Left" Margin="450,113,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="510,117,0,0" TextWrapping="Wrap" Text="{Binding Path=Image, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="tbImage" HorizontalAlignment="Left" Margin="510,117,0,0" TextWrapping="Wrap" Text="{Binding Path=Image, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
         <Button Content="Add image" HorizontalAlignment="Left" Margin="685,117,0,0" VerticalAlignment="Top" Click="AddImageToList"/>
 
     </Grid>

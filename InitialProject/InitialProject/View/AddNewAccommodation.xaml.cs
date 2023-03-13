@@ -182,6 +182,7 @@ namespace InitialProject.View
         private void AddImageToList(object sender, RoutedEventArgs e)
         {
             Images.Add(Image.ToString());
+            tbImage.Text = "";
         }
 
         private void CheckErrorMaxGuests(object sender, RoutedEventArgs e)
