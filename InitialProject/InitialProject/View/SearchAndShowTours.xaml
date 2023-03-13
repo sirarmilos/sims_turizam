@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Search and show tours" Height="450" Width="800">
     <Grid>
-        <Button Content="Search" HorizontalAlignment="Left" Margin="694,366,0,0" VerticalAlignment="Top" Height="47" Width="85" Click="Button_Click" />
+        <Button Content="Search" HorizontalAlignment="Left" Margin="694,366,0,0" VerticalAlignment="Top" Height="47" Width="85" Click="GetToursByParameters" />
         <DataGrid ItemsSource="{Binding tours}" Height="NaN" Margin="40,64,188,73" Width="NaN" AutoGenerateColumns="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding TourName}"/>
@@ -22,11 +22,11 @@
                 <DataGridHyperlinkColumn Header="Pictures" Binding="{Binding Images}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox HorizontalAlignment="Left" Margin="637,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Margin="637,107,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Margin="637,152,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="tb1" HorizontalAlignment="Left" Margin="637,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="tb2" HorizontalAlignment="Left" Margin="637,107,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="tb3" HorizontalAlignment="Left" Margin="637,152,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <ComboBox x:Name="cblang" Text="All" HorizontalAlignment="Left" Margin="637,195,0,0" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Margin="637,242,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="tb5" HorizontalAlignment="Left" Margin="637,242,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <Label Content="City" HorizontalAlignment="Left" Margin="637,38,0,0" VerticalAlignment="Top"/>
         <Label Content="Country" HorizontalAlignment="Left" Margin="637,82,0,0" VerticalAlignment="Top"/>
         <Label Content="Duration" HorizontalAlignment="Left" Margin="637,130,0,0" VerticalAlignment="Top"/>

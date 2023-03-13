@@ -41,18 +41,36 @@ namespace InitialProject.Repository
             locations = locationSerializer.FromCSV(FilePathLocation);
         }
 
+        public List<Tour> Load()
+        {
+            List<Tour> result = new List<Tour>();
+
+            foreach (Tour tour in tours)
+            {
+                foreach (Location location in locations)
+                {
+                    if (tour.Location.Id == location.Id)
+                    {
+                        tour.Location = location;
+                    }
+                }
+                result.Add(tour);
+            }
+
+            return result;
+        }
+
         public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Languages language = 0,int numberOfPeople=0)
         {
+ 
             List<Tour> sameCity = new List<Tour>();
             List<Tour> sameCountry = new List<Tour>();
             List<Tour> longerDuration = new List<Tour>();
             List<Tour> sameLanguage = new List<Tour>();
             List<Tour> morePeople = new List<Tour>();
 
-            List<Tour> searchResult = new List<Tour>();
-
             #region Check city
-            if (city != null)
+            if (city != "")
             {
                 foreach (Tour tour in tours)
                 {
@@ -67,8 +85,9 @@ namespace InitialProject.Repository
                 sameCity = tourSerializer.FromCSV(FilePathTour);
             }
             #endregion
+
             #region check country
-            if (country != null)
+            if (country != "")
             {
                 foreach(Tour tour in tours)
                 {
@@ -82,20 +101,57 @@ namespace InitialProject.Repository
             {
                 sameCountry = tourSerializer.FromCSV(FilePathTour);
             }
-            #endregion 
+            #endregion
 
-            foreach ( Tour tour in tours ) 
+            if (duration > 0)
             {
-                foreach( Location location in locations)
+                foreach (Tour tour in tours)
                 {
-                    if(tour.Location.Id == location.Id)
+                    if (tour.Duration > duration)
                     {
-                        tour.Location = location;
+                        longerDuration.Add(tour);
                     }
                 }
-                searchResult.Add(tour);
             }
-            return searchResult;
+            else
+            {
+                longerDuration = tourSerializer.FromCSV(FilePathTour);
+            }
+
+
+            if (language != 0)
+            {
+                foreach (Tour tour in tours)
+                {
+                    if (tour.Languages == language)
+                    {
+                        sameLanguage.Add(tour);
+                    }
+                }
+            }
+            else
+            {
+                sameLanguage = tourSerializer.FromCSV(FilePathTour);
+            }
+
+            if(numberOfPeople>0)
+            {
+                foreach(Tour tour in tours)
+                {
+                    if(tour.MaxGuests>numberOfPeople)
+                    {
+                        morePeople.Add(tour);
+                    }
+                }
+            }
+            else
+            {
+                morePeople = tourSerializer.FromCSV(FilePathTour);
+            }
+
+
+            List<Tour> asd = sameCity.Intersect(sameCountry).Intersect(morePeople).Intersect(sameLanguage).Intersect(longerDuration).ToList();
+            return asd;
         }
 
 

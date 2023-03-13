@@ -31,7 +31,7 @@ namespace InitialProject.View
             Initializecblang();
             DataContext = this;
             repository = new TourRepository();
-            tours = new ObservableCollection<Tour>(repository.SearchAndShow());
+            tours = new ObservableCollection<Tour>(repository.Load());
         }
 
         private void Initializecblang()
@@ -43,9 +43,9 @@ namespace InitialProject.View
             cblang.SelectedIndex = 0;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void GetToursByParameters(object sender, RoutedEventArgs e)
         {
-
+            tours = new ObservableCollection<Tour>(repository.SearchAndShow(tb1.Text,tb2.Text,0,0,12));
         }
     }
 }
