@@ -47,7 +47,38 @@ namespace InitialProject.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Languages.ToString(), MaxGuests.ToString(), Duration.ToString()};
+            string imageToString = "";
+
+            foreach (string image in Images)
+            {
+                imageToString += image;
+                imageToString += ", ";
+            }
+
+            imageToString = imageToString.Substring(0, imageToString.Length - 2);
+
+            string dateToString = "";
+
+            foreach (DateTime date in TourDate)
+            {
+                dateToString += date;
+                dateToString += ", ";
+            }
+
+            dateToString = dateToString.Substring(0, dateToString.Length - 2);
+
+            string tourKeyPointsToString = "";
+
+            foreach (TourKeyPoints tourKeyPoint in TourKeyPoints)
+            {
+                tourKeyPointsToString += tourKeyPoint.Id;
+                tourKeyPointsToString += ", ";
+            }
+
+            tourKeyPointsToString = tourKeyPointsToString.Substring(0, tourKeyPointsToString.Length - 2);
+
+
+            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Languages.ToString(), MaxGuests.ToString(), tourKeyPointsToString, dateToString, Duration.ToString(), imageToString};
             return csvValues;
         }
 
@@ -55,7 +86,7 @@ namespace InitialProject.Model
         {
             Id = Convert.ToInt32(values[0]);
             TourName = values[1];
-            Location = new Location() { Id = Convert.ToInt32(values[2]) };
+            //Location = new Location() { Id = Convert.ToInt32(values[2]) };
             Description = values[3];
 
             MaxGuests = Convert.ToInt32(values[5]);
