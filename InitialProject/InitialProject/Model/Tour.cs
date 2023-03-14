@@ -47,53 +47,58 @@ namespace InitialProject.Model
 
         public string[] ToCSV()
         {
-            string imageToString = "";
-
-            foreach (string image in Images)
-            {
-                imageToString += image;
-                imageToString += ", ";
-            }
-
-            imageToString = imageToString.Substring(0, imageToString.Length - 2);
-
-            string dateToString = "";
-
-            foreach (DateTime date in TourDate)
-            {
-                dateToString += date;
-                dateToString += ", ";
-            }
-
-            dateToString = dateToString.Substring(0, dateToString.Length - 2);
-
-            string tourKeyPointsToString = "";
-
-            foreach (TourKeyPoints tourKeyPoint in TourKeyPoints)
-            {
-                tourKeyPointsToString += tourKeyPoint.Id;
-                tourKeyPointsToString += ", ";
-            }
-
-            tourKeyPointsToString = tourKeyPointsToString.Substring(0, tourKeyPointsToString.Length - 2);
-
-
-            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Languages.ToString(), MaxGuests.ToString(), tourKeyPointsToString, dateToString, Duration.ToString(), imageToString};
+            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Languages.ToString(), MaxGuests.ToString(), Duration.ToString()};
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
+
             Id = Convert.ToInt32(values[0]);
+
             TourName = values[1];
-            //Location = new Location() { Id = Convert.ToInt32(values[2]) };
+
+            int IdLocation = Convert.ToInt32(values[2]);
+
+            Location = new Location() 
+            {
+
+                Id = Convert.ToInt32(values[2]) 
+            };
+
             Description = values[3];
 
-            MaxGuests = Convert.ToInt32(values[5]);
-            
+            MaxGuests = Convert.ToInt32(values[4]);//
 
 
-            Duration = Convert.ToInt32(values[8]);  
+            string[] dateSplit = values[6].Split(',');
+            List<DateTime> dates = new List<DateTime>();
+
+            foreach(string date in dateSplit)
+            {
+                if (!string.IsNullOrEmpty(date))
+                {
+                    DateTime adddate = DateTime.Parse(date);
+                    dates.Add(adddate);
+                }
+            }
+
+            TourDate = dates;
+
+
+            Duration = Convert.ToInt32(values[7]);  //
+
+
+            string[] ImagesSplit = values[8].Split(',');
+
+            List<String> images = new List<string>();
+
+            foreach(string image in ImagesSplit)
+            {
+                images.Add(image);
+            }
+
+            Images = images;
             
 
 
