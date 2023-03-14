@@ -6,7 +6,65 @@
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
         Title="AddNewTour" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Loaded="OnLoad">
+        <Label Content="Name" HorizontalAlignment="Left" Margin="28,24,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,28,0,0" TextWrapping="Wrap" Text="{Binding Path=TourName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+
+        <Label Content="Country" HorizontalAlignment="Left" Margin="28,67,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,71,0,0" TextWrapping="Wrap" Text="{Binding Path=TourCountry, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+
+        <Label Content="City" HorizontalAlignment="Left" Margin="28,113,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,117,0,0" TextWrapping="Wrap" Text="{Binding Path=TourCity, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+
+        <Label Content="Address" HorizontalAlignment="Left" Margin="28,161,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,165,0,0" TextWrapping="Wrap" Text="{Binding Path=TourAddress, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+
+        <Label Content="Latitude" HorizontalAlignment="Left" Margin="28,0,0,0" VerticalAlignment="Center"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,0,0,0" TextWrapping="Wrap" Text="{Binding Path=TourLatitude, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="120"/>
+
+        <Label Content="Longitude" HorizontalAlignment="Left" Margin="28,248,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,252,0,0" TextWrapping="Wrap" Text="{Binding Path=TourLongitude, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+
+        <Label Content="Description" HorizontalAlignment="Left" Margin="28,290,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,294,0,0" TextWrapping="Wrap" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+
+        <Label Content="Language" HorizontalAlignment="Left" Margin="28,321,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.003,0.337"/>
+
+        <TextBox Name="tbMaxGuests" HorizontalAlignment="Left" Margin="129,329,0,0" TextWrapping="Wrap" Text="{Binding Path=Languages, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" />
+
+
+
+        <Label Content="Maximum number of guests" HorizontalAlignment="Left" Margin="28,365,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="223,369,0,0" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="SaveTour" HorizontalAlignment="Left" Margin="689,338,0,0" VerticalAlignment="Top" Click="SaveTour" Height="66" Width="98"/>
+
+
+        <Label Content="Date" HorizontalAlignment="Left" Margin="443,25,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.329,-0.634"/>
+        <TextBox HorizontalAlignment="Left" Margin="499,29,0,0" TextWrapping="Wrap" Text="{Binding Path=TourDate, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Add date" HorizontalAlignment="Left" Margin="663,27,0,0" VerticalAlignment="Top" Click="AddDateToList"/>
+
+
+        <Label Content="Image" HorizontalAlignment="Left" Margin="441,80,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.792,-0.798"/>
+        <TextBox HorizontalAlignment="Left" Margin="499,88,0,0" TextWrapping="Wrap" Text="{Binding Path=Image, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Add image" HorizontalAlignment="Left" Margin="662,87,0,0" VerticalAlignment="Top" Click="AddImageToList"/>
+
+        <Label Content="Duration" HorizontalAlignment="Left" Margin="35,398,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,402,0,0" TextWrapping="Wrap" Text="{Binding Path=Duration, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="542,152,0,0" TextWrapping="Wrap" Text="{Binding Path=KeyPointName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="541,201,0,0" TextWrapping="Wrap" Text="{Binding Path=KeyPointCountry, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="541,249,0,0" TextWrapping="Wrap" Text="{Binding Path=KeyPointCity, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="541,293,0,0" TextWrapping="Wrap" Text="{Binding Path=KeyPointAddress, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="541,340,0,0" TextWrapping="Wrap" Text="{Binding Path=KeyPointLatitude, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="542,376,0,0" TextWrapping="Wrap" Text="{Binding Path=KeyPointLongitude, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Add Key Point" HorizontalAlignment="Left" Margin="694,224,0,0" VerticalAlignment="Top" Click="AddTourKeyPoints" Width="96"/>
+        <Label Content="Key Point Name" HorizontalAlignment="Left" Margin="386,147,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.366,0.11" Width="96" Height="27"/>
+        <Label Content="Key Point Country" HorizontalAlignment="Left" Margin="386,196,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.366,0.11" Width="107" Height="27"/>
+        <Label Content="Key Point City" HorizontalAlignment="Left" Margin="385,244,0,0" VerticalAlignment="Top" Width="118"/>
+        <Label Content="Key Point Address" HorizontalAlignment="Left" Margin="384,287,0,0" VerticalAlignment="Top"/>
+        <Label Content="Key Point Latitude" HorizontalAlignment="Left" Margin="384,334,0,0" VerticalAlignment="Top"/>
+        <Label Content="Key Point Longitude" HorizontalAlignment="Left" Margin="384,372,0,0" VerticalAlignment="Top"/>
+
+
+
     </Grid>
 </Window>
