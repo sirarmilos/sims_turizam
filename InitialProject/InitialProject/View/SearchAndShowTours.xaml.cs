@@ -47,7 +47,7 @@ namespace InitialProject.View
 
         private void Initializecblang()
         {
-            foreach(string lang in (Enum.GetNames(typeof(Languages))))
+            foreach(string lang in (Enum.GetNames(typeof(Language))))
             {
                 cblang.Items.Add(lang);
             }

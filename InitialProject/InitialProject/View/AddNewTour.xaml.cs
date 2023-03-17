@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.Dto;
+using InitialProject.Model;
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace InitialProject.View
 
         private readonly TourRepository tourRepository;
 
+        private readonly LocationRepository locationRepository;
+
+        private readonly TourKeyPointRepository tourKeyPointRepository;
+
+
+
         private string tourName;
         private string tourCountry;
         private string tourCity;
@@ -38,10 +45,13 @@ namespace InitialProject.View
         private decimal tourLatitude;
         private decimal tourLongitude;
         private string description;
-        private Languages languages;
+        private Language languages;
         private int maxGuests;
-        private List<TourKeyPoints> tourKeyPoints;
-        private TourKeyPoints tourKeyPoint;
+        private List<TourKeyPoint> tourKeyPoints;
+
+        private List<TourKeyPointDto> tourKeyPointDtos;
+
+        private TourKeyPoint tourKeyPoint;
         private string keyPointName;
         private string keyPointCountry;
         private string keyPointCity;
@@ -125,7 +135,7 @@ namespace InitialProject.View
             }
         }
 
-        public Languages Languages
+        public Language Languages
         {
             get { return languages; }
             set
@@ -146,13 +156,13 @@ namespace InitialProject.View
             }
         }
 
-        public List<TourKeyPoints> TourKeyPoints
+        public List<TourKeyPoint> TourKeyPoints
         {
             get;
             set;
         }
 
-        public TourKeyPoints TourKeyPoint
+        public TourKeyPoint TourKeyPoint
         {
             get { return tourKeyPoint; }
             set
@@ -284,8 +294,14 @@ namespace InitialProject.View
         {
             InitializeComponent();
             DataContext = this;
+            
+
+            locationRepository = new LocationRepository();
             tourRepository = new TourRepository();
-            TourKeyPoints = new List<TourKeyPoints>();
+            tourKeyPointDtos = new List<TourKeyPointDto>();
+            tourKeyPointRepository = new TourKeyPointRepository();
+            tourKeyPoints = new List<TourKeyPoint>();
+
             TourDates = new List<DateTime>();
             Images = new List<string>();
             KeyPointLocation = new List<Location>();  
@@ -293,7 +309,14 @@ namespace InitialProject.View
 
         private void SaveTour(object sender, RoutedEventArgs e)
         {
-            tourRepository.Save(TourName, TourCountry, TourCity, TourAddress, TourLatitude, TourLongitude, Description, Languages, MaxGuests, TourKeyPoints, KeyPointName, KeyPointCountry, KeyPointCity, KeyPointAddress, KeyPointLatitude, KeyPointLongitude, TourDates, Duration, Images);
+            LocationDto locationDto = new LocationDto(TourCountry, TourCity, TourAddress, TourLatitude, TourLongitude);
+            Location location = locationRepository.Save(locationDto);
+
+            TourDto tourDto = new TourDto(TourName, location, Description, Languages, maxGuests, tourKeyPoints, TourDates, Duration, Images);
+            tourRepository.Save(tourDto);
+
+
+           // tourRepository.Save(TourName, TourCountry, TourCity, TourAddress, TourLatitude, TourLongitude, Description, Languages, MaxGuests, TourKeyPoints, KeyPointName, KeyPointCountry, KeyPointCity, KeyPointAddress, KeyPointLatitude, KeyPointLongitude, TourDates, Duration, Images);
         }
 
         private void AddImageToList(object sender, RoutedEventArgs e)
@@ -308,11 +331,22 @@ namespace InitialProject.View
 
         private void AddTourKeyPoints(object sender, RoutedEventArgs e)
         {
-            locationIdCounter++;
+            LocationDto locationDto = new LocationDto(KeyPointCountry, KeyPointCity, KeyPointAddress, KeyPointLatitude, KeyPointLongitude);
+            Location location = locationRepository.Save(locationDto);
+
+            TourKeyPointDto tourKeyPointDto = new(KeyPointName, location);
+            TourKeyPoint tourKeyPoint = tourKeyPointRepository.Save(tourKeyPointDto);
+
+            tourKeyPoints.Add(tourKeyPoint);
+
+
+
+
+            /*locationIdCounter++;
             tourKeyPointsIdCounter++;
             Location newLocation = new Location(locationIdCounter, KeyPointCountry, KeyPointCity, KeyPointAddress, KeyPointLatitude, KeyPointLongitude);
             TourKeyPoints newTourKeyPoint = new TourKeyPoints(tourKeyPointsIdCounter, KeyPointName, newLocation);
-            TourKeyPoints.Add(newTourKeyPoint);
+            TourKeyPoints.Add(newTourKeyPoint);*/
             // mozda treba lokaciju uneti
         }
 
