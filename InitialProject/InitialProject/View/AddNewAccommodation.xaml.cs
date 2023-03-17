@@ -36,6 +36,9 @@ namespace InitialProject.View
         private string address;
         private decimal latitude;
         private decimal longitude;
+        private bool apartment;
+        private bool home;
+        private bool hut;
         private string type;
         private int maxGuests;
         private int minDaysReservation;
@@ -103,13 +106,58 @@ namespace InitialProject.View
             }
         }
 
+        public bool Apartment
+        {
+            get { return apartment; }
+            set
+            {
+                if (value != apartment)
+                {
+                    apartment = value;
+                    OnPropertyChanged(nameof(apartment));
+                    if (value) Type = "Apartment";
+                }
+            }
+        }
+
+        public bool Home
+        {
+            get { return home; }
+            set
+            {
+                if (value != home)
+                {
+                    home = value;
+                    OnPropertyChanged(nameof(Home));
+                    if (value) Type = "Home";
+                }
+            }
+        }
+
+        public bool Hut
+        {
+            get { return hut; }
+            set
+            {
+                if (value != hut)
+                {
+                    hut = value;
+                    OnPropertyChanged(nameof(Hut));
+                    if (value) Type = "Hut";
+                }
+            }
+        }
+
         public string Type
         {
             get { return type; }
             set
             {
-                type = value;
-                OnPropertyChanged();
+                if (value != type)
+                {
+                    type = value;
+                    OnPropertyChanged(nameof(Type));
+                }
             }
         }
 
@@ -159,6 +207,18 @@ namespace InitialProject.View
             set;
         }
 
+        public ObservableCollection<ImagesView> ImagesView
+        {
+            get;
+            set;
+        }
+
+        public ImagesView SelectedImage
+        {
+            get;
+            set;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -172,28 +232,135 @@ namespace InitialProject.View
             DataContext = this;
             accommodationRepository = new AccommodationRepository();
             Images = new List<string>();
+            ImagesView = new ObservableCollection<ImagesView>();
+            SelectedImage = null;
+            rbApartment.IsChecked = true;
+            tbLeftCancelationDays.Text = "1";
         }
 
         private void SaveAccommodation(object sender, RoutedEventArgs e)
         {
-            accommodationRepository.Save(AccommodationName, Country, City, Address, Latitude, Longitude, Type, MaxGuests, MinDaysReservation, LeftCancelationDays, Images);
+            if (CheckErrorAllFieldsFilled() == false)
+            {
+                MessageBox.Show("You must fill in all fields", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if(CheckErrorImagesNumber() == false)
+            {
+                MessageBox.Show("You must enter at least one accommodation image", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbImage.Focus();
+            }
+            else
+            {
+                accommodationRepository.Save(AccommodationName, Country, City, Address, Latitude, Longitude, Type, MaxGuests, MinDaysReservation, LeftCancelationDays, Images);
+            }
         }
 
         private void AddImageToList(object sender, RoutedEventArgs e)
         {
+            //if(CheckErrorImageExists)
             Images.Add(Image.ToString());
+            ImagesView.Add(new ImagesView { Id = Guid.NewGuid().ToString(), ImageUrl = Image.ToString() });
             tbImage.Text = "";
+        }
+
+        private void RemoveImageFromList(object sender, RoutedEventArgs e)
+        {
+            dgImages.Items.Refresh();
+
+            if (Images.Count > 0)
+            {
+                SelectedImage = (ImagesView)dgImages.SelectedItem;
+                Images.Remove(SelectedImage.ImageUrl);
+                ImagesView.Remove(SelectedImage);
+            }
+            else
+            {
+                MessageBox.Show("There are currently no added images that you can remove", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void CheckErrorLatitude(object sender, TextChangedEventArgs e)
+        {
+            if (Convert.ToDecimal(latitude) < -90 || Convert.ToDecimal(latitude) > 90)
+            {
+                MessageBox.Show("The latitude must be between -90 and 90", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbLatitude.Focus();
+                tbLatitude.Text = "0";
+            }
+        }
+
+        private void CheckErrorLongitude(object sender, TextChangedEventArgs e)
+        {
+            if (longitude < -180 || longitude > 180)
+            {
+                MessageBox.Show("The longitude must be between -180 and 180", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbLongitude.Focus();
+                tbLongitude.Text = "0";
+            }
         }
 
         private void CheckErrorMaxGuests(object sender, RoutedEventArgs e)
         {
-            /*if(MaxGuests <= 0)
+            if (MaxGuests <= 0)
             {
-                MessageBox.Show("Max Guests must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbMaxGuests.Text = "1";
+                MessageBox.Show("Maximum number of guests must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbMaxGuests.Focus();
-            
-            }*/
+                tbMaxGuests.Text = "1";
+            }
+        }
+
+        private void CheckErrorMinDaysReservation(object sender, TextChangedEventArgs e)
+        {
+            if (MinDaysReservation <= 0)
+            {
+                MessageBox.Show("Minimum number of days for reservation must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbMinDaysReservation.Focus();
+                tbMinDaysReservation.Text = "1";
+            }
+        }
+
+        private void CheckErrorLeftCancelationDays(object sender, TextChangedEventArgs e)
+        {
+            if(Convert.ToInt32(LeftCancelationDays) <= 0)
+            {
+                MessageBox.Show("Left cancelation days must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbLeftCancelationDays.Focus();
+                tbLeftCancelationDays.Text = "1";
+            }
+        }
+
+        private bool CheckErrorImagesNumber()
+        {
+            if(Images.Count <= 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckErrorAllFieldsFilled()
+        {
+            if(tbName.Text.Length > 0 && tbCountry.Text.Length > 0 && tbCity.Text.Length > 0 && tbAddress.Text.Length > 0 && tbLatitude.Text.Length > 0 && tbLongitude.Text.Length > 0 && tbMaxGuests.Text.Length > 0 && tbMinDaysReservation.Text.Length > 0 && tbLeftCancelationDays.Text.Length > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        void LoadingRowForDgImages(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+        }
+
+        private void labeltbFocus(object sender, MouseButtonEventArgs e)
+        {
+            if(e.ClickCount == 1)
+            {
+                var label = (Label)sender;
+                Keyboard.Focus(label.Target);
+            }
         }
 
     }

@@ -53,8 +53,6 @@ namespace InitialProject.Model
 
             imageToString = imageToString.Substring(0, imageToString.Length - 2);
 
-            Debug.WriteLine(imageToString);
-
             string[] csvValues = { Id.ToString(), AccommodationName.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString(), imageToString.ToString() };
             return csvValues;
         }

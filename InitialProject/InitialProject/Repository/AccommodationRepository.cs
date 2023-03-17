@@ -1,11 +1,14 @@
 ﻿using InitialProject.Model;
 using InitialProject.Serializer;
+using InitialProject.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace InitialProject.Repository
 {
@@ -47,36 +50,41 @@ namespace InitialProject.Repository
 
         public void Save(string accommodationName, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
         {
-            int indicator = 0;
-
-
-            Location location = new Location(NextIdLocation(), country, city, address, latitude, longitude);
-            Accommodation accommodation = new Accommodation(NextIdAccommodation(), accommodationName, location, type, maxGuests, minDaysReservation, leftCancelationDays, images);
-
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
 
-            foreach (Accommodation temporaryAccommodation in accommodations)
+            if(CheckErrorAccommodationName(accommodationName, accommodations) == true)
             {
-                if(temporaryAccommodation.AccommodationName.Equals(accommodationName) == true)
-                {
-                    indicator = 1;
-                    MessageBox.Show("Accommodation with this name already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    break;
-                }
-            }
+                Location location = new Location(NextIdLocation(), country, city, address, latitude, longitude);
+                Accommodation accommodation = new Accommodation(NextIdAccommodation(), accommodationName, location, type, maxGuests, minDaysReservation, leftCancelationDays, images);
 
-            if(indicator == 0)
-            {
                 locations = locationSerializer.FromCSV(FilePathLocation);
                 locations.Add(location);
                 locationSerializer.ToCSV(FilePathLocation, locations);
 
                 accommodations.Add(accommodation);
                 accommodationSerializer.ToCSV(FilePathAccommodation, accommodations);
+
+                MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Accommodation with this name already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                // fokus na textbox
+            }
+        }
+
+        private bool CheckErrorAccommodationName(string accommodationName, List<Accommodation> accommodations)
+        {
+            foreach (Accommodation temporaryAccommodation in accommodations)
+            {
+                if (temporaryAccommodation.AccommodationName.Equals(accommodationName) == true)
+                {
+                    return false;
+                }
             }
 
+            return true;
         }
-            
 
         public int NextIdAccommodation()
         {
