@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics;
+using System.IO;
 
 namespace InitialProject.View
 {
@@ -40,11 +41,15 @@ namespace InitialProject.View
         private bool home;
         private bool hut;
         private string type;
-        private int maxGuests;
-        private int minDaysReservation;
-        private int leftCancelationDays;
+        private int? maxGuests;
+        private int? minDaysReservation;
+        private int? leftCancelationDays;
         private string image;
         private List<string> images;
+
+        private string maxGuestsCheck;
+        private string minDaysReservationCheck;
+        private string leftCancelationDaysCheck;
 
         public string AccommodationName
         {
@@ -161,7 +166,7 @@ namespace InitialProject.View
             }
         }
 
-        public int MaxGuests
+        public int? MaxGuests
         {
             get { return maxGuests; }
             set
@@ -171,7 +176,7 @@ namespace InitialProject.View
             }
         }
 
-        public int MinDaysReservation
+        public int? MinDaysReservation
         {
             get { return minDaysReservation; }
             set
@@ -181,7 +186,7 @@ namespace InitialProject.View
             }
         }
 
-        public int LeftCancelationDays
+        public int? LeftCancelationDays
         {
             get { return leftCancelationDays; }
             set
@@ -219,6 +224,36 @@ namespace InitialProject.View
             set;
         }
 
+        public string MaxGuestsCheck
+        {
+            get { return maxGuestsCheck; }
+            set
+            {
+                maxGuestsCheck = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MinDaysReservationCheck
+        {
+            get { return minDaysReservationCheck; }
+            set
+            {
+                minDaysReservationCheck = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string LeftCancelationDaysCheck
+        {
+            get { return leftCancelationDaysCheck; }
+            set
+            {
+                leftCancelationDaysCheck = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -235,6 +270,7 @@ namespace InitialProject.View
             ImagesView = new ObservableCollection<ImagesView>();
             SelectedImage = null;
             rbApartment.IsChecked = true;
+            LeftCancelationDaysCheck = "1";
             tbLeftCancelationDays.Text = "1";
         }
 
@@ -251,81 +287,122 @@ namespace InitialProject.View
             }
             else
             {
-                accommodationRepository.Save(AccommodationName, Country, City, Address, Latitude, Longitude, Type, MaxGuests, MinDaysReservation, LeftCancelationDays, Images);
+                if(accommodationRepository.Save(AccommodationName, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images) == true)
+                {
+                    ClearAllFields();
+                }
+                else
+                {
+                    Name = "";
+                    tbName.Focus();
+                }
             }
         }
 
         private void AddImageToList(object sender, RoutedEventArgs e)
         {
-            //if(CheckErrorImageExists)
-            Images.Add(Image.ToString());
-            ImagesView.Add(new ImagesView { Id = Guid.NewGuid().ToString(), ImageUrl = Image.ToString() });
+            if(CheckErrorUrlExists() == true)
+            {
+                if (CheckErrorImageAlreadyExists() == true)
+                {
+                    Images.Add(Image.ToString());
+                    ImagesView.Add(new ImagesView { Id = Guid.NewGuid().ToString(), ImageUrl = Image.ToString() });//
+                }
+                else
+                {
+                    MessageBox.Show("You have already added this image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("The image with the specified url does not exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
             tbImage.Text = "";
+            tbImage.Focus();
         }
 
         private void RemoveImageFromList(object sender, RoutedEventArgs e)
         {
             dgImages.Items.Refresh();
 
-            if (Images.Count > 0)
+            if(SelectedImage == null)
             {
-                SelectedImage = (ImagesView)dgImages.SelectedItem;
-                Images.Remove(SelectedImage.ImageUrl);
-                ImagesView.Remove(SelectedImage);
+                MessageBox.Show("Select the image you want to remove", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                MessageBox.Show("There are currently no added images that you can remove", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (Images.Count > 0)
+                {
+                    SelectedImage = (ImagesView)dgImages.SelectedItem;
+                    Images.Remove(SelectedImage.ImageUrl);
+                    ImagesView.Remove(SelectedImage);
+                }
+                else
+                {
+                    MessageBox.Show("There are currently no added images that you can remove", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
-        private void CheckErrorLatitude(object sender, TextChangedEventArgs e)
+        private void CheckErrorMaxGuests(object sender, TextChangedEventArgs e)
         {
-            if (Convert.ToDecimal(latitude) < -90 || Convert.ToDecimal(latitude) > 90)
+            if (MaxGuestsCheck.Equals("") == false)
             {
-                MessageBox.Show("The latitude must be between -90 and 90", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbLatitude.Focus();
-                tbLatitude.Text = "0";
-            }
-        }
+                int checkOut;
+                bool check = int.TryParse(MaxGuestsCheck, out checkOut);
 
-        private void CheckErrorLongitude(object sender, TextChangedEventArgs e)
-        {
-            if (longitude < -180 || longitude > 180)
-            {
-                MessageBox.Show("The longitude must be between -180 and 180", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbLongitude.Focus();
-                tbLongitude.Text = "0";
-            }
-        }
-
-        private void CheckErrorMaxGuests(object sender, RoutedEventArgs e)
-        {
-            if (MaxGuests <= 0)
-            {
-                MessageBox.Show("Maximum number of guests must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbMaxGuests.Focus();
-                tbMaxGuests.Text = "1";
+                if (check == false || checkOut <= 0)
+                {
+                    MessageBox.Show("Maximum number of guests must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    tbMaxGuests.Clear();
+                    MaxGuestsCheck = "";
+                }
+                else
+                {
+                    MaxGuests = Convert.ToInt32(MaxGuestsCheck.ToString());
+                }
             }
         }
 
         private void CheckErrorMinDaysReservation(object sender, TextChangedEventArgs e)
         {
-            if (MinDaysReservation <= 0)
+            if (MinDaysReservationCheck.Equals("") == false)
             {
-                MessageBox.Show("Minimum number of days for reservation must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbMinDaysReservation.Focus();
-                tbMinDaysReservation.Text = "1";
+                int checkOut;
+                bool check = int.TryParse(MinDaysReservationCheck, out checkOut);
+
+                if (check == false || checkOut <= 0)
+                {
+                    MessageBox.Show("Minimum number of days for reservation must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    tbMinDaysReservation.Clear();
+                    MinDaysReservationCheck = "";
+                }
+                else
+                {
+                    MinDaysReservation = Convert.ToInt32(MinDaysReservationCheck.ToString());
+                }
             }
         }
 
         private void CheckErrorLeftCancelationDays(object sender, TextChangedEventArgs e)
         {
-            if(Convert.ToInt32(LeftCancelationDays) <= 0)
+            if (LeftCancelationDaysCheck.Equals("") == false)
             {
-                MessageBox.Show("Left cancelation days must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbLeftCancelationDays.Focus();
-                tbLeftCancelationDays.Text = "1";
+                int checkOut;
+                bool check = int.TryParse(LeftCancelationDaysCheck, out checkOut);
+
+                if (check == false || checkOut <= 0)
+                {
+                    MessageBox.Show("Number of days before the reservation until which it is possible to cancel it must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    tbLeftCancelationDays.Clear();
+                    LeftCancelationDaysCheck = "1";
+                    tbLeftCancelationDays.Text = "1";
+                }
+                else
+                {
+                    LeftCancelationDays = Convert.ToInt32(LeftCancelationDaysCheck.ToString());
+                }
             }
         }
 
@@ -339,14 +416,54 @@ namespace InitialProject.View
             return true;
         }
 
+        private bool CheckErrorUrlExists()
+        {
+            Uri checkUri;
+            bool check = Uri.TryCreate(Image.ToString(), UriKind.Absolute, out checkUri)
+                && (checkUri.Scheme == Uri.UriSchemeHttp || checkUri.Scheme == Uri.UriSchemeHttps);
+
+            return check;
+        }
+        private bool CheckErrorImageAlreadyExists()
+        {
+            foreach(string temporaryImage in Images)
+            {
+                if (temporaryImage.Equals(Image.ToString()) == true)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private bool CheckErrorAllFieldsFilled()
         {
-            if(tbName.Text.Length > 0 && tbCountry.Text.Length > 0 && tbCity.Text.Length > 0 && tbAddress.Text.Length > 0 && tbLatitude.Text.Length > 0 && tbLongitude.Text.Length > 0 && tbMaxGuests.Text.Length > 0 && tbMinDaysReservation.Text.Length > 0 && tbLeftCancelationDays.Text.Length > 0)
+            if(tbName.Text.Length > 0 && tbCountry.Text.Length > 0 && tbCity.Text.Length > 0 && tbAddress.Text.Length > 0 && tbMaxGuests.Text.Length > 0 && tbMinDaysReservation.Text.Length > 0 && tbLeftCancelationDays.Text.Length > 0)
             {
                 return true;
             }
 
             return false;
+        }
+
+        private void ClearAllFields()
+        {
+            tbName.Text = "";
+            tbCountry.Text = "";
+            tbCity.Text = "";
+            tbAddress.Text = "";
+            sliderLatitude.Value = 0;
+            sliderLongitude.Value = 0;
+            rbApartment.IsChecked = true;
+            rbHome.IsChecked = false;
+            rbHut.IsChecked = false;
+            tbMaxGuests.Text = "";
+            tbMinDaysReservation.Text = "";
+            tbLeftCancelationDays.Text = "";
+            Images = new List<string>();
+            ImagesView = new ObservableCollection<ImagesView>();
+            dgImages.ItemsSource = ImagesView;
+            dgImages.Items.Refresh();
         }
 
         void LoadingRowForDgImages(object sender, DataGridRowEventArgs e)
@@ -363,5 +480,14 @@ namespace InitialProject.View
             }
         }
 
+        private void SliderLatitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Latitude = Math.Round((decimal)sliderLatitude.Value, 2);
+        }
+
+        private void SliderLongitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Longitude = Math.Round((decimal)sliderLongitude.Value, 2);
+        }
     }
 }

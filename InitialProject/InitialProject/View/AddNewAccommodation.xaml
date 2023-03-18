@@ -3,89 +3,92 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:InitialProject.View" xmlns:validationrules="clr-namespace:InitialProject.ValidationRules"
+        xmlns:local="clr-namespace:InitialProject.View"
+        xmlns:validationrules="clr-namespace:InitialProject.ValidationRules"
+        xmlns:cvt="clr-namespace:InitialProject.Converters"
         mc:Ignorable="d"
         Title="Add new accommodation" Height="900" Width="800"
         WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="90" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="300" />
-                <RowDefinition Height="40" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-            </Grid.ColumnDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="90" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="300" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
 
-            <Label Target="{x:Reference tbName}" Grid.Column="0" Grid.Row="0" Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbName" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=AccommodationName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Label Target="{x:Reference tbName}" Grid.Column="0" Grid.Row="0" Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbName" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=AccommodationName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
-            <Label Target="{x:Reference tbCountry}" Grid.Column="0" Grid.Row="1" Content="Country:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbCountry" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Country, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Label Target="{x:Reference tbCountry}" Grid.Column="0" Grid.Row="1" Content="Country:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbCountry" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Country, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
-            <Label Target="{x:Reference tbCity}" Grid.Column="0" Grid.Row="2" Content="City:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbCity" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=City, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Label Target="{x:Reference tbCity}" Grid.Column="0" Grid.Row="2" Content="City:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbCity" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=City, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
-            <Label Target="{x:Reference tbAddress}"  Grid.Column="0" Grid.Row="3" Content="Address:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbAddress" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Address, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Label Target="{x:Reference tbAddress}"  Grid.Column="0" Grid.Row="3" Content="Address:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbAddress" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Address, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
 
-            <Label Target="{x:Reference tbLatitude}" Grid.Column="0" Grid.Row="4" Content="Latitude:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbLatitude" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Latitude, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" TextChanged="CheckErrorLatitude"/>
+        <Label Target="{x:Reference sliderLatitude}" Grid.Column="0" Grid.Row="4" Content="Latitude:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbLatitude" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Text="{Binding ElementName=sliderLatitude, Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={cvt:DecimalStringConverter}}" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
+        <Slider Grid.Column="1" Grid.Row="4" x:Name="sliderLatitude" Minimum="-60" Maximum="60" Margin="45,0,155,0" ValueChanged="SliderLatitudeValueChange" Grid.ColumnSpan="2"/>
 
-            <Label Target="{x:Reference tbLongitude}" Grid.Column="0" Grid.Row="5" Content="Longitude:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbLongitude" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Longitude, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" TextChanged="CheckErrorLongitude"/>
+        <Label Target="{x:Reference sliderLongitude}" Grid.Column="0" Grid.Row="5" Content="Latitude:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbLongitude" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Text="{Binding ElementName=sliderLongitude, Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={cvt:DecimalStringConverter}}" VerticalAlignment="Top" Width="45" IsReadOnly="True"/>
+        <Slider Grid.Column="1" Grid.Row="5" x:Name="sliderLongitude" Minimum="-180" Maximum="180" Margin="45,0,155,0" ValueChanged="SliderLongitudeValueChange" Grid.ColumnSpan="2"/>
 
-            <GroupBox Grid.Column="0" Grid.Row="6" Margin="5,5,100,5"  Header="Type of accommodation:">
-                <StackPanel Margin="0 5 0 0">
-                    <RadioButton x:Name="rbApartment" Content="Apartment" IsChecked="{Binding Apartment, Mode=OneWayToSource}"/>
-                    <RadioButton x:Name="rbHome" Content="Home" IsChecked="{Binding Home, Mode=OneWayToSource}"/>
-                    <RadioButton x:Name="rbHut" Content="Hut" IsChecked="{Binding Hut, Mode=OneWayToSource}"/>
-                </StackPanel>
-            </GroupBox>
+        <GroupBox Grid.Column="0" Grid.Row="6" Margin="5,5,100,5"  Header="Type of accommodation:">
+            <StackPanel Margin="0 5 0 0">
+                <RadioButton x:Name="rbApartment" Content="Apartment" IsChecked="{Binding Apartment, Mode=OneWayToSource}"/>
+                <RadioButton x:Name="rbHome" Content="Home" IsChecked="{Binding Home, Mode=OneWayToSource}"/>
+                <RadioButton x:Name="rbHut" Content="Hut" IsChecked="{Binding Hut, Mode=OneWayToSource}"/>
+            </StackPanel>
+        </GroupBox>
 
-            <Label Target="{x:Reference tbMaxGuests}" Grid.Column="0" Grid.Row="7" Content="Maximum number of guests:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.003,0.337" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbMaxGuests" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" TextChanged="CheckErrorMaxGuests" />
+        <Label Target="{x:Reference tbMaxGuests}" Grid.Column="0" Grid.Row="7" Content="Maximum number of guests:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbMaxGuests" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=MaxGuestsCheck, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" TextChanged="CheckErrorMaxGuests" />
 
-            <Label Target="{x:Reference tbMinDaysReservation}" Grid.Column="0" Grid.Row="8" Content="Minimum number of days for reservation:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbMinDaysReservation" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=MinDaysReservation, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" TextChanged="CheckErrorMinDaysReservation"/>
+        <Label Target="{x:Reference tbMinDaysReservation}" Grid.Column="0" Grid.Row="8" Content="Minimum number of days for reservation:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbMinDaysReservation" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=MinDaysReservationCheck, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" TextChanged="CheckErrorMinDaysReservation"/>
 
-        <Label Target="{x:Reference tbLeftCancelationDays}" Grid.Column="0" Grid.Row="9" Content="Number of days before the reservation until which it is possible to cancel it:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbLeftCancelationDays" Grid.Column="1" Grid.Row="9" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=LeftCancelationDays, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" TextChanged="CheckErrorLeftCancelationDays"/>
+        <Label Target="{x:Reference tbLeftCancelationDays}" Grid.Column="0" Grid.Row="9" Content="Left cancelation days:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbLeftCancelationDays" Grid.Column="1" Grid.Row="9" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=LeftCancelationDaysCheck, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" TextChanged="CheckErrorLeftCancelationDays"/>
 
-            <Label Target="{x:Reference tbImage}" Grid.Column="0" Grid.Row="10" Content="Enter the url of the accommodation image:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-            <TextBox x:Name="tbImage" Grid.Column="1" Grid.Row="10" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Image, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
-            <Button Grid.Column="2" Grid.Row="10" Content="Add image of accommodation" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AddImageToList"  Margin="10"/>
+        <Label Target="{x:Reference tbImage}" Grid.Column="0" Grid.Row="10" Content="Enter the url of the accommodation image:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbImage" Grid.Column="1" Grid.Row="10" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Image, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Button Grid.Column="2" Grid.Row="10" Content="Add image of accommodation" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AddImageToList"  Margin="10"/>
 
-            <DataGrid x:Name="dgImages" LoadingRow="LoadingRowForDgImages" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2" ItemsSource="{Binding ImagesView, Mode=OneWay}" SelectedItem="{Binding Path=SelectedImage, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="10">
-                <DataGrid.Columns>
-                    <!--<DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="150"/>-->
-                    <DataGridTemplateColumn Header="Images" Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Source="{Binding ImageUrl}" Height="200"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+        <DataGrid x:Name="dgImages" LoadingRow="LoadingRowForDgImages" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2" ItemsSource="{Binding ImagesView, Mode=OneWay}" SelectedItem="{Binding Path=SelectedImage, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Images" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding ImageUrl}" Height="200"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
-            <Button Grid.Column="2" Grid.Row="11" Content="Remove image from list" HorizontalAlignment="Left" VerticalAlignment="Top" Click="RemoveImageFromList" Margin="10"/>
+        <Button Grid.Column="2" Grid.Row="11" Content="Remove image from list" HorizontalAlignment="Left" VerticalAlignment="Top" Click="RemoveImageFromList" Margin="10"/>
 
-            <Button Grid.Column="0" Grid.Row="12" Content="Save new accommodation" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SaveAccommodation" Margin="10"/>
+        <Button Grid.Column="0" Grid.Row="12" Content="Save new accommodation" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SaveAccommodation" Margin="10"/>
 
     </Grid>
-        
+
 </Window>

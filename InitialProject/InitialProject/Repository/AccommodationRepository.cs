@@ -48,7 +48,7 @@ namespace InitialProject.Repository
             }
         }
 
-        public void Save(string accommodationName, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
+        public bool Save(string accommodationName, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
         {
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
 
@@ -65,11 +65,12 @@ namespace InitialProject.Repository
                 accommodationSerializer.ToCSV(FilePathAccommodation, accommodations);
 
                 MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return true;
             }
             else
             {
                 MessageBox.Show("Accommodation with this name already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                // fokus na textbox
+                return false;
             }
         }
 
