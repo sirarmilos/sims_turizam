@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.Dto;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,13 @@ namespace InitialProject.Repository
 
         private readonly Serializer<Tour> tourSerializer;
        
-        private readonly Serializer<TourKeyPoints> tourKeyPointsSerializer;
+        private readonly Serializer<TourKeyPoint> tourKeyPointsSerializer;
 
         private readonly Serializer<Location> locationSerializer;
 
         private List<Tour> tours;
 
-        private List<TourKeyPoints> tourKeyPoints;
+        private List<TourKeyPoint> tourKeyPoints;
 
         private List<Location> locations;
 
@@ -36,7 +37,7 @@ namespace InitialProject.Repository
             tourSerializer = new Serializer<Tour>();
             tours = tourSerializer.FromCSV(FilePathTour);
 
-            tourKeyPointsSerializer = new Serializer<TourKeyPoints>();
+            tourKeyPointsSerializer = new Serializer<TourKeyPoint>();
             tourKeyPoints = tourKeyPointsSerializer.FromCSV(FilePathTourKeyPoints);
 
             locationSerializer = new Serializer<Location>();
@@ -62,7 +63,7 @@ namespace InitialProject.Repository
             return result;
         }
 
-        public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Languages language = 0,int numberOfPeople=0)
+        public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Language language = 0,int numberOfPeople=0)
         {
  
             List<Tour> sameCity = new List<Tour>();
@@ -127,7 +128,7 @@ namespace InitialProject.Repository
             {
                 foreach (Tour tour in tours)
                 {
-                    if (tour.Languages == language)
+                    if (tour.Language == language)
                     {
                         sameLanguage.Add(tour);
                     }
@@ -162,7 +163,14 @@ namespace InitialProject.Repository
             return asd;
         }
 
-        public void Save(string tourName, string tourCountry, string tourCity, string tourAddress, decimal tourLatitude, decimal tourLongitude, string description, Languages languages, int maxGuests, List<TourKeyPoints> tourKeyPointss, string keyPointName, string keyPointCountry, 
+        public void Save(TourDto tourDto)
+        {
+            Tour tour = new Tour(NextIdTour(), tourDto.TourName, tourDto.TourLocation, tourDto.Description, tourDto.Languages, tourDto.MaxGuests, tourDto.TourKeyPoints, tourDto.TourDate, tourDto.Duration, tourDto.Images);
+            tours.Add(tour);
+            tourSerializer.ToCSV(FilePathTour, tours);
+        }
+
+       /* public void Save(string tourName, string tourCountry, string tourCity, string tourAddress, decimal tourLatitude, decimal tourLongitude, string description, Languages languages, int maxGuests, List<TourKeyPoints> tourKeyPointss, string keyPointName, string keyPointCountry, 
             string keyPointCity, string keyPointAddress, decimal keyPointLatitude, decimal keyPointLongitude, List<DateTime> tourDates, int duration, List<string> images)
         {
             int indicator = 0;
@@ -214,7 +222,7 @@ namespace InitialProject.Repository
             }
 
 
-        }
+        }*/
 
 
         public int NextIdTour()

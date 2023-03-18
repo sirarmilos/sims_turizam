@@ -26,17 +26,6 @@ namespace InitialProject.Model
 
         public Location() { }
 
-        public Location(Location location)
-        {
-            Id = location.Id;
-            Country = location.Country;
-            City = location.City;
-            Address = location.Address;
-            Latitude = location.Latitude;
-            Longitude = location.Longitude;
-
-        }
-
         public Location(int id, string country, string city, string address, decimal latitude, decimal longitude)
         {
             Id = id;
@@ -46,8 +35,6 @@ namespace InitialProject.Model
             Latitude = latitude;
             Longitude = longitude;
         }
-
- 
 
         public string[] ToCSV()
         {
