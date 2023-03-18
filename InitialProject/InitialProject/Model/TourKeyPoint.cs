@@ -1,4 +1,5 @@
-﻿using InitialProject.Serializer;
+﻿using InitialProject.Repository;
+using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,10 @@ namespace InitialProject.Model
         {
             Id = Convert.ToInt32(values[0]);
             KeyPointName = values[1];
-            Location = new Location() { Id = Convert.ToInt32(values[2]) };
+
+            LocationRepository locationRepository = new LocationRepository();
+            Location location = locationRepository.GetById(Convert.ToInt32(values[2]));
+            Location = location;
         }
     }
 }
