@@ -47,5 +47,11 @@ namespace InitialProject.View
             AddNewTour window = new AddNewTour();
             window.Show();
         }
+
+        private void GoToRateGuests(object sender, RoutedEventArgs e)
+        {
+            RateGuests window = new RateGuests();
+            window.Show();
+        }
     }
 }

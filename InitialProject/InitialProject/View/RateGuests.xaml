@@ -1,0 +1,66 @@
+﻿<Window x:Class="InitialProject.View.RateGuests"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="Rate guests" Height="600" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="250" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid x:Name="dgRateGuests" LoadingRow="LoadingRowForDgRateGuests" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"  ItemsSource="{Binding RateGuestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedGuest, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="150"/>
+                <DataGridTextColumn Header="Rate guest deadline" Binding="{Binding RateGuestsDeadline}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button x:Name="buttonRateGuest" Grid.Column="2" Grid.Row="0" Content="Rate the guest" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Click="ShowInputForRateGuest"/>
+
+        <Label x:Name="labelCleanliness" Target="{x:Reference tbCleanliness}" Grid.Column="0" Grid.Row="1" Content="Cleanliness:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbCleanliness" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding ElementName=sliderCleanliness, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
+        <Slider Grid.Column="1" Grid.Row="1" x:Name="sliderCleanliness" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderCleanlinessValueChange"/>
+
+        <Label x:Name="labelFollowRules" Target="{x:Reference tbFollowRules}" Grid.Column="0" Grid.Row="2" Content="Follow rules:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbFollowRules" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Text="{Binding ElementName=sliderFollowRules, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
+        <Slider Grid.Column="1" Grid.Row="2" x:Name="sliderFollowRules" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderFollowRulesValueChange"/>
+
+        <Label x:Name="labelBehavior"  Target="{x:Reference tbBehavior}" Grid.Column="0" Grid.Row="3" Content="Behavior:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbBehavior" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Text="{Binding ElementName=sliderBehavior, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
+        <Slider Grid.Column="1" Grid.Row="3" x:Name="sliderBehavior" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderBehaviorValueChange"/>
+
+        <GroupBox x:Name="gbTypePayment" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="100,5,100,5" Header="Type of payment:">
+            <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
+                <RadioButton x:Name="rbCash" Content="Cash" IsChecked="{Binding Cash, Mode=OneWayToSource}"/>
+                <RadioButton x:Name="rbCreditCard" Content="Credit card" IsChecked="{Binding CreditCard, Mode=OneWayToSource}"/>
+                <RadioButton x:Name="rbDeferredPayment" Content="Deferred payment" IsChecked="{Binding DeferredPayment, Mode=OneWayToSource}"/>
+            </StackPanel>
+        </GroupBox>
+
+        <Label x:Name="labelCommunicativeness" Target="{x:Reference tbCommunicativeness}" Grid.Column="0" Grid.Row="5" Content="Communicativeness:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbCommunicativeness" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" Text="{Binding ElementName=sliderCommunicativeness, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
+        <Slider Grid.Column="1" Grid.Row="5" x:Name="sliderCommunicativeness" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderCommunicativenessValueChange"/>
+
+        <Label x:Name="labelComment" Target="{x:Reference tbComment}" Grid.Column="0" Grid.Row="6" Content="Comment:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbComment" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Comment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+
+        <Button x:Name="buttonConfirm" Grid.Column="0" Grid.Row="7" Content="Confirm adding a rating" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Click="SaveRateGuest"/>
+
+    </Grid>
+</Window>
