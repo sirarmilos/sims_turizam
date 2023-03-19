@@ -39,5 +39,10 @@ namespace InitialProject.Model
             Location location = locationRepository.GetById(Convert.ToInt32(values[2]));
             Location = location;
         }
+
+       /* public string ToString()
+        {
+            return KeyPointName + " " + Location.ToString();
+        }*/
     }
 }
