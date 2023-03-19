@@ -33,8 +33,6 @@ namespace InitialProject.Repository
             rateGuests.Add(rateGuest);
 
             rateGuestSerializer.ToCSV(FilePathRateGuest, rateGuests);
-
-            MessageBox.Show("You have successfully rated a guest", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

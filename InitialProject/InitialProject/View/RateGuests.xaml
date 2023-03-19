@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="Rate guests" Height="600" Width="800"
+        Title="Rate guests" Height="600" Width="550"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
@@ -19,12 +19,12 @@
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="150" />
             <ColumnDefinition Width="280" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid x:Name="dgRateGuests" LoadingRow="LoadingRowForDgRateGuests" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"  ItemsSource="{Binding RateGuestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedGuest, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="10">
+        <DataGrid x:Name="dgRateGuests" LoadingRow="LoadingRowForDgRateGuests" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"  ItemsSource="{Binding RateGuestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedGuest, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="10" SelectionChanged="CancelButtonVisibility">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="150"/>
                 <DataGridTextColumn Header="Rate guest deadline" Binding="{Binding RateGuestsDeadline}" Width="*"/>
@@ -33,29 +33,31 @@
 
         <Button x:Name="buttonRateGuest" Grid.Column="2" Grid.Row="0" Content="Rate the guest" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Click="ShowInputForRateGuest"/>
 
+        <Button x:Name="buttonCancelSelection" Grid.Column="2" Grid.Row="0" Content="Cancel selection" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Click="CancelSelection"/>
+
         <Label x:Name="labelCleanliness" Target="{x:Reference tbCleanliness}" Grid.Column="0" Grid.Row="1" Content="Cleanliness:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-        <TextBox x:Name="tbCleanliness" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding ElementName=sliderCleanliness, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
-        <Slider Grid.Column="1" Grid.Row="1" x:Name="sliderCleanliness" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderCleanlinessValueChange"/>
+        <TextBox x:Name="tbCleanliness" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding ElementName=sliderCleanliness, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" VerticalAlignment="Top" Width="30" IsReadOnly="True" Margin="5,0,0,0"/>
+        <Slider Grid.Column="1" Grid.Row="1" x:Name="sliderCleanliness" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderCleanlinessValueChange" Margin="50,0,50,0"/>
 
         <Label x:Name="labelFollowRules" Target="{x:Reference tbFollowRules}" Grid.Column="0" Grid.Row="2" Content="Follow rules:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-        <TextBox x:Name="tbFollowRules" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Text="{Binding ElementName=sliderFollowRules, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
-        <Slider Grid.Column="1" Grid.Row="2" x:Name="sliderFollowRules" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderFollowRulesValueChange"/>
+        <TextBox x:Name="tbFollowRules" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Text="{Binding ElementName=sliderFollowRules, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" VerticalAlignment="Top" Width="30" IsReadOnly="True" Margin="5,0,0,0"/>
+        <Slider Grid.Column="1" Grid.Row="2" x:Name="sliderFollowRules" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderFollowRulesValueChange" Margin="50,0,50,0"/>
 
         <Label x:Name="labelBehavior"  Target="{x:Reference tbBehavior}" Grid.Column="0" Grid.Row="3" Content="Behavior:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-        <TextBox x:Name="tbBehavior" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Text="{Binding ElementName=sliderBehavior, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
-        <Slider Grid.Column="1" Grid.Row="3" x:Name="sliderBehavior" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderBehaviorValueChange"/>
+        <TextBox x:Name="tbBehavior" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Text="{Binding ElementName=sliderBehavior, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" VerticalAlignment="Top" Width="30" IsReadOnly="True" Margin="5,0,0,0"/>
+        <Slider Grid.Column="1" Grid.Row="3" x:Name="sliderBehavior" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderBehaviorValueChange" Margin="50,0,50,0"/>
 
-        <GroupBox x:Name="gbTypePayment" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="100,5,100,5" Header="Type of payment:">
+        <GroupBox x:Name="gbTypePayment" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="5,5,5,5" Header="Type of payment:">
             <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
-                <RadioButton x:Name="rbCash" Content="Cash" IsChecked="{Binding Cash, Mode=OneWayToSource}"/>
-                <RadioButton x:Name="rbCreditCard" Content="Credit card" IsChecked="{Binding CreditCard, Mode=OneWayToSource}"/>
-                <RadioButton x:Name="rbDeferredPayment" Content="Deferred payment" IsChecked="{Binding DeferredPayment, Mode=OneWayToSource}"/>
+                <RadioButton x:Name="rbCash" Content="Cash" IsChecked="{Binding Cash, Mode=OneWayToSource}" Margin="50,0,0,0"/>
+                <RadioButton x:Name="rbCreditCard" Content="Credit card" IsChecked="{Binding CreditCard, Mode=OneWayToSource}" Margin="50,0,0,0"/>
+                <RadioButton x:Name="rbDeferredPayment" Content="Deferred payment" IsChecked="{Binding DeferredPayment, Mode=OneWayToSource}" Margin="50,0,0,0"/>
             </StackPanel>
         </GroupBox>
 
         <Label x:Name="labelCommunicativeness" Target="{x:Reference tbCommunicativeness}" Grid.Column="0" Grid.Row="5" Content="Communicativeness:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
-        <TextBox x:Name="tbCommunicativeness" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" Text="{Binding ElementName=sliderCommunicativeness, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
-        <Slider Grid.Column="1" Grid.Row="5" x:Name="sliderCommunicativeness" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderCommunicativenessValueChange"/>
+        <TextBox x:Name="tbCommunicativeness" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" Text="{Binding ElementName=sliderCommunicativeness, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" VerticalAlignment="Top" Width="30" IsReadOnly="True" Margin="5,0,0,0"/>
+        <Slider Grid.Column="1" Grid.Row="5" x:Name="sliderCommunicativeness" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderCommunicativenessValueChange" Margin="50,0,50,0"/>
 
         <Label x:Name="labelComment" Target="{x:Reference tbComment}" Grid.Column="0" Grid.Row="6" Content="Comment:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
         <TextBox x:Name="tbComment" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Comment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>

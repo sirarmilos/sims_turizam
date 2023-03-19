@@ -51,7 +51,10 @@ namespace InitialProject.View
         private void GoToRateGuests(object sender, RoutedEventArgs e)
         {
             RateGuests window = new RateGuests();
-            window.Show();
+            if (window.dgRateGuests.Items.Count > 0)
+            {
+                window.Show();
+            }
         }
     }
 }

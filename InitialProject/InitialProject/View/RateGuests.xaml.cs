@@ -81,7 +81,6 @@ namespace InitialProject.View
             set
             {
                 cleanliness = value;
-                // OnPropertyChanged();
             }
         }
 
@@ -111,8 +110,6 @@ namespace InitialProject.View
                 if (value != cash)
                 {
                     cash = value;
-                    //OnPropertyChanged(nameof(cash));
-                    //OnPropertyChanged(nameof(Cash));
                     if (value) TypePayment = "Cash";
                 }
             }
@@ -126,7 +123,6 @@ namespace InitialProject.View
                 if (value != creditCard)
                 {
                     creditCard = value;
-                    //OnPropertyChanged(nameof(CreditCard));
                     if (value) TypePayment = "CreditCard";
                 }
             }
@@ -140,7 +136,6 @@ namespace InitialProject.View
                 if (value != deferredPayment)
                 {
                     deferredPayment = value;
-                    //OnPropertyChanged(nameof(DeferredPayment));
                     if (value) TypePayment = "DeferredPayment";
                 }
             }
@@ -154,7 +149,6 @@ namespace InitialProject.View
                 if (value != typePayment)
                 {
                     typePayment = value;
-                    //OnPropertyChanged(nameof(TypePayment));
                 }
             }
         }
@@ -189,12 +183,19 @@ namespace InitialProject.View
             FindGuestsForRate();
             dgRateGuests.ItemsSource = RateGuestsDTOs;
 
+            if (RateGuestsDTOs.Count == 0)
+            {
+                MessageBox.Show("All guests are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("There are " + RateGuestsDTOs.Count + " guests left for you to rate.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+            buttonCancelSelection.Visibility = Visibility.Hidden;
             TurnOffVisibility();
-            rbCash.IsChecked = true;
-            sliderCleanliness.Value = 3;
-            sliderFollowRules.Value = 3;
-            sliderBehavior.Value = 3;
-            sliderCommunicativeness.Value = 3;
+            SetDefaultValue();
         }
 
         void LoadingRowForDgRateGuests(object sender, DataGridRowEventArgs e)
@@ -238,7 +239,6 @@ namespace InitialProject.View
 
                         RateGuestsDTO rateGuestDTO = new RateGuestsDTO(temporaryReservation.ReservationId, temporaryReservation.GuestUsername, deadline);
                         RateGuestsDTOs.Add(rateGuestDTO);
-                        // treba ga upisati u listu za dodavanje ocena
                     }
                 }
             }
@@ -252,16 +252,9 @@ namespace InitialProject.View
             }
             else
             {
-                if(RateGuestsDTOs.Count > 0)
-                {
-                    // da sve komande postanu vidljive
-                    TurnOnVisibility();
-                    buttonRateGuest.Visibility = Visibility.Hidden;
-                }
-                else
-                {
-                    MessageBox.Show("There are currently no guests to rate", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                dgRateGuests.IsHitTestVisible = false;
+                TurnOnVisibility();
+                buttonRateGuest.Visibility = Visibility.Hidden;
             }
         }
 
@@ -327,6 +320,17 @@ namespace InitialProject.View
 
         }
 
+        private void SetDefaultValue()
+        {
+            rbCash.IsChecked = true;
+            sliderCleanliness.Value = 3;
+            sliderFollowRules.Value = 3;
+            sliderBehavior.Value = 3;
+            sliderCommunicativeness.Value = 3;
+            Comment = "";
+            tbComment.Text = "";
+        }
+
         private void SliderCleanlinessValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Cleanliness = Convert.ToInt32(sliderCleanliness.Value);
@@ -350,26 +354,53 @@ namespace InitialProject.View
         private void SaveRateGuest(object sender, RoutedEventArgs e)
         {
             Reservation reservation = new Reservation();
-            RateGuestsDTO rateGuestsDTO = new RateGuestsDTO();
-
-            rateGuestsDTO = SelectedGuest;
 
             foreach (Reservation temporaryReservation in Reservations)
             {
                 if(temporaryReservation.ReservationId.Equals(SelectedGuest.ReservationId) == true)
                 {
                     reservation = temporaryReservation;
+                    break;
                 }
             }
 
             rateGuestRepository.Save(reservation, Cleanliness, FollowRules, Behavior, TypePayment, Communicativeness, Comment);
 
-            //rateGuestsDTOs.Remove(rateGuestsDTO);
+            RateGuestsDTOs.Remove(SelectedGuest);
 
             dgRateGuests.Items.Refresh();
 
+            dgRateGuests.IsHitTestVisible = true;
+            buttonCancelSelection.Visibility = Visibility.Hidden;
             buttonRateGuest.Visibility = Visibility.Visible;
             TurnOffVisibility();
+            SetDefaultValue();
+
+            MessageBox.Show("You have successfully rated a guest", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            if (RateGuestsDTOs.Count == 0)
+            {
+                dgRateGuests.Visibility = Visibility.Hidden;
+                buttonRateGuest.Visibility = Visibility.Hidden;
+                MessageBox.Show("All guests are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
+            }
+        }
+
+        private void CancelSelection(object sender, RoutedEventArgs e)
+        {
+            SelectedGuest = null;
+            buttonRateGuest.Visibility = Visibility.Visible;
+            TurnOffVisibility();
+            dgRateGuests.UnselectAllCells();
+            SetDefaultValue();
+            dgRateGuests.IsHitTestVisible = true;
+            buttonCancelSelection.Visibility = Visibility.Hidden;
+        }
+
+        private void CancelButtonVisibility(object sender, SelectionChangedEventArgs e)
+        {
+            buttonCancelSelection.Visibility = Visibility.Visible;
         }
     }
 }
