@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Model
 {
-    public enum Languages
+    public enum Language
     {
         ALL,
         ENGLISH,
         GERMAN,
         SERBIAN,
+        MANDARINSKI,
         OTHER
     }
 }
