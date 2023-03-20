@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -172,6 +173,21 @@ namespace InitialProject.View
 
             listTours.ItemsSource = toursDisplay;
      
+        }
+
+        private void CreateReservation(object sender, RoutedEventArgs e)
+        {
+            if (listTours.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("Morate da odaberete jedan red!");
+            }
+            else
+            {
+                TourDisplayDTO tour = new TourDisplayDTO();
+                tour = (TourDisplayDTO)listTours.SelectedItems[0];
+                TourReservation tourReservation = new TourReservation(tour.TourName);
+                tourReservation.Show();
+            }
         }
     }
 }

@@ -51,6 +51,21 @@ namespace InitialProject.Repository
             return tours;
         }
 
+        public List<Tour> GetById(string id)
+        {
+            List<Tour> result = new List<Tour>();
+            foreach(Tour tour in tours)
+            {
+                if(id.Equals(tour.TourName))
+                {
+                    result.Add(tour);
+                    break;
+                }
+            }
+
+            return result;
+        }
+
         public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Language language = 0,int numberOfGuests=0)
         {
             List<Tour> sameCity = new List<Tour>();
