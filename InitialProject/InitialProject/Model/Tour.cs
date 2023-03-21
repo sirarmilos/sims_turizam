@@ -30,6 +30,8 @@ namespace InitialProject.Model
         public int Duration { get; set; }
 
         public List<string> Images { get; set; }
+
+        public int FreeSlots { get; set; }
     
         public Tour() { }
 
@@ -45,6 +47,7 @@ namespace InitialProject.Model
             TourDate = tourDate;
             Duration = duration;
             Images = images;
+            FreeSlots = maxGuests;
         }
 
         public string[] ToCSV()
@@ -79,7 +82,7 @@ namespace InitialProject.Model
 
             tourKeyPointsToString = tourKeyPointsToString.Substring(0, tourKeyPointsToString.Length - 2);
 
-            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Language.ToString(), MaxGuests.ToString(), tourKeyPointsToString, dateToString, Duration.ToString(), imageToString};
+            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Language.ToString(), MaxGuests.ToString(), tourKeyPointsToString, dateToString, Duration.ToString(), imageToString, FreeSlots.ToString()};
             return csvValues;
         }
 
@@ -140,6 +143,8 @@ namespace InitialProject.Model
             }
 
             Images = images;
+
+            FreeSlots = Convert.ToInt32(values[10]);
         } 
 
 

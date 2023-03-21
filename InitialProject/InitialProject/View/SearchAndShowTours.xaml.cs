@@ -142,6 +142,19 @@ namespace InitialProject.View
             DataContext = this;
             tourRepository = new TourRepository();
             Images = new List<string>();
+
+            tours = tourRepository.SearchAndShow(City, Country, Duration, Languagee, MaxGuests);
+
+            TourDisplayDTO tddto = new TourDisplayDTO();
+            List<TourDisplayDTO> toursDisplay = new List<TourDisplayDTO>();
+            tours = tourRepository.SearchAndShow();
+
+            foreach (Tour tour in tours)
+            {
+                toursDisplay.Add(tddto.CreateDTO(tour));
+            }
+
+            listTours.ItemsSource = toursDisplay;
         }
 
 

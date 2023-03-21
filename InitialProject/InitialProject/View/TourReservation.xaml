@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="TourReservation" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="listTours" Height="NaN" Margin="40,64,188,232" Width="NaN" AutoGenerateColumns="False" ItemsSource="{Binding Tours}" >
+        <DataGrid x:Name="listTours" Height="NaN" Margin="40,10,40,129" Width="NaN" AutoGenerateColumns="False" ItemsSource="{Binding Tours}" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding TourName}"/>
                 <DataGridTextColumn Header="City" Binding="{Binding Location.City}"/>
@@ -57,9 +57,9 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBlock HorizontalAlignment="Left" Margin="40,241,0,0" TextWrapping="Wrap" Text="Number of guests for reservation" VerticalAlignment="Top" Height="39" Width="121"/>
-        <TextBox HorizontalAlignment="Left" Margin="40,280,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Height="30"/>
-        <Button Content="Create reservation" HorizontalAlignment="Left" Margin="40,329,0,0" VerticalAlignment="Top" Height="37" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="88,350,0,0" TextWrapping="Wrap" Text="Number of guests for reservation" VerticalAlignment="Top" Height="38" Width="121" RenderTransformOrigin="0.068,1.344"/>
+        <TextBox x:Name="guestNumber" HorizontalAlignment="Left" Margin="214,354,0,0" TextWrapping="Wrap" Text="{Binding Path=NumberOfGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="30"/>
+        <Button Content="Create reservation" HorizontalAlignment="Left" Margin="492,347,0,0" VerticalAlignment="Top" Height="37" Width="120" Click="CreateReservation"/>
 
     </Grid>
 </Window>

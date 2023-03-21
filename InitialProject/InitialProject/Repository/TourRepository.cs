@@ -22,17 +22,23 @@ namespace InitialProject.Repository
 
         private const string FilePathLocation = "../../../Resources/Data/location.csv";
 
+        private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
+
         private readonly Serializer<Tour> tourSerializer;
        
         private readonly Serializer<TourKeyPoint> tourKeyPointsSerializer;
 
         private readonly Serializer<Location> locationSerializer;
 
+        private readonly Serializer<TourReservation> tourReservationSerializer;
+
         private List<Tour> tours;
 
         private List<TourKeyPoint> tourKeyPoints;
 
         private List<Location> locations;
+
+        private List<TourReservation> tourReservations;
 
         public TourRepository()
         {
@@ -44,6 +50,9 @@ namespace InitialProject.Repository
 
             locationSerializer = new Serializer<Location>();
             locations = locationSerializer.FromCSV(FilePathLocation);
+
+            tourReservationSerializer = new Serializer<TourReservation>();
+            tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
         }
 
         public List<Tour> Load()
@@ -51,7 +60,7 @@ namespace InitialProject.Repository
             return tours;
         }
 
-        public List<Tour> GetById(string id)
+        public List<Tour> GetByName(string id)
         {
             List<Tour> result = new List<Tour>();
             foreach(Tour tour in tours)
@@ -65,6 +74,49 @@ namespace InitialProject.Repository
 
             return result;
         }
+
+        public Tour GetById(int id)
+        {
+            foreach (Tour tour in tours)
+            {
+                if (id == tour.Id)
+                {
+                    return tour;
+                }
+            }
+
+            return null;
+        }
+
+        public bool CreateReservation(string username,Tour tour,int numberOfGuests)
+        {
+            try
+            {
+                TourReservation reservatedTour = new TourReservation(username,tour.Id,numberOfGuests);
+                tourReservations.Add(reservatedTour);
+                tourReservationSerializer.ToCSV(FilePathReservatedTours, tourReservations);
+                UpdateTourFreeSlot(tour,numberOfGuests);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void UpdateTourFreeSlot(Tour reservatedTour,int numberOfGuests)
+        {
+            foreach(Tour tour in tours)
+            {
+                if(tour.Equals(reservatedTour))
+                {
+                    tour.FreeSlots = tour.FreeSlots - numberOfGuests;
+                    tourSerializer.ToCSV(FilePathTour, tours);
+                    break;
+                }
+            }
+        }
+
 
         public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Language language = 0,int numberOfGuests=0)
         {
