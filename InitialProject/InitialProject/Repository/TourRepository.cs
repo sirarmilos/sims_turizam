@@ -170,61 +170,6 @@ namespace InitialProject.Repository
             tourSerializer.ToCSV(FilePathTour, tours);
         }
 
-       /* public void Save(string tourName, string tourCountry, string tourCity, string tourAddress, decimal tourLatitude, decimal tourLongitude, string description, Languages languages, int maxGuests, List<TourKeyPoints> tourKeyPointss, string keyPointName, string keyPointCountry, 
-            string keyPointCity, string keyPointAddress, decimal keyPointLatitude, decimal keyPointLongitude, List<DateTime> tourDates, int duration, List<string> images)
-        {
-            int indicator = 0;
-            locations = locationSerializer.FromCSV(FilePathLocation);
-            tourKeyPoints = tourKeyPointsSerializer.FromCSV(FilePathTourKeyPoints);
-            
-            Location tourLocation; 
-
-            foreach (TourKeyPoints tourKeyPoint in tourKeyPointss)
-            {
-                tourLocation = new Location(tourKeyPoint.Location);
-                locations.Add(tourLocation);
-                tourKeyPoints.Add(tourKeyPoint);
-                Debug.WriteLine(tourLocation.Country);
-            }
-
-            locationSerializer.ToCSV(FilePathLocation, locations);
-
-            Location location = new Location(NextIdLocation(), tourCountry, tourCity, tourAddress, tourLatitude, tourLongitude);
-            Tour tour = new Tour(NextIdTour(), tourName, location, description, languages, maxGuests, tourKeyPointss, tourDates, duration, images);
-            Debug.WriteLine("a");
-
-            tours = tourSerializer.FromCSV(FilePathTour);
-
-            foreach (Tour temporaryTour in tours)
-            {
-                if (temporaryTour.TourName.Equals(tourName) == true)
-                {
-                    indicator = 1;
-                    MessageBox.Show("Tour with this name already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    break;
-                }
-            }
-
-            if (indicator == 0)
-            {
-                locations = locationSerializer.FromCSV(FilePathLocation);
-                locations.Add(location);
-                locationSerializer.ToCSV(FilePathLocation, locations);
-
-
-                tourKeyPointsSerializer.ToCSV(FilePathTourKeyPoints, tourKeyPoints);
-                Debug.WriteLine("a");
-                Debug.WriteLine(tour.Id.ToString(), tour.TourName, tour.Location, tour.Description, tour.Images, tour.MaxGuests, tour.TourKeyPoints);
-                tours.Add(tour);
-                Debug.WriteLine("a");
-                tourSerializer.ToCSV(FilePathTour, tours);
-
-            }
-
-
-        }*/
-
-
         public int NextIdTour()
         {
             tours = tourSerializer.FromCSV(FilePathTour);
