@@ -32,7 +32,7 @@ namespace InitialProject.View
 
         private void GoToSearchAndShowAccommodation(object sender, RoutedEventArgs e)
         {
-            SearchAndShowAccommodation window = new SearchAndShowAccommodation();
+            SearchAndShowAccommodations window = new SearchAndShowAccommodations();
             window.Show();
         }
 
