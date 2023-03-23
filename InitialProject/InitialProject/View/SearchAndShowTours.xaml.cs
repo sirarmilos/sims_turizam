@@ -179,6 +179,7 @@ namespace InitialProject.View
             List<TourDisplayDTO> toursDisplay = new List<TourDisplayDTO>();
             tours = tourRepository.SearchAndShow(City, Country, Duration, Languagee, MaxGuests);
 
+
             foreach(Tour tour in tours)
             {
                 toursDisplay.Add(tddto.CreateDTO(tour));
@@ -190,17 +191,22 @@ namespace InitialProject.View
 
         private void CreateReservation(object sender, RoutedEventArgs e)
         {
-            if (listTours.SelectedItems.Count != 1)
+            try
             {
-                MessageBox.Show("Morate da odaberete jedan red!");
+                if (listTours.SelectedItems.Count != 1)
+                {
+                    MessageBox.Show("Morate da odaberete jedan red!");
+                }
+                else
+                {
+                    TourDisplayDTO tour = new TourDisplayDTO();
+                    tour = (TourDisplayDTO)listTours.SelectedItems[0];
+                    TourReservation tourReservation = new TourReservation(tour.TourName);
+                    tourReservation.Show();
+                }
             }
-            else
-            {
-                TourDisplayDTO tour = new TourDisplayDTO();
-                tour = (TourDisplayDTO)listTours.SelectedItems[0];
-                TourReservation tourReservation = new TourReservation(tour.TourName);
-                tourReservation.Show();
-            }
+            catch
+            { }
         }
     }
 }
