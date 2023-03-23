@@ -107,96 +107,28 @@ namespace InitialProject.Repository
             return locations.Max(c => c.Id) + 1;
         }
 
-
-        // null,blank and white-spaced arguments will be ignored
-        public List<Accommodation> FindAll(string accommodationName, string country, string city, string type, int maxGuests, int minDaysReservation)
+        public List<Accommodation> FindAll(string accommodationName, string country, string city, string type, int? maxGuests, int? minDaysReservation)
         {
             List<Accommodation> accommodationNameResults, countryResults, cityResults, typeResults, maxGuestsResults, minDaysReservationResults;
 
-            if (!string.IsNullOrWhiteSpace(accommodationName))
-            {
-                accommodationName = accommodationName.Trim();
-                accommodationNameResults = FindAllByAccommodation(accommodationName);
-                if (accommodationNameResults.Count == 0)
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                accommodationNameResults = accommodations;
-            }
+            if (!IsNameContained(accommodationName, out accommodationNameResults)) return null;
+            if (!IsCountryContained(country, out countryResults)) return null;
+            if (!IsCityContained(city, out cityResults)) return null;
+            if (!IsTypeContained(type, out typeResults)) return null;
+            if (!IsGuestsNumberContained(maxGuests, out maxGuestsResults)) return null;
+            if (!AreReservationDaysContained(minDaysReservation, out minDaysReservationResults)) return null;
 
+            return accommodationNameResults.Intersect(cityResults).Intersect(countryResults).Intersect(typeResults).Intersect(maxGuestsResults).Intersect(minDaysReservationResults).ToList();
+        }
 
-            // todo: proveriti ovo
-            if (!string.IsNullOrWhiteSpace(country))
-            {
-                country = country.Trim();
-                countryResults = FindAllByCountry(country);
-                if (countryResults.Count == 0)
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                countryResults = accommodations;
-            }
-
-
-            // todo: proveriti ovo
-            if (!string.IsNullOrWhiteSpace(city))
-            {
-                city = city.Trim();
-                cityResults = FindAllByCity(city);
-                if (cityResults.Count == 0)
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                cityResults = accommodations;
-            }
-
-
-
-            if (!string.IsNullOrWhiteSpace(type))
-            {
-                type = type.Trim();
-                typeResults = FindAllByType(type);
-                if (typeResults.Count == 0)
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                typeResults = accommodations;
-            }
-
-
-
-            if (maxGuests > 0)
-            {
-                maxGuestsResults = FindAllByMaxGuestsNumber(maxGuests);
-                if (maxGuestsResults.Count == 0)
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                maxGuestsResults = accommodations;
-            }
-
-
-            if (minDaysReservation > 0)
+        private bool AreReservationDaysContained(int? minDaysReservation, out List<Accommodation> minDaysReservationResults)
+        {
+            if ((minDaysReservation != null) && (minDaysReservation >= 0))
             {
                 minDaysReservationResults = FindAllAboveMinReservationDays(minDaysReservation);
                 if (minDaysReservationResults.Count == 0)
                 {
-                    return null;
+                    return false;
                 }
             }
             else
@@ -204,7 +136,101 @@ namespace InitialProject.Repository
                 minDaysReservationResults = accommodations;
             }
 
-            return accommodationNameResults.Intersect(cityResults).Intersect(countryResults).Intersect(typeResults).Intersect(maxGuestsResults).Intersect(minDaysReservationResults).ToList();
+            return true;
+        }
+
+        private bool IsGuestsNumberContained(int? maxGuests, out List<Accommodation> maxGuestsResults)
+        {
+            if ((maxGuests != null) && (maxGuests > 0))
+            {
+                maxGuestsResults = FindAllByMaxGuestsNumber(maxGuests);
+                if (maxGuestsResults.Count == 0)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                maxGuestsResults = accommodations;
+            }
+
+            return true;
+        }
+
+        private bool IsTypeContained(string type, out List<Accommodation> typeResults)
+        {
+            if (!string.IsNullOrWhiteSpace(type))
+            {
+                type = type.Trim();
+                typeResults = FindAllByType(type);
+                if (typeResults.Count == 0)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                typeResults = accommodations;
+            }
+
+            return true;
+        }
+
+        private bool IsCityContained(string city, out List<Accommodation> cityResults)
+        {
+            if (!string.IsNullOrWhiteSpace(city))
+            {
+                city = city.Trim();
+                cityResults = FindAllByCity(city);
+                if (cityResults.Count == 0)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                cityResults = accommodations;
+            }
+
+            return true;
+        }
+
+        private bool IsCountryContained(string country, out List<Accommodation> countryResults)
+        {
+            if (!string.IsNullOrWhiteSpace(country))
+            {
+                country = country.Trim();
+                countryResults = FindAllByCountry(country);
+                if (countryResults.Count == 0)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                countryResults = accommodations;
+            }
+
+            return true;
+        }
+
+        private bool IsNameContained(string accommodationName, out List<Accommodation> accommodationNameResults)
+        {
+            if (!string.IsNullOrWhiteSpace(accommodationName))
+            {
+                accommodationName = accommodationName.Trim();
+                accommodationNameResults = FindAllByAccommodation(accommodationName);
+                if (accommodationNameResults.Count == 0)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                accommodationNameResults = accommodations;
+            }
+
+            return true;
         }
 
         public List<Accommodation> FindAllByAccommodation(string name)
@@ -246,7 +272,7 @@ namespace InitialProject.Repository
             return searchResult;
         }
 
-        public List<Accommodation> FindAllByMaxGuestsNumber(int quantity)
+        public List<Accommodation> FindAllByMaxGuestsNumber(int? quantity)
         {
             List<Accommodation> searchResult = new List<Accommodation>();
 
@@ -272,7 +298,7 @@ namespace InitialProject.Repository
             return searchResult;
         }
 
-        public List<Accommodation> FindAllAboveMinReservationDays(int minDaysReservation)
+        public List<Accommodation> FindAllAboveMinReservationDays(int? minDaysReservation)
         {
             List<Accommodation> searchResult = new List<Accommodation>();
 
@@ -284,7 +310,6 @@ namespace InitialProject.Repository
 
             return searchResult;
         }
-
 
 
     }

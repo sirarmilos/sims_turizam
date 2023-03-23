@@ -64,5 +64,41 @@ namespace InitialProject.Repository
             return rateGuests;
         }
 
+        public void Save(string guestUsername, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
+        {
+
+            reservations = reservationSerializer.FromCSV(FilePathReservation);
+            Reservation reservation = new Reservation(NextIdReservation(), "username123", accommodation, startDate, endDate, guestsNumber);
+            reservations.Add(reservation);
+            reservationSerializer.ToCSV(FilePathReservation, reservations);
+
+        }
+
+
+        public int NextIdReservation()
+        {
+            reservations = reservationSerializer.FromCSV(FilePathReservation);
+            if (reservations.Count < 1)
+            {
+                return 1;
+            }
+            return reservations.Max(c => c.ReservationId) + 1;
+        }
+
+        public List<Reservation> FindAllByAccommodation(int id)
+        {
+            List<Reservation> accommodationReservations = new List<Reservation>();
+
+            foreach (Reservation reservation in reservations)
+            {
+                if (reservation.Accommodation.Id == id)
+                {
+                    accommodationReservations.Add(reservation);
+                }
+            }
+
+            return accommodationReservations;
+        }
+
     }
 }

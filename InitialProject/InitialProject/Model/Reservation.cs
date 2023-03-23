@@ -1,10 +1,7 @@
 ﻿using InitialProject.Serializer;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
+
 
 namespace InitialProject.Model
 {
@@ -36,21 +33,33 @@ namespace InitialProject.Model
 
         public string[] ToCSV()
         {
-            // to do
-            string[] csvValues = { "a", "b", "c", "d" };
+            string[] csvValues = { ReservationId.ToString(), GuestUsername, Accommodation.Id.ToString(), StartDate.ToString("dd.MM.yyyy"), EndDate.ToString("dd.MM.yyyy"), GuestsNumber.ToString() };
             return csvValues;
         }
 
-        public void FromCSV(string[] values)
+        public void FromCSV(string[] values)  
         {
+            // return if the file was empty
             if (string.IsNullOrWhiteSpace(values[0])) return;
-
+            
             ReservationId = Convert.ToInt32(values[0]);
             GuestUsername = values[1];
             Accommodation = new Accommodation() { Id = Convert.ToInt32(values[2]) };
-            StartDate = Convert.ToDateTime(values[3]);
-            EndDate = Convert.ToDateTime(values[4]);
+
+            string temporaryDate = values[3];
+            if (!string.IsNullOrEmpty(temporaryDate))
+            {
+                StartDate = DateTime.ParseExact(temporaryDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            }
+
+            temporaryDate = values[4];
+            if (!string.IsNullOrEmpty(temporaryDate))
+            {
+                EndDate = DateTime.ParseExact(temporaryDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            }
+
             GuestsNumber = Convert.ToInt32(values[5]);
+
         }
 
     }
