@@ -4,9 +4,11 @@ using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -20,17 +22,23 @@ namespace InitialProject.Repository
 
         private const string FilePathLocation = "../../../Resources/Data/location.csv";
 
+        private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
+
         private readonly Serializer<Tour> tourSerializer;
        
         private readonly Serializer<TourKeyPoint> tourKeyPointsSerializer;
 
         private readonly Serializer<Location> locationSerializer;
 
+        private readonly Serializer<TourReservation> tourReservationSerializer;
+
         private List<Tour> tours;
 
         private List<TourKeyPoint> tourKeyPoints;
 
         private List<Location> locations;
+
+        private List<TourReservation> tourReservations;
 
         public TourRepository()
         {
@@ -42,42 +50,88 @@ namespace InitialProject.Repository
 
             locationSerializer = new Serializer<Location>();
             locations = locationSerializer.FromCSV(FilePathLocation);
+
+            tourReservationSerializer = new Serializer<TourReservation>();
+            tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
         }
 
         public List<Tour> Load()
+        { 
+            return tours;
+        }
+
+        public List<Tour> GetByName(string id)
         {
             List<Tour> result = new List<Tour>();
-
-            foreach (Tour tour in tours)
+            foreach(Tour tour in tours)
             {
-                foreach (Location location in locations)
+                if(id.Equals(tour.TourName))
                 {
-                    if (tour.Location.Id == location.Id)
-                    {
-                        tour.Location = location;
-                    }
+                    result.Add(tour);
+                    break;
                 }
-                result.Add(tour);
             }
 
             return result;
         }
 
-        public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Language language = 0,int numberOfPeople=0)
+        public Tour GetById(int id)
         {
- 
+            foreach (Tour tour in tours)
+            {
+                if (id == tour.Id)
+                {
+                    return tour;
+                }
+            }
+
+            return null;
+        }
+
+        public bool CreateReservation(string username,Tour tour,int numberOfGuests)
+        {
+            try
+            {
+                TourReservation reservatedTour = new TourReservation(username,tour.Id,numberOfGuests);
+                tourReservations.Add(reservatedTour);
+                tourReservationSerializer.ToCSV(FilePathReservatedTours, tourReservations);
+                UpdateTourFreeSlot(tour,numberOfGuests);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void UpdateTourFreeSlot(Tour reservatedTour,int numberOfGuests)
+        {
+            foreach(Tour tour in tours)
+            {
+                if(tour.Equals(reservatedTour))
+                {
+                    tour.FreeSlots = tour.FreeSlots - numberOfGuests;
+                    tourSerializer.ToCSV(FilePathTour, tours);
+                    break;
+                }
+            }
+        }
+
+
+        public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Language language = 0,int numberOfGuests=0)
+        {
             List<Tour> sameCity = new List<Tour>();
             List<Tour> sameCountry = new List<Tour>();
             List<Tour> longerDuration = new List<Tour>();
             List<Tour> sameLanguage = new List<Tour>();
-            List<Tour> morePeople = new List<Tour>();
+            List<Tour> moreGuests = new List<Tour>();
 
-            #region Check city
-            if (city != "")
+
+            if (!string.IsNullOrEmpty(city))
             {
                 foreach (Tour tour in tours)
                 {
-                    if(tour.Location.City.Equals(city))
+                    if (tour.Location.City.ToLower().StartsWith(city.ToLower()))
                     {
                         sameCity.Add(tour);
                     }
@@ -85,33 +139,29 @@ namespace InitialProject.Repository
             }
             else
             {
-                sameCity = tourSerializer.FromCSV(FilePathTour);
+                sameCity = tours;
             }
-            #endregion
 
-            #region check country
-            if (country != "")
+            if (!string.IsNullOrEmpty(country))
             {
                 foreach(Tour tour in tours)
                 {
-                    if(tour.Location.Country.Equals(country))
+                    if(tour.Location.Country.ToLower().StartsWith(country.ToLower()))
                     {
-                        sameCountry.Add(tour); 
+                        sameCountry.Add(tour);
                     }
                 }
             }
             else
             {
-                sameCountry = tourSerializer.FromCSV(FilePathTour);
+                sameCountry = tours;
             }
-            #endregion
 
-            #region dutration
-            if (duration > 0)
+            if (duration >= 0)
             {
                 foreach (Tour tour in tours)
                 {
-                    if (tour.Duration > duration)
+                    if (tour.Duration >= duration)
                     {
                         longerDuration.Add(tour);
                     }
@@ -119,12 +169,10 @@ namespace InitialProject.Repository
             }
             else
             {
-                longerDuration = tourSerializer.FromCSV(FilePathTour);
+                longerDuration = tours;
             }
-            #endregion
 
-            #region languages
-            if (language != 0)
+            if (language >= 0)
             {
                 foreach (Tour tour in tours)
                 {
@@ -136,32 +184,54 @@ namespace InitialProject.Repository
             }
             else
             {
-                sameLanguage = tourSerializer.FromCSV(FilePathTour);
+                sameLanguage = tours;
             }
-            #endregion
 
-            #region number of people
-            if (numberOfPeople>0)
+
+            if (numberOfGuests >= 0)
             {
                 foreach(Tour tour in tours)
                 {
-                    if(tour.MaxGuests>numberOfPeople)
+                    if(tour.MaxGuests >= numberOfGuests)
                     {
-                        morePeople.Add(tour);
+                        moreGuests.Add(tour);
                     }
                 }
             }
             else
             {
-                morePeople = tourSerializer.FromCSV(FilePathTour);
+                moreGuests = tours; 
             }
-            #endregion
 
-            List<Tour> asd = new List<Tour>();
-            asd = sameCity.Intersect(longerDuration).ToList();
 
-            return asd;
+            List<Tour> result = sameTours(sameCity,sameCountry);
+            result = sameTours(result,longerDuration);
+            result = sameTours(result, sameLanguage);
+            result = sameTours(result,moreGuests);
+
+
+            return result;
+            
         }
+
+        public List<Tour> sameTours(List<Tour> list1,List<Tour> list2)
+        {
+            List<Tour> result = new List<Tour>();
+
+            foreach (Tour tour1 in list1)
+            {
+                foreach ( Tour tour2 in list2 )
+                {
+                    if(tour1.Equals(tour2))
+                    { 
+                        result.Add(tour1); 
+                    }
+                }
+            }
+
+            return result;
+        }
+
 
         public void Save(TourDto tourDto)
         {
@@ -169,61 +239,6 @@ namespace InitialProject.Repository
             tours.Add(tour);
             tourSerializer.ToCSV(FilePathTour, tours);
         }
-
-       /* public void Save(string tourName, string tourCountry, string tourCity, string tourAddress, decimal tourLatitude, decimal tourLongitude, string description, Languages languages, int maxGuests, List<TourKeyPoints> tourKeyPointss, string keyPointName, string keyPointCountry, 
-            string keyPointCity, string keyPointAddress, decimal keyPointLatitude, decimal keyPointLongitude, List<DateTime> tourDates, int duration, List<string> images)
-        {
-            int indicator = 0;
-            locations = locationSerializer.FromCSV(FilePathLocation);
-            tourKeyPoints = tourKeyPointsSerializer.FromCSV(FilePathTourKeyPoints);
-            
-            Location tourLocation; 
-
-            foreach (TourKeyPoints tourKeyPoint in tourKeyPointss)
-            {
-                tourLocation = new Location(tourKeyPoint.Location);
-                locations.Add(tourLocation);
-                tourKeyPoints.Add(tourKeyPoint);
-                Debug.WriteLine(tourLocation.Country);
-            }
-
-            locationSerializer.ToCSV(FilePathLocation, locations);
-
-            Location location = new Location(NextIdLocation(), tourCountry, tourCity, tourAddress, tourLatitude, tourLongitude);
-            Tour tour = new Tour(NextIdTour(), tourName, location, description, languages, maxGuests, tourKeyPointss, tourDates, duration, images);
-            Debug.WriteLine("a");
-
-            tours = tourSerializer.FromCSV(FilePathTour);
-
-            foreach (Tour temporaryTour in tours)
-            {
-                if (temporaryTour.TourName.Equals(tourName) == true)
-                {
-                    indicator = 1;
-                    MessageBox.Show("Tour with this name already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    break;
-                }
-            }
-
-            if (indicator == 0)
-            {
-                locations = locationSerializer.FromCSV(FilePathLocation);
-                locations.Add(location);
-                locationSerializer.ToCSV(FilePathLocation, locations);
-
-
-                tourKeyPointsSerializer.ToCSV(FilePathTourKeyPoints, tourKeyPoints);
-                Debug.WriteLine("a");
-                Debug.WriteLine(tour.Id.ToString(), tour.TourName, tour.Location, tour.Description, tour.Images, tour.MaxGuests, tour.TourKeyPoints);
-                tours.Add(tour);
-                Debug.WriteLine("a");
-                tourSerializer.ToCSV(FilePathTour, tours);
-
-            }
-
-
-        }*/
-
 
         public int NextIdTour()
         {
