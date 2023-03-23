@@ -12,21 +12,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Diagnostics;
+using GalaSoft.MvvmLight.Command;
+
 
 namespace InitialProject.View
 {
-    /// <summary>
-    /// Interaction logic for SearchAndShowAccommodation.xaml
-    /// </summary>
-    public partial class SearchAndShowAccommodation : Window
+    public partial class SearchAndShowAccommodations : Window
     {
         public Accommodation Accommodation { get; set; }
 
@@ -36,11 +29,15 @@ namespace InitialProject.View
         private string country;
         private string city;
         private string type;
-        private int maxGuests;
-        private int minDaysReservation;
+        private int? maxGuests;
+        private int? minDaysReservation;
         private int leftCancelationDays;
         private string image;
         private List<string> images;
+        private bool apartment;
+        private bool allTypes;
+        private bool home;
+        private bool hut;
 
         public string Image
         {
@@ -75,7 +72,6 @@ namespace InitialProject.View
             {
                 country = value;
                 OnPropertyChanged(nameof(Country));
-                //Validate();
 
             }
         }
@@ -87,11 +83,10 @@ namespace InitialProject.View
             {
                 city = value;
                 OnPropertyChanged(nameof(City));
-                //Validate();
             }
         }
 
-        public int MaxGuests
+        public int? MaxGuests
         {
             get { return maxGuests; }
             set
@@ -101,7 +96,7 @@ namespace InitialProject.View
             }
         }
 
-        public int MinDaysReservation
+        public int? MinDaysReservation
         {
             get { return minDaysReservation; }
             set
@@ -111,17 +106,6 @@ namespace InitialProject.View
             }
         }
 
-        public int LeftCancelationDays
-        {
-            get { return leftCancelationDays; }
-            set
-            {
-                leftCancelationDays = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool apartment;
         public bool Apartment
         {
             get { return apartment; }
@@ -136,7 +120,20 @@ namespace InitialProject.View
             }
         }
 
-        private bool home;
+        public bool AllTypes
+        {
+            get { return allTypes; }
+            set
+            {
+                if (value != allTypes)
+                {
+                    allTypes = value;
+                    OnPropertyChanged(nameof(allTypes));
+                    if (value) Type = null;
+                }
+            }
+        }
+
         public bool Home
         {
             get { return home; }
@@ -151,7 +148,6 @@ namespace InitialProject.View
             }
         }
 
-        private bool hut;
         public bool Hut
         {
             get { return hut; }
@@ -179,24 +175,23 @@ namespace InitialProject.View
             }
         }
 
+        public ICommand SeeAvailabilityCommand { get; set; }
 
-        /*public bool IsValid { get; private set; } = false;
-
-        private void Validate()
+        private void AllowOnlyCharacters(object sender, TextCompositionEventArgs e)
         {
-            if (!string.IsNullOrEmpty(City) && string.IsNullOrEmpty(Country))
+            if (!char.IsLetter(e.Text, 0) && !char.IsWhiteSpace(e.Text, 0))
             {
-                IsValid = false;
+                e.Handled = true;
             }
-            else if (string.IsNullOrEmpty(City) && !string.IsNullOrEmpty(Country))
+        }
+
+        private void AllowOnlyDigits(object sender, TextCompositionEventArgs e)
+        {
+            if (!char.IsDigit(e.Text, 0))
             {
-                IsValid = false;
+                e.Handled = true;
             }
-            else
-            {
-                IsValid = true;
-            }
-        }*/
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -206,21 +201,33 @@ namespace InitialProject.View
         }
 
 
-        public SearchAndShowAccommodation()
+        public SearchAndShowAccommodations()
         {
             InitializeComponent();
             DataContext = this;
             accommodationRepository = new AccommodationRepository();
             Images = new List<string>();
+            SeeAvailabilityCommand = new RelayCommand<Accommodation>(SeeAvailability);
         }
 
 
         private void Search(object sender, RoutedEventArgs e)
         {
-            listAccommodations.ItemsSource = accommodationRepository.FindAll(AccommodationName, Country, City, Type, MaxGuests, MinDaysReservation);
+            if ((MaxGuests != null) && (MaxGuests == 0))
+            {
+                MessageBox.Show("You can't use zero as number of guests.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                ListAccommodations.ItemsSource = null;
+                return;
+            }
+
+            ListAccommodations.ItemsSource = accommodationRepository.FindAll(AccommodationName, Country, City, Type, MaxGuests, MinDaysReservation);
         }
 
-       
+        private void SeeAvailability(Accommodation accommodation)
+        {
+            AccommodationReservation window = new AccommodationReservation(accommodation);
+            window.Show();
+        }
     }
 
 }

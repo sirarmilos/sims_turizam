@@ -32,7 +32,7 @@ namespace InitialProject.View
 
         private void GoToSearchAndShowAccommodation(object sender, RoutedEventArgs e)
         {
-            SearchAndShowAccommodation window = new SearchAndShowAccommodation();
+            SearchAndShowAccommodations window = new SearchAndShowAccommodations();
             window.Show();
         }
 
@@ -46,6 +46,15 @@ namespace InitialProject.View
         {
             AddNewTour window = new AddNewTour();
             window.Show();
+        }
+
+        private void GoToRateGuests(object sender, RoutedEventArgs e)
+        {
+            RateGuests window = new RateGuests();
+            if (window.dgRateGuests.Items.Count > 0)
+            {
+                window.Show();
+            }
         }
     }
 }
