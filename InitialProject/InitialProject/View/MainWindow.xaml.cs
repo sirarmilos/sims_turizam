@@ -56,5 +56,11 @@ namespace InitialProject.View
                 window.Show();
             }
         }
+
+        private void GoToShowTourGuidences(object sender, RoutedEventArgs e)
+        {
+            ShowTourGuidences window = new ShowTourGuidences();
+            window.Show();
+        }
     }
 }

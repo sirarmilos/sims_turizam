@@ -15,6 +15,7 @@
                 <MenuItem Header="Add new tour" Click="GoToAddNewTour" />
                 <MenuItem Header="Search and show tours" Click="GoToSearchAndShowTours" />
                 <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
+                <MenuItem Header="Show tours for Guide" Click="GoToShowTourGuidences"/>
             </Menu>
             <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>

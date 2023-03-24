@@ -51,10 +51,5 @@ namespace InitialProject.Model
                 Latitude = Convert.ToDecimal(values[4]);
                 Longitude = Convert.ToDecimal(values[5]);
         }
-
-        /*public string ToString()
-        {
-            return Country + " " + City + " " + " " + Address;
-        }*/
     }
 }

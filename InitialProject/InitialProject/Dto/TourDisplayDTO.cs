@@ -26,7 +26,7 @@ namespace InitialProject.Dto
         {
             TourDisplayDTO dto = new TourDisplayDTO();
 
-            dto.TourName = tour.TourName;
+           /* dto.TourName = tour.TourName;
             dto.Location = tour.Location;
             dto.Description = tour.Description;
             dto.Language = tour.Language;
@@ -49,7 +49,7 @@ namespace InitialProject.Dto
             dto.TourDate = dto.TourDate.Remove(dto.TourDate.Length-1);
 
             dto.Duration = tour.Duration;
-            dto.Images = tour.Images;
+            dto.Images = tour.Images;*/
 
             return dto;
         }

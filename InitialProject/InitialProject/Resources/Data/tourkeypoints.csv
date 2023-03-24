@@ -1,4 +1,6 @@
-1|t1|1
-2|t2|2
-3|tacka3|4
-4|tacka7|5
+1|t1|1|1|False
+2|t2|2|1|False
+3|t3|3|1|False
+4|t1|1|2|False
+5|t2|2|2|False
+6|t3|3|2|False

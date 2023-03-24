@@ -46,7 +46,7 @@ namespace InitialProject.Repository
             tours = tourSerializer.FromCSV(FilePathTour);
 
             tourKeyPointsSerializer = new Serializer<TourKeyPoint>();
-            tourKeyPoints = tourKeyPointsSerializer.FromCSV(FilePathTourKeyPoints);
+            //tourKeyPoints = tourKeyPointsSerializer.FromCSV(FilePathTourKeyPoints);
 
             locationSerializer = new Serializer<Location>();
             locations = locationSerializer.FromCSV(FilePathLocation);
@@ -73,19 +73,6 @@ namespace InitialProject.Repository
             }
 
             return result;
-        }
-
-        public Tour GetById(int id)
-        {
-            foreach (Tour tour in tours)
-            {
-                if (id == tour.Id)
-                {
-                    return tour;
-                }
-            }
-
-            return null;
         }
 
         public bool CreateReservation(string username,Tour tour,int numberOfGuests)
@@ -252,11 +239,12 @@ namespace InitialProject.Repository
         }
 
 
-        public void Save(TourDto tourDto)
+        public Tour Save(TourDto tourDto)
         {
-            Tour tour = new Tour(NextIdTour(), tourDto.TourName, tourDto.TourLocation, tourDto.Description, tourDto.Languages, tourDto.MaxGuests, tourDto.TourKeyPoints, tourDto.TourDate, tourDto.Duration, tourDto.Images);
+            Tour tour = new Tour(NextIdTour(), tourDto.TourName, tourDto.TourLocation, tourDto.Description, tourDto.Languages, tourDto.MaxGuests, tourDto.Duration, tourDto.Images);
             tours.Add(tour);
             tourSerializer.ToCSV(FilePathTour, tours);
+            return tour;
         }
 
         public int NextIdTour()
@@ -288,6 +276,8 @@ namespace InitialProject.Repository
             }
             return tourKeyPoints.Max(c => c.Id) + 1;
         }
+
+        public Tour GetById(int id) => tours.FirstOrDefault(x => x.Id == id);
 
 
     }
