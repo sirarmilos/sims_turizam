@@ -37,7 +37,7 @@
         <TextBox HorizontalAlignment="Left" Margin="750,61,0,0" TextWrapping="Wrap" Text="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Margin="750,104,0,0" TextWrapping="Wrap" Text="{Binding Path=Country, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Margin="750,149,0,0" TextWrapping="Wrap" Text="{Binding Path=Duration, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
-        <ComboBox  x:Name="cblang" Text="All" SelectedValue="{Binding Path=Languagee, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="750,192,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox  x:Name="cblang" Text="All" SelectedItem="{Binding Languagee}"  HorizontalAlignment="Left" Margin="750,192,0,0" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Margin="750,239,0,0" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
         <Label Content="City" HorizontalAlignment="Left" Margin="749,35,0,0" VerticalAlignment="Top"/>
         <Label Content="Country" HorizontalAlignment="Left" Margin="750,84,0,0" VerticalAlignment="Top"/>

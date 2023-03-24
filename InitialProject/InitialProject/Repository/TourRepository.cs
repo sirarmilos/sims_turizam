@@ -106,6 +106,9 @@ namespace InitialProject.Repository
 
         public void UpdateTourFreeSlot(Tour reservatedTour,int numberOfGuests)
         {
+
+            List<Tour> result = tours;
+
             foreach(Tour tour in tours)
             {
                 if(tour.Equals(reservatedTour))
@@ -115,8 +118,24 @@ namespace InitialProject.Repository
                     break;
                 }
             }
+
         }
 
+        public List<Tour> UpdateDataGrid(Tour reservatedTour)
+        {
+            List<Tour> temp = SearchAndShow(reservatedTour.Location.City, reservatedTour.Location.Country, 0, Model.Language.ALL, 0);
+            List<Tour> result = new List<Tour>();
+
+            foreach(Tour tour in temp)
+            {
+                if(!tour.Equals(reservatedTour))
+                {
+                    result.Add(tour);
+                }
+            }
+
+            return result;
+        }
 
         public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Language language = 0,int numberOfGuests=0)
         {

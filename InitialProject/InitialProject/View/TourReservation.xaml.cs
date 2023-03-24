@@ -85,12 +85,12 @@ namespace InitialProject.View
                 }
                 else if(tour.FreeSlots > 0)
                 {
-                    MessageBox.Show("Za datu turu nema dovoljno mesta za rezervaciju. Preostalo je " + tour.FreeSlots.ToString() + "mesta.");
+                    MessageBox.Show("Za datu turu nema dovoljno mesta za rezervaciju. Preostalo je " + tour.FreeSlots.ToString() + " mesta.");
                 }
                 else
                 {
                     MessageBox.Show("Za izabranu turu nema mesta za dati broj osoba. Predlozene ture:");
-                    listTours.ItemsSource = tourRepository.SearchAndShow(tour.Location.City,tour.Location.Country,0,Model.Language.ALL,numberOfGuests);
+                    listTours.ItemsSource = tourRepository.UpdateDataGrid(tour);
                 }
             }
         }

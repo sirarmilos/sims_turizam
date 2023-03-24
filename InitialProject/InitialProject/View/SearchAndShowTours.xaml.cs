@@ -105,7 +105,7 @@ namespace InitialProject.View
             get { return language; }
             set
             {
-                language = Languagee;
+                language = value;
                 OnPropertyChanged(nameof(Languagee));
             }
         }
