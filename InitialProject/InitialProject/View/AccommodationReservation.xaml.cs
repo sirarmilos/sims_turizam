@@ -364,12 +364,6 @@ namespace InitialProject.View
 
         private void CreateReservation(object sender, RoutedEventArgs e)
         {
-            if (GuestsNumber > Accommodation.MaxGuests)
-            {
-                MessageBox.Show($"The number of guests couldn't be more than the maximum number of guests: {Accommodation.MaxGuests}. Try again.");
-                return;
-            }
-
             if (ReservationStartDatePicker.SelectedDate != null && ReservationEndDatePicker.SelectedDate != null)
             {
                 if (!IsCreateReservationInputValid()) return;
@@ -391,6 +385,12 @@ namespace InitialProject.View
             StartDate = ReservationStartDatePicker.SelectedDate.Value;
             EndDate = ReservationEndDatePicker.SelectedDate.Value;
 
+            if (GuestsNumber > Accommodation.MaxGuests)
+            {
+                MessageBox.Show($"The number of guests couldn't be more than the maximum number of guests: {Accommodation.MaxGuests}. Try again.");
+                return false;
+            }
+
             if ((FreeDateSlots == null) || (FreeDateSlots.Count == 0))
             {
                 MessageBox.Show($"Firstly you need to look up available dates. Try again.");
@@ -406,6 +406,12 @@ namespace InitialProject.View
             if (StartDate.AddDays(CalendarReservationDays) != EndDate)
             {
                 MessageBox.Show( $"Invalid input: The start date and end date are not suitable for the number of reservation days. Try again.");
+                return false;
+            }
+
+            if (GuestsNumber == 0)
+            {
+                MessageBox.Show($"Invalid number of guests. Try again.");
                 return false;
             }
 
