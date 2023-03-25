@@ -279,6 +279,40 @@ namespace InitialProject.Repository
 
         public Tour GetById(int id) => tours.FirstOrDefault(x => x.Id == id);
 
+        public List<TourDisplayDTO> GetToursForDisplay()
+        {
+            List<TourDisplayDTO> tourDisplayDTOs = new List<TourDisplayDTO>();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
+            foreach (var tour in tours)
+            {
+                TourDisplayDTO tourDisplay = new(tour.TourName, tour.Location, tour.Description, tour.Language, tour.MaxGuests, new List<TourKeyPoint>(), new List<DateTime>(), tour.Duration);
+                foreach(TourGuidence tourGuidence in tourGuidences)
+                {
+                    if(tourGuidence.Tour.Id == tour.Id)
+                    {
+                        tourDisplay.TourDate.Add(tourGuidence.StartTime);
+                    }
+                }
+                foreach(var tourKeyPoint in tourKeyPointRepository.GetAll())
+                {
+                    if(tourKeyPoint.TourGuidence.Tour.Id == tour.Id)
+                    {
+                        if(tourDisplay.TourKeyPoints.All(tkp=>tkp.KeyPointName!=tourKeyPoint.KeyPointName))
+                        {
+                            tourDisplay.TourKeyPoints.Add(tourKeyPoint);
+                        }
+                        
+                    }
+
+                }
+
+                tourDisplayDTOs.Add(tourDisplay);
+            }
+            return tourDisplayDTOs;               
+        }
+
 
     }
 }

@@ -48,6 +48,11 @@ namespace InitialProject.Repository
 
         public TourGuidence GetById(int id) => tourGuidences.FirstOrDefault(x => x.Id == id);
 
+        public List<TourGuidence> GetAll()
+        {
+            return tourGuidences;
+        }
+
         public void SaveToFile(TourGuidence t)
         {
             t.Id = NextIdTourGuidence();

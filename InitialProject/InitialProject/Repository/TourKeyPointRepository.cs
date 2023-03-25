@@ -49,6 +49,11 @@ namespace InitialProject.Repository
 
         public TourKeyPoint GetById(int id) => tourKeyPoints.FirstOrDefault(x => x.Id == id);
 
+        public List<TourKeyPoint> GetAll()
+        {
+            return tourKeyPoints;
+        }
+
         public void SaveKeyPoint(TourKeyPoint t)
         {
             tourKeyPoints.Add(t);

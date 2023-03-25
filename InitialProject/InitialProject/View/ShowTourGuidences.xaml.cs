@@ -29,6 +29,7 @@ namespace InitialProject.View
         private readonly TourGuidenceRepository tourGuidenceRepository;
 
 
+
         public ShowTourGuidences()
         {
             InitializeComponent();

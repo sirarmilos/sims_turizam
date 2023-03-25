@@ -8,19 +8,31 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Dto
 {
-    class TourDisplayDTO
+    public class TourDisplayDTO
     {
         public string TourName { get; set; }
         public Location Location { get; set; }
         public string Description { get; set; }
         public Language Language { get; set; }
         public int MaxGuests { get; set; }
-        public string TourKeyPoints { get; set; }
-        public string TourDate { get; set; }
+        public List<TourKeyPoint>? TourKeyPoints { get; set; }
+        public List<DateTime> TourDate { get; set; }
         public int Duration { get; set; }
-        public List<string> Images { get; set; }
+        //public List<string> Images { get; set; }
 
         public TourDisplayDTO() { }
+
+        public TourDisplayDTO(string tourName, Location location, string description, Language language, int maxGuests, List<TourKeyPoint> tourKeyPoints, List<DateTime> tourDate, int duration)
+        {
+            TourName = tourName;
+            Location = location;
+            Description = description;
+            Language = language;
+            MaxGuests = maxGuests;
+            TourKeyPoints = tourKeyPoints;
+            TourDate = tourDate;
+            Duration = duration;
+        }
 
         public TourDisplayDTO CreateDTO(Tour tour)
         {
