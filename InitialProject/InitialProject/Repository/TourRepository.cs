@@ -287,7 +287,7 @@ namespace InitialProject.Repository
             List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
             foreach (var tour in tours)
             {
-                TourDisplayDTO tourDisplay = new(tour.TourName, tour.Location, tour.Description, tour.Language, tour.MaxGuests, new List<TourKeyPoint>(), new List<DateTime>(), tour.Duration);
+                TourDisplayDTO tourDisplay = new(tour.TourName, tour.Location, tour.Description, tour.Language, tour.MaxGuests, new List<TourKeyPoint>(), new List<DateTime>(), tour.Duration, tour.Images);
                 foreach(TourGuidence tourGuidence in tourGuidences)
                 {
                     if(tourGuidence.Tour.Id == tour.Id)

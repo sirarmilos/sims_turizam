@@ -18,7 +18,7 @@
                 <DataGridTextColumn Header="Language" Binding="{Binding Language}"/>
                 <DataGridTextColumn Header="Maximum guests" Binding="{Binding MaxGuests}"/>
                 <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
-                <DataGridTemplateColumn Header="Column 3">
+                <DataGridTemplateColumn Header="Key Points">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding TourKeyPoints}">
@@ -31,7 +31,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Column 4">
+                <DataGridTemplateColumn Header="Start Date">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding TourDate}">
@@ -48,7 +48,7 @@
                 <!--<DataGridTextColumn Header="Key points" Binding="{Binding TourKeyPoints.KeyPointName}"/>
                 <DataGridTextColumn x:Name="datum" Header="Date" Binding="{Binding TourDate}"/>-->
                 
-                <!--<DataGridTemplateColumn Header="Images" Width="Auto">
+                <DataGridTemplateColumn Header="Images" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding Images}">
@@ -60,7 +60,7 @@
                             </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <TextBox HorizontalAlignment="Left" Margin="750,61,0,0" TextWrapping="Wrap" Text="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120"/>

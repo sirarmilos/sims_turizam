@@ -18,11 +18,11 @@ namespace InitialProject.Dto
         public List<TourKeyPoint>? TourKeyPoints { get; set; }
         public List<DateTime> TourDate { get; set; }
         public int Duration { get; set; }
-        //public List<string> Images { get; set; }
+        public List<string> Images { get; set; }
 
         public TourDisplayDTO() { }
 
-        public TourDisplayDTO(string tourName, Location location, string description, Language language, int maxGuests, List<TourKeyPoint> tourKeyPoints, List<DateTime> tourDate, int duration)
+        public TourDisplayDTO(string tourName, Location location, string description, Language language, int maxGuests, List<TourKeyPoint> tourKeyPoints, List<DateTime> tourDate, int duration, List<string> images)
         {
             TourName = tourName;
             Location = location;
@@ -32,6 +32,7 @@ namespace InitialProject.Dto
             TourKeyPoints = tourKeyPoints;
             TourDate = tourDate;
             Duration = duration;
+            Images = images;
         }
 
         public TourDisplayDTO CreateDTO(Tour tour)
