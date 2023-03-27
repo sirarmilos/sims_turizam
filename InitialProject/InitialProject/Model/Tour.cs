@@ -27,8 +27,6 @@ namespace InitialProject.Model
 
         public List<string> Images { get; set; }
 
-        public int FreeSlots { get; set; }
-    
         public Tour() { }
 
         public Tour(int id, string tourName, Location location, string description, Language languages, int maxGuests, int duration, List<string> images)
@@ -41,7 +39,6 @@ namespace InitialProject.Model
             MaxGuests = maxGuests;
             Duration = duration;
             Images = images;
-            FreeSlots = maxGuests;
         }
 
         public string[] ToCSV()
@@ -56,7 +53,7 @@ namespace InitialProject.Model
 
             imageToString = imageToString.Substring(0, imageToString.Length - 2);
 
-            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Language.ToString(), MaxGuests.ToString(), Duration.ToString(), imageToString, FreeSlots.ToString()};
+            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Language.ToString(), MaxGuests.ToString(), Duration.ToString(), imageToString};
             return csvValues;
         }
 
@@ -90,7 +87,6 @@ namespace InitialProject.Model
 
             Images = images;
 
-            FreeSlots = Convert.ToInt32(values[8]);
         } 
 
 

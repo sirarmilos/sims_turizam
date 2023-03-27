@@ -14,21 +14,21 @@ namespace InitialProject.Dto
         public Location Location { get; set; }
         public string Description { get; set; }
         public Language Language { get; set; }
-        public int MaxGuests { get; set; }
+        public int FreeSlots { get; set; }
         public List<TourKeyPoint>? TourKeyPoints { get; set; }
-        public List<DateTime> TourDate { get; set; }
+        public DateTime TourDate { get; set; }
         public int Duration { get; set; }
         public List<string> Images { get; set; }
 
         public TourDisplayDTO() { }
 
-        public TourDisplayDTO(string tourName, Location location, string description, Language language, int maxGuests, List<TourKeyPoint> tourKeyPoints, List<DateTime> tourDate, int duration, List<string> images)
+        public TourDisplayDTO(string tourName, Location location, string description, Language language, int maxGuests, List<TourKeyPoint> tourKeyPoints, DateTime tourDate, int duration, List<string> images)
         {
             TourName = tourName;
             Location = location;
             Description = description;
             Language = language;
-            MaxGuests = maxGuests;
+            FreeSlots = maxGuests;
             TourKeyPoints = tourKeyPoints;
             TourDate = tourDate;
             Duration = duration;

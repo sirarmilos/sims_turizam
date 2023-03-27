@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace InitialProject.Repository
 {
@@ -13,15 +14,27 @@ namespace InitialProject.Repository
     {
         private const string FilePathTourGuidence = "../../../Resources/Data/tourguidences.csv";
 
+        private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
+
         private readonly Serializer<TourGuidence> tourGuidenceSerializer;
 
+        private readonly Serializer<TourReservation> tourReservationSerializer;
+
         private List<TourGuidence> tourGuidences;
+
+        private List<TourReservation> tourReservations;
+
+
 
         public TourGuidenceRepository()
         {
             tourGuidenceSerializer = new Serializer<TourGuidence>();
             tourGuidences = tourGuidenceSerializer.FromCSV(FilePathTourGuidence);
+
+            tourReservationSerializer = new Serializer<TourReservation>();
+            tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
         }
+
         public TourGuidence Save(DateTime startTime)
         {
             TourGuidence tourGuidence = new(NextIdTourGuidence(), null, startTime, false, false, false);
@@ -123,6 +136,62 @@ namespace InitialProject.Repository
             }
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
         }
+
+        public TourGuidence GetByTourAndDate(Tour tour, DateTime date)
+        {
+            TourGuidence tourGuidence = new TourGuidence();
+
+            foreach(TourGuidence tourG in tourGuidences)
+            {
+                if(tour.Id == tourG.Tour.Id)
+                {
+                    if (DateTime.Compare(date, tourG.StartTime) == 0)
+                    {
+                        tourGuidence = tourG;
+                        break;
+                    }
+                }
+            }
+
+            return tourGuidence;
+        }
+
+        public bool CreateReservation(string username, TourGuidence tourGuidence, int numberOfGuests)
+        {
+            try
+            {
+                TourReservation reservation = new TourReservation(username,tourGuidence.Id,numberOfGuests);
+                tourReservations.Add(reservation);
+                tourReservationSerializer.ToCSV(FilePathReservatedTours,tourReservations);
+                UpdateTourGuidenceFreeSlot(tourGuidence,numberOfGuests);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void UpdateTourGuidenceFreeSlot(TourGuidence reservatedTourGuidence, int numberOfGuests)
+        {
+
+            List<TourGuidence> result = tourGuidences;
+
+            foreach (TourGuidence tourGuidence in tourGuidences)
+            {
+                if (tourGuidence.Equals(reservatedTourGuidence))
+                {
+                    tourGuidence.FreeSlots = tourGuidence.FreeSlots - numberOfGuests;
+                    tourGuidenceSerializer.ToCSV(FilePathTourGuidence, result);
+                    break;
+                }
+            }
+
+        }
+
+
+
+
 
     }
 }

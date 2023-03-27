@@ -30,11 +30,73 @@ namespace InitialProject.View
 
     public partial class SearchAndShowTours : Window
     {
-        //public static ObservableCollection<Tour> tours { get; set; }
 
         private readonly TourRepository tourRepository;
 
         public  List<TourDisplayDTO> tourDisplayDTOs {  get; set; }
+
+        private string city;
+        private string country;
+        private int duration;
+        private Language language;
+        private int maxGuests;
+
+
+
+        public string City
+        {
+            get { return city; }
+            set
+            {
+                city = value;
+                OnPropertyChanged(nameof(City));
+            }
+
+        }
+
+        public string Country
+        {
+            get { return country; }
+            set
+            {
+                country = value;
+                OnPropertyChanged(nameof(Country));
+            }
+
+        }
+
+        public int Duration
+        {
+            get { return duration; }
+            set
+            {
+                duration = value;
+                OnPropertyChanged(nameof(Duration));
+            }
+
+        }
+
+        public Language Languagee
+        {
+            get { return language; }
+            set
+            {
+                language = value;
+                OnPropertyChanged(nameof(Languagee));
+            }
+        }
+
+        public int MaxGuests
+        {
+            get { return maxGuests; }
+            set
+            {
+                maxGuests = value;
+                OnPropertyChanged(nameof(MaxGuests));
+            }
+        }
+
+
 
         public SearchAndShowTours()
         {
@@ -42,22 +104,10 @@ namespace InitialProject.View
             Initializecblang();
             DataContext = this;
             tourRepository = new TourRepository();
-            //Images = new List<string>();
 
-            //tours = tourRepository.SearchAndShow(City, Country, Duration, Languagee, MaxGuests);
-
-            //TourDisplayDTO tddto = new TourDisplayDTO();
             tourDisplayDTOs = new List<TourDisplayDTO>();
             tourDisplayDTOs = tourRepository.GetToursForDisplay();
-            
-            //tours = tourRepository.SearchAndShow();
 
-            /*foreach (Tour tour in tours)
-            {
-                toursDisplay.Add(tddto.CreateDTO(tour));
-            }*/
-
-            //listTours.ItemsSource = toursDisplayDTOs;
         }
 
 
@@ -76,20 +126,10 @@ namespace InitialProject.View
             cblang.SelectedIndex = 0;
         }
 
-        /*private void Search(object sender, RoutedEventArgs e)
+        private void SearchAndShow(object sender, RoutedEventArgs e)
         {
-            TourDisplayDTO tddto = new TourDisplayDTO();
-            List<TourDisplayDTO> toursDisplay = new List<TourDisplayDTO>();
-            tours = tourRepository.SearchAndShow(City, Country, Duration, Languagee, MaxGuests);
-
-
-            foreach(Tour tour in tours)
-            {
-                toursDisplay.Add(tddto.CreateDTO(tour));
-            }
-
-            listTours.ItemsSource = toursDisplay;
-     
+            tourDisplayDTOs = tourRepository.SearchAndShow(City,Country,Duration,Languagee,MaxGuests);
+            listTours.ItemsSource = tourDisplayDTOs;
         }
 
         private void CreateReservation(object sender, RoutedEventArgs e)
@@ -104,13 +144,13 @@ namespace InitialProject.View
                 {
                     TourDisplayDTO tour = new TourDisplayDTO();
                     tour = (TourDisplayDTO)listTours.SelectedItems[0];
-                    TourReservation tourReservation = new TourReservation(tour.TourName);
+                    TourReservation tourReservation = new TourReservation(tour);
                     tourReservation.Show();
                 }
             }
             catch
             { }
-        }*/
+        }
     }
 
     

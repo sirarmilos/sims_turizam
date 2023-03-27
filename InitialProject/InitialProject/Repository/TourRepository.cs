@@ -24,6 +24,7 @@ namespace InitialProject.Repository
 
         private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
 
+
         private readonly Serializer<Tour> tourSerializer;
        
         private readonly Serializer<TourKeyPoint> tourKeyPointsSerializer;
@@ -32,6 +33,7 @@ namespace InitialProject.Repository
 
         private readonly Serializer<TourReservation> tourReservationSerializer;
 
+
         private List<Tour> tours;
 
         private List<TourKeyPoint> tourKeyPoints;
@@ -39,6 +41,8 @@ namespace InitialProject.Repository
         private List<Location> locations;
 
         private List<TourReservation> tourReservations;
+
+
 
         public TourRepository()
         {
@@ -51,8 +55,7 @@ namespace InitialProject.Repository
             locationSerializer = new Serializer<Location>();
             locations = locationSerializer.FromCSV(FilePathLocation);
 
-            tourReservationSerializer = new Serializer<TourReservation>();
-            tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
+
         }
 
         public List<Tour> Load()
@@ -60,14 +63,14 @@ namespace InitialProject.Repository
             return tours;
         }
 
-        public List<Tour> GetByName(string id)
+        public Tour GetByName(string id)
         {
-            List<Tour> result = new List<Tour>();
+            Tour result = new Tour();
             foreach(Tour tour in tours)
             {
                 if(id.Equals(tour.TourName))
                 {
-                    result.Add(tour);
+                    result = tour;
                     break;
                 }
             }
@@ -75,14 +78,56 @@ namespace InitialProject.Repository
             return result;
         }
 
-        public bool CreateReservation(string username,Tour tour,int numberOfGuests)
+        public List<TourDisplayDTO> GetToursForDisplay()
+        {
+            List<TourDisplayDTO> tourDisplayDTOs = new List<TourDisplayDTO>();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
+
+
+            foreach(TourGuidence tourGuidence in tourGuidences)
+            {
+                TourDisplayDTO tourDisplayDTO = new TourDisplayDTO();
+
+                tourDisplayDTO.TourName = tourGuidence.Tour.TourName;
+                tourDisplayDTO.Location = tourGuidence.Tour.Location;
+                tourDisplayDTO.Description = tourGuidence.Tour.Description;
+                tourDisplayDTO.Language = tourGuidence.Tour.Language;
+                tourDisplayDTO.FreeSlots = tourGuidence.FreeSlots;
+                tourDisplayDTO.TourDate = tourGuidence.StartTime;
+
+                tourDisplayDTO.TourKeyPoints = new List<TourKeyPoint>();
+
+                foreach (TourKeyPoint tourKeyPoint in tourKeyPointRepository.GetAll())
+                {
+                    if(tourKeyPoint.TourGuidence.Id == tourGuidence.Id)
+                    {
+                        tourDisplayDTO.TourKeyPoints.Add(tourKeyPoint);
+                    }
+                }
+
+                tourDisplayDTO.Duration = tourGuidence.Tour.Duration;
+                tourDisplayDTO.Images = tourGuidence.Tour.Images;
+
+
+
+                if(tourDisplayDTO.FreeSlots>0)
+                    tourDisplayDTOs.Add(tourDisplayDTO);
+
+            }
+
+            return tourDisplayDTOs;
+        }
+
+        public bool CreateReservation(string username,TourGuidence tourGuidence,int numberOfGuests)
         {
             try
             {
-                TourReservation reservatedTour = new TourReservation(username,tour.Id,numberOfGuests);
+                TourReservation reservatedTour = new TourReservation(username,tourGuidence.Id,numberOfGuests);
                 tourReservations.Add(reservatedTour);
                 tourReservationSerializer.ToCSV(FilePathReservatedTours, tourReservations);
-                UpdateTourFreeSlot(tour,numberOfGuests);
+                //UpdateTourFreeSlot(tour,numberOfGuests);
                 return true;
             }
             catch
@@ -91,96 +136,63 @@ namespace InitialProject.Repository
             }
         }
 
-        public void UpdateTourFreeSlot(Tour reservatedTour,int numberOfGuests)
+
+        public List<TourDisplayDTO> SearchAndShow(string city=null,string country=null,int duration=0,Language language = 0,int numberOfGuests=0)
         {
+            List<TourDisplayDTO> sameCity = new List<TourDisplayDTO>();
+            List<TourDisplayDTO> sameCountry = new List<TourDisplayDTO>();
+            List<TourDisplayDTO> longerDuration = new List<TourDisplayDTO>();
+            List<TourDisplayDTO> sameLanguage = new List<TourDisplayDTO>();
+            List<TourDisplayDTO> moreGuests = new List<TourDisplayDTO>();
 
-            List<Tour> result = tours;
+            List<TourDisplayDTO> displayedTours = GetToursForDisplay();
 
-            foreach(Tour tour in tours)
-            {
-                if(tour.Equals(reservatedTour))
-                {
-                    tour.FreeSlots = tour.FreeSlots - numberOfGuests;
-                    tourSerializer.ToCSV(FilePathTour, tours);
-                    break;
-                }
-            }
+            sameCity = CheckSamCity(city, sameCity, displayedTours);
+            sameCountry = CheckSameCountry(country, sameCountry, displayedTours);
+            longerDuration = CheckLongerDuration(duration, longerDuration, displayedTours);
+            sameLanguage = CheckSameLanguage(language, sameLanguage, displayedTours);
+            moreGuests = CheckFreeSlots(numberOfGuests, moreGuests, displayedTours);
+
+            List<TourDisplayDTO> result = GetIntersections(sameCity, sameCountry, longerDuration, sameLanguage, moreGuests);
+
+            return result;
 
         }
 
-        public List<Tour> UpdateDataGrid(Tour reservatedTour)
+        private List<TourDisplayDTO> GetIntersections(List<TourDisplayDTO> sameCity, List<TourDisplayDTO> sameCountry, List<TourDisplayDTO> longerDuration, List<TourDisplayDTO> sameLanguage, List<TourDisplayDTO> moreGuests)
         {
-            List<Tour> temp = SearchAndShow(reservatedTour.Location.City, reservatedTour.Location.Country, 0, Model.Language.ALL, 0);
-            List<Tour> result = new List<Tour>();
-
-            foreach(Tour tour in temp)
-            {
-                if(!tour.Equals(reservatedTour))
-                {
-                    result.Add(tour);
-                }
-            }
-
+            List<TourDisplayDTO> result = sameTours(sameCity, sameCountry);
+            result = sameTours(result, longerDuration);
+            result = sameTours(result, sameLanguage);
+            result = sameTours(result, moreGuests);
             return result;
         }
 
-        public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Language language = 0,int numberOfGuests=0)
+        private static List<TourDisplayDTO> CheckFreeSlots(int numberOfGuests, List<TourDisplayDTO> moreGuests, List<TourDisplayDTO> displayedTours)
         {
-            List<Tour> sameCity = new List<Tour>();
-            List<Tour> sameCountry = new List<Tour>();
-            List<Tour> longerDuration = new List<Tour>();
-            List<Tour> sameLanguage = new List<Tour>();
-            List<Tour> moreGuests = new List<Tour>();
-
-
-            if (!string.IsNullOrEmpty(city))
+            if (numberOfGuests >= 0)
             {
-                foreach (Tour tour in tours)
+                foreach (TourDisplayDTO tour in displayedTours)
                 {
-                    if (tour.Location.City.ToLower().StartsWith(city.ToLower()))
+                    if (tour.FreeSlots >= numberOfGuests)
                     {
-                        sameCity.Add(tour);
+                        moreGuests.Add(tour);
                     }
                 }
             }
             else
             {
-                sameCity = tours;
+                moreGuests = displayedTours;
             }
 
-            if (!string.IsNullOrEmpty(country))
-            {
-                foreach(Tour tour in tours)
-                {
-                    if(tour.Location.Country.ToLower().StartsWith(country.ToLower()))
-                    {
-                        sameCountry.Add(tour);
-                    }
-                }
-            }
-            else
-            {
-                sameCountry = tours;
-            }
+            return moreGuests;
+        }
 
-            if (duration >= 0)
-            {
-                foreach (Tour tour in tours)
-                {
-                    if (tour.Duration >= duration)
-                    {
-                        longerDuration.Add(tour);
-                    }
-                }
-            }
-            else
-            {
-                longerDuration = tours;
-            }
-
+        private static List<TourDisplayDTO> CheckSameLanguage(Language language, List<TourDisplayDTO> sameLanguage, List<TourDisplayDTO> displayedTours)
+        {
             if (language >= 0)
             {
-                foreach (Tour tour in tours)
+                foreach (TourDisplayDTO tour in displayedTours)
                 {
                     if (tour.Language == language)
                     {
@@ -190,43 +202,79 @@ namespace InitialProject.Repository
             }
             else
             {
-                sameLanguage = tours;
+                sameLanguage = displayedTours;
             }
 
+            return sameLanguage;
+        }
 
-            if (numberOfGuests >= 0)
+        private static List<TourDisplayDTO> CheckLongerDuration(int duration, List<TourDisplayDTO> longerDuration, List<TourDisplayDTO> displayedTours)
+        {
+            if (duration >= 0)
             {
-                foreach(Tour tour in tours)
+                foreach (TourDisplayDTO tour in displayedTours)
                 {
-                    if(tour.MaxGuests >= numberOfGuests)
+                    if (tour.Duration >= duration)
                     {
-                        moreGuests.Add(tour);
+                        longerDuration.Add(tour);
                     }
                 }
             }
             else
             {
-                moreGuests = tours; 
+                longerDuration = displayedTours;
             }
 
-
-            List<Tour> result = sameTours(sameCity,sameCountry);
-            result = sameTours(result,longerDuration);
-            result = sameTours(result, sameLanguage);
-            result = sameTours(result,moreGuests);
-
-
-            return result;
-            
+            return longerDuration;
         }
 
-        public List<Tour> sameTours(List<Tour> list1,List<Tour> list2)
+        private static List<TourDisplayDTO> CheckSamCity(string city, List<TourDisplayDTO> sameCity, List<TourDisplayDTO> displayedTours)
         {
-            List<Tour> result = new List<Tour>();
-
-            foreach (Tour tour1 in list1)
+            if (!string.IsNullOrEmpty(city))
             {
-                foreach ( Tour tour2 in list2 )
+                foreach (TourDisplayDTO tour in displayedTours)
+                {
+                    if (tour.Location.City.ToLower().StartsWith(city.ToLower()))
+                    {
+                        sameCity.Add(tour);
+                    }
+                }
+            }
+            else
+            {
+                sameCity = displayedTours;
+            }
+
+            return sameCity;
+        }
+
+        private static List<TourDisplayDTO> CheckSameCountry(string country, List<TourDisplayDTO> sameCountry, List<TourDisplayDTO> displayedTours)
+        {
+            if (!string.IsNullOrEmpty(country))
+            {
+                foreach (TourDisplayDTO tour in displayedTours)
+                {
+                    if (tour.Location.Country.ToLower().StartsWith(country.ToLower()))
+                    {
+                        sameCountry.Add(tour);
+                    }
+                }
+            }
+            else
+            {
+                sameCountry = displayedTours;
+            }
+
+            return sameCountry;
+        }
+
+        public List<TourDisplayDTO> sameTours(List<TourDisplayDTO> list1,List<TourDisplayDTO> list2)
+        {
+            List<TourDisplayDTO> result = new List<TourDisplayDTO>();
+
+            foreach (TourDisplayDTO tour1 in list1)
+            {
+                foreach ( TourDisplayDTO tour2 in list2 )
                 {
                     if(tour1.Equals(tour2))
                     { 
@@ -279,39 +327,6 @@ namespace InitialProject.Repository
 
         public Tour GetById(int id) => tours.FirstOrDefault(x => x.Id == id);
 
-        public List<TourDisplayDTO> GetToursForDisplay()
-        {
-            List<TourDisplayDTO> tourDisplayDTOs = new List<TourDisplayDTO>();
-            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
-            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
-            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
-            foreach (var tour in tours)
-            {
-                TourDisplayDTO tourDisplay = new(tour.TourName, tour.Location, tour.Description, tour.Language, tour.MaxGuests, new List<TourKeyPoint>(), new List<DateTime>(), tour.Duration, tour.Images);
-                foreach(TourGuidence tourGuidence in tourGuidences)
-                {
-                    if(tourGuidence.Tour.Id == tour.Id)
-                    {
-                        tourDisplay.TourDate.Add(tourGuidence.StartTime);
-                    }
-                }
-                foreach(var tourKeyPoint in tourKeyPointRepository.GetAll())
-                {
-                    if(tourKeyPoint.TourGuidence.Tour.Id == tour.Id)
-                    {
-                        if(tourDisplay.TourKeyPoints.All(tkp=>tkp.KeyPointName!=tourKeyPoint.KeyPointName))
-                        {
-                            tourDisplay.TourKeyPoints.Add(tourKeyPoint);
-                        }
-                        
-                    }
-
-                }
-
-                tourDisplayDTOs.Add(tourDisplay);
-            }
-            return tourDisplayDTOs;               
-        }
 
 
     }

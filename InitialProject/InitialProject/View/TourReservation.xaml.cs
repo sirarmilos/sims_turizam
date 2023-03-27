@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,9 +28,11 @@ namespace InitialProject.View
 
     public partial class TourReservation : Window
     {
-        public static ObservableCollection<Tour> Tours { get; set; }
+        public List<TourDisplayDTO> Tours = new List<TourDisplayDTO>();
 
         private readonly TourRepository tourRepository = new TourRepository();
+
+        private readonly TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
 
         private string TourId { get; set; }
 
@@ -57,13 +60,14 @@ namespace InitialProject.View
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public TourReservation(string tourId)
+         
+        public TourReservation(TourDisplayDTO tour)
         {
             InitializeComponent();
-            TourId = tourId;
-            Tours  = new ObservableCollection<Tour>(tourRepository.GetByName(TourId));
+            Tours.Add(tour);
             listTours.ItemsSource = Tours;
         }
+
 
         private void CreateReservation(object sender, RoutedEventArgs e)
         {
@@ -71,28 +75,40 @@ namespace InitialProject.View
 
             if (listTours.SelectedItems.Count != 1)
             {
-                MessageBox.Show("Morate da odaberete turu koju zelite da rezervisete!");
+                MessageBox.Show("Morate da odaberete turu i datum koje zelite da rezervisete!");
             }
             else
             {
-                Tour tour = new Tour();
-                tour = (Tour)listTours.SelectedItems[0];
+                TourDisplayDTO tourDisplayDTO = (TourDisplayDTO)listTours.SelectedItems[0];
+                DateTime dateTime = tourDisplayDTO.TourDate;
+                Tour tour = tourRepository.GetByName(tourDisplayDTO.TourName);
+                TourGuidence tourGuidence = tourGuidenceRepository.GetByTourAndDate(tour,dateTime);
 
-                if (numberOfGuests <= tour.FreeSlots)
+                if(numberOfGuests<=tourGuidence.FreeSlots)
                 {
-                    tourRepository.CreateReservation("korisnik1", tour, numberOfGuests);
-                    MessageBox.Show("Uspesna rezervacija ture!");
+                    if (tourGuidenceRepository.CreateReservation("korisnik1", tourGuidence, numberOfGuests))
+                        MessageBox.Show("Uspesna rezervacija ture!");
+                    else
+                        MessageBox.Show("Greska prilikom kreiranja rezervacije!");
                 }
-                else if(tour.FreeSlots > 0)
+
+                else if (tourGuidence.FreeSlots > 0)
                 {
-                    MessageBox.Show("Za datu turu nema dovoljno mesta za rezervaciju. Preostalo je " + tour.FreeSlots.ToString() + " mesta.");
+                    MessageBox.Show("Za datu turu nema dovoljno mesta za rezervaciju. Preostalo je " + tourGuidence.FreeSlots.ToString() + " mesta.");
                 }
-                else
+                else if(tourGuidence.FreeSlots == 0)
                 {
-                    MessageBox.Show("Za izabranu turu nema mesta za dati broj osoba. Predlozene ture:");
-                    listTours.ItemsSource = tourRepository.UpdateDataGrid(tour);
+                    MessageBox.Show("Za datu turu nema vise mesta. Predlozene ture u istom gradu:");
+                    listTours.ItemsSource = tourRepository.SearchAndShow(tourGuidence.Tour.Location.City, tourGuidence.Tour.Location.Country, 0, Model.Language.ALL, 0);
                 }
+
             }
         }
+
+        private void listTours_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
     }
 }

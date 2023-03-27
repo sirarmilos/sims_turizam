@@ -12,7 +12,7 @@ namespace InitialProject.Model
     public class TourReservation : ISerializable
     {
         private string userId { get; set; }
-        private int reservatedTourId { get; set; }
+        private int tourGuidenceId { get; set; }
         private int numberOfGuests { get; set; }
 
         public TourReservation() { }
@@ -20,13 +20,13 @@ namespace InitialProject.Model
         public TourReservation(string userId, int reservatedTourId, int numberOfGuests)
         {
             this.userId = userId;
-            this.reservatedTourId = reservatedTourId;
+            this.tourGuidenceId = reservatedTourId;
             this.numberOfGuests = numberOfGuests;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { userId.ToString(), reservatedTourId.ToString(), numberOfGuests.ToString() };
+            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), numberOfGuests.ToString() };
             return csvValues;
         }
 
@@ -34,7 +34,7 @@ namespace InitialProject.Model
         {
             userId = values[0];
 
-            reservatedTourId = Convert.ToInt32(values[1]);
+            tourGuidenceId = Convert.ToInt32(values[1]);
 
             numberOfGuests = Convert.ToInt32(values[2]);
         }

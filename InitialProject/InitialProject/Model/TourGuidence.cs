@@ -20,6 +20,8 @@ namespace InitialProject.Model
         public Boolean Finished { get; set; }
         public Boolean Cancelled { get; set; }
 
+        public int FreeSlots { get; set; }
+
         public TourGuidence() { }
 
         public TourGuidence(int id, Tour tour, DateTime startTime, Boolean started, Boolean finished, Boolean cancelled)
@@ -30,11 +32,12 @@ namespace InitialProject.Model
             Started = started;
             Finished = finished;
             Cancelled = cancelled;
+            FreeSlots = tour.MaxGuests;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Tour.Id.ToString(), StartTime.ToString(), Started.ToString(), Finished.ToString(), Cancelled.ToString() };
+            string[] csvValues = { Id.ToString(), Tour.Id.ToString(), StartTime.ToString(), Started.ToString(), Finished.ToString(), Cancelled.ToString(), FreeSlots.ToString() };
             return csvValues;
         }
 
@@ -50,6 +53,7 @@ namespace InitialProject.Model
             Started = Convert.ToBoolean(values[3]);
             Finished = Convert.ToBoolean(values[4]);
             Cancelled = Convert.ToBoolean(values[5]);
+            FreeSlots = Convert.ToInt32(values[6]);
         }
     }
 }

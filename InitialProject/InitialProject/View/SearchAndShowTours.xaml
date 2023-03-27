@@ -16,9 +16,10 @@
                 <DataGridTextColumn Header="State" Binding="{Binding Location.Country}"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Language" Binding="{Binding Language}"/>
-                <DataGridTextColumn Header="Maximum guests" Binding="{Binding MaxGuests}"/>
+                <DataGridTextColumn Header="Free slots" Binding="{Binding FreeSlots}"/>
                 <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
-                <DataGridTemplateColumn Header="Key Points">
+                <DataGridTextColumn Header="Date" Binding="{Binding TourDate}"/>
+                <!--"<DataGridTemplateColumn Header="Key Points">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding TourKeyPoints}">
@@ -43,11 +44,11 @@
                             </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
 
                 <!--<DataGridTextColumn Header="Key points" Binding="{Binding TourKeyPoints.KeyPointName}"/>
                 <DataGridTextColumn x:Name="datum" Header="Date" Binding="{Binding TourDate}"/>-->
-                
+
                 <DataGridTemplateColumn Header="Images" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -73,7 +74,8 @@
         <Label Content="Duration" HorizontalAlignment="Left" Margin="751,127,0,0" VerticalAlignment="Top"/>
         <Label Content="Language" HorizontalAlignment="Left" Margin="748,172,0,0" VerticalAlignment="Top"/>
         <Label Content="Number of people" HorizontalAlignment="Left" Margin="744,219,0,0" VerticalAlignment="Top"/>
-        <!--<Button Content="Create reservation" HorizontalAlignment="Left" Margin="755,354,0,0" VerticalAlignment="Top" Height="53" Width="115" Click="CreateReservation"/>-->
+        <Button Content="Search" HorizontalAlignment="Left" Margin="752,282,0,0" VerticalAlignment="Top" Height="57" Width="118" Click="SearchAndShow"/>
+        <Button Content="Create reservation" HorizontalAlignment="Left" Margin="755,354,0,0" VerticalAlignment="Top" Height="53" Width="115" Click="CreateReservation"/>
 
     </Grid>
 
