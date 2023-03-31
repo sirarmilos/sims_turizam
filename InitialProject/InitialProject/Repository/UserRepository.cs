@@ -1,28 +1,78 @@
 ﻿using InitialProject.Model;
 using InitialProject.Serializer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    public class UserRepository
+    class UserRepository
     {
-        private const string FilePath = "../../../Resources/Data/users.csv";
+        private const string FilePathUser = "../../../Resources/Data/users.csv";
 
-        private readonly Serializer<User> _serializer;
+        private readonly Serializer<User> userSerializer;
 
-        private List<User> _users;
+        private List<User> users;
 
         public UserRepository()
         {
-            _serializer = new Serializer<User>();
-            _users = _serializer.FromCSV(FilePath);
+            userSerializer = new Serializer<User>();
+            users = userSerializer.FromCSV(FilePathUser);
         }
 
-        public User GetByUsername(string username)
+        public string LoginUser(string username, string password)
         {
-            _users = _serializer.FromCSV(FilePath);
-            return _users.FirstOrDefault(u => u.Username == username);
+            User user = new User();
+            if (IsUserExist(username) == false)
+            {
+                return "Greska";
+            }
+
+            user = IsPasswordCorect(username, password);
+
+            if (user == null)
+            {
+                return "Greska";
+            }
+            else
+            {
+                return user.Type;
+            }
         }
+
+        private bool IsUserExist(string username)
+        {
+            foreach (User temporaryUser in users)
+            {
+                if (temporaryUser.Username.Equals(username) == true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private User IsPasswordCorect(string username, string password)
+        {
+            foreach (User temporaryUser in users)
+            {
+                if (temporaryUser.Username.Equals(username) == true)
+                {
+                    if (temporaryUser.Password.Equals(password) == true)
+                    {
+                        return temporaryUser;
+                    }
+
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+
     }
 }
