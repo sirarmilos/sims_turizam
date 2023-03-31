@@ -22,6 +22,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Confirm" HorizontalAlignment="Left" Margin="669,152,0,0" VerticalAlignment="Top" Height="61" Width="82" Click="SaveCheckedKeyPoints"/>
+        <Button Content="Mark Guests" HorizontalAlignment="Left" Margin="669,93,0,0" VerticalAlignment="Top" Height="39" Width="82" Click="MarkPresentGuests"/>
 
     </Grid>
 </Window>

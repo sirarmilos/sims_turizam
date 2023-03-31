@@ -124,7 +124,7 @@ namespace InitialProject.Repository
         {
             try
             {
-                TourReservation reservatedTour = new TourReservation(username,tourGuidence.Id,numberOfGuests);
+                TourReservation reservatedTour = new TourReservation(username,tourGuidence.Id,0, numberOfGuests, false);
                 tourReservations.Add(reservatedTour);
                 tourReservationSerializer.ToCSV(FilePathReservatedTours, tourReservations);
                 //UpdateTourFreeSlot(tour,numberOfGuests);

@@ -11,22 +11,26 @@ namespace InitialProject.Model
 {
     public class TourReservation : ISerializable
     {
-        private string userId { get; set; }
-        private int tourGuidenceId { get; set; }
-        private int numberOfGuests { get; set; }
+        public string userId { get; set; }
+        public int tourGuidenceId { get; set; }
+        public int TourKeyPointArrivalId { get; set; }
+        public int numberOfGuests { get; set; }
+        public Boolean Confirmed { get; set; }
 
         public TourReservation() { }
 
-        public TourReservation(string userId, int reservatedTourId, int numberOfGuests)
+        public TourReservation(string userId, int reservatedTourId, int arrivalTourKeyPointId, int numberOfGuests, Boolean confirmed)
         {
             this.userId = userId;
             this.tourGuidenceId = reservatedTourId;
+            TourKeyPointArrivalId = arrivalTourKeyPointId;
             this.numberOfGuests = numberOfGuests;
+            Confirmed = confirmed;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), numberOfGuests.ToString() };
+            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), TourKeyPointArrivalId.ToString(), numberOfGuests.ToString(), Confirmed.ToString() };
             return csvValues;
         }
 
@@ -36,7 +40,11 @@ namespace InitialProject.Model
 
             tourGuidenceId = Convert.ToInt32(values[1]);
 
-            numberOfGuests = Convert.ToInt32(values[2]);
+            TourKeyPointArrivalId = Convert.ToInt32(values[2]); 
+
+            numberOfGuests = Convert.ToInt32(values[3]);
+
+            Confirmed = Convert.ToBoolean(values[4]);
         }
 
 

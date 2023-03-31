@@ -137,6 +137,8 @@ namespace InitialProject.Repository
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
         }
 
+
+
         public TourGuidence GetByTourAndDate(Tour tour, DateTime date)
         {
             TourGuidence tourGuidence = new TourGuidence();
@@ -160,7 +162,7 @@ namespace InitialProject.Repository
         {
             try
             {
-                TourReservation reservation = new TourReservation(username,tourGuidence.Id,numberOfGuests);
+                TourReservation reservation = new TourReservation(username,tourGuidence.Id, 0, numberOfGuests, false);
                 tourReservations.Add(reservation);
                 tourReservationSerializer.ToCSV(FilePathReservatedTours,tourReservations);
                 UpdateTourGuidenceFreeSlot(tourGuidence,numberOfGuests);

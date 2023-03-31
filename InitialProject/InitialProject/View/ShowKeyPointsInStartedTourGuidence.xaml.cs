@@ -27,6 +27,8 @@ namespace InitialProject.View
         private readonly TourGuidenceRepository tourGuidenceRepository;
         public static ObservableCollection<TourKeyPoint> tourKeyPoints { get; set; }
 
+        private int GuidenceId;
+
         public ShowKeyPointsInStartedTourGuidence(int tourGuidenceId)
         {
             InitializeComponent();
@@ -35,6 +37,7 @@ namespace InitialProject.View
             tourGuidenceRepository = new TourGuidenceRepository();
             tourKeyPoints = new ObservableCollection<TourKeyPoint>(tourKeyPointRepository.Load(tourGuidenceId));
             tourKeyPoints[0].Passed = true;
+            GuidenceId = tourGuidenceId;
         }
 
         private void SaveCheckedKeyPoints(object sender, RoutedEventArgs e)
@@ -45,6 +48,14 @@ namespace InitialProject.View
                 tourGuidenceRepository.UpdateFinishedField(tourKeyPoints[0].TourGuidence.Id);
             }
             this.Close();
+        }
+
+        private void MarkPresentGuests(object sender, RoutedEventArgs e)
+        {
+
+            ShowGuestOnTourGuidence window = new ShowGuestOnTourGuidence(GuidenceId);
+            window.Show();
+
         }
     }
 }
