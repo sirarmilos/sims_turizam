@@ -10,6 +10,7 @@
         <DockPanel>
             <Menu DockPanel.Dock ="Top">
                 <MenuItem Header="Add new tour" Click="GoToAddNewTour" />
+                <MenuItem Header="Show tours for guide" Click="GoToShowTourGuidences" />
             </Menu>
             <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>

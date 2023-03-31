@@ -29,5 +29,11 @@ namespace InitialProject.View
             AddNewTour window = new AddNewTour();
             window.Show();
         }
+
+        private void GoToShowTourGuidences(object sender, RoutedEventArgs e)
+        {
+            ShowTourGuidences window = new ShowTourGuidences();
+            window.Show();
+        }
     }
 }
