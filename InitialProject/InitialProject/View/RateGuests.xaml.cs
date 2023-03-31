@@ -353,18 +353,7 @@ namespace InitialProject.View
 
         private void SaveRateGuest(object sender, RoutedEventArgs e)
         {
-            Reservation reservation = new Reservation();
-
-            foreach (Reservation temporaryReservation in Reservations)
-            {
-                if(temporaryReservation.ReservationId.Equals(SelectedGuest.ReservationId) == true)
-                {
-                    reservation = temporaryReservation;
-                    break;
-                }
-            }
-
-            rateGuestRepository.Save(reservation, Cleanliness, FollowRules, Behavior, TypePayment, Communicativeness, Comment);
+            rateGuestRepository.Save(FindReservationRateGuests(), Cleanliness, FollowRules, Behavior, TypePayment, Communicativeness, Comment);
 
             RateGuestsDTOs.Remove(SelectedGuest);
 
@@ -385,6 +374,22 @@ namespace InitialProject.View
                 MessageBox.Show("All guests are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
+        }
+
+        private Reservation FindReservationRateGuests()
+        {
+            Reservation reservation = new Reservation();
+
+            foreach (Reservation temporaryReservation in Reservations)
+            {
+                if (temporaryReservation.ReservationId.Equals(SelectedGuest.ReservationId) == true)
+                {
+                    reservation = temporaryReservation;
+                    break;
+                }
+            }
+
+            return reservation;
         }
 
         private void CancelSelection(object sender, RoutedEventArgs e)
