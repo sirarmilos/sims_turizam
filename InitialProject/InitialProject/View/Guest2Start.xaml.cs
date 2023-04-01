@@ -29,5 +29,11 @@ namespace InitialProject.View
             SearchAndShowTours window = new SearchAndShowTours();
             window.Show();
         }
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
     }
 }
