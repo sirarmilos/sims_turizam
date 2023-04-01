@@ -30,6 +30,7 @@ namespace InitialProject.View
         private string username;
         private string password;
         private string type;
+        private string superType;
 
         public string Username
         {
@@ -60,6 +61,15 @@ namespace InitialProject.View
             }
         }
 
+        public string SuperType
+        {
+            get { return superType; }
+            set
+            {
+                superType = value;
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -87,7 +97,7 @@ namespace InitialProject.View
             {
                 if(temporaryType.Equals("owner") == true)
                 {
-                    OwnerStart window = new OwnerStart();
+                    OwnerStart window = new OwnerStart(Username);
                     window.Show();
                     Close();
                 }

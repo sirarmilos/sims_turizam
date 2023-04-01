@@ -35,6 +35,17 @@ namespace InitialProject.View
 
         private RateGuestsDTO selectedGuest;
 
+        private string owner;
+
+        public string Owner
+        {
+            get { return owner; }
+            set
+            {
+                owner = value;
+            }
+        }
+
         private int cleanliness;
         private int followRules;
         private int behavior;
@@ -171,9 +182,10 @@ namespace InitialProject.View
             }
         }
 
-        public RateGuests()
+        public RateGuests(string owner)
         {
             InitializeComponent();
+            Owner = owner;
             DataContext = this;
             reservationRepository = new ReservationRepository();
             rateGuestRepository = new RateGuestRepository();
@@ -209,12 +221,15 @@ namespace InitialProject.View
             {
                 int indicator = 0;
 
-                foreach (RateGuest temporaryRateGuests in RateTheGuests)
+                if(temporaryReservation.Accommodation.OwnerUsername.Equals(Owner) == true)
                 {
-                    if (temporaryReservation.ReservationId.Equals(temporaryRateGuests.Reservation.ReservationId))
+                    foreach (RateGuest temporaryRateGuests in RateTheGuests)
                     {
-                        indicator = 1;
-                        break;
+                        if (temporaryReservation.ReservationId.Equals(temporaryRateGuests.Reservation.ReservationId))
+                        {
+                            indicator = 1;
+                            break;
+                        }
                     }
                 }
 
