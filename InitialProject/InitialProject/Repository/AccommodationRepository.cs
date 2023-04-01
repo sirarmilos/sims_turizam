@@ -48,14 +48,14 @@ namespace InitialProject.Repository
             }
         }
 
-        public bool Save(string accommodationName, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
+        public bool Save(string accommodationName, string owner, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
         {
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
 
             if(CheckErrorAccommodationName(accommodationName, accommodations) == true)
             {
                 Location location = new Location(NextIdLocation(), country, city, address, latitude, longitude);
-                Accommodation accommodation = new Accommodation(NextIdAccommodation(), accommodationName, location, type, maxGuests, minDaysReservation, leftCancelationDays, images);
+                Accommodation accommodation = new Accommodation(NextIdAccommodation(), accommodationName, owner, location, type, maxGuests, minDaysReservation, leftCancelationDays, images);
 
                 locations = locationSerializer.FromCSV(FilePathLocation);
                 locations.Add(location);
