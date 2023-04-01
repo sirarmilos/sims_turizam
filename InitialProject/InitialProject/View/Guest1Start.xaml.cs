@@ -29,5 +29,13 @@ namespace InitialProject.View
             SearchAndShowAccommodations window = new SearchAndShowAccommodations();
             window.Show();
         }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
     }
 }

@@ -38,5 +38,12 @@ namespace InitialProject.View
                 window.Show();
             }
         }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
     }
 }

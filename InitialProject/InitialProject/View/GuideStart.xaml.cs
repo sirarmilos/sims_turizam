@@ -29,5 +29,12 @@ namespace InitialProject.View
             AddNewTour window = new AddNewTour();
             window.Show();
         }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
     }
 }
