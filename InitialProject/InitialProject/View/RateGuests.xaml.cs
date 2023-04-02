@@ -189,9 +189,9 @@ namespace InitialProject.View
             DataContext = this;
             reservationRepository = new ReservationRepository();
             rateGuestRepository = new RateGuestRepository();
-            Reservations = reservationRepository.FindAllReservations();
-            RateTheGuests = reservationRepository.FindAllRateGuests();
             RateGuestsDTOs = new List<RateGuestsDTO>();
+            FindAllOwnerReservations();
+            FindAllOwnerRateGuests();
             FindGuestsForRate();
             dgRateGuests.ItemsSource = RateGuestsDTOs;
 
@@ -215,13 +215,45 @@ namespace InitialProject.View
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
+        private void FindAllOwnerReservations()
+        {
+            Reservations = reservationRepository.FindAllReservations();
+
+            List<Reservation> temporaryReservations = new List<Reservation>(Reservations);
+
+            foreach (Reservation temporaryReservation in temporaryReservations)
+            {
+                if (temporaryReservation.Accommodation.OwnerUsername.Equals(Owner) == false)
+                {
+                    Reservations.Remove(temporaryReservation);
+                }
+            }
+        }
+
+        private void FindAllOwnerRateGuests()
+        {
+            RateTheGuests = rateGuestRepository.FindAllRateGuests();
+
+            RateTheGuests = reservationRepository.FindReservationsForRateGuests(RateTheGuests);
+
+            List<RateGuest> temporaryRateTheGuests = new List<RateGuest>(RateTheGuests);
+
+            foreach (RateGuest temporaryRateTheGuest in temporaryRateTheGuests)
+            {
+                if (temporaryRateTheGuest.Reservation.Accommodation.OwnerUsername.Equals(Owner) == false)
+                {
+                    RateTheGuests.Remove(temporaryRateTheGuest);
+                }
+            }
+        }
+
         private void FindGuestsForRate()
         {
             foreach (Reservation temporaryReservation in Reservations)
             {
                 int indicator = 0;
 
-                if(temporaryReservation.Accommodation.OwnerUsername.Equals(Owner) == true)
+                if (temporaryReservation.Accommodation.OwnerUsername.Equals(Owner) == true)
                 {
                     foreach (RateGuest temporaryRateGuests in RateTheGuests)
                     {

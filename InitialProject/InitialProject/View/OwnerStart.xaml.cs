@@ -29,6 +29,7 @@ namespace InitialProject.View
                 owner = value;
             }
         }
+
         public OwnerStart(string username)
         {
             InitializeComponent();
@@ -53,6 +54,13 @@ namespace InitialProject.View
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
             LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
+        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
+        {
+            ShowGuestReviews window = new ShowGuestReviews(Owner);
             window.Show();
             Close();
         }
