@@ -34,5 +34,10 @@ namespace InitialProject.Repository
 
             rateGuestSerializer.ToCSV(FilePathRateGuest, rateGuests);
         }
+
+        public List<RateGuest> FindAllRateGuests()
+        {
+            return rateGuests;
+        }
     }
 }

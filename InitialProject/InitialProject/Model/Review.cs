@@ -22,12 +22,14 @@ namespace InitialProject.Model
 
         public string Comment { get; set; }
 
+        public List<string> Images { get; set; }
+
         public Review() 
         {
 
         }
 
-        public Review(Reservation reservation, int cleanliness, int staff, int comfort, int valueForMoney, string comment)
+        public Review(Reservation reservation, int cleanliness, int staff, int comfort, int valueForMoney, string comment, List<string> images)
         {
             Reservation = reservation;
             Cleanliness = cleanliness;
@@ -35,11 +37,22 @@ namespace InitialProject.Model
             Comfort = comfort;
             ValueForMoney = valueForMoney;
             Comment = comment;
+            Images = images;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Reservation.ReservationId.ToString(), Cleanliness.ToString(), Staff.ToString(), Comfort.ToString(), ValueForMoney.ToString(), Comment.ToString() };
+            string imageToString = "";
+
+            foreach (string image in Images)
+            {
+                imageToString += image;
+                imageToString += ", ";
+            }
+
+            imageToString = imageToString.Substring(0, imageToString.Length - 2);
+
+            string[] csvValues = { Reservation.ReservationId.ToString(), Cleanliness.ToString(), Staff.ToString(), Comfort.ToString(), ValueForMoney.ToString(), Comment.ToString(), imageToString.ToString() };
             return csvValues;
         }
 
@@ -53,6 +66,17 @@ namespace InitialProject.Model
             Comfort = Convert.ToInt32(values[3]);
             ValueForMoney = Convert.ToInt32(values[4]);
             Comment = values[5];
+
+            string[] ImagesSplit = values[6].Split(',');
+
+            List<string> images = new List<string>();
+
+            foreach (string image in ImagesSplit)
+            {
+                images.Add(image);
+            }
+
+            Images = images;
         }
     }
 }
