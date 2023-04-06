@@ -41,6 +41,17 @@ namespace InitialProject.Model
             ViewedByGuest = viewedByGuest;
         }
 
+        public ReservationReschedulingRequest(ReservationReschedulingRequest reservationReschedulingRequest)
+        {
+            this.Id = reservationReschedulingRequest.Id;
+            this.Reservation = reservationReschedulingRequest.Reservation;
+            this.NewStartDate = reservationReschedulingRequest.NewStartDate;
+            this.NewEndDate = reservationReschedulingRequest.NewEndDate;
+            this.Status = reservationReschedulingRequest.Status;
+            this.Comment = reservationReschedulingRequest.Comment;
+            this.ViewedByGuest = reservationReschedulingRequest.ViewedByGuest;
+        }
+
         public string[] ToCSV()
         {
             string[] csvValues = { Id.ToString(), Reservation.ReservationId.ToString(), NewStartDate.ToString("dd.MM.yyyy"), NewEndDate.ToString("dd.MM.yyyy"), Status.ToString(), Comment.ToString(), ViewedByGuest.ToString() };
