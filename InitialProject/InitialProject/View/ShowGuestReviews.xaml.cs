@@ -164,6 +164,13 @@ namespace InitialProject.View
             Close();
         }
 
+        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
+        {
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner);
+            window.Show();
+            Close();
+        }
+
         void LoadingRowForDgShowGuestReviews(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();

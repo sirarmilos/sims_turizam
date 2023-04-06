@@ -64,5 +64,12 @@ namespace InitialProject.View
             window.Show();
             Close();
         }
+
+        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
+        {
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner);
+            window.Show();
+            Close();
+        }
     }
 }

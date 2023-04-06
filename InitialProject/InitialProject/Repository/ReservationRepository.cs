@@ -124,8 +124,59 @@ namespace InitialProject.Repository
             return temporaryRateTheGuests;
         }
 
+        public List<ReservationReschedulingRequest> FindReservationsForReservationReschedulingRequests(List<ReservationReschedulingRequest> allReservationReschedulingRequests, List<Reservation> ownerReservations)
+        {
+            List<ReservationReschedulingRequest> temporaryReservationReschedulingRequests = new List<ReservationReschedulingRequest>();
+
+            foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in allReservationReschedulingRequests)
+            {
+                foreach (Reservation temporaryReservation in ownerReservations)
+                {
+                    if (temporaryReservationReschedulingRequest.Reservation.ReservationId == temporaryReservation.ReservationId)
+                    {
+                        temporaryReservationReschedulingRequest.Reservation = temporaryReservation;
+                        foreach (Accommodation temporaryAccommodation in accommodations)
+                        {
+                            if (temporaryReservationReschedulingRequest.Reservation.Accommodation.Id == temporaryAccommodation.Id)
+                            {
+                                temporaryReservationReschedulingRequest.Reservation.Accommodation = temporaryAccommodation;
+                                temporaryReservationReschedulingRequests.Add(temporaryReservationReschedulingRequest);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return temporaryReservationReschedulingRequests;
+        }
+
+        public void UpdateReservations(List<Reservation> reservations)
+        {
+            reservationSerializer.ToCSV(FilePathReservation, reservations);
+        }
+
         public List<Reservation> FindAllReservations()
         {
+            /*reservations = new List<Reservation>();
+            reservations = reservationSerializer.FromCSV(FilePathReservation);
+            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
+
+            foreach (Reservation reservation in reservations)
+            {
+                if (accommodations == null)
+                    break;
+                foreach (Accommodation accommodation in accommodations)
+                {
+                    if (accommodation.Id == reservation.Accommodation.Id)
+                    {
+                        reservation.Accommodation = accommodation;
+                        break;
+                    }
+                }
+            }*/
+
             return reservations;
         }
 

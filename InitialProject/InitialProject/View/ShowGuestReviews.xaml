@@ -18,18 +18,19 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <DockPanel>
+        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
             <Menu DockPanel.Dock ="Top">
                 <MenuItem Header="Add new accommodation" Click="GoToAddNewAccommodation"/>
                 <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
                 <MenuItem Header="Show guest reviews" Click="GoToShowGuestReviews"/>
+                <MenuItem Header="Manage booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
             </Menu>
         </DockPanel>
 
-        <Label x:Name="labelCleanliness" Grid.Column="0" Grid.Row="1" Content="A list of all guest reviews" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,0,0,0"/>
+        <Label x:Name="labelAListOfAllGuestReviews" Grid.Column="0" Grid.Row="1" Content="A list of all guest reviews" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,0,0,0"/>
 
-        <DataGrid x:Name="dgShowGuestReviews" LoadingRow="LoadingRowForDgShowGuestReviews" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"  ItemsSource="{Binding ShowGuestReviewsDTOs, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="10">
+        <DataGrid x:Name="dgShowGuestReviews" LoadingRow="LoadingRowForDgShowGuestReviews" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding ShowGuestReviewsDTOs, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="10">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="150"/>
                 <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="*"/>

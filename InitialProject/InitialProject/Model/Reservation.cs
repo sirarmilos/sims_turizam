@@ -31,6 +31,16 @@ namespace InitialProject.Model
             GuestsNumber = guestsNumber;
         }
 
+        public Reservation(Reservation reservation)
+        {
+            this.ReservationId = reservation.ReservationId;
+            this.GuestUsername = reservation.GuestUsername;
+            this.Accommodation = reservation.Accommodation;
+            this.StartDate = reservation.StartDate;
+            this.EndDate = reservation.EndDate;
+            this.GuestsNumber = reservation.GuestsNumber;
+        }
+
         public string[] ToCSV()
         {
             string[] csvValues = { ReservationId.ToString(), GuestUsername, Accommodation.Id.ToString(), StartDate.ToString("dd.MM.yyyy"), EndDate.ToString("dd.MM.yyyy"), GuestsNumber.ToString() };
