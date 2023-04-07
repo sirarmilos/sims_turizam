@@ -22,6 +22,16 @@ namespace InitialProject.Repository
             users = userSerializer.FromCSV(FilePathUser);
         }
 
+        public List<User> FindAllUsers()
+        {
+            return users;
+        }
+
+        public void UpdateUsers(List<User> allUsers)
+        {
+            userSerializer.ToCSV(FilePathUser, allUsers);
+        }
+
         public string LoginUser(string username, string password)
         {
             User user = new User();
