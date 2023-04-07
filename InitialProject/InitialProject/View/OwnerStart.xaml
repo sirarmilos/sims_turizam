@@ -9,11 +9,12 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
-            <Menu DockPanel.Dock ="Top">
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top">
                 <MenuItem Header="Add new accommodation" Click="GoToAddNewAccommodation"/>
                 <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
                 <MenuItem Header="Show guest reviews" Click="GoToShowGuestReviews"/>
                 <MenuItem Header="Manage booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
+                <MenuItem x:Name="usernameAndSuperOwner" IsEnabled="False"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
             </Menu>
         </DockPanel>
