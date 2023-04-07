@@ -5,19 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="OwnerStart" Height="450" Width="800">
+        Title="Owner start" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
     <Grid>
-        <DockPanel>
+        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
             <Menu DockPanel.Dock ="Top">
                 <MenuItem Header="Add new accommodation" Click="GoToAddNewAccommodation"/>
                 <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
+                <MenuItem Header="Show guest reviews" Click="GoToShowGuestReviews"/>
+                <MenuItem Header="Manage booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
+                <MenuItem Header="Logout" Click="GoToLogout"/>
             </Menu>
-            <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="119*"/>
-                    <ColumnDefinition Width="41*"/>
-                </Grid.ColumnDefinitions>
-            </Grid>
         </DockPanel>
     </Grid>
 </Window>

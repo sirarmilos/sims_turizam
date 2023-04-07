@@ -15,18 +15,21 @@ namespace InitialProject.Model
 
         public string Type { get; set; }
 
+        public string SuperType { get; set; }
+
         public User() { }
 
-        public User(string username, string password, string type)
+        public User(string username, string password, string type, string superType)
         {
             Username = username;
             Password = password;
             Type = type;
+            SuperType = superType;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Username.ToString(), Password.ToString(), Type.ToString() };
+            string[] csvValues = { Username.ToString(), Password.ToString(), Type.ToString(), SuperType.ToString() };
             return csvValues;
         }
 
@@ -35,6 +38,7 @@ namespace InitialProject.Model
             Username = values[0];
             Password = values[1];
             Type = values[2];
+            SuperType = values[3];
         }
     }
 }

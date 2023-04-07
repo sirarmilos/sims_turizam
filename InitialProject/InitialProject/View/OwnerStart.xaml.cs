@@ -19,24 +19,57 @@ namespace InitialProject.View
     /// </summary>
     public partial class OwnerStart : Window
     {
-        public OwnerStart()
+        private string owner;
+
+        public string Owner
+        {
+            get { return owner; }
+            set
+            {
+                owner = value;
+            }
+        }
+
+        public OwnerStart(string username)
         {
             InitializeComponent();
+            Owner = username;
         }
 
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
         {
-            AddNewAccommodation window = new AddNewAccommodation();
+            AddNewAccommodation window = new AddNewAccommodation(Owner);
             window.Show();
         }
 
         private void GoToRateGuests(object sender, RoutedEventArgs e)
         {
-            RateGuests window = new RateGuests();
+            RateGuests window = new RateGuests(Owner);
             if (window.dgRateGuests.Items.Count > 0)
             {
                 window.Show();
             }
+        }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
+        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
+        {
+            ShowGuestReviews window = new ShowGuestReviews(Owner);
+            window.Show();
+            Close();
+        }
+
+        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
+        {
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner);
+            window.Show();
+            Close();
         }
     }
 }

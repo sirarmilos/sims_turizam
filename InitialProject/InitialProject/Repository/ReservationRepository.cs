@@ -2,6 +2,7 @@
 using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,17 +15,11 @@ namespace InitialProject.Repository
 
         private const string FilePathAccommodation = "../../../Resources/Data/accommodation.csv";
 
-        private const string FilePathRateGuests = "../../../Resources/Data/rateguests.csv";
-
         private readonly Serializer<Reservation> reservationSerializer;
-
-        private readonly Serializer<RateGuest> rateGuestsSerializer;
 
         private readonly Serializer<Accommodation> accommodationSerializer;
 
         private List<Reservation> reservations;
-
-        private List<RateGuest> rateGuests;
 
         private List<Accommodation> accommodations;
 
@@ -32,9 +27,6 @@ namespace InitialProject.Repository
         {
             reservationSerializer = new Serializer<Reservation>();
             reservations = reservationSerializer.FromCSV(FilePathReservation);
-
-            rateGuestsSerializer = new Serializer<RateGuest>();
-            rateGuests = rateGuestsSerializer.FromCSV(FilePathRateGuests);
 
             accommodationSerializer = new Serializer<Accommodation>();
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
@@ -54,14 +46,92 @@ namespace InitialProject.Repository
             }
         }
 
+        public List<Review> FindReservationsForReviews(List<Review> allReviews)
+        {
+            foreach (Review temporaryReview in allReviews)
+            {
+                foreach (Reservation temporaryReservation in reservations)
+                {
+                    if (temporaryReview.Reservation.ReservationId == temporaryReservation.ReservationId)
+                    {
+                        temporaryReview.Reservation = temporaryReservation;
+                        foreach(Accommodation temporaryAccommodation in accommodations)
+                        {
+                            if (temporaryReview.Reservation.Accommodation.Id == temporaryAccommodation.Id)
+                            {
+                                temporaryReview.Reservation.Accommodation = temporaryAccommodation;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return allReviews;
+        }
+
+        public List<RateGuest> FindReservationsForRateGuestsReview(List<RateGuest> allGuests)
+        {
+            foreach (RateGuest temporaryRateGuest in allGuests)
+            {
+                foreach (Reservation temporaryReservation in reservations)
+                {
+                    if (temporaryRateGuest.Reservation.ReservationId == temporaryReservation.ReservationId)
+                    {
+                        temporaryRateGuest.Reservation = temporaryReservation;
+                        foreach (Accommodation temporaryAccommodation in accommodations)
+                        {
+                            if (temporaryRateGuest.Reservation.Accommodation.Id == temporaryAccommodation.Id)
+                            {
+                                temporaryRateGuest.Reservation.Accommodation = temporaryAccommodation;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return allGuests;
+        }
+
+        public List<RateGuest> FindReservationsForRateGuests(List<RateGuest> allRateGuests)
+        {
+            List<RateGuest> temporaryRateTheGuests = new List<RateGuest>();
+
+            foreach (RateGuest temporaryRateGuest in allRateGuests)
+            {
+                foreach (Reservation temporaryReservation in reservations)
+                {
+                    if (temporaryRateGuest.Reservation.ReservationId == temporaryReservation.ReservationId)
+                    {
+                        temporaryRateGuest.Reservation = temporaryReservation;
+                        foreach (Accommodation temporaryAccommodation in accommodations)
+                        {
+                            if (temporaryRateGuest.Reservation.Accommodation.Id == temporaryAccommodation.Id)
+                            {
+                                temporaryRateGuest.Reservation.Accommodation = temporaryAccommodation;
+                                temporaryRateTheGuests.Add(temporaryRateGuest);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return temporaryRateTheGuests;
+        }
+
+        public void UpdateReservations(List<Reservation> reservations)
+        {
+            reservationSerializer.ToCSV(FilePathReservation, reservations);
+        }
+
         public List<Reservation> FindAllReservations()
         {
             return reservations;
-        }
-
-        public List<RateGuest> FindAllRateGuests()
-        {
-            return rateGuests;
         }
 
         public void Save(string guestUsername, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)

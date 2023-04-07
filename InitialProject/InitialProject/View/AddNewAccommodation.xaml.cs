@@ -31,6 +31,17 @@ namespace InitialProject.View
 
         private readonly AccommodationRepository accommodationRepository;
 
+        private string owner;
+
+        public string Owner
+        {
+            get { return owner; }
+            set
+            {
+                owner = value;
+            }
+        }
+
         private string accommodationName;
         private string country;
         private string city;
@@ -261,9 +272,10 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public AddNewAccommodation()
+        public AddNewAccommodation(string owner)
         {
             InitializeComponent(); 
+            Owner = owner;
             DataContext = this;
             accommodationRepository = new AccommodationRepository();
             Images = new List<string>();
@@ -287,7 +299,7 @@ namespace InitialProject.View
             }
             else
             {
-                if(accommodationRepository.Save(AccommodationName, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images) == true)
+                if(accommodationRepository.Save(AccommodationName, Owner, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images) == true)
                 {
                     ClearAllFields();
                 }
