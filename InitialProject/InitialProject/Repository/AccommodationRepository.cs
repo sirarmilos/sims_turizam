@@ -48,6 +48,11 @@ namespace InitialProject.Repository
             }
         }
 
+        public List<Accommodation> FindAllAccommodations()
+        {
+            return accommodations;
+        }
+
         public bool Save(string accommodationName, string owner, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
         {
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);

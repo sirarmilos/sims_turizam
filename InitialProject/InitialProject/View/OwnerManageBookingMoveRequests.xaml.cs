@@ -29,6 +29,8 @@ namespace InitialProject.View
 
         private readonly ReservationRepository reservationRepository;
 
+        private readonly AccommodationRepository accommodationRepository;
+
         private List<ReservationReschedulingRequest> reservationReschedulingRequests;
 
         private List<ReservationReschedulingRequest> allReservationReschedulingRequests;
@@ -172,18 +174,22 @@ namespace InitialProject.View
             InitializeComponent();
             Owner = owner;
             DataContext = this;
+
             reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
             reservationRepository = new ReservationRepository();
-            ReservationReschedulingRequests = new List<ReservationReschedulingRequest>();
+            accommodationRepository = new AccommodationRepository();
+
             AllReservationReschedulingRequests = new List<ReservationReschedulingRequest>();
             OwnerBookingMoveRequestsDTOs = new List<OwnerBookingMoveRequestsDTO>();
-            Reservations = new List<Reservation>();
             AllReservations = new List<Reservation>();
             BusyReservations = new List<BusyReservation>();
+
             FindAllOwnerReservations();
             FindAllOwnerPendingRequests();
             ShowAllOwnerPendingRequests();
+
             dgBookingMoveRequests.ItemsSource = OwnerBookingMoveRequestsDTOs;
+
             buttonAcceptRequest.IsEnabled = false;
             buttonDeclineRequest.IsEnabled = false;
             SelectedBookingMoveRequest = null;
@@ -193,53 +199,58 @@ namespace InitialProject.View
         {
             AllReservations = reservationRepository.FindAllReservations();
 
-            foreach (Reservation reservation1 in AllReservations)
+            Reservations = new List<Reservation>();
+
+            foreach (Reservation temporaryReservation in AllReservations.ToList())
             {
-                Trace.WriteLine(reservation1.ReservationId);
-            }
-
-            Trace.WriteLine("");
-
-            Reservations = new List<Reservation>(AllReservations); // reservationRepository.FindAllReservations(); // jako cudno zasto ovo kopira i gleda kao jedan objekat i menja ih zajedno, ovaj kod sto je komentarisan?
-
-            foreach(Reservation temporaryReservation in Reservations.ToList())
-            {
-                if(temporaryReservation.Accommodation.OwnerUsername.Equals(Owner) == false)
+                if (temporaryReservation.Accommodation.OwnerUsername.Equals(Owner) == true)
                 {
-                    Reservations.Remove(temporaryReservation);
+                    Reservations.Add(temporaryReservation);
                 }
             }
-
-            foreach (Reservation reservation1 in AllReservations)
-            {
-                Trace.WriteLine(reservation1.ReservationId);
-            }
-
-            Trace.WriteLine("");
         }
 
         private void FindAllOwnerPendingRequests()
         {
             AllReservationReschedulingRequests = reservationReschedulingRequestRepository.FindAllReservationReschedulingRequests();
 
-            ReservationReschedulingRequests = new List<ReservationReschedulingRequest>(AllReservationReschedulingRequests); // reservationReschedulingRequestRepository.FindAllReservationReschedulingRequests(); isto kao i iznad
+            ReservationReschedulingRequests = new List<ReservationReschedulingRequest>();
 
-            ReservationReschedulingRequests = reservationRepository.FindReservationsForReservationReschedulingRequests(ReservationReschedulingRequests, Reservations);
+            FindReservationsForReservationReschedulingRequests();
+        }
 
-            foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequest in ReservationReschedulingRequests.ToList())
+        private void FindReservationsForReservationReschedulingRequests()
+        {
+            List<Accommodation> accommodations = new List<Accommodation>();
+
+            accommodations = accommodationRepository.FindAllAccommodations();
+
+            foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in AllReservationReschedulingRequests.ToList())
             {
-                if(temporaryReservationReschedulingRequest.Reservation.Accommodation.OwnerUsername.Equals(Owner) == false || temporaryReservationReschedulingRequest.Status.Equals("pending") == false)
+                foreach (Reservation temporaryReservation in Reservations.ToList())
                 {
-                    ReservationReschedulingRequests.Remove(temporaryReservationReschedulingRequest);
+                    if (temporaryReservationReschedulingRequest.Reservation.ReservationId == temporaryReservation.ReservationId)
+                    {
+                        temporaryReservationReschedulingRequest.Reservation = temporaryReservation;
+                        foreach (Accommodation temporaryAccommodation in accommodations.ToList())
+                        {
+                            if (temporaryReservationReschedulingRequest.Reservation.Accommodation.Id == temporaryAccommodation.Id && temporaryReservationReschedulingRequest.Reservation.Accommodation.OwnerUsername.Equals(Owner) == true && temporaryReservationReschedulingRequest.Status.Equals("pending") == true)
+                            {
+                                ReservationReschedulingRequests.Add(temporaryReservationReschedulingRequest);
+                                break;
+                            }
+                        }
+                        break;
+                    }
                 }
             }
         }
 
         private void ShowAllOwnerPendingRequests()
         {
-            foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequest in ReservationReschedulingRequests)
+            foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequest in ReservationReschedulingRequests.ToList())
             {
-                foreach(Reservation temporaryReservation in Reservations)
+                foreach(Reservation temporaryReservation in Reservations.ToList())
                 {
                     if(temporaryReservationReschedulingRequest.Reservation.ReservationId == temporaryReservation.ReservationId)
                     {
@@ -257,23 +268,21 @@ namespace InitialProject.View
 
         private bool IsNewDateAvailable(int reservationId, int accommodationId, DateTime newStartDate, DateTime newEndDate)
         {
-            List<Reservation> accommodationReservations = reservationRepository.FindAllByAccommodation(accommodationId);
+            List<Reservation> accommodationReservations = FindAllReservationsByAccommodationId(accommodationId);
 
             List<Reservation> reservationsToBusyReservations = new List<Reservation>();
 
-            foreach (Reservation temporaryReservation in accommodationReservations)
+            foreach (Reservation temporaryReservation in accommodationReservations.ToList())
             {
                 if(temporaryReservation.ReservationId == reservationId)
                 {
                     reservationsToBusyReservations.Add(temporaryReservation);
                 }
+
                 bool firstExpression = (DateTime.Compare(temporaryReservation.StartDate, newStartDate) < 0 && DateTime.Compare(temporaryReservation.EndDate, newStartDate) < 0);
                 bool secondExpression = (DateTime.Compare(temporaryReservation.StartDate, newEndDate) > 0 && DateTime.Compare(temporaryReservation.EndDate, newEndDate) > 0);
-                if ( (firstExpression || secondExpression) == true)
-                {
 
-                }
-                else
+                if ( (firstExpression || secondExpression) == false)
                 {
                     if (temporaryReservation.ReservationId != reservationId)
                     {
@@ -284,12 +293,27 @@ namespace InitialProject.View
 
             BusyReservations.Add(new BusyReservation(reservationId, reservationsToBusyReservations));
 
-            if(reservationsToBusyReservations.Count != 1) // 1 jer se ubacuje taj bas koji treba da se odobri ili ne
+            if(reservationsToBusyReservations.Count > 1) // 1 jer se ubacuje taj bas koji treba da se odobri ili ne
             {
                 return false;
             }
 
             return true;
+        }
+
+        private List<Reservation> FindAllReservationsByAccommodationId(int accommodationId)
+        {
+            List<Reservation> accommodationReservations = new List<Reservation>();
+
+            foreach (Reservation reservation in Reservations.ToList())
+            {
+                if (reservation.Accommodation.Id == accommodationId)
+                {
+                    accommodationReservations.Add(reservation);
+                }
+            }
+
+            return accommodationReservations;
         }
 
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
@@ -335,31 +359,20 @@ namespace InitialProject.View
 
         private void AcceptRequest(object sender, RoutedEventArgs e)
         {
-            foreach(Reservation reservation1 in AllReservations)
-            {
-                Trace.WriteLine(reservation1.ReservationId);
-            }
-
             foreach (Reservation temporaryReservation in AllReservations.ToList<Reservation>())
             {
                 if (temporaryReservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
                 {
                     if (SelectedBookingMoveRequest.NewDateAvailable.Equals("Available") == true)
                     {
-                        Reservation reservation = new Reservation(temporaryReservation);
-                        reservation.StartDate = SelectedBookingMoveRequest.NewStartDate;
-                        reservation.EndDate = SelectedBookingMoveRequest.NewEndDate;
-                        AllReservations.Remove(temporaryReservation);
-                        AllReservations.Add(reservation);
+                        temporaryReservation.StartDate = SelectedBookingMoveRequest.NewStartDate;
+                        temporaryReservation.EndDate = SelectedBookingMoveRequest.NewEndDate;
 
                         foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in AllReservationReschedulingRequests.ToList())
                         {
                             if (temporaryReservationReschedulingRequest.Reservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
                             {
-                                ReservationReschedulingRequest reservationReschedulingRequest = new ReservationReschedulingRequest(temporaryReservationReschedulingRequest);
-                                reservationReschedulingRequest.Status = "accepted";
-                                AllReservationReschedulingRequests.Remove(temporaryReservationReschedulingRequest);
-                                AllReservationReschedulingRequests.Add(reservationReschedulingRequest);
+                                temporaryReservationReschedulingRequest.Status = "accepted";
                                 OwnerBookingMoveRequestsDTOs.Remove(SelectedBookingMoveRequest);
                                 break;
                             }
@@ -378,52 +391,48 @@ namespace InitialProject.View
                                         Reservation reservation = new Reservation(temporaryReservationToDelete);
                                         reservation.StartDate = SelectedBookingMoveRequest.NewStartDate;
                                         reservation.EndDate = SelectedBookingMoveRequest.NewEndDate;
-                                        AllReservations.Remove(temporaryReservationToDelete);
                                         AllReservations.Add(reservation);
                                     }
-                                    else
+                                    
+                                    AllReservations.Remove(temporaryReservationToDelete);
+
+                                    foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in AllReservationReschedulingRequests.ToList())
                                     {
-                                        AllReservations.Remove(temporaryReservationToDelete);
+                                        if (temporaryReservationReschedulingRequest.Reservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
+                                        {
+                                            temporaryReservationReschedulingRequest.Status = "accepted";
+                                            OwnerBookingMoveRequestsDTOs.Remove(SelectedBookingMoveRequest);
+                                        }
+                                        else if(temporaryReservationReschedulingRequest.Reservation.ReservationId == temporaryReservationToDelete.ReservationId)
+                                        {
+                                            AllReservationReschedulingRequests.Remove(temporaryReservationReschedulingRequest);
+                                        }
                                     }
                                 }
-                            }
-                        }
-
-                        foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in AllReservationReschedulingRequests.ToList())
-                        {
-                            if (temporaryReservationReschedulingRequest.Reservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
-                            {
-                                ReservationReschedulingRequest reservationReschedulingRequest = new ReservationReschedulingRequest(temporaryReservationReschedulingRequest);
-                                reservationReschedulingRequest.Status = "accepted";
-                                AllReservationReschedulingRequests.Remove(temporaryReservationReschedulingRequest);
-                                AllReservationReschedulingRequests.Add(reservationReschedulingRequest);
-                                OwnerBookingMoveRequestsDTOs.Remove(SelectedBookingMoveRequest);
-                                break;
                             }
                         }
                     }
                 }
             }
 
-            dgBookingMoveRequests.Items.Refresh();
             reservationRepository.UpdateReservations(AllReservations);
             reservationReschedulingRequestRepository.UpdateReservationReschedulingRequest(AllReservationReschedulingRequests);
+
+            AllReservationReschedulingRequests = new List<ReservationReschedulingRequest>();
+            OwnerBookingMoveRequestsDTOs = new List<OwnerBookingMoveRequestsDTO>();
+            AllReservations = new List<Reservation>();
+            BusyReservations = new List<BusyReservation>();
+
+            FindAllOwnerReservations();
+            FindAllOwnerPendingRequests();
+            ShowAllOwnerPendingRequests();
+
+            dgBookingMoveRequests.ItemsSource = OwnerBookingMoveRequestsDTOs;
         }
 
         private void DeclineRequest(object sender, RoutedEventArgs e)
         {
-            ReservationReschedulingRequest reservationReschedulingRequestToReject = new ReservationReschedulingRequest();
-
-            foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequest in ReservationReschedulingRequests)
-            {
-                if(temporaryReservationReschedulingRequest.Reservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
-                {
-                    reservationReschedulingRequestToReject = temporaryReservationReschedulingRequest;
-                    break;
-                }
-            }
-
-            DeclineBookingMoveRequest window = new DeclineBookingMoveRequest(this, Owner, reservationReschedulingRequestToReject, reservationReschedulingRequestRepository.FindAllReservationReschedulingRequests());
+            DeclineBookingMoveRequest window = new DeclineBookingMoveRequest(OwnerBookingMoveRequestsDTOs, dgBookingMoveRequests, Owner, SelectedBookingMoveRequest, AllReservationReschedulingRequests);
 
             window.Show();
         }
