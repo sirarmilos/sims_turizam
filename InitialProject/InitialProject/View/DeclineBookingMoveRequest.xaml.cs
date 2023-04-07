@@ -26,11 +26,11 @@ namespace InitialProject.View
 
         private readonly ReservationReschedulingRequestRepository reservationReschedulingRequestRepository;
 
-        private ReservationReschedulingRequest reservationReschedulingRequestToReject;
+        private List<ReservationReschedulingRequest> allReservationReschedulingRequests;
 
-        private List<ReservationReschedulingRequest> reservationReschedulingRequests;
+        private List<OwnerBookingMoveRequestsDTO> ownerBookingMoveRequestsDTOs;
 
-        private readonly OwnerManageBookingMoveRequests OwnerManageBookingMoveRequest;
+        private DataGrid dgBookingMoveRequests;
 
         private string owner;
 
@@ -43,7 +43,17 @@ namespace InitialProject.View
             }
         }
 
+        private OwnerBookingMoveRequestsDTO selectedBookingMoveRequest;
         private string comment;
+
+        private OwnerBookingMoveRequestsDTO SelectedBookingMoveRequest
+        {
+            get { return selectedBookingMoveRequest; }
+            set
+            {
+                selectedBookingMoveRequest = value;
+            }
+        }
 
         public string Comment
         {
@@ -54,27 +64,36 @@ namespace InitialProject.View
             }
         }
 
-        public ReservationReschedulingRequest ReservationReschedulingRequestToReject
+        public List<ReservationReschedulingRequest> AllReservationReschedulingRequests
         {
             get;
             set;
         }
 
-        public List<ReservationReschedulingRequest> ReservationReschedulingRequests
+        public List<OwnerBookingMoveRequestsDTO> OwnerBookingMoveRequestsDTOs
         {
             get;
             set;
         }
 
-        public DeclineBookingMoveRequest(OwnerManageBookingMoveRequests ownerManageBookingMoveRequest ,string owner, ReservationReschedulingRequest reservationReschedulingRequestToReject, List<ReservationReschedulingRequest> allReservationReschedulingRequests)
+        public DataGrid DgBookingMoveRequests
+        {
+            get;
+            set;
+        }
+
+        public DeclineBookingMoveRequest(List<OwnerBookingMoveRequestsDTO> ownerBookingMoveRequestsDTOs, DataGrid dgBookingMoveRequests, string owner, OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, List<ReservationReschedulingRequest> allReservationReschedulingRequests)
         {
             InitializeComponent();
             Owner = owner;
             DataContext = this;
+
             reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
-            ReservationReschedulingRequestToReject = reservationReschedulingRequestToReject;
-            ReservationReschedulingRequests = allReservationReschedulingRequests;
-            OwnerManageBookingMoveRequest = ownerManageBookingMoveRequest;
+
+            OwnerBookingMoveRequestsDTOs = ownerBookingMoveRequestsDTOs;
+            DgBookingMoveRequests = dgBookingMoveRequests;
+            SelectedBookingMoveRequest = selectedBookingMoveRequest;
+            AllReservationReschedulingRequests = allReservationReschedulingRequests;
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
@@ -84,16 +103,27 @@ namespace InitialProject.View
 
         private void ConfirmRejection(object sender, RoutedEventArgs e)
         {
-            ReservationReschedulingRequestToReject.Status = "rejected";
-            ReservationReschedulingRequestToReject.Comment = Comment;
+            FindAndUpdateRescheduledReservation();
 
-            reservationReschedulingRequestRepository.UpdateReservationReschedulingRequest(ReservationReschedulingRequests);
-
-            OwnerManageBookingMoveRequest.OwnerBookingMoveRequestsDTOs.Remove(OwnerManageBookingMoveRequest.SelectedBookingMoveRequest);
-
-            OwnerManageBookingMoveRequest.dgBookingMoveRequests.Items.Refresh();
+            OwnerBookingMoveRequestsDTOs.Remove(SelectedBookingMoveRequest);
+            DgBookingMoveRequests.Items.Refresh();
 
             Close();
+        }
+
+        private void FindAndUpdateRescheduledReservation()
+        {
+            foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in AllReservationReschedulingRequests)
+            {
+                if (temporaryReservationReschedulingRequest.Reservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
+                {
+                    temporaryReservationReschedulingRequest.Status = "rejected";
+                    temporaryReservationReschedulingRequest.Comment = Comment;
+                    break;
+                }
+            }
+
+            reservationReschedulingRequestRepository.UpdateReservationReschedulingRequest(AllReservationReschedulingRequests);
         }
     }
 }
