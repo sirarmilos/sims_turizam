@@ -34,6 +34,8 @@ namespace InitialProject.View
         {
             ShowTourGuidences window = new ShowTourGuidences();
             window.Show();
+        }
+
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
             LoginForm window = new LoginForm();
