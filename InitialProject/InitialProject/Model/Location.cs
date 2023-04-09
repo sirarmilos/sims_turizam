@@ -1,4 +1,5 @@
-﻿using InitialProject.Serializer;
+﻿using InitialProject.DTO;
+using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -34,6 +35,16 @@ namespace InitialProject.Model
             Address = address;
             Latitude = latitude;
             Longitude = longitude;
+        }
+
+        public Location(int id, SaveNewAccommodationDTO saveNewAccommodationDTO)
+        {
+            Id = id;
+            Country = saveNewAccommodationDTO.Country;
+            City = saveNewAccommodationDTO.City;
+            Address = saveNewAccommodationDTO.Address;
+            Latitude = saveNewAccommodationDTO.Latitude;
+            Longitude = saveNewAccommodationDTO.Longitude;
         }
 
         public string[] ToCSV()

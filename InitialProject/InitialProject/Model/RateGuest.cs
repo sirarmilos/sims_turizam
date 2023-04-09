@@ -1,4 +1,5 @@
-﻿using InitialProject.Serializer;
+﻿using InitialProject.DTO;
+using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,17 @@ namespace InitialProject.Model
             TypePayment = typePayment;
             Communicativeness = communicativeness;
             Comment = comment;
+        }
+
+        public RateGuest(Reservation reservation, SaveNewRateGuestDTO saveNewRateGuestDTO)
+        {
+            Reservation = reservation;
+            Cleanliness = saveNewRateGuestDTO.Cleanliness;
+            FollowRules = saveNewRateGuestDTO.FollowRules;
+            Behavior = saveNewRateGuestDTO.Behavior;
+            TypePayment = saveNewRateGuestDTO.TypePayment;
+            Communicativeness = saveNewRateGuestDTO.Communicativeness;
+            Comment = saveNewRateGuestDTO.Comment;
         }
 
         public string[] ToCSV()

@@ -1,6 +1,7 @@
 ﻿using InitialProject.DTO;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,14 +24,8 @@ namespace InitialProject.View
     /// </summary>
     public partial class RateGuests : Window
     {
-        public RateGuest rateGuest { get; set; }
+        private readonly RateGuestsService rateGuestsService;
 
-        private readonly ReservationRepository reservationRepository;
-
-        private readonly RateGuestRepository rateGuestRepository;
-
-        private List<Reservation> reservations;
-        private List<RateGuest> rateTheGuests;
         private List<RateGuestsDTO> rateGuestsDTOs;
 
         private RateGuestsDTO selectedGuest;
@@ -55,24 +50,6 @@ namespace InitialProject.View
         private string typePayment;
         private int communicativeness;
         private string comment;
-
-        public List<Reservation> Reservations
-        {
-            get;
-            set;
-        }
-
-        public List<RateGuest> RateTheGuests
-        {
-            get;
-            set;
-        }
-
-        public List<Reservation> GuestsWaitingForRate
-        {
-            get;
-            set;
-        }
 
         public List<RateGuestsDTO> RateGuestsDTOs
         {
@@ -185,15 +162,16 @@ namespace InitialProject.View
         public RateGuests(string owner)
         {
             InitializeComponent();
+
             Owner = owner;
+
             DataContext = this;
-            reservationRepository = new ReservationRepository();
-            rateGuestRepository = new RateGuestRepository();
+
+            rateGuestsService = new RateGuestsService(Owner);
+
             RateGuestsDTOs = new List<RateGuestsDTO>();
-            FindAllOwnerReservations();
-            FindAllOwnerRateGuests();
-            FindGuestsForRate();
-            dgRateGuests.ItemsSource = RateGuestsDTOs;
+
+            RateGuestsDTOs = rateGuestsService.FindAllGuestsForRate();
 
             if (RateGuestsDTOs.Count == 0)
             {
@@ -205,166 +183,33 @@ namespace InitialProject.View
                 MessageBox.Show("There are " + RateGuestsDTOs.Count + " guests left for you to rate.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
-            buttonCancelSelection.Visibility = Visibility.Hidden;
-            TurnOffVisibility();
             SetDefaultValue();
         }
 
-        void LoadingRowForDgRateGuests(object sender, DataGridRowEventArgs e)
+        private void SaveRateGuest(object sender, RoutedEventArgs e)
         {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
+            SaveNewRateGuestDTO saveNewRateGuestDTO = new SaveNewRateGuestDTO(SelectedGuest.ReservationId, Cleanliness, FollowRules, Behavior, TypePayment, Communicativeness, Comment);
 
-        private void FindAllOwnerReservations()
-        {
-            Reservations = reservationRepository.FindAllReservations();
+            rateGuestsService.SaveNewRateGuest(saveNewRateGuestDTO);
 
-            List<Reservation> temporaryReservations = new List<Reservation>(Reservations);
+            RateGuestsDTOs.Remove(SelectedGuest);
+            dgRateGuests.Items.Refresh();
 
-            foreach (Reservation temporaryReservation in temporaryReservations)
+            SetDefaultValue();
+
+            MessageBox.Show("You have successfully rated a guest", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            if (RateGuestsDTOs.Count == 0)
             {
-                if (temporaryReservation.Accommodation.OwnerUsername.Equals(Owner) == false)
-                {
-                    Reservations.Remove(temporaryReservation);
-                }
+                MessageBox.Show("All guests are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
             }
         }
 
-        private void FindAllOwnerRateGuests()
+        private void CancelRate(object sender, RoutedEventArgs e)
         {
-            RateTheGuests = rateGuestRepository.FindAllRateGuests();
-
-            RateTheGuests = reservationRepository.FindReservationsForRateGuests(RateTheGuests);
-
-            List<RateGuest> temporaryRateTheGuests = new List<RateGuest>(RateTheGuests);
-
-            foreach (RateGuest temporaryRateTheGuest in temporaryRateTheGuests)
-            {
-                if (temporaryRateTheGuest.Reservation.Accommodation.OwnerUsername.Equals(Owner) == false)
-                {
-                    RateTheGuests.Remove(temporaryRateTheGuest);
-                }
-            }
-        }
-
-        private void FindGuestsForRate()
-        {
-            foreach (Reservation temporaryReservation in Reservations)
-            {
-                int indicator = 0;
-
-                if (temporaryReservation.Accommodation.OwnerUsername.Equals(Owner) == true)
-                {
-                    foreach (RateGuest temporaryRateGuests in RateTheGuests)
-                    {
-                        if (temporaryReservation.ReservationId.Equals(temporaryRateGuests.Reservation.ReservationId))
-                        {
-                            indicator = 1;
-                            break;
-                        }
-                    }
-                }
-
-                if (indicator == 0)
-                {
-                    var differenceBetweenDates = DateTime.Now.Subtract(temporaryReservation.EndDate);
-                    int days = differenceBetweenDates.Days;
-
-                    if (days <= 5 && days >= 0)
-                    {
-                        int daysLeft = 5 - days;
-                        string deadline;
-
-                        if (daysLeft == 0)
-                        {
-                            deadline = "This is the last day to rate a guest.";
-                        }
-                        else
-                        {
-                            deadline = "You have " + daysLeft + " more days to rate the guest.";
-                        }
-
-                        RateGuestsDTO rateGuestDTO = new RateGuestsDTO(temporaryReservation.ReservationId, temporaryReservation.GuestUsername, deadline);
-                        RateGuestsDTOs.Add(rateGuestDTO);
-                    }
-                }
-            }
-        }
-
-        private void ShowInputForRateGuest(object sender, RoutedEventArgs e)
-        {
-            if(SelectedGuest == null)
-            {
-                MessageBox.Show("Select the guest you want to rate", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else
-            {
-                dgRateGuests.IsHitTestVisible = false;
-                TurnOnVisibility();
-                buttonRateGuest.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private void labeltbFocus(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 1)
-            {
-                var label = (Label)sender;
-                Keyboard.Focus(label.Target);
-            }
-        }
-
-        private void TurnOffVisibility()
-        {
-            labelCleanliness.Visibility = Visibility.Hidden;
-            tbCleanliness.Visibility = Visibility.Hidden;
-            sliderCleanliness.Visibility = Visibility.Hidden;
-
-            labelFollowRules.Visibility = Visibility.Hidden;
-            tbFollowRules.Visibility = Visibility.Hidden;
-            sliderFollowRules.Visibility = Visibility.Hidden;
-
-            labelBehavior.Visibility = Visibility.Hidden;
-            tbBehavior.Visibility = Visibility.Hidden;
-            sliderBehavior.Visibility = Visibility.Hidden;
-
-            gbTypePayment.Visibility = Visibility.Hidden;
-
-            labelCommunicativeness.Visibility = Visibility.Hidden;
-            tbCommunicativeness.Visibility = Visibility.Hidden;
-            sliderCommunicativeness.Visibility = Visibility.Hidden;
-
-            labelComment.Visibility = Visibility.Hidden;
-            tbComment.Visibility = Visibility.Hidden;
-
-            buttonConfirm.Visibility = Visibility.Hidden;
-        }
-
-        private void TurnOnVisibility()
-        {
-            labelCleanliness.Visibility = Visibility.Visible;
-            tbCleanliness.Visibility = Visibility.Visible;
-            sliderCleanliness.Visibility = Visibility.Visible;
-
-            labelFollowRules.Visibility = Visibility.Visible;
-            tbFollowRules.Visibility = Visibility.Visible;
-            sliderFollowRules.Visibility = Visibility.Visible;
-
-            labelBehavior.Visibility = Visibility.Visible;
-            tbBehavior.Visibility = Visibility.Visible;
-            sliderBehavior.Visibility = Visibility.Visible;
-
-            gbTypePayment.Visibility = Visibility.Visible;
-
-            labelCommunicativeness.Visibility = Visibility.Visible;
-            tbCommunicativeness.Visibility = Visibility.Visible;
-            sliderCommunicativeness.Visibility = Visibility.Visible;
-
-            labelComment.Visibility = Visibility.Visible;
-            tbComment.Visibility = Visibility.Visible;
-
-            buttonConfirm.Visibility = Visibility.Visible;
-
+            SetDefaultValue();
+            dgRateGuests.SelectedItem = null;
         }
 
         private void SetDefaultValue()
@@ -376,6 +221,33 @@ namespace InitialProject.View
             sliderCommunicativeness.Value = 3;
             Comment = "";
             tbComment.Text = "";
+            buttonRate.IsEnabled = false;
+        }
+
+        private void RateButtonEnable(object sender, SelectionChangedEventArgs e)
+        {
+            if (SelectedGuest == null)
+            {
+                buttonRate.IsEnabled = false;
+            }
+            else
+            {
+                buttonRate.IsEnabled = true;
+            }
+        }
+
+        void LoadingRowForDgRateGuests(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+        }
+
+        private void labeltbFocus(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 1)
+            {
+                var label = (Label)sender;
+                Keyboard.Focus(label.Target);
+            }
         }
 
         private void SliderCleanlinessValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -398,61 +270,40 @@ namespace InitialProject.View
             Communicativeness = Convert.ToInt32(sliderCommunicativeness.Value);
         }
 
-        private void SaveRateGuest(object sender, RoutedEventArgs e)
+        private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
         {
-            rateGuestRepository.Save(FindReservationRateGuests(), Cleanliness, FollowRules, Behavior, TypePayment, Communicativeness, Comment);
+            AddNewAccommodation window = new AddNewAccommodation(Owner);
+            window.Show();
+        }
 
-            RateGuestsDTOs.Remove(SelectedGuest);
-
-            dgRateGuests.Items.Refresh();
-
-            dgRateGuests.IsHitTestVisible = true;
-            buttonCancelSelection.Visibility = Visibility.Hidden;
-            buttonRateGuest.Visibility = Visibility.Visible;
-            TurnOffVisibility();
-            SetDefaultValue();
-
-            MessageBox.Show("You have successfully rated a guest", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            if (RateGuestsDTOs.Count == 0)
+        private void GoToRateGuests(object sender, RoutedEventArgs e)
+        {
+            RateGuests window = new RateGuests(Owner);
+            if (window.dgRateGuests.Items.Count > 0)
             {
-                dgRateGuests.Visibility = Visibility.Hidden;
-                buttonRateGuest.Visibility = Visibility.Hidden;
-                MessageBox.Show("All guests are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
+                window.Show();
             }
         }
 
-        private Reservation FindReservationRateGuests()
+        private void GoToLogout(object sender, RoutedEventArgs e)
         {
-            Reservation reservation = new Reservation();
-
-            foreach (Reservation temporaryReservation in Reservations)
-            {
-                if (temporaryReservation.ReservationId.Equals(SelectedGuest.ReservationId) == true)
-                {
-                    reservation = temporaryReservation;
-                    break;
-                }
-            }
-
-            return reservation;
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
         }
 
-        private void CancelSelection(object sender, RoutedEventArgs e)
+        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
         {
-            SelectedGuest = null;
-            buttonRateGuest.Visibility = Visibility.Visible;
-            TurnOffVisibility();
-            dgRateGuests.UnselectAllCells();
-            SetDefaultValue();
-            dgRateGuests.IsHitTestVisible = true;
-            buttonCancelSelection.Visibility = Visibility.Hidden;
+            ShowGuestReviews window = new ShowGuestReviews(Owner);
+            window.Show();
+            Close();
         }
 
-        private void CancelButtonVisibility(object sender, SelectionChangedEventArgs e)
+        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
         {
-            buttonCancelSelection.Visibility = Visibility.Visible;
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner);
+            window.Show();
+            Close();
         }
     }
 }
