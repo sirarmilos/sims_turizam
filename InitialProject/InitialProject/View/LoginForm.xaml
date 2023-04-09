@@ -5,14 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="800"
+        Title="Login" Height="360" Width="700"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <Label Content="Username" HorizontalAlignment="Left" Margin="126,111,0,0" VerticalAlignment="Top"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="126,163,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="215,115,0,0" TextWrapping="Wrap" Text="{Binding Path=Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Margin="215,167,0,0" TextWrapping="Wrap" Text="{Binding Path=Password, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="156,227,0,0" VerticalAlignment="Top" Click="Log_In"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="85" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="65" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160" />
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="160" />
+        </Grid.ColumnDefinitions>
 
+        <Label x:Name="labelUsername" Grid.Column="1" Grid.Row="1" Content="Username:" HorizontalAlignment="Left" Width="120"/>
+        <TextBox x:Name="tbUsername" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding Path=Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
+        
+        <Label x:Name="labelPassword" Grid.Column="1" Grid.Row="3" Content="Password:" HorizontalAlignment="Left" Width="120"/>
+        <TextBox x:Name="tbPassword" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" Text="{Binding Path=Password, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
+
+        <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5">
+            <Button x:Name="buttonLogin"  Content="Login" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Log_In" Width="150" Height="50"/>
+        </Grid>
+        
     </Grid>
 </Window>

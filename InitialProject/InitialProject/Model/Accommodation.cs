@@ -1,4 +1,5 @@
-﻿using InitialProject.Serializer;
+﻿using InitialProject.DTO;
+using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,6 +43,19 @@ namespace InitialProject.Model
             MinDaysReservation = minDaysReservation;
             LeftCancelationDays = leftCancelationDays;
             Images = images;
+        }
+
+        public Accommodation(int id, SaveNewAccommodationDTO saveNewAccommodationDTO, Location location)
+        {
+            Id = id;
+            AccommodationName = saveNewAccommodationDTO.AccommodationName;
+            OwnerUsername = saveNewAccommodationDTO.Owner;
+            Location = location;
+            Type = saveNewAccommodationDTO.Type;
+            MaxGuests = saveNewAccommodationDTO.MaxGuests;
+            MinDaysReservation = saveNewAccommodationDTO.MinDaysReservation;
+            LeftCancelationDays = saveNewAccommodationDTO.LeftCancelationDays;
+            Images = saveNewAccommodationDTO.Images;
         }
 
         public string[] ToCSV()

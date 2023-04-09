@@ -19,6 +19,8 @@ using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics;
 using System.IO;
+using InitialProject.Service;
+using InitialProject.DTO;
 
 namespace InitialProject.View
 {
@@ -27,9 +29,7 @@ namespace InitialProject.View
     /// </summary>
     public partial class AddNewAccommodation : Window
     {
-        public Accommodation Accommodation { get; set; }
-
-        private readonly AccommodationRepository accommodationRepository;
+        private readonly AccommodationService accommodationService;
 
         private string owner;
 
@@ -56,7 +56,6 @@ namespace InitialProject.View
         private int? minDaysReservation;
         private int? leftCancelationDays;
         private string image;
-        private List<string> images;
 
         private string maxGuestsCheck;
         private string minDaysReservationCheck;
@@ -217,19 +216,13 @@ namespace InitialProject.View
             }
         }
 
-        public List<string> Images
+        public ObservableCollection<string> Images
         {
             get;
             set;
         }
 
-        public ObservableCollection<ImagesView> ImagesView
-        {
-            get;
-            set;
-        }
-
-        public ImagesView SelectedImage
+        public string SelectedImage
         {
             get;
             set;
@@ -274,86 +267,118 @@ namespace InitialProject.View
 
         public AddNewAccommodation(string owner)
         {
-            InitializeComponent(); 
+            InitializeComponent();
+
             Owner = owner;
+
             DataContext = this;
-            accommodationRepository = new AccommodationRepository();
-            Images = new List<string>();
-            ImagesView = new ObservableCollection<ImagesView>();
+
+            accommodationService = new AccommodationService();
+
+            Images = new ObservableCollection<string>();
+
             SelectedImage = null;
-            rbApartment.IsChecked = true;
-            LeftCancelationDaysCheck = "1";
-            tbLeftCancelationDays.Text = "1";
+
+            SetDefaultValue();
         }
 
         private void SaveAccommodation(object sender, RoutedEventArgs e)
         {
             if (CheckErrorAllFieldsFilled() == false)
             {
-                MessageBox.Show("You must fill in all fields", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else if(CheckErrorImagesNumber() == false)
             {
-                MessageBox.Show("You must enter at least one accommodation image", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("You must enter at least one accommodation image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbImage.Focus();
+            }
+            else if(accommodationService.IsAccommodationNameExist(AccommodationName) == true)
+            {
+                MessageBox.Show("Accommodation with this name already exists.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                Name = "";
+                tbName.Focus();
             }
             else
             {
-                if(accommodationRepository.Save(AccommodationName, Owner, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images) == true)
-                {
-                    ClearAllFields();
-                }
-                else
-                {
-                    Name = "";
-                    tbName.Focus();
-                }
+                SaveNewAccommodationDTO saveNewAccommodationDTO = new SaveNewAccommodationDTO(AccommodationName, Owner, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images);
+
+                accommodationService.SaveNewAccommodation(saveNewAccommodationDTO);
+
+                SetDefaultValue();
+
+                MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        private bool CheckErrorAllFieldsFilled()
+        {
+            return tbName.Text.Length > 0 && tbCountry.Text.Length > 0 && tbCity.Text.Length > 0 && tbAddress.Text.Length > 0 && tbMaxGuests.Text.Length > 0 && tbMinDaysReservation.Text.Length > 0 && tbLeftCancelationDays.Text.Length > 0;
+        }
+
+        private bool CheckErrorImagesNumber()
+        {
+            return !(Images.Count <= 0);
+        }
+
+        private void SetDefaultValue()
+        {
+            LeftCancelationDaysCheck = "1";
+            tbName.Text = "";
+            tbCountry.Text = "";
+            tbCity.Text = "";
+            tbAddress.Text = "";
+            sliderLatitude.Value = 0;
+            sliderLongitude.Value = 0;
+            rbApartment.IsChecked = true;
+            rbHome.IsChecked = false;
+            rbHut.IsChecked = false;
+            tbMaxGuests.Text = "";
+            tbMinDaysReservation.Text = "";
+            tbLeftCancelationDays.Text = "1";
+            Images = new ObservableCollection<string>();
+            dgImages.ItemsSource = Images;
         }
 
         private void AddImageToList(object sender, RoutedEventArgs e)
         {
-            if(CheckErrorUrlExists() == true)
+            if(CheckErrorUrlExists() == false)
             {
-                if (CheckErrorImageAlreadyExists() == true)
-                {
-                    Images.Add(Image.ToString());
-                    ImagesView.Add(new ImagesView { Id = Guid.NewGuid().ToString(), ImageUrl = Image.ToString() });//
-                }
-                else
-                {
-                    MessageBox.Show("You have already added this image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                MessageBox.Show("The image with the specified url does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if(CheckErrorImageAlreadyExists() == false)
+            {
+                Images.Add(Image.ToString());
             }
             else
             {
-                MessageBox.Show("The image with the specified url does not exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("You have already added this image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             tbImage.Text = "";
             tbImage.Focus();
         }
 
+        private bool CheckErrorUrlExists()
+        {
+            return Uri.TryCreate(Image.ToString(), UriKind.Absolute, out Uri checkUri) && (checkUri.Scheme == Uri.UriSchemeHttp || checkUri.Scheme == Uri.UriSchemeHttps);
+        }
+        private bool CheckErrorImageAlreadyExists()
+        {
+            return Images.Any(x => x.Equals(Image, StringComparison.OrdinalIgnoreCase));
+        }
+
         private void RemoveImageFromList(object sender, RoutedEventArgs e)
         {
-            dgImages.Items.Refresh();
-
             if(SelectedImage == null)
             {
-                MessageBox.Show("Select the image you want to remove", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Select the image you want to remove.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                if (Images.Count > 0)
-                {
-                    SelectedImage = (ImagesView)dgImages.SelectedItem;
-                    Images.Remove(SelectedImage.ImageUrl);
-                    ImagesView.Remove(SelectedImage);
-                }
-                else
-                {
-                    MessageBox.Show("There are currently no added images that you can remove", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                dgImages.Items.Refresh();
+                Images.Remove(SelectedImage);
             }
         }
 
@@ -418,66 +443,6 @@ namespace InitialProject.View
             }
         }
 
-        private bool CheckErrorImagesNumber()
-        {
-            if(Images.Count <= 0)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckErrorUrlExists()
-        {
-            Uri checkUri;
-            bool check = Uri.TryCreate(Image.ToString(), UriKind.Absolute, out checkUri)
-                && (checkUri.Scheme == Uri.UriSchemeHttp || checkUri.Scheme == Uri.UriSchemeHttps);
-
-            return check;
-        }
-        private bool CheckErrorImageAlreadyExists()
-        {
-            foreach(string temporaryImage in Images)
-            {
-                if (temporaryImage.Equals(Image.ToString()) == true)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private bool CheckErrorAllFieldsFilled()
-        {
-            if(tbName.Text.Length > 0 && tbCountry.Text.Length > 0 && tbCity.Text.Length > 0 && tbAddress.Text.Length > 0 && tbMaxGuests.Text.Length > 0 && tbMinDaysReservation.Text.Length > 0 && tbLeftCancelationDays.Text.Length > 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private void ClearAllFields()
-        {
-            tbName.Text = "";
-            tbCountry.Text = "";
-            tbCity.Text = "";
-            tbAddress.Text = "";
-            sliderLatitude.Value = 0;
-            sliderLongitude.Value = 0;
-            rbApartment.IsChecked = true;
-            rbHome.IsChecked = false;
-            rbHut.IsChecked = false;
-            tbMaxGuests.Text = "";
-            tbMinDaysReservation.Text = "";
-            tbLeftCancelationDays.Text = "";
-            Images = new List<string>();
-            ImagesView = new ObservableCollection<ImagesView>();
-            dgImages.ItemsSource = ImagesView;
-            dgImages.Items.Refresh();
-        }
-
         void LoadingRowForDgImages(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
@@ -500,6 +465,12 @@ namespace InitialProject.View
         private void SliderLongitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Longitude = Math.Round((decimal)sliderLongitude.Value, 2);
+        }
+
+        private void CloseForm(object sender, RoutedEventArgs e)
+        {
+            SetDefaultValue();
+            Close();
         }
     }
 }

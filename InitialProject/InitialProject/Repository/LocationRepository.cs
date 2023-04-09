@@ -23,6 +23,16 @@ namespace InitialProject.Repository
             locations = locationSerializer.FromCSV(FilePathLocation);
         }
 
+        public List<Location> FindAllLocations()
+        {
+            return locations;
+        }
+
+        public void SaveLocations(List<Location> allLocations)
+        {
+            locationSerializer.ToCSV(FilePathLocation, allLocations);
+        }
+
         public Location Save(LocationDto locationDto)
         {
             Location location = new(NextIdLocation(), locationDto.Country, locationDto.City, locationDto.Address, locationDto.Latitude, locationDto.Longitude);

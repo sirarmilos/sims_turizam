@@ -24,15 +24,9 @@ namespace InitialProject.Repository
             rateGuests = rateGuestSerializer.FromCSV(FilePathRateGuest);
         }
 
-        public void Save(Reservation reservation, int cleanliness, int followRules, int behavior, string typePayment, int communicativeness, string comment)
+        public void SaveRateGuests(List<RateGuest> allRateGuests)
         {
-            rateGuests = rateGuestSerializer.FromCSV(FilePathRateGuest);
-
-            RateGuest rateGuest = new RateGuest(reservation, cleanliness, followRules, behavior, typePayment, communicativeness, comment);
-
-            rateGuests.Add(rateGuest);
-
-            rateGuestSerializer.ToCSV(FilePathRateGuest, rateGuests);
+            rateGuestSerializer.ToCSV(FilePathRateGuest, allRateGuests);
         }
 
         public List<RateGuest> FindAllRateGuests()

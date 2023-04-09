@@ -53,63 +53,9 @@ namespace InitialProject.Repository
             return accommodations;
         }
 
-        public bool Save(string accommodationName, string owner, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
+        public void SaveAccommodations(List<Accommodation> allAccommodations)
         {
-            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-
-            if(CheckErrorAccommodationName(accommodationName, accommodations) == true)
-            {
-                Location location = new Location(NextIdLocation(), country, city, address, latitude, longitude);
-                Accommodation accommodation = new Accommodation(NextIdAccommodation(), accommodationName, owner, location, type, maxGuests, minDaysReservation, leftCancelationDays, images);
-
-                locations = locationSerializer.FromCSV(FilePathLocation);
-                locations.Add(location);
-                locationSerializer.ToCSV(FilePathLocation, locations);
-
-                accommodations.Add(accommodation);
-                accommodationSerializer.ToCSV(FilePathAccommodation, accommodations);
-
-                MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                return true;
-            }
-            else
-            {
-                MessageBox.Show("Accommodation with this name already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-        }
-
-        private bool CheckErrorAccommodationName(string accommodationName, List<Accommodation> accommodations)
-        {
-            foreach (Accommodation temporaryAccommodation in accommodations)
-            {
-                if (temporaryAccommodation.AccommodationName.Equals(accommodationName) == true)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public int NextIdAccommodation()
-        {
-            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-            if(accommodations.Count < 1)
-            {
-                return 1;
-            }
-            return accommodations.Max(c => c.Id) + 1;
-        }
-
-        public int NextIdLocation()
-        {
-            locations = locationSerializer.FromCSV(FilePathLocation);
-            if (locations.Count < 1)
-            {
-                return 1;
-            }
-            return locations.Max(c => c.Id) + 1;
+            accommodationSerializer.ToCSV(FilePathAccommodation, allAccommodations);
         }
 
         public List<Accommodation> FindAll(string accommodationName, string country, string city, string type, int? maxGuests, int? minDaysReservation)

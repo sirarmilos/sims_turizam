@@ -23,8 +23,6 @@ namespace InitialProject.View
     /// </summary>
     public partial class ShowGuestReviews : Window
     {
-        public ShowGuestReviews showGuestReviews { get; set; }
-
         private readonly ReviewRepository reviewRepository;
 
         private readonly ReservationRepository reservationRepository;
@@ -33,7 +31,11 @@ namespace InitialProject.View
 
         private List<Review> reviews;
 
+        private List<Review> allReviews;
+
         private List<RateGuest> rateGuests;
+
+        private List<RateGuest> allRateGuests;
 
         private List<ShowGuestReviewsDTO> showGuestReviewsDTOs;
 
@@ -54,7 +56,19 @@ namespace InitialProject.View
             set;
         }
 
+        public List<Review> AllReviews
+        {
+            get;
+            set;
+        }
+
         public List<RateGuest> RateGuests
+        {
+            get;
+            set;
+        }
+
+        public List<RateGuest> AllRateGuests
         {
             get;
             set;
@@ -72,59 +86,99 @@ namespace InitialProject.View
         public ShowGuestReviews(string owner)
         {
             InitializeComponent();
+
             Owner = owner;
+
             DataContext = this;
+
             reviewRepository = new ReviewRepository();
             reservationRepository = new ReservationRepository();
             rateGuestRepository = new RateGuestRepository();
+
             Reviews = new List<Review>();
+            AllReviews = new List<Review>();
             RateGuests = new List<RateGuest>();
+            AllRateGuests = new List<RateGuest>();
             ShowGuestReviewsDTOs = new List<ShowGuestReviewsDTO>();
+
             FindAllOwnerReviews();
             FindAllRatedGuest();
             FindAllowedReviews();
+
             dgShowGuestReviews.ItemsSource = ShowGuestReviewsDTOs;
         }
 
         private void FindAllOwnerReviews()
         {
-            Reviews = reviewRepository.FindAllReviews();
+            AllReviews = reviewRepository.FindAllReviews();
 
-            Reviews = reservationRepository.FindReservationsForReviews(Reviews);
+            FindReservationsForReviews();
 
-            List<Review> temporaryReviews = new List<Review>(Reviews);
-
-            foreach(Review temporaryReview in temporaryReviews)
+            foreach(Review temporaryReview in AllReviews.ToList())
             {
-                if (temporaryReview.Reservation.Accommodation.OwnerUsername.Equals(Owner) == false)
+                if (temporaryReview.Reservation.Accommodation.OwnerUsername.Equals(Owner) == true)
                 {
-                    Reviews.Remove(temporaryReview);
+                    Reviews.Add(temporaryReview);
+                }
+            }
+        }
+
+        private void FindReservationsForReviews()
+        {
+            List<Reservation> allReservations = new List<Reservation>();
+            allReservations = reservationRepository.FindAllReservations();
+
+            foreach (Review temporaryReview in AllReviews.ToList())
+            {
+                foreach (Reservation temporaryReservation in allReservations.ToList())
+                {
+                    if (temporaryReview.Reservation.ReservationId == temporaryReservation.ReservationId)
+                    {
+                        temporaryReview.Reservation = temporaryReservation;
+                        break;
+                    }
                 }
             }
         }
 
         private void FindAllRatedGuest()
         {
-            RateGuests = rateGuestRepository.FindAllRateGuests();
+            AllRateGuests = rateGuestRepository.FindAllRateGuests();
 
-            RateGuests = reservationRepository.FindReservationsForRateGuestsReview(RateGuests);
+            FindReservationsForRateGuestsReview();
 
-            List<RateGuest> temporaryRateGuests = new List<RateGuest>(RateGuests);
-
-            foreach(RateGuest temporaryRateGuest in temporaryRateGuests)
+            foreach(RateGuest temporaryRateGuest in AllRateGuests.ToList())
             {
-                if(temporaryRateGuest.Reservation.Accommodation.OwnerUsername.Equals(Owner) == false)
+                if(temporaryRateGuest.Reservation.Accommodation.OwnerUsername.Equals(Owner) == true)
                 {
-                    RateGuests.Remove(temporaryRateGuest);
+                    RateGuests.Add(temporaryRateGuest);
+                }
+            }
+        }
+
+        public void FindReservationsForRateGuestsReview()
+        {
+            List<Reservation> allReservations = new List<Reservation>();
+            allReservations = reservationRepository.FindAllReservations();
+
+            foreach (RateGuest temporaryRateGuest in AllRateGuests.ToList())
+            {
+                foreach (Reservation temporaryReservation in allReservations.ToList())
+                {
+                    if (temporaryRateGuest.Reservation.ReservationId == temporaryReservation.ReservationId)
+                    {
+                        temporaryRateGuest.Reservation = temporaryReservation;
+                        break;
+                    }
                 }
             }
         }
 
         private void FindAllowedReviews()
         {
-            foreach(RateGuest temporaryRateGuest in RateGuests)
+            foreach(RateGuest temporaryRateGuest in RateGuests.ToList())
             {
-                foreach(Review temporaryReview in Reviews)
+                foreach(Review temporaryReview in Reviews.ToList())
                 {
                     if(temporaryRateGuest.Reservation.ReservationId == temporaryReview.Reservation.ReservationId)
                     {
