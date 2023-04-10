@@ -16,17 +16,37 @@ namespace InitialProject.Service
 
         private readonly LocationRepository locationRepository;
 
+        public List<Accommodation> AllAccommodations
+        {
+            get;
+            set;
+        }
+
+        public List<Location> AllLocations
+        {
+            get;
+            set;
+        }
+
         public AccommodationService()
         {
             accommodationRepository = new AccommodationRepository();
             locationRepository = new LocationRepository();
+
+            ListInitialization();
+        }
+
+        private void ListInitialization()
+        {
+            AllAccommodations = new List<Accommodation>();
+            AllLocations = new List<Location>();
         }
 
         public bool IsAccommodationNameExist(string accommodationName)
         {
             // poziva se vise puta i ima istu vrednost, tj. uzima sve smestaje, mozda da bude kao private polje i property get i set da ima
-            List<Accommodation> allAccommodations = accommodationRepository.FindAllAccommodations();
-            return allAccommodations.Exists(x => x.AccommodationName.Equals(accommodationName, StringComparison.OrdinalIgnoreCase));
+            AllAccommodations = accommodationRepository.FindAllAccommodations();
+            return AllAccommodations.Exists(x => x.AccommodationName.Equals(accommodationName, StringComparison.OrdinalIgnoreCase));
         }
 
         public void SaveNewAccommodation(SaveNewAccommodationDTO saveNewAccommodationDTO)
@@ -36,13 +56,13 @@ namespace InitialProject.Service
 
         public Location SaveLocation(SaveNewAccommodationDTO saveNewAccommodationDTO)
         {
+            AllLocations = locationRepository.FindAllLocations();
+
             Location location = new Location(NextIdLocation(), saveNewAccommodationDTO);
 
-            List<Location> allLocations = locationRepository.FindAllLocations();
+            AllLocations.Add(location);
 
-            allLocations.Add(location);
-
-            locationRepository.SaveLocations(allLocations);
+            locationRepository.SaveLocations(AllLocations);
 
             return location;
         }
@@ -51,35 +71,29 @@ namespace InitialProject.Service
         {
             Accommodation accommodation = new Accommodation(NextIdAccommodation(), saveNewAccommodationDTO, location);
 
-            List<Accommodation> allAccommodations = accommodationRepository.FindAllAccommodations();
+            AllAccommodations.Add(accommodation);
 
-            allAccommodations.Add(accommodation);
-
-            accommodationRepository.SaveAccommodations(allAccommodations);
+            accommodationRepository.SaveAccommodations(AllAccommodations);
         }
 
         public int NextIdLocation()
         {
-            List<Location> allLocations = locationRepository.FindAllLocations();
-
-            if (allLocations.Count < 1)
+            if (AllLocations.Count < 1)
             {
                 return 1;
             }
 
-            return allLocations.Max(x => x.Id) + 1;
+            return AllLocations.Max(x => x.Id) + 1;
         }
 
         public int NextIdAccommodation()
         {
-            List<Accommodation> allAccommodations = accommodationRepository.FindAllAccommodations();
-
-            if (allAccommodations.Count < 1)
+            if (AllAccommodations.Count < 1)
             {
                 return 1;
             }
 
-            return allAccommodations.Max(x => x.Id) + 1;
+            return AllAccommodations.Max(x => x.Id) + 1;
         }
     }
 }
