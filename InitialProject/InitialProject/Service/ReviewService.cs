@@ -20,7 +20,49 @@ namespace InitialProject.Service
 
         private readonly ReservationRepository reservationRepository;
 
+        private readonly RateGuestRepository rateGuestRepository;
+
+        public List<Review> AllReviews
+        {
+            get;
+            set;
+        }
+
+        public List<Reservation> AllReservations
+        {
+            get;
+            set;
+        }
+
+        public List<Review> OwnerReviews
+        {
+            get;
+            set;
+        }
+
+        public List<RateGuest> AllRateGuests
+        {
+            get;
+            set;
+        }
+
+        public List<RateGuest> OwnerRateGuests
+        {
+            get;
+            set;
+        }
+
+        private string owner;
         private string guest1;
+
+        public string Owner
+        {
+            get { return owner; }
+            set
+            {
+                owner = value;
+            }
+        }
 
         public string Guest1
         {
@@ -31,11 +73,25 @@ namespace InitialProject.Service
             }
         }
 
-        public ReviewService(string guest1)
+        public ReviewService(string username)
         {
-            Guest1 = guest1;
+            Owner = username;
+            Guest1 = username;
+
             reviewRepository = new ReviewRepository();
             reservationRepository = new ReservationRepository();
+            rateGuestRepository = new RateGuestRepository();
+
+            ListInitialization();
+        }
+
+        private void ListInitialization()
+        {
+            AllReviews = new List<Review>();
+            AllReservations = new List<Reservation>();
+            OwnerReviews = new List<Review>();
+            AllRateGuests = new List<RateGuest>();
+            OwnerRateGuests = new List<RateGuest>();
         }
 
         public List<CreateReviewDTO> FindAllReviewsForRate()
@@ -127,68 +183,7 @@ namespace InitialProject.Service
         private Reservation FindReservationByReservationId(int reservationId)
         {
             List<Reservation> allReservations = reservationRepository.FindAllReservations();
-
             return allReservations.Find(x => x.ReservationId == reservationId);
-        private readonly RateGuestRepository rateGuestRepository;
-
-        public List<Review> AllReviews
-        {
-            get;
-            set;
-        }
-
-        public List<Reservation> AllReservations
-        {
-            get;
-            set;
-        }
-
-        public List<Review> OwnerReviews
-        {
-            get;
-            set;
-        }
-
-        public List<RateGuest> AllRateGuests
-        {
-            get;
-            set;
-        }
-
-        public List<RateGuest> OwnerRateGuests
-        {
-            get;
-            set;
-        }
-
-        private string owner;
-
-        public string Owner
-        {
-            get { return owner; }
-            set
-            {
-                owner = value;
-            }
-        }
-
-        public ReviewService(string owner)
-        {
-            Owner = owner;
-            reviewRepository = new ReviewRepository();
-            reservationRepository = new ReservationRepository();
-            rateGuestRepository = new RateGuestRepository();
-
-            ListInitialization();
-        }
-
-        private void ListInitialization()
-        {
-            AllReviews = new List<Review>();
-            AllReservations = new List<Reservation>();
-            OwnerReviews = new List<Review>();
-            AllRateGuests = new List<RateGuest>();
-            OwnerRateGuests = new List<RateGuest>();
         }
 
         public List<ShowGuestReviewsDTO> FindAllReviews()
