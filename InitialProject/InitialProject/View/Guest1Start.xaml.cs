@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InitialProject.Model;
+using InitialProject.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +21,51 @@ namespace InitialProject.View
     /// </summary>
     public partial class Guest1Start : Window
     {
-        public Guest1Start()
+
+        private string guest1;
+
+        public string Guest1
+        {
+            get { return guest1; }
+            set
+            {
+                guest1 = value;
+            }
+        }
+
+        //public OwnerStart(string username)
+        //{
+        //    InitializeComponent();
+        //    Owner = username;
+
+        //    reviewRepository = new ReviewRepository();
+        //    reservationRepository = new ReservationRepository();
+        //    userRepository = new UserRepository();
+
+        //    AllReviews = new List<Review>();
+        //    AllReservations = new List<Reservation>();
+
+        //    usernameAndSuperOwner.Header = Owner;
+
+        //    CheckSuperOwner();
+        //}
+
+        public Guest1Start(string username)
         {
             InitializeComponent();
+            Guest1 = username;
+
         }
 
         private void GoToSearchAndShowAccommodation(object sender, RoutedEventArgs e)
         {
-            SearchAndShowAccommodations window = new SearchAndShowAccommodations();
+            SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
+            window.Show();
+        }
+
+        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        {
+            CreateReview window = new CreateReview(Guest1);
             window.Show();
         }
 

@@ -1,10 +1,13 @@
-﻿using InitialProject.Serializer;
+﻿using InitialProject.DTO;
+using InitialProject.Serializer;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Interactivity;
+using System.Xml.Linq;
 
 namespace InitialProject.Model
 {
@@ -38,6 +41,17 @@ namespace InitialProject.Model
             ValueForMoney = valueForMoney;
             Comment = comment;
             Images = images;
+        }
+
+        public Review(Reservation reservation, SaveNewCreateReviewDTO saveNewCreateReviewDTO)
+        {
+            Reservation = reservation;
+            Cleanliness = saveNewCreateReviewDTO.Cleanliness;
+            Staff = saveNewCreateReviewDTO.Staff;
+            Comfort = saveNewCreateReviewDTO.Comfort;
+            ValueForMoney = saveNewCreateReviewDTO.ValueForMoney;
+            Comment = saveNewCreateReviewDTO.Comment;
+            Images = saveNewCreateReviewDTO.Images;
         }
 
         public string[] ToCSV()

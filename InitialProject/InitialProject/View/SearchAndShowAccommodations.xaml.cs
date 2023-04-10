@@ -38,6 +38,16 @@ namespace InitialProject.View
         private bool allTypes;
         private bool home;
         private bool hut;
+        private string guest1;
+
+        public string Guest1
+        {
+            get { return guest1; }
+            set
+            {
+                guest1 = value;
+            }
+        }
 
         public string Image
         {
@@ -201,9 +211,10 @@ namespace InitialProject.View
         }
 
 
-        public SearchAndShowAccommodations()
+        public SearchAndShowAccommodations(string username)
         {
             InitializeComponent();
+            Guest1 = username;
             DataContext = this;
             accommodationRepository = new AccommodationRepository();
             Images = new List<string>();
@@ -228,6 +239,20 @@ namespace InitialProject.View
             AccommodationReservation window = new AccommodationReservation(accommodation);
             window.Show();
         }
+
+        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        {
+            CreateReview window = new CreateReview(Guest1);
+            window.Show();
+        }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
     }
 
 }
