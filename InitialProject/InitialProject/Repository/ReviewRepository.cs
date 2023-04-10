@@ -22,9 +22,14 @@ namespace InitialProject.Repository
             reviews = reviewSerializer.FromCSV(FilePathReview);
         }
 
-        public List<Review> FindAllReviews()
+        public List<Review> FindAll()
         {
             return reviews;
+        }
+
+        public void Save(List<Review> allReviews)
+        {
+            reviewSerializer.ToCSV(FilePathReview, allReviews);
         }
 
     }

@@ -24,6 +24,16 @@ namespace InitialProject.View
         private DateTime startDate;
         private DateTime endDate;
         private int actualReservationDays;
+        private string guest1;
+
+        public string Guest1
+        {
+            get { return guest1; }
+            set
+            {
+                guest1 = value;
+            }
+        }
 
         public Accommodation Accommodation
         {
@@ -424,6 +434,27 @@ namespace InitialProject.View
 
             MessageBox.Show($"You can only select available dates from the list above.");
             return false;
+        }
+
+        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        {
+            CreateReview window = new CreateReview(Guest1);
+            window.Show();
+            Close();
+        }
+
+        private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
+            window.Show();
+            Close();
+        }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
         }
     }
 }

@@ -84,7 +84,7 @@ namespace InitialProject.View
 
         private void CheckSuperOwner()
         {
-            AllReviews = reviewRepository.FindAllReviews();
+            AllReviews = reviewRepository.FindAll();
             AllReservations = reservationRepository.FindAllReservations();
             Reviews = new List<Review>();
 

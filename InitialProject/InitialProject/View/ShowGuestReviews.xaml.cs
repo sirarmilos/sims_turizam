@@ -110,7 +110,7 @@ namespace InitialProject.View
 
         private void FindAllOwnerReviews()
         {
-            AllReviews = reviewRepository.FindAllReviews();
+            AllReviews = reviewRepository.FindAll();
 
             FindReservationsForReviews();
 
