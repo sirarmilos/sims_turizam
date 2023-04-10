@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InitialProject.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,17 @@ namespace InitialProject.DTO
             Comfort = comfort;
             ValueForMoney = valueForMoney;
             Comment = comment;
+        }
+
+        public ShowGuestReviewsDTO(Review review)
+        {
+            AccommodationName = review.Reservation.Accommodation.AccommodationName;
+            GuestUsername = review.Reservation.GuestUsername;
+            Cleanliness = review.Cleanliness;
+            Staff = review.Staff;
+            Comfort = review.Comfort;
+            ValueForMoney = review.ValueForMoney;
+            Comment = review.Comment;
         }
     }
 }

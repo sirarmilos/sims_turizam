@@ -1,6 +1,7 @@
 ﻿using InitialProject.DTO;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,15 +23,7 @@ namespace InitialProject.View
     /// </summary>
     public partial class DeclineBookingMoveRequest : Window
     {
-        public DeclineBookingMoveRequest declineBookingMoveRequest { get; set; }
-
-        private readonly ReservationReschedulingRequestRepository reservationReschedulingRequestRepository;
-
-        private List<ReservationReschedulingRequest> allReservationReschedulingRequests;
-
-        private List<OwnerBookingMoveRequestsDTO> ownerBookingMoveRequestsDTOs;
-
-        private DataGrid dgBookingMoveRequests;
+        private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
         private string owner;
 
@@ -46,7 +39,7 @@ namespace InitialProject.View
         private OwnerBookingMoveRequestsDTO selectedBookingMoveRequest;
         private string comment;
 
-        private OwnerBookingMoveRequestsDTO SelectedBookingMoveRequest
+        public OwnerBookingMoveRequestsDTO SelectedBookingMoveRequest
         {
             get { return selectedBookingMoveRequest; }
             set
@@ -64,36 +57,24 @@ namespace InitialProject.View
             }
         }
 
-        public List<ReservationReschedulingRequest> AllReservationReschedulingRequests
-        {
-            get;
-            set;
-        }
-
-        public List<OwnerBookingMoveRequestsDTO> OwnerBookingMoveRequestsDTOs
-        {
-            get;
-            set;
-        }
-
         public DataGrid DgBookingMoveRequests
         {
             get;
             set;
         }
 
-        public DeclineBookingMoveRequest(List<OwnerBookingMoveRequestsDTO> ownerBookingMoveRequestsDTOs, DataGrid dgBookingMoveRequests, string owner, OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, List<ReservationReschedulingRequest> allReservationReschedulingRequests)
+        public DeclineBookingMoveRequest(ReservationReschedulingRequestService service, string owner, OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, DataGrid dgBookingMoveRequests)
         {
             InitializeComponent();
+
             Owner = owner;
+
             DataContext = this;
 
-            reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService(service, Owner);
 
-            OwnerBookingMoveRequestsDTOs = ownerBookingMoveRequestsDTOs;
             DgBookingMoveRequests = dgBookingMoveRequests;
             SelectedBookingMoveRequest = selectedBookingMoveRequest;
-            AllReservationReschedulingRequests = allReservationReschedulingRequests;
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
@@ -103,27 +84,9 @@ namespace InitialProject.View
 
         private void ConfirmRejection(object sender, RoutedEventArgs e)
         {
-            FindAndUpdateRescheduledReservation();
-
-            OwnerBookingMoveRequestsDTOs.Remove(SelectedBookingMoveRequest);
+            reservationReschedulingRequestService.SaveRejectedRequest(selectedBookingMoveRequest, comment);
             DgBookingMoveRequests.Items.Refresh();
-
             Close();
-        }
-
-        private void FindAndUpdateRescheduledReservation()
-        {
-            foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in AllReservationReschedulingRequests)
-            {
-                if (temporaryReservationReschedulingRequest.Reservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
-                {
-                    temporaryReservationReschedulingRequest.Status = "rejected";
-                    temporaryReservationReschedulingRequest.Comment = Comment;
-                    break;
-                }
-            }
-
-            reservationReschedulingRequestRepository.UpdateReservationReschedulingRequest(AllReservationReschedulingRequests);
         }
     }
 }

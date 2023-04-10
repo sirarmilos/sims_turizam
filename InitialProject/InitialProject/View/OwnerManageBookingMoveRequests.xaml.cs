@@ -1,6 +1,7 @@
 ﻿using InitialProject.DTO;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,25 +24,7 @@ namespace InitialProject.View
     /// </summary>
     public partial class OwnerManageBookingMoveRequests : Window
     {
-        public OwnerManageBookingMoveRequests ownerManageBookingMoveRequests { get; set; }
-
-        private readonly ReservationReschedulingRequestRepository reservationReschedulingRequestRepository;
-
-        private readonly ReservationRepository reservationRepository;
-
-        private readonly AccommodationRepository accommodationRepository;
-
-        private List<ReservationReschedulingRequest> reservationReschedulingRequests;
-
-        private List<ReservationReschedulingRequest> allReservationReschedulingRequests;
-
-        private List<OwnerBookingMoveRequestsDTO> ownerBookingMoveRequestsDTOs;
-
-        private List<Reservation> reservations;
-
-        private List<Reservation> allReservations;
-
-        private List<BusyReservation> busyReservations;
+        private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
         private string owner;
 
@@ -61,8 +44,6 @@ namespace InitialProject.View
         private DateTime newStartDate;
         private DateTime newEndDate;
         private string newDateAvailable;
-
-        private OwnerBookingMoveRequestsDTO selectedBookingMoveRequest;
 
         public string GuestUsername
         {
@@ -133,37 +114,7 @@ namespace InitialProject.View
             set;
         }
 
-        public List<ReservationReschedulingRequest> ReservationReschedulingRequests
-        {
-            get;
-            set;
-        }
-
-        public List<ReservationReschedulingRequest> AllReservationReschedulingRequests
-        {
-            get;
-            set;
-        }
-
         public List<OwnerBookingMoveRequestsDTO> OwnerBookingMoveRequestsDTOs
-        {
-            get;
-            set;
-        }
-
-        public List<Reservation> Reservations
-        {
-            get;
-            set;
-        }
-
-        public List<Reservation> AllReservations
-        {
-            get;
-            set;
-        }
-
-        public List<BusyReservation> BusyReservations
         {
             get;
             set;
@@ -172,148 +123,60 @@ namespace InitialProject.View
         public OwnerManageBookingMoveRequests(string owner)
         {
             InitializeComponent();
+
             Owner = owner;
+
             DataContext = this;
 
-            reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
-            reservationRepository = new ReservationRepository();
-            accommodationRepository = new AccommodationRepository();
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService(Owner);
 
-            AllReservationReschedulingRequests = new List<ReservationReschedulingRequest>();
             OwnerBookingMoveRequestsDTOs = new List<OwnerBookingMoveRequestsDTO>();
-            AllReservations = new List<Reservation>();
-            BusyReservations = new List<BusyReservation>();
 
-            FindAllOwnerReservations();
-            FindAllOwnerPendingRequests();
-            ShowAllOwnerPendingRequests();
+            OwnerBookingMoveRequestsDTOs = reservationReschedulingRequestService.FindPendingReservationReschedulingRequests();
 
-            dgBookingMoveRequests.ItemsSource = OwnerBookingMoveRequestsDTOs;
+            SetDefaultValue();
+        }
 
+        private void SetDefaultValue()
+        {
             buttonAcceptRequest.IsEnabled = false;
             buttonDeclineRequest.IsEnabled = false;
             SelectedBookingMoveRequest = null;
         }
 
-        private void FindAllOwnerReservations()
+        private void AcceptRequest(object sender, RoutedEventArgs e)
         {
-            AllReservations = reservationRepository.FindAllReservations();
+            OwnerBookingMoveRequestsDTOs = reservationReschedulingRequestService.SaveAcceptedRequest(SelectedBookingMoveRequest);
 
-            Reservations = new List<Reservation>();
+            dgBookingMoveRequests.Items.Refresh();
 
-            foreach (Reservation temporaryReservation in AllReservations.ToList())
-            {
-                if (temporaryReservation.Accommodation.OwnerUsername.Equals(Owner) == true)
-                {
-                    Reservations.Add(temporaryReservation);
-                }
-            }
+            dgBookingMoveRequests.ItemsSource = OwnerBookingMoveRequestsDTOs;
         }
 
-        private void FindAllOwnerPendingRequests()
+        private void DeclineRequest(object sender, RoutedEventArgs e)
         {
-            AllReservationReschedulingRequests = reservationReschedulingRequestRepository.FindAllReservationReschedulingRequests();
+            DeclineBookingMoveRequest window = new DeclineBookingMoveRequest(reservationReschedulingRequestService, Owner, SelectedBookingMoveRequest, dgBookingMoveRequests);
 
-            ReservationReschedulingRequests = new List<ReservationReschedulingRequest>();
-
-            FindReservationsForReservationReschedulingRequests();
+            window.Show();
         }
 
-        private void FindReservationsForReservationReschedulingRequests()
+        void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
         {
-            List<Accommodation> accommodations = new List<Accommodation>();
-
-            accommodations = accommodationRepository.FindAllAccommodations();
-
-            foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in AllReservationReschedulingRequests.ToList())
-            {
-                foreach (Reservation temporaryReservation in Reservations.ToList())
-                {
-                    if (temporaryReservationReschedulingRequest.Reservation.ReservationId == temporaryReservation.ReservationId)
-                    {
-                        temporaryReservationReschedulingRequest.Reservation = temporaryReservation;
-                        foreach (Accommodation temporaryAccommodation in accommodations.ToList())
-                        {
-                            if (temporaryReservationReschedulingRequest.Reservation.Accommodation.Id == temporaryAccommodation.Id && temporaryReservationReschedulingRequest.Reservation.Accommodation.OwnerUsername.Equals(Owner) == true && temporaryReservationReschedulingRequest.Status.Equals("pending") == true)
-                            {
-                                ReservationReschedulingRequests.Add(temporaryReservationReschedulingRequest);
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
-        private void ShowAllOwnerPendingRequests()
+        private void AcceptRequestButtonEnable(object sender, SelectionChangedEventArgs e)
         {
-            foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequest in ReservationReschedulingRequests.ToList())
+            if(SelectedBookingMoveRequest == null)
             {
-                foreach(Reservation temporaryReservation in Reservations.ToList())
-                {
-                    if(temporaryReservationReschedulingRequest.Reservation.ReservationId == temporaryReservation.ReservationId)
-                    {
-                        string newDateAvailable = "Available";
-                        if (IsNewDateAvailable(temporaryReservationReschedulingRequest.Reservation.ReservationId, temporaryReservation.Accommodation.Id, temporaryReservationReschedulingRequest.NewStartDate, temporaryReservationReschedulingRequest.NewEndDate) == false)
-                        {
-                            newDateAvailable = "Busy";
-                        }
-                        OwnerBookingMoveRequestsDTO temporaryOwnerBookingMoveRequestsDTO = new OwnerBookingMoveRequestsDTO(temporaryReservation.ReservationId, temporaryReservation.GuestUsername, temporaryReservation.Accommodation.AccommodationName, temporaryReservation.StartDate, temporaryReservation.EndDate, temporaryReservationReschedulingRequest.NewStartDate, temporaryReservationReschedulingRequest.NewEndDate, newDateAvailable);
-                        OwnerBookingMoveRequestsDTOs.Add(temporaryOwnerBookingMoveRequestsDTO);
-                    }
-                }
+                buttonAcceptRequest.IsEnabled = false;
+                buttonDeclineRequest.IsEnabled = false;
             }
-        }
-
-        private bool IsNewDateAvailable(int reservationId, int accommodationId, DateTime newStartDate, DateTime newEndDate)
-        {
-            List<Reservation> accommodationReservations = FindAllReservationsByAccommodationId(accommodationId);
-
-            List<Reservation> reservationsToBusyReservations = new List<Reservation>();
-
-            foreach (Reservation temporaryReservation in accommodationReservations.ToList())
+            else
             {
-                if(temporaryReservation.ReservationId == reservationId)
-                {
-                    reservationsToBusyReservations.Add(temporaryReservation);
-                }
-
-                bool firstExpression = (DateTime.Compare(temporaryReservation.StartDate, newStartDate) < 0 && DateTime.Compare(temporaryReservation.EndDate, newStartDate) < 0);
-                bool secondExpression = (DateTime.Compare(temporaryReservation.StartDate, newEndDate) > 0 && DateTime.Compare(temporaryReservation.EndDate, newEndDate) > 0);
-
-                if ( (firstExpression || secondExpression) == false)
-                {
-                    if (temporaryReservation.ReservationId != reservationId)
-                    {
-                        reservationsToBusyReservations.Add(temporaryReservation);
-                    }
-                }
+                buttonAcceptRequest.IsEnabled = true;
+                buttonDeclineRequest.IsEnabled = true;
             }
-
-            BusyReservations.Add(new BusyReservation(reservationId, reservationsToBusyReservations));
-
-            if(reservationsToBusyReservations.Count > 1) // 1 jer se ubacuje taj bas koji treba da se odobri ili ne
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private List<Reservation> FindAllReservationsByAccommodationId(int accommodationId)
-        {
-            List<Reservation> accommodationReservations = new List<Reservation>();
-
-            foreach (Reservation reservation in Reservations.ToList())
-            {
-                if (reservation.Accommodation.Id == accommodationId)
-                {
-                    accommodationReservations.Add(reservation);
-                }
-            }
-
-            return accommodationReservations;
         }
 
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
@@ -350,105 +213,6 @@ namespace InitialProject.View
             OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner);
             window.Show();
             Close();
-        }
-
-        void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
-
-        private void AcceptRequest(object sender, RoutedEventArgs e)
-        {
-            foreach (Reservation temporaryReservation in AllReservations.ToList<Reservation>())
-            {
-                if (temporaryReservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
-                {
-                    if (SelectedBookingMoveRequest.NewDateAvailable.Equals("Available") == true)
-                    {
-                        temporaryReservation.StartDate = SelectedBookingMoveRequest.NewStartDate;
-                        temporaryReservation.EndDate = SelectedBookingMoveRequest.NewEndDate;
-
-                        foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in AllReservationReschedulingRequests.ToList())
-                        {
-                            if (temporaryReservationReschedulingRequest.Reservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
-                            {
-                                temporaryReservationReschedulingRequest.Status = "accepted";
-                                OwnerBookingMoveRequestsDTOs.Remove(SelectedBookingMoveRequest);
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach(BusyReservation temporaryBusyReservation in BusyReservations.ToList())
-                        {
-                            if(temporaryBusyReservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
-                            {
-                                foreach(Reservation temporaryReservationToDelete in temporaryBusyReservation.ReservationsToDelete.ToList())
-                                {
-                                    if (temporaryReservationToDelete.ReservationId == SelectedBookingMoveRequest.ReservationId)
-                                    {
-                                        Reservation reservation = new Reservation(temporaryReservationToDelete);
-                                        reservation.StartDate = SelectedBookingMoveRequest.NewStartDate;
-                                        reservation.EndDate = SelectedBookingMoveRequest.NewEndDate;
-                                        AllReservations.Add(reservation);
-                                    }
-                                    
-                                    AllReservations.Remove(temporaryReservationToDelete);
-
-                                    foreach (ReservationReschedulingRequest temporaryReservationReschedulingRequest in AllReservationReschedulingRequests.ToList())
-                                    {
-                                        if (temporaryReservationReschedulingRequest.Reservation.ReservationId == SelectedBookingMoveRequest.ReservationId)
-                                        {
-                                            temporaryReservationReschedulingRequest.Status = "accepted";
-                                            OwnerBookingMoveRequestsDTOs.Remove(SelectedBookingMoveRequest);
-                                        }
-                                        else if(temporaryReservationReschedulingRequest.Reservation.ReservationId == temporaryReservationToDelete.ReservationId)
-                                        {
-                                            AllReservationReschedulingRequests.Remove(temporaryReservationReschedulingRequest);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            reservationRepository.UpdateReservations(AllReservations);
-            reservationReschedulingRequestRepository.UpdateReservationReschedulingRequest(AllReservationReschedulingRequests);
-
-            AllReservationReschedulingRequests = new List<ReservationReschedulingRequest>();
-            OwnerBookingMoveRequestsDTOs = new List<OwnerBookingMoveRequestsDTO>();
-            AllReservations = new List<Reservation>();
-            BusyReservations = new List<BusyReservation>();
-
-            FindAllOwnerReservations();
-            FindAllOwnerPendingRequests();
-            ShowAllOwnerPendingRequests();
-
-            dgBookingMoveRequests.ItemsSource = OwnerBookingMoveRequestsDTOs;
-        }
-
-        private void DeclineRequest(object sender, RoutedEventArgs e)
-        {
-            DeclineBookingMoveRequest window = new DeclineBookingMoveRequest(OwnerBookingMoveRequestsDTOs, dgBookingMoveRequests, Owner, SelectedBookingMoveRequest, AllReservationReschedulingRequests);
-
-            window.Show();
-        }
-
-        private void AcceptRequestButtonEnable(object sender, SelectionChangedEventArgs e)
-        {
-            if(SelectedBookingMoveRequest == null)
-            {
-                buttonAcceptRequest.IsEnabled = false;
-                buttonDeclineRequest.IsEnabled = false;
-            }
-            else
-            {
-                buttonAcceptRequest.IsEnabled = true;
-                buttonDeclineRequest.IsEnabled = true;
-            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InitialProject.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,18 @@ namespace InitialProject.DTO
             OldEndDate = oldEndDate;
             NewStartDate = newStartDate;
             NewEndDate = newEndDate;
+            NewDateAvailable = newDateAvailable;
+        }
+
+        public OwnerBookingMoveRequestsDTO(Reservation reservation, ReservationReschedulingRequest reservationReschedulingRequest, string newDateAvailable)
+        {
+            ReservationId = reservation.ReservationId;
+            GuestUsername = reservation.GuestUsername;
+            AccommodationName = reservation.Accommodation.AccommodationName;
+            OldStartDate = reservation.StartDate;
+            OldEndDate = reservation.EndDate;
+            NewStartDate = reservationReschedulingRequest.NewStartDate;
+            NewEndDate = reservationReschedulingRequest.NewEndDate;
             NewDateAvailable = newDateAvailable;
         }
     }

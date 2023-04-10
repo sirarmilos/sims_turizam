@@ -1,6 +1,7 @@
 ﻿using InitialProject.DTO;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,19 +24,7 @@ namespace InitialProject.View
     /// </summary>
     public partial class ShowGuestReviews : Window
     {
-        private readonly ReviewRepository reviewRepository;
-
-        private readonly ReservationRepository reservationRepository;
-
-        private readonly RateGuestRepository rateGuestRepository;
-
-        private List<Review> reviews;
-
-        private List<Review> allReviews;
-
-        private List<RateGuest> rateGuests;
-
-        private List<RateGuest> allRateGuests;
+        private readonly ReviewService reviewService;
 
         private List<ShowGuestReviewsDTO> showGuestReviewsDTOs;
 
@@ -49,31 +38,6 @@ namespace InitialProject.View
                 owner = value;
             }
         }
-
-        public List<Review> Reviews
-        {
-            get;
-            set;
-        }
-
-        public List<Review> AllReviews
-        {
-            get;
-            set;
-        }
-
-        public List<RateGuest> RateGuests
-        {
-            get;
-            set;
-        }
-
-        public List<RateGuest> AllRateGuests
-        {
-            get;
-            set;
-        }
-
         public List<ShowGuestReviewsDTO> ShowGuestReviewsDTOs
         {
             get { return showGuestReviewsDTOs; }
@@ -91,102 +55,18 @@ namespace InitialProject.View
 
             DataContext = this;
 
-            reviewRepository = new ReviewRepository();
-            reservationRepository = new ReservationRepository();
-            rateGuestRepository = new RateGuestRepository();
+            reviewService = new ReviewService(Owner);
 
-            Reviews = new List<Review>();
-            AllReviews = new List<Review>();
-            RateGuests = new List<RateGuest>();
-            AllRateGuests = new List<RateGuest>();
             ShowGuestReviewsDTOs = new List<ShowGuestReviewsDTO>();
 
-            FindAllOwnerReviews();
-            FindAllRatedGuest();
-            FindAllowedReviews();
+            ShowGuestReviewsDTOs = reviewService.FindAllReviews();
 
             dgShowGuestReviews.ItemsSource = ShowGuestReviewsDTOs;
         }
 
-        private void FindAllOwnerReviews()
+        void LoadingRowForDgShowGuestReviews(object sender, DataGridRowEventArgs e)
         {
-            AllReviews = reviewRepository.FindAllReviews();
-
-            FindReservationsForReviews();
-
-            foreach(Review temporaryReview in AllReviews.ToList())
-            {
-                if (temporaryReview.Reservation.Accommodation.OwnerUsername.Equals(Owner) == true)
-                {
-                    Reviews.Add(temporaryReview);
-                }
-            }
-        }
-
-        private void FindReservationsForReviews()
-        {
-            List<Reservation> allReservations = new List<Reservation>();
-            allReservations = reservationRepository.FindAllReservations();
-
-            foreach (Review temporaryReview in AllReviews.ToList())
-            {
-                foreach (Reservation temporaryReservation in allReservations.ToList())
-                {
-                    if (temporaryReview.Reservation.ReservationId == temporaryReservation.ReservationId)
-                    {
-                        temporaryReview.Reservation = temporaryReservation;
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void FindAllRatedGuest()
-        {
-            AllRateGuests = rateGuestRepository.FindAllRateGuests();
-
-            FindReservationsForRateGuestsReview();
-
-            foreach(RateGuest temporaryRateGuest in AllRateGuests.ToList())
-            {
-                if(temporaryRateGuest.Reservation.Accommodation.OwnerUsername.Equals(Owner) == true)
-                {
-                    RateGuests.Add(temporaryRateGuest);
-                }
-            }
-        }
-
-        public void FindReservationsForRateGuestsReview()
-        {
-            List<Reservation> allReservations = new List<Reservation>();
-            allReservations = reservationRepository.FindAllReservations();
-
-            foreach (RateGuest temporaryRateGuest in AllRateGuests.ToList())
-            {
-                foreach (Reservation temporaryReservation in allReservations.ToList())
-                {
-                    if (temporaryRateGuest.Reservation.ReservationId == temporaryReservation.ReservationId)
-                    {
-                        temporaryRateGuest.Reservation = temporaryReservation;
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void FindAllowedReviews()
-        {
-            foreach(RateGuest temporaryRateGuest in RateGuests.ToList())
-            {
-                foreach(Review temporaryReview in Reviews.ToList())
-                {
-                    if(temporaryRateGuest.Reservation.ReservationId == temporaryReview.Reservation.ReservationId)
-                    {
-                        ShowGuestReviewsDTO showGuestReviewsDTO = new ShowGuestReviewsDTO(temporaryReview.Reservation.Accommodation.AccommodationName, temporaryReview.Reservation.GuestUsername, temporaryReview.Cleanliness, temporaryReview.Staff, temporaryReview.Comfort, temporaryReview.ValueForMoney, temporaryReview.Comment);
-                        ShowGuestReviewsDTOs.Add(showGuestReviewsDTO);
-                    }
-                }
-            }
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
@@ -224,11 +104,5 @@ namespace InitialProject.View
             window.Show();
             Close();
         }
-
-        void LoadingRowForDgShowGuestReviews(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
-
     }
 }
