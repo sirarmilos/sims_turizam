@@ -193,6 +193,8 @@ namespace InitialProject.View
 
             reviewService.SaveNewReview(saveNewCreateReviewDTO);
 
+            reviewService.CheckSuperOwner(saveNewCreateReviewDTO.ReservationId);
+
             CreateReviewDTOs.Remove(SelectedAccommodation);
             dgCreateReview.Items.Refresh();
 
