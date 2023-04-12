@@ -16,6 +16,8 @@ namespace InitialProject.Service
 {
     public class ReviewService
     {
+        private readonly UserService userService;
+
         private readonly ReviewRepository reviewRepository;
 
         private readonly ReservationRepository reservationRepository;
@@ -52,6 +54,18 @@ namespace InitialProject.Service
             set;
         }
 
+        public List<Reservation> Guest1Reservations
+        {
+            get;
+            set;
+        }
+
+        public List<Review> Guest1Reviews
+        {
+            get;
+            set;
+        }
+
         private string owner;
         private string guest1;
 
@@ -78,6 +92,8 @@ namespace InitialProject.Service
             Owner = username;
             Guest1 = username;
 
+            userService = new UserService();
+
             reviewRepository = new ReviewRepository();
             reservationRepository = new ReservationRepository();
             rateGuestRepository = new RateGuestRepository();
@@ -92,50 +108,50 @@ namespace InitialProject.Service
             OwnerReviews = new List<Review>();
             AllRateGuests = new List<RateGuest>();
             OwnerRateGuests = new List<RateGuest>();
+            Guest1Reservations = new List<Reservation>();
+            Guest1Reviews = new List<Review>();
         }
 
         public List<CreateReviewDTO> FindAllReviewsForRate()
         {
-            List<Reservation> allReservations = reservationRepository.FindAllReservations();
+            AllReservations = reservationRepository.FindAllReservations();
 
-            List<Reservation> guest1Reservations = FindGuest1Reservations(allReservations);
+            FindGuest1Reservations();
 
-            List<Review> allReviews = reviewRepository.FindAll(); 
+            AllReviews = reviewRepository.FindAll();
 
-            allReviews = FindReservationsForCreateReview(allReviews, allReservations);
+            FindReservationsForCreateReview();
 
-            List<Review> guest1Reviews = FindGuest1Reviews(allReviews);
+            FindGuest1Reviews();
 
-            return FindCreateReviewDTOs(guest1Reservations, guest1Reviews);
+            return FindCreateReviewDTOs();
         }
 
-        public List<Reservation> FindGuest1Reservations(List<Reservation> allReservations)
+        public void FindGuest1Reservations()
         {
-            return allReservations.ToList().FindAll(x => x.GuestUsername.Equals(Guest1) == true);
+            Guest1Reservations = AllReservations.ToList().FindAll(x => x.GuestUsername.Equals(Guest1) == true);
         }
 
-        public List<Review> FindGuest1Reviews(List<Review> allReviews)
+        public void FindGuest1Reviews()
         {
-            return allReviews.ToList().FindAll(x => x.Reservation.GuestUsername.Equals(Guest1) == true);
+            Guest1Reviews = AllReviews.ToList().FindAll(x => x.Reservation.GuestUsername.Equals(Guest1) == true);
         }
 
-        public List<Review> FindReservationsForCreateReview(List<Review> allReviews, List<Reservation> allReservations)
+        public void FindReservationsForCreateReview()
         {
-            foreach (Review temporaryReview in allReviews.ToList())
+            foreach (Review temporaryReview in AllReviews.ToList())
             {
-                temporaryReview.Reservation = allReservations.ToList().Find(x => x.ReservationId == temporaryReview.Reservation.ReservationId);
+                temporaryReview.Reservation = AllReservations.ToList().Find(x => x.ReservationId == temporaryReview.Reservation.ReservationId);
             }
-
-            return allReviews;
         }
 
-        public List<CreateReviewDTO> FindCreateReviewDTOs(List<Reservation> guest1Reservations, List<Review> guest1Reviews)
+        public List<CreateReviewDTO> FindCreateReviewDTOs()
         {
             List<CreateReviewDTO> createReviewDTOs = new List<CreateReviewDTO>();
 
-            foreach (Reservation temporaryReservation in guest1Reservations.ToList())
+            foreach (Reservation temporaryReservation in Guest1Reservations.ToList())
             {
-                Review temporaryReview = guest1Reviews.Find(x => x.Reservation.ReservationId == temporaryReservation.ReservationId);
+                Review temporaryReview = Guest1Reviews.Find(x => x.Reservation.ReservationId == temporaryReservation.ReservationId);
 
                 if(temporaryReview == null)
                 {
@@ -247,6 +263,43 @@ namespace InitialProject.Service
             }
 
             return showGuestReviewsDTOs;
+        }
+
+        public void CheckSuperOwner(int reservationId)
+        {
+            AllReviews = reviewRepository.FindAllReviews();
+
+            AllReservations = reservationRepository.FindAllReservations();
+
+            FindReservationsForReviews();
+
+            FindOwnerUsernameByReservationId(reservationId);
+
+            FindOwnerReviews();
+
+            if(OwnerReviews.Count >= 50 && FindAverageGuestReviews() > new Decimal(4.5))
+            {
+                userService.UpdateUsers(Owner, "super");
+            }
+            else if(IsSuperOwner(reservationId) == true) // ako je bio super owner, a ne treba vise da bude
+            {
+                userService.UpdateUsers(Owner, "no_super");
+            }
+        }
+
+        public void FindOwnerUsernameByReservationId(int reservationId)
+        {
+            Owner = AllReservations.Find(x => x.ReservationId == reservationId).Accommodation.OwnerUsername;
+        }
+
+        private Decimal FindAverageGuestReviews()
+        {
+            return (decimal)OwnerReviews.Sum(x => (x.Cleanliness + x.Staff + x.Comfort + x.ValueForMoney) / new Decimal(4.0)) / OwnerReviews.Count;
+        }
+
+        private bool IsSuperOwner(int reservationId)
+        {
+            return userService.FindSuperTypeByOwnerName(Owner).Equals("super");
         }
     }
 }
