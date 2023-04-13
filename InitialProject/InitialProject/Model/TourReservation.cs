@@ -13,24 +13,35 @@ namespace InitialProject.Model
     {
         public string userId { get; set; }
         public int tourGuidenceId { get; set; }
-        public int TourKeyPointArrivalId { get; set; }
+        public List<Boolean> TourKeyPointArrival { get; set; }
         public int numberOfGuests { get; set; }
         public Boolean Confirmed { get; set; }
 
         public TourReservation() { }
 
-        public TourReservation(string userId, int reservatedTourId, int arrivalTourKeyPointId, int numberOfGuests, Boolean confirmed)
+        public TourReservation(string userId, int reservatedTourId, List<Boolean> arrivalTourKeyPoint, int numberOfGuests, Boolean confirmed)
         {
             this.userId = userId;
             this.tourGuidenceId = reservatedTourId;
-            TourKeyPointArrivalId = arrivalTourKeyPointId;
+            TourKeyPointArrival = arrivalTourKeyPoint;
             this.numberOfGuests = numberOfGuests;
             Confirmed = confirmed;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), TourKeyPointArrivalId.ToString(), numberOfGuests.ToString(), Confirmed.ToString() };
+            string boolToString = "";
+
+            foreach (Boolean kp in TourKeyPointArrival)
+            {
+                boolToString += kp;
+                boolToString += ", ";
+            }
+
+            boolToString = boolToString.Substring(0, boolToString.Length - 2);
+
+
+            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), boolToString.ToString(), numberOfGuests.ToString(), Confirmed.ToString() };
             return csvValues;
         }
 
@@ -40,7 +51,18 @@ namespace InitialProject.Model
 
             tourGuidenceId = Convert.ToInt32(values[1]);
 
-            TourKeyPointArrivalId = Convert.ToInt32(values[2]); 
+            string[] BoolSplit = values[2].Split(',');
+
+            List<Boolean> arrivals = new List<Boolean>();
+
+            foreach (string b in BoolSplit)
+            {
+                arrivals.Add(Convert.ToBoolean(b));
+            }
+
+            TourKeyPointArrival = arrivals;
+
+            //TourKeyPointArrivalId = Convert.ToInt32(values[2]); 
 
             numberOfGuests = Convert.ToInt32(values[3]);
 

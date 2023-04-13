@@ -10,30 +10,37 @@
         <DataGrid x:Name="dataGrid" ItemsSource="{Binding tourReservations}" AutoGenerateColumns="False" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Guest Name" Binding="{Binding userId}" />
-                <DataGridTemplateColumn Header="Options">
+                <DataGridTemplateColumn Header="Key Point Name">
                     <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
                             <ListBox ItemsSource="{Binding TourKeyPoints}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <CheckBox Content="{Binding KeyPointName}"  />
+                                        <Label Content="{Binding KeyPointName}"  />
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Action">
-                    <DataGridTemplateColumn.CellTemplate>
+                <DataGridTemplateColumn Header="Mark">
+                    <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
-                            <Button Content="PRESS TO SAVE" Click="Save"/>
+                            <ListBox ItemsSource="{Binding TourKeyPointArrival}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Content="{Binding TourKeyPointArrival}"  />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button Content="CONFIRM" HorizontalAlignment="Left" Margin="711,103,0,0" VerticalAlignment="Top" Click="Save"/>
 
-        
+
 
 
     </Grid>

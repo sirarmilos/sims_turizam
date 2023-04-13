@@ -34,6 +34,8 @@ namespace InitialProject.View
 
         private readonly TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
 
+        private readonly TourReservationRepository tourReservationRepository = new TourReservationRepository();
+
         private string TourId { get; set; }
 
         private int numberOfGuests;
@@ -83,10 +85,11 @@ namespace InitialProject.View
                 DateTime dateTime = tourDisplayDTO.TourDate;
                 Tour tour = tourRepository.GetByName(tourDisplayDTO.TourName);
                 TourGuidence tourGuidence = tourGuidenceRepository.GetByTourAndDate(tour,dateTime);
+                List<Boolean> arrivals = tourReservationRepository.SetArrivalsToFalse(tourGuidence.Id);
 
                 if(numberOfGuests<=tourGuidence.FreeSlots)
                 {
-                    if (tourGuidenceRepository.CreateReservation("korisnik1", tourGuidence, numberOfGuests))
+                    if (tourGuidenceRepository.CreateReservation("korisnik1", tourGuidence, arrivals, numberOfGuests))
                         MessageBox.Show("Uspesna rezervacija ture!");
                     else
                         MessageBox.Show("Greska prilikom kreiranja rezervacije!");

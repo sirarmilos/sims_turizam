@@ -206,11 +206,11 @@ namespace InitialProject.Repository
             return tourGuidence;
         }
 
-        public bool CreateReservation(string username, TourGuidence tourGuidence, int numberOfGuests)
+        public bool CreateReservation(string username, TourGuidence tourGuidence, List<Boolean> arrivals, int numberOfGuests)
         {
             try
             {
-                TourReservation reservation = new TourReservation(username,tourGuidence.Id, 0, numberOfGuests, false);
+                TourReservation reservation = new TourReservation(username,tourGuidence.Id, arrivals, numberOfGuests, false);
                 tourReservations.Add(reservation);
                 tourReservationSerializer.ToCSV(FilePathReservatedTours,tourReservations);
                 UpdateTourGuidenceFreeSlot(tourGuidence,numberOfGuests);
