@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace InitialProject.Repository
 {
@@ -53,7 +54,34 @@ namespace InitialProject.Repository
 
         public List<Reservation> FindAllReservations()
         {
+            reservations = reservationSerializer.FromCSV(FilePathReservation);
+            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
+
+            foreach (Reservation reservation in reservations)
+            {
+                if (accommodations == null)
+                    break;
+                foreach (Accommodation accommodation in accommodations)
+                {
+                    if (accommodation.Id == reservation.Accommodation.Id)
+                    {
+                        reservation.Accommodation = accommodation;
+                        break;
+                    }
+                }
+            }
+
             return reservations;
+        }
+
+        public List<Reservation> FindReservationsByOwnerUsername(string ownerUsername)
+        {
+            return FindAllReservations().ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+        }
+
+        public Reservation FindReservationByReservationId(int reservationId)
+        {
+            return FindAllReservations().ToList().Find(x => x.ReservationId == reservationId);
         }
 
         public void Save(string guestUsername, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)

@@ -50,12 +50,51 @@ namespace InitialProject.Repository
 
         public List<Accommodation> FindAllAccommodations()
         {
+            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
+            locations = locationSerializer.FromCSV(FilePathLocation);
+
+            foreach (Accommodation accommodation in accommodations)
+            {
+                if (locations == null)
+                    break;
+                foreach (Location location in locations)
+                {
+                    if (location.Id == accommodation.Location.Id)
+                    {
+                        accommodation.Location = location;
+                        break;
+                    }
+                }
+            }
+
             return accommodations;
         }
 
         public void SaveAccommodations(List<Accommodation> allAccommodations)
         {
             accommodationSerializer.ToCSV(FilePathAccommodation, allAccommodations);
+        }
+
+        public void UpdateAccommodations(Accommodation accommodation)
+        {
+            List<Accommodation> allAccommodations = FindAllAccommodations();
+            allAccommodations.Add(accommodation);
+            SaveAccommodations(allAccommodations);
+        }
+
+        public bool IsAccommodationWithAccommodationNameExist(string accommodationName)
+        {
+            return FindAllAccommodations().Exists(x => x.AccommodationName.Equals(accommodationName) == true);
+        }
+
+        public int NextIdAccommodation()
+        {
+            if (FindAllAccommodations().Count < 1)
+            {
+                return 1;
+            }
+
+            return FindAllAccommodations().Max(x => x.Id) + 1;
         }
 
         public List<Accommodation> FindAll(string accommodationName, string country, string city, string type, int? maxGuests, int? minDaysReservation)

@@ -26,10 +26,6 @@ namespace InitialProject.View
     {
         private readonly RateGuestsService rateGuestsService;
 
-        private List<RateGuestsDTO> rateGuestsDTOs;
-
-        private RateGuestsDTO selectedGuest;
-
         private string owner;
 
         public string Owner

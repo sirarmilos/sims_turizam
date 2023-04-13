@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Serializer;
+using InitialProject.View;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +13,8 @@ namespace InitialProject.Repository
 {
     public class RateGuestRepository
     {
+        private ReservationRepository reservationRepository;
+
         private const string FilePathRateGuest = "../../../Resources/Data/rateguests.csv";
 
         private readonly Serializer<RateGuest> rateGuestSerializer;
@@ -31,7 +34,33 @@ namespace InitialProject.Repository
 
         public List<RateGuest> FindAllRateGuests()
         {
+            reservationRepository = new ReservationRepository();
+
+            rateGuests = rateGuestSerializer.FromCSV(FilePathRateGuest);
+
+            foreach(RateGuest temporaryRateGuest in rateGuests.ToList())
+            {
+                temporaryRateGuest.Reservation = reservationRepository.FindReservationByReservationId(temporaryRateGuest.Reservation.ReservationId);
+            }
+
             return rateGuests;
+        }
+
+        public List<RateGuest> FindRateGuestsByOwnerUsername(string ownerUsername)
+        {
+            return FindAllRateGuests().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+        }
+
+        public RateGuest FindOwnerRateGuestByReservationId(string ownerUsername, int reservationId)
+        {
+            return FindRateGuestsByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+        }
+
+        public void UpdateRateGuests(RateGuest rateGuest)
+        {
+            List<RateGuest> allRateGuests = FindAllRateGuests();
+            allRateGuests.Add(rateGuest);
+            SaveRateGuests(allRateGuests);
         }
     }
 }
