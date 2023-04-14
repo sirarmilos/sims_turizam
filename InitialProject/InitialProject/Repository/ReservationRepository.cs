@@ -92,6 +92,13 @@ namespace InitialProject.Repository
             SaveReservations(allReservations);
         }
 
+        public void RemoveReservationById(int reservationId, int cancelledReservationId)
+        {
+            List<Reservation> allReservations = FindAllReservations();
+            allReservations.Remove(allReservations.Find(x => x.ReservationId == cancelledReservationId && x.ReservationId != reservationId));
+            SaveReservations(allReservations);
+        }
+
         public void Save(string guestUsername, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
         {
 

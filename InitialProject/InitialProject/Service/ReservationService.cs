@@ -69,5 +69,13 @@ namespace InitialProject.Service
         {
             reservationRepository.UpdateDatesForSelectedBookingMoveRequest(selectedBookingMoveRequest);
         }
+
+        public void RemoveCancelledReservations(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, List<Reservation> cancelledReservations)
+        {
+            foreach (Reservation temporaryReservation in cancelledReservations.ToList())
+            {
+                 reservationRepository.RemoveReservationById(selectedBookingMoveRequest.ReservationId, temporaryReservation.ReservationId);
+            }
+        }
     }
 }

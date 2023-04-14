@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Xml.Linq;
 
 namespace InitialProject.Repository
 {
@@ -59,16 +61,23 @@ namespace InitialProject.Repository
             return FindPendingReservationReschedulingRequestByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
         }
 
-        public void UpdateStatusForSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest)
+        public void UpdateReservationReschedulingRequestToSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, string status, string comment)
         {
             List<ReservationReschedulingRequest> allReservationReschedulingRequests = FindAllReservationReschedulingRequests();
-            allReservationReschedulingRequests.Where(x => x.Reservation.ReservationId == selectedBookingMoveRequest.ReservationId).SetValue(x => x.Status = "accepted");
+            allReservationReschedulingRequests.Where(x => x.Reservation.ReservationId == selectedBookingMoveRequest.ReservationId).SetValue(x => x.Status = status).SetValue(x => x.Comment = comment);
             SaveReservationReschedulingRequests(allReservationReschedulingRequests);
         }
 
         public void SaveReservationReschedulingRequests(List<ReservationReschedulingRequest> allReservationReschedulingRequests)
         {
             reservationReschedulingRequestSerializer.ToCSV(FilePathRescheduledReservations, allReservationReschedulingRequests);
+        }
+
+        public void RemoveReservationReschedulingRequestByReservationId(int reservationId)
+        {
+            List<ReservationReschedulingRequest> allReservationReschedulingRequests = FindAllReservationReschedulingRequests();
+            allReservationReschedulingRequests.Remove(allReservationReschedulingRequests.Find(x => x.Reservation.ReservationId == reservationId));
+            SaveReservationReschedulingRequests(allReservationReschedulingRequests);
         }
     }
 }
