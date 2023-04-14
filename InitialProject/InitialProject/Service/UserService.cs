@@ -18,14 +18,14 @@ namespace InitialProject.Service
             userRepository = new UserRepository();
         }
 
-        public void UpdateUsers(string owner, string superType)
+        public void Update(string owner, string superType)
         {
-            userRepository.UpdateUsers(owner, superType);
+            userRepository.Update(owner, superType);
         }
 
         public string FindSuperTypeByOwnerName(string ownerName)
         {
-            return userRepository.FindAllUsers().Find(x => x.Username.Equals(ownerName) == true).SuperType;
+            return userRepository.FindSuperTypeByOwnerName(ownerName);
         }
     }
 }

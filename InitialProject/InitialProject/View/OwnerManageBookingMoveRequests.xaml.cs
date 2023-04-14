@@ -132,7 +132,7 @@ namespace InitialProject.View
 
             OwnerBookingMoveRequestsDTOs = new List<OwnerBookingMoveRequestsDTO>();
 
-            OwnerBookingMoveRequestsDTOs = reservationReschedulingRequestService.FindPendingReservationReschedulingRequests();
+            OwnerBookingMoveRequestsDTOs = reservationReschedulingRequestService.FindPendingRequests();
 
             SetDefaultValue();
         }

@@ -167,7 +167,7 @@ namespace InitialProject.View
 
             RateGuestsDTOs = new List<RateGuestsDTO>();
 
-            RateGuestsDTOs = rateGuestsService.FindAllGuestsForRate();
+            RateGuestsDTOs = rateGuestsService.FindAllGuestsToRate();
 
             if (RateGuestsDTOs.Count == 0)
             {

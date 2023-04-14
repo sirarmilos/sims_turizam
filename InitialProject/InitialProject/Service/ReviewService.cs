@@ -63,7 +63,7 @@ namespace InitialProject.Service
             rateGuestRepository = new RateGuestRepository();
         }
 
-        public List<CreateReviewDTO> FindAllReviewsForRate()
+        public List<CreateReviewDTO> FindAllReviewsToRate()
         {
             List<Reservation> reservations = FindGuest1Reservations();
 
@@ -79,7 +79,7 @@ namespace InitialProject.Service
 
         public List<Review> FindGuest1Reviews()
         {
-            return reviewRepository.FindGuest1Reviews(Guest1);
+            return reviewRepository.FindReviewsByGuest1Username(Guest1);
         }
 
         public List<CreateReviewDTO> FindCreateReviewDTOs(List<Reservation> guest1reservations, List<Review> guest1Reviews)
@@ -88,7 +88,7 @@ namespace InitialProject.Service
 
             foreach (Reservation temporaryReservation in guest1reservations.ToList())
             {
-                Review temporaryReview = guest1Reviews.Find(x => x.Reservation.ReservationId == temporaryReservation.ReservationId);
+                Review temporaryReview = reviewRepository.FindGuest1ReviewByReservationId(Guest1, temporaryReservation.ReservationId);
 
                 if(temporaryReview == null)
                 {
@@ -124,14 +124,9 @@ namespace InitialProject.Service
 
         public void SaveNewReview(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
         {
-            Review review = new Review(FindReservationById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
+            Review review = new Review(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
 
-            reviewRepository.Save(review); 
-        }
-
-        private Reservation FindReservationById(int reservationId)
-        {
-            return reservationRepository.FindById(reservationId); // U konstruktorima servisa treba da se inicijalizuju polja, dok u konstruktorima repozitorijuma ne treba inicijalizovati polja
+            reviewRepository.Add(review); // mozda Save
         }
 
 
@@ -170,15 +165,15 @@ namespace InitialProject.Service
         {
             string ownerUsername = reservationService.FindOwnerByReservationId(reservationId);
 
-            List<Review> ownerReviews = reviewRepository.FindReviewsByOwnerUsername(ownerUsername);
+            List<Review> ownerReviews = reviewRepository.FindByOwnerUsername(ownerUsername);
 
             if(ownerReviews.Count >= 50 && FindAverageGuestReviews(ownerReviews) > new Decimal(4.5))
             {
-                userService.UpdateUsers(ownerUsername, "super");
+                userService.Update(ownerUsername, "super");
             }
             else if(IsSuperOwner(ownerUsername) == true) // ako je bio super owner, a ne treba vise da bude
             {
-                userService.UpdateUsers(ownerUsername, "no_super");
+                userService.Update(ownerUsername, "no_super");
             }
         }
 
