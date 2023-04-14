@@ -85,7 +85,7 @@ namespace InitialProject.View
 
         private void Cancel(ShowReservationDTO showReservationDTO)
         {
-            bool isReservationCancelEligible = reservationService.Remove(showReservationDTO);
+            bool isReservationCancelEligible = reservationService.IsRemoved(showReservationDTO);
             
             if (!isReservationCancelEligible)
             {

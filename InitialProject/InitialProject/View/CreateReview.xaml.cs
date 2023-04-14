@@ -137,7 +137,7 @@ namespace InitialProject.View
 
             CreateReviewDTOs = new List<CreateReviewDTO>();
 
-            CreateReviewDTOs = reviewService.FindAllReviewsForRate();
+            CreateReviewDTOs = reviewService.FindAllReviewsToRate();
 
             if (CreateReviewDTOs.Count == 0)
             {

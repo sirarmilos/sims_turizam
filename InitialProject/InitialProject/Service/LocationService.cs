@@ -18,11 +18,11 @@ namespace InitialProject.Service
             locationRepository = new LocationRepository();
         }
 
-        public Location SaveLocation(SaveNewAccommodationDTO saveNewAccommodationDTO)
+        public Location Save(SaveNewAccommodationDTO saveNewAccommodationDTO)
         {
             Location location = new Location(locationRepository.NextIdLocation(), saveNewAccommodationDTO);
 
-            locationRepository.UpdateLocations(location);
+            locationRepository.Add(location);
 
             return location;
         }

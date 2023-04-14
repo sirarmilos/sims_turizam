@@ -16,10 +16,12 @@ namespace InitialProject.Service
 {
     public class ReservationService
     {
+        private readonly CanceledReservationService canceledReservationService;
 
         private ReservationRepository reservationRepository;
-        private CanceledReservationRepository canceledReservationRepository;
+
         private string owner;
+
         private string guest1;
 
         public string Owner
@@ -43,7 +45,7 @@ namespace InitialProject.Service
         public ReservationService()
         {
             reservationRepository = new ReservationRepository();
-            canceledReservationRepository = new CanceledReservationRepository();
+            canceledReservationService = new CanceledReservationService();
         }
 
         public ReservationService(string username)
@@ -51,27 +53,27 @@ namespace InitialProject.Service
             Owner = username;
             Guest1 = username;
             reservationRepository = new ReservationRepository();
-            canceledReservationRepository = new CanceledReservationRepository();
+            canceledReservationService = new CanceledReservationService();
         }
 
-        public List<Reservation> FindAllReservations()
+        /* public List<Reservation> FindAllReservations()
         {
             return reservationRepository.FindAllReservations();
-        }
+        }*/
 
         public List<Reservation> FindOwnerReservations()
         {
-            return reservationRepository.FindReservationsByOwnerUsername(Owner);
+            return reservationRepository.FindByOwnerUsername(Owner);
         }
 
-        public Reservation FindReservationsForOwnerRateGuests(RateGuest rateGuest)
+        /* public Reservation FindReservationsForOwnerRateGuests(RateGuest rateGuest)
         {
-            return reservationRepository.FindReservationByReservationId(rateGuest.Reservation.ReservationId);
-        }
+            return reservationRepository.FindById(rateGuest.Reservation.ReservationId);
+        }*/
 
-        public Reservation FindReservationByReservationId(int reservationId)
+        public Reservation FindById(int reservationId)
         {
-            return reservationRepository.FindReservationByReservationId(reservationId);
+            return reservationRepository.FindById(reservationId);
         }
 
         public string FindOwnerByReservationId(int reservationId)
@@ -79,16 +81,23 @@ namespace InitialProject.Service
             return reservationRepository.FindOwnerByReservationId(reservationId);
         }
 
-        public List<Reservation> FindAllReservationsByAccommodationId(int accommodationId)
+        public List<Reservation> FindReservationsByAccommodationId(int accommodationId)
         {
             return FindOwnerReservations().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
         }
 
-        public void UpdateDatesForSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest)
+        public void UpdateDatesToSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest)
         {
-            reservationRepository.UpdateDatesForSelectedBookingMoveRequest(selectedBookingMoveRequest);
+            reservationRepository.UpdateDatesToSelectedBookingMoveRequest(selectedBookingMoveRequest);
         }
 
+        public void RemoveCancelledReservations(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, List<Reservation> cancelledReservations)
+        {
+            foreach (Reservation temporaryReservation in cancelledReservations.ToList())
+            {
+                 reservationRepository.RemoveById(selectedBookingMoveRequest.ReservationId, temporaryReservation.ReservationId);
+            }
+        }
 
 
 
@@ -97,14 +106,14 @@ namespace InitialProject.Service
         {
             Guest1 = username;
 
-            List<Reservation> allReservations = reservationRepository.FindAllReservations();
+            List<Reservation> allReservations = reservationRepository.FindAll();
 
             List<Reservation> guest1Reservations = FindGuest1Reservations(allReservations);
 
             return GetShowReservationsDTO(guest1Reservations);
         }
 
-        public List<Reservation> FindGuest1Reservations(List<Reservation> allReservations)
+        public List<Reservation> FindGuest1Reservations(List<Reservation> allReservations) //
         {
             return allReservations.ToList().FindAll(x => x.GuestUsername.Equals(Guest1) == true);
         }
@@ -115,7 +124,7 @@ namespace InitialProject.Service
 
             foreach (Reservation temporaryReservation in guest1Reservations.ToList())
             {
-                if (temporaryReservation.GuestUsername.Equals(Guest1))
+                if (temporaryReservation.GuestUsername.Equals(Guest1)) //
                 { 
                     showReservationDTOs.Add(new ShowReservationDTO(temporaryReservation));    
                 }
@@ -124,9 +133,9 @@ namespace InitialProject.Service
             return showReservationDTOs;
         }
 
-        public bool Remove(ShowReservationDTO showReservationDTO)
+        public bool IsRemoved(ShowReservationDTO showReservationDTO)
         {
-            Reservation reservation = FindReservationByReservationId(showReservationDTO.ReservationId);
+            Reservation reservation = FindById(showReservationDTO.ReservationId);
 
             int days = reservation.StartDate.Subtract(DateTime.Now).Days;
 
@@ -143,15 +152,9 @@ namespace InitialProject.Service
 
         private void CancelReservation(Reservation reservation)
         {
-            List<Reservation> allReservations = reservationRepository.FindAllReservations();
-            reservationRepository = new ReservationRepository();
-            canceledReservationRepository = new CanceledReservationRepository();
+            reservationRepository.RemoveById(reservation.ReservationId);
 
-            allReservations.Remove(reservation);
-
-            reservationRepository.SaveReservations(allReservations);
-
-            canceledReservationRepository.Save(reservation);
+            canceledReservationService.Save(reservation);
         }
     }
 }

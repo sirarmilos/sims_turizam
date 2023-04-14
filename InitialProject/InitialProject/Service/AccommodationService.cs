@@ -24,19 +24,19 @@ namespace InitialProject.Service
 
         public bool IsAccommodationNameExist(string accommodationName)
         {
-            return accommodationRepository.IsAccommodationWithAccommodationNameExist(accommodationName);
+            return accommodationRepository.IsAccommodationExist(accommodationName);
         }
 
         public void SaveNewAccommodation(SaveNewAccommodationDTO saveNewAccommodationDTO)
         {
-            SaveAccommodation(saveNewAccommodationDTO, locationService.SaveLocation(saveNewAccommodationDTO));
+            SaveAccommodation(saveNewAccommodationDTO, locationService.Save(saveNewAccommodationDTO));
         }
 
         public void SaveAccommodation(SaveNewAccommodationDTO saveNewAccommodationDTO, Location location)
         {
-            Accommodation accommodation = new Accommodation(accommodationRepository.NextIdAccommodation(), saveNewAccommodationDTO, location);
+            Accommodation accommodation = new Accommodation(accommodationRepository.NextId(), saveNewAccommodationDTO, location);
 
-            accommodationRepository.UpdateAccommodations(accommodation);
+            accommodationRepository.Add(accommodation);
         }
     }
 }

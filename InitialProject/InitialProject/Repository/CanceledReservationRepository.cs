@@ -20,7 +20,6 @@ namespace InitialProject.Repository
         public void Save(Reservation reservation)
         {
             canceledReservations = canceledReservationsSerializer.FromCSV(FilePathCanceledReservations);
-
             canceledReservations.Add(reservation);
             canceledReservationsSerializer.ToCSV(FilePathCanceledReservations, canceledReservations);
         }
