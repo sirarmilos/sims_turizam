@@ -48,7 +48,7 @@
                 <DataGridTemplateColumn Header="Action">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="PRESS TO START" Click="StartTourGuidence"/>
+                            <Button Content="DETAILS" Click="DetailsTourGuidence"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

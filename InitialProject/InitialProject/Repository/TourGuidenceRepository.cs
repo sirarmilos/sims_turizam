@@ -74,7 +74,7 @@ namespace InitialProject.Repository
             int a = 7;
         }
 
-        public List<TourGuidence> Load()
+        public List<TourGuidence> GetAllForToday()
         {
             List<TourGuidence> todaysTour = new();
             DateTime systemDate = DateTime.Today;
@@ -88,7 +88,7 @@ namespace InitialProject.Repository
             }*/
             foreach (TourGuidence t in tourGuidences)
             {
-                if (systemDate == t.StartTime.Date)
+                if (systemDate == t.StartTime.Date && t.Finished==false)
                 {
                     todaysTour.Add(t);
                 }
@@ -97,9 +97,45 @@ namespace InitialProject.Repository
             return todaysTour;
         }
 
-        public int UpdateStartedField(int guidenceId)
+        public List<TourGuidence> GetAllFutureTours()
         {
-            foreach (TourGuidence guidence in tourGuidences)
+            List<TourGuidence> futureTours = new();
+            futureTours = tourGuidences.Where(item => item.StartTime >= DateTime.Today).ToList();
+            return futureTours;
+        }
+
+        public bool CheckValidDateForCancel(DateTime date)
+        {
+            TimeSpan timeDiff = date - DateTime.Now;
+            return timeDiff.TotalHours >= 48;
+        }
+
+        public void UpdateCancelField(int guidenceId)
+        {
+            foreach(TourGuidence guidence in tourGuidences)
+            {
+                if(guidence.Id == guidenceId)
+                {
+                    guidence.Cancelled = true;
+                    break;  
+                }
+            }
+            tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
+        }
+
+        public bool CheckGuidencesForStart(List<TourGuidence> guidences)
+        {
+            foreach(TourGuidence t in guidences)
+            {
+                if (t.Started == true)
+                    return true;
+            }
+            return false;
+        }
+
+        public void UpdateStartedField(int guidenceId)
+        {
+            /*foreach (TourGuidence guidence in tourGuidences)
             {
                 if (guidence.Started == true && guidence.Finished == false && guidence.Id != guidenceId)
                 {
@@ -121,7 +157,19 @@ namespace InitialProject.Repository
                     return 1;
                 }
             }
-            return 0;
+            return 0;*/
+
+            foreach (TourGuidence guidence in tourGuidences)
+            {
+                if (guidence.Id == guidenceId)
+                {
+                    guidence.Started = true;
+                    break;
+                }
+            }
+            tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
+
+
         }
 
         public void UpdateFinishedField(int tourGuidenceId)
@@ -158,11 +206,11 @@ namespace InitialProject.Repository
             return tourGuidence;
         }
 
-        public bool CreateReservation(string username, TourGuidence tourGuidence, int numberOfGuests)
+        public bool CreateReservation(string username, TourGuidence tourGuidence, List<Boolean> arrivals, int numberOfGuests)
         {
             try
             {
-                TourReservation reservation = new TourReservation(username,tourGuidence.Id, 0, numberOfGuests, false);
+                TourReservation reservation = new TourReservation(username,tourGuidence.Id, arrivals, numberOfGuests, false);
                 tourReservations.Add(reservation);
                 tourReservationSerializer.ToCSV(FilePathReservatedTours,tourReservations);
                 UpdateTourGuidenceFreeSlot(tourGuidence,numberOfGuests);

@@ -11,7 +11,7 @@ namespace InitialProject.Dto
     {
         public string userId { get; set; }
         public int tourGuidenceId { get; set; }
-        public int TourKeyPointArrivalId { get; set; }
+        public List<Boolean> TourKeyPointArrival { get; set; }
         public int numberOfGuests { get; set; }
         public Boolean Confirmed { get; set; }
 
@@ -19,11 +19,11 @@ namespace InitialProject.Dto
 
         public ReservationDisplayDto() { }
 
-        public ReservationDisplayDto(string userId, int reservatedTourId, int arrivalTourKeyPointId, int numberOfGuests, Boolean confirmed, List<TourKeyPoint> keyPoints)
+        public ReservationDisplayDto(string userId, int reservatedTourId, List<Boolean> arrivalTourKeyPoint, int numberOfGuests, Boolean confirmed, List<TourKeyPoint> keyPoints)
         {
             this.userId = userId;
             this.tourGuidenceId = reservatedTourId;
-            TourKeyPointArrivalId = arrivalTourKeyPointId;
+            TourKeyPointArrival = arrivalTourKeyPoint;
             this.numberOfGuests = numberOfGuests;
             Confirmed = confirmed;
             TourKeyPoints = keyPoints;

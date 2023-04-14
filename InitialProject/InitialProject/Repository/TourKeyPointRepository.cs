@@ -78,7 +78,7 @@ namespace InitialProject.Repository
             return keyPoints;
         }
 
-        internal void UpdateCheckedKeyPoints()
+        public void UpdateCheckedKeyPoints()
         {
             tourKeyPointSerializer.ToCSV(FilePathTourKeyPoint, tourKeyPoints);
         }

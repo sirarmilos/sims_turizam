@@ -34,7 +34,7 @@ namespace InitialProject.Repository
             TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
             List<TourKeyPoint> tourKeyPoints = new List<TourKeyPoint>();
 
-            tourKeyPoints = tourKeyPointRepository.Load(guidenceId);
+            tourKeyPoints = tourKeyPointRepository.Load(guidenceId);           
 
             foreach(TourReservation tr in tourReservations)
             {
@@ -44,7 +44,7 @@ namespace InitialProject.Repository
                     Dto.ReservationDisplayDto dto = new Dto.ReservationDisplayDto();
                     dto.userId = tr.userId;
                     dto.tourGuidenceId = tr.tourGuidenceId;
-                    dto.TourKeyPointArrivalId = tr.TourKeyPointArrivalId;
+                    dto.TourKeyPointArrival = tr.TourKeyPointArrival;
                     dto.numberOfGuests = tr.numberOfGuests;
                     dto.TourKeyPoints = tourKeyPoints;
                     reservations.Add(dto);
@@ -58,6 +58,26 @@ namespace InitialProject.Repository
             
 
 
+        }
+
+        public List<Boolean> SetArrivalsToFalse(int guidenceId)
+        {
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
+            List<TourKeyPoint> tourKeyPoints = new List<TourKeyPoint>();
+
+            tourKeyPoints = tourKeyPointRepository.Load(guidenceId);
+            List<Boolean> retVal = new List<Boolean>();
+            foreach(TourKeyPoint kp in tourKeyPoints)
+            {
+                retVal.Add(false);
+            }
+            return retVal;
+
+        }
+
+        public void UpdateKeyPointArrivals()
+        {
+            tourReservationSerializer.ToCSV(FilePathReservatedTours, tourReservations);
         }
 
 

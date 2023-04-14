@@ -20,22 +20,21 @@ using System.Windows.Shapes;
 namespace InitialProject.View
 {
     /// <summary>
-    /// Interaction logic for ShowTourGuidences.xaml
+    /// Interaction logic for FutureTours.xaml
     /// </summary>
-    public partial class ShowTourGuidences : Window
+    public partial class FutureTours : Window
     {
+
         public static ObservableCollection<TourGuidence> tourGuidences { get; set; }
 
         private readonly TourGuidenceRepository tourGuidenceRepository;
 
-
-
-        public ShowTourGuidences()
+        public FutureTours()
         {
             InitializeComponent();
             DataContext = this;
             tourGuidenceRepository = new TourGuidenceRepository();
-            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceRepository.GetAllForToday());
+            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceRepository.GetAllFutureTours());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,13 +43,24 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void DetailsTourGuidence(object sender, RoutedEventArgs e)
+        private void CancelTourGuidence(object sender, RoutedEventArgs e)
         {
             TourGuidence selectedGuidence = (TourGuidence)dataGrid.SelectedItem;
 
-            ShowKeyPointsInStartedTourGuidence window = new ShowKeyPointsInStartedTourGuidence(selectedGuidence, tourGuidences.ToList());
-            window.Show();
-            this.Close();
+            if (tourGuidenceRepository.CheckValidDateForCancel(selectedGuidence.StartTime))
+            {
+                tourGuidenceRepository.UpdateCancelField(selectedGuidence.Id);
+                MessageBox.Show("Tour successfully cancelled!");
+                FutureTours window = new FutureTours();
+                this.Close();
+                window.Show();
+            }
+            else
+            {
+                MessageBox.Show("You can not cancel tour - less than 48 hours!");
+            }
+            
+
         }
     }
 }

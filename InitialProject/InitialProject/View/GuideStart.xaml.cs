@@ -36,6 +36,12 @@ namespace InitialProject.View
             window.Show();
         }
 
+        private void GoToFutureTours(object sender, RoutedEventArgs e)
+        {
+            FutureTours window = new FutureTours();
+            window.Show();
+        }
+
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
             LoginForm window = new LoginForm();

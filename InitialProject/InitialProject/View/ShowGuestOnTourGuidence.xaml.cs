@@ -39,10 +39,10 @@ namespace InitialProject.View
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            //Dto.ReservationDisplayDto reservationDisplayDto = (Dto.ReservationDisplayDto)dataGrid.SelectedItem;
-            TourReservationRepository tourReservationRepository = new();
+            tourReservationRepository.UpdateKeyPointArrivals();
+            this.Close();
         }
 
-        
+
     }
 }
