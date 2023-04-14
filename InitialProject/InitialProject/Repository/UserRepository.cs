@@ -90,6 +90,20 @@ namespace InitialProject.Repository
             return null;
         }
 
+        public User GetByUsername(string username)
+        {
+            User user = new User();
+            foreach (User temporaryUser in users)
+            {
+                if (temporaryUser.Username.Equals(username))
+                {
+                   user = temporaryUser;
+                }
+            }
+
+            return user;
+        }
+
 
     }
 }

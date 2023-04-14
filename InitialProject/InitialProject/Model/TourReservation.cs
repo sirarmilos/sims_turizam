@@ -17,15 +17,18 @@ namespace InitialProject.Model
         public int numberOfGuests { get; set; }
         public Boolean Confirmed { get; set; }
 
+        public int VoucherId { get; set; }
+
         public TourReservation() { }
 
-        public TourReservation(string userId, int reservatedTourId, List<Boolean> arrivalTourKeyPoint, int numberOfGuests, Boolean confirmed)
+        public TourReservation(string userId, int reservatedTourId, List<Boolean> arrivalTourKeyPoint, int numberOfGuests, Boolean confirmed, int voucherId)
         {
             this.userId = userId;
             this.tourGuidenceId = reservatedTourId;
             TourKeyPointArrival = arrivalTourKeyPoint;
             this.numberOfGuests = numberOfGuests;
             Confirmed = confirmed;
+            VoucherId = voucherId;
         }
 
         public string[] ToCSV()
@@ -41,7 +44,7 @@ namespace InitialProject.Model
             boolToString = boolToString.Substring(0, boolToString.Length - 2);
 
 
-            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), boolToString.ToString(), numberOfGuests.ToString(), Confirmed.ToString() };
+            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), boolToString.ToString(), numberOfGuests.ToString(), Confirmed.ToString(), VoucherId.ToString() };
             return csvValues;
         }
 
@@ -67,6 +70,8 @@ namespace InitialProject.Model
             numberOfGuests = Convert.ToInt32(values[3]);
 
             Confirmed = Convert.ToBoolean(values[4]);
+
+            VoucherId = Convert.ToInt32(values[5]);
         }
 
 

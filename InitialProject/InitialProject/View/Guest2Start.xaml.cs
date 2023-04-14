@@ -19,14 +19,17 @@ namespace InitialProject.View
     /// </summary>
     public partial class Guest2Start : Window
     {
-        public Guest2Start()
+
+        private readonly string username;
+        public Guest2Start(string username)
         {
             InitializeComponent();
+            this.username = username;
         }
 
         private void GoToSearchAndShowTours(object sender, RoutedEventArgs e)
         {
-            SearchAndShowTours window = new SearchAndShowTours();
+            SearchAndShowTours window = new SearchAndShowTours(username);
             window.Show();
         }
         private void GoToLogout(object sender, RoutedEventArgs e)
@@ -34,6 +37,18 @@ namespace InitialProject.View
             LoginForm window = new LoginForm();
             window.Show();
             Close();
+        }
+
+        private void ShowTourAttendance(object sender, RoutedEventArgs e)
+        {
+            ShowTourAttendance window = new ShowTourAttendance(username);
+            window.Show();
+        }
+
+        private void ShowUserInfo(object sender, RoutedEventArgs e)
+        {
+            Guest2Info window = new Guest2Info(username);
+            window.Show();
         }
     }
 }
