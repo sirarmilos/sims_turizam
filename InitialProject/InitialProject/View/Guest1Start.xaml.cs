@@ -16,9 +16,7 @@ using System.Windows.Shapes;
 
 namespace InitialProject.View
 {
-    /// <summary>
-    /// Interaction logic for Guest1Start.xaml
-    /// </summary>
+
     public partial class Guest1Start : Window
     {
 
@@ -33,28 +31,10 @@ namespace InitialProject.View
             }
         }
 
-        //public OwnerStart(string username)
-        //{
-        //    InitializeComponent();
-        //    Owner = username;
-
-        //    reviewRepository = new ReviewRepository();
-        //    reservationRepository = new ReservationRepository();
-        //    userRepository = new UserRepository();
-
-        //    AllReviews = new List<Review>();
-        //    AllReservations = new List<Reservation>();
-
-        //    usernameAndSuperOwner.Header = Owner;
-
-        //    CheckSuperOwner();
-        //}
-
         public Guest1Start(string username)
         {
             InitializeComponent();
             Guest1 = username;
-
         }
 
         private void GoToSearchAndShowAccommodation(object sender, RoutedEventArgs e)
@@ -68,6 +48,13 @@ namespace InitialProject.View
             CreateReview window = new CreateReview(Guest1);
             window.Show();
         }
+
+        private void GoToShowReservations(object sender, RoutedEventArgs e)
+        {
+            ShowReservations window = new ShowReservations(Guest1);
+            window.Show();
+        }
+
 
         private void GoToLogout(object sender, RoutedEventArgs e)
         {

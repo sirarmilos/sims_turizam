@@ -35,7 +35,7 @@ namespace InitialProject.Repository
 
             accommodationSerializer = new Serializer<Accommodation>();
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-
+            
             foreach (Reservation reservation in reservations)
             {
                 if (accommodations == null)
@@ -96,7 +96,7 @@ namespace InitialProject.Repository
         {
 
             reservations = reservationSerializer.FromCSV(FilePathReservation);
-            Reservation reservation = new Reservation(NextIdReservation(), "username123", accommodation, startDate, endDate, guestsNumber);
+            Reservation reservation = new Reservation(NextIdReservation(), "username123", accommodation, startDate, endDate, guestsNumber); // todo: izmeniti username
             reservations.Add(reservation);
             reservationSerializer.ToCSV(FilePathReservation, reservations);
 
@@ -131,6 +131,21 @@ namespace InitialProject.Repository
         {
             return FindOwnerReservations().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
         }*/
+
+
+
+
+
+
+        public List<Reservation> FindGuest1Reservations(string guest1)
+        {
+            return FindAllReservations().ToList().FindAll(x => x.GuestUsername.Equals(guest1) == true);
+        }
+
+        public Reservation FindById(int id)
+        {
+            return FindAllReservations().ToList().Find(x => x.ReservationId == id);
+        }
 
     }
 }
