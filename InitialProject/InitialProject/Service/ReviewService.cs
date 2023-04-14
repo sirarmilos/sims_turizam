@@ -18,6 +18,10 @@ namespace InitialProject.Service
     {
         private readonly UserService userService;
 
+        private readonly ReservationService reservationService;
+
+        private readonly RateGuestsService rateGuestsService;
+
         private readonly ReviewRepository reviewRepository;
 
         private readonly ReservationRepository reservationRepository;
@@ -93,6 +97,8 @@ namespace InitialProject.Service
             Guest1 = username;
 
             userService = new UserService();
+            reservationService = new ReservationService();
+            rateGuestsService = new RateGuestsService(Owner);
 
             reviewRepository = new ReviewRepository();
             reservationRepository = new ReservationRepository();
@@ -204,56 +210,16 @@ namespace InitialProject.Service
 
         public List<ShowGuestReviewsDTO> FindAllReviews()
         {
-            AllReviews = reviewRepository.FindAllReviews();
-
-            AllReservations = reservationRepository.FindAllReservations();
-
-            FindReservationsForReviews();
-
-            FindOwnerReviews();
-
-            AllRateGuests = rateGuestRepository.FindAllRateGuests();
-
-            FindReservationsForRateGuestsReview();
-
-            FindOwnerRateGuests();
-
-            return FindShowGuestReviewsDTOs();
+            return FindShowGuestReviewsDTOs(rateGuestsService.FindOwnerRateGuests(Owner));
         }
 
-        public void FindReservationsForReviews()
-        {
-            foreach (Review temporaryReview in AllReviews.ToList())
-            {
-                temporaryReview.Reservation = AllReservations.ToList().Find(x => x.ReservationId == temporaryReview.Reservation.ReservationId);
-            }
-        }
-
-        public void FindOwnerReviews()
-        {
-            OwnerReviews = AllReviews.ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(Owner) == true);
-        }
-
-        public void FindReservationsForRateGuestsReview()
-        {
-            foreach (RateGuest temporaryRateGuest in AllRateGuests.ToList())
-            {
-                temporaryRateGuest.Reservation = AllReservations.ToList().Find(x => x.ReservationId == temporaryRateGuest.Reservation.ReservationId);
-            }
-        }
-
-        public void FindOwnerRateGuests()
-        {
-            OwnerRateGuests = AllRateGuests.ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(Owner) == true);
-        }
-
-        public List<ShowGuestReviewsDTO> FindShowGuestReviewsDTOs()
+        public List<ShowGuestReviewsDTO> FindShowGuestReviewsDTOs(List<RateGuest> ownerRateGuests)
         {
             List<ShowGuestReviewsDTO> showGuestReviewsDTOs = new List<ShowGuestReviewsDTO>();
 
-            foreach (RateGuest temporaryRateGuest in OwnerRateGuests.ToList())
+            foreach (RateGuest temporaryRateGuest in ownerRateGuests.ToList())
             {
-                Review temporaryReview = OwnerReviews.Find(x => x.Reservation.ReservationId == temporaryRateGuest.Reservation.ReservationId);
+                Review temporaryReview = reviewRepository.FindOwnerReviewByReservationId(Owner, temporaryRateGuest.Reservation.ReservationId);
 
                 if(temporaryReview != null)
                 {
@@ -267,39 +233,28 @@ namespace InitialProject.Service
 
         public void CheckSuperOwner(int reservationId)
         {
-            AllReviews = reviewRepository.FindAllReviews();
+            string ownerUsername = reservationService.FindOwnerByReservationId(reservationId);
 
-            AllReservations = reservationRepository.FindAllReservations();
+            List<Review> ownerReviews = reviewRepository.FindReviewsByOwnerUsername(ownerUsername);
 
-            FindReservationsForReviews();
-
-            FindOwnerUsernameByReservationId(reservationId);
-
-            FindOwnerReviews();
-
-            if(OwnerReviews.Count >= 50 && FindAverageGuestReviews() > new Decimal(4.5))
+            if(ownerReviews.Count >= 50 && FindAverageGuestReviews(ownerReviews) > new Decimal(4.5))
             {
-                userService.UpdateUsers(Owner, "super");
+                userService.UpdateUsers(ownerUsername, "super");
             }
-            else if(IsSuperOwner(reservationId) == true) // ako je bio super owner, a ne treba vise da bude
+            else if(IsSuperOwner(ownerUsername) == true) // ako je bio super owner, a ne treba vise da bude
             {
-                userService.UpdateUsers(Owner, "no_super");
+                userService.UpdateUsers(ownerUsername, "no_super");
             }
         }
 
-        public void FindOwnerUsernameByReservationId(int reservationId)
+        private Decimal FindAverageGuestReviews(List<Review> ownerReviews)
         {
-            Owner = AllReservations.Find(x => x.ReservationId == reservationId).Accommodation.OwnerUsername;
+            return (decimal)ownerReviews.Sum(x => (x.Cleanliness + x.Staff + x.Comfort + x.ValueForMoney) / new Decimal(4.0)) / ownerReviews.Count;
         }
 
-        private Decimal FindAverageGuestReviews()
+        private bool IsSuperOwner(string ownerUsername)
         {
-            return (decimal)OwnerReviews.Sum(x => (x.Cleanliness + x.Staff + x.Comfort + x.ValueForMoney) / new Decimal(4.0)) / OwnerReviews.Count;
-        }
-
-        private bool IsSuperOwner(int reservationId)
-        {
-            return userService.FindSuperTypeByOwnerName(Owner).Equals("super");
+            return userService.FindSuperTypeByOwnerName(ownerUsername).Equals("super");
         }
     }
 }

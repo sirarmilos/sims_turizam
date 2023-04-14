@@ -57,6 +57,11 @@ namespace InitialProject.Repository
             return FindAllLocations().Max(c => c.Id) + 1;
         }
 
+        public Location FindLocationByLocationId(int locationId)
+        {
+            return FindAllLocations().ToList().Find(x => x.Id == locationId);
+        }
+
         public Location GetById(int id)
         {
             foreach(Location location in  locations)

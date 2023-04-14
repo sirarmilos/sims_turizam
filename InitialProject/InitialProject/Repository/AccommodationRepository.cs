@@ -14,6 +14,8 @@ namespace InitialProject.Repository
 {
     internal class AccommodationRepository
     {
+        private LocationRepository locationRepository;
+
         private const string FilePathAccommodation = "../../../Resources/Data/accommodation.csv";
 
         private const string FilePathLocation = "../../../Resources/Data/location.csv";
@@ -50,21 +52,13 @@ namespace InitialProject.Repository
 
         public List<Accommodation> FindAllAccommodations()
         {
-            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-            locations = locationSerializer.FromCSV(FilePathLocation);
+            locationRepository = new LocationRepository();
 
-            foreach (Accommodation accommodation in accommodations)
+            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
+
+            foreach(Accommodation temporaryAccommodation in accommodations.ToList())
             {
-                if (locations == null)
-                    break;
-                foreach (Location location in locations)
-                {
-                    if (location.Id == accommodation.Location.Id)
-                    {
-                        accommodation.Location = location;
-                        break;
-                    }
-                }
+                temporaryAccommodation.Location = locationRepository.FindLocationByLocationId(temporaryAccommodation.Location.Id);
             }
 
             return accommodations;
@@ -95,6 +89,11 @@ namespace InitialProject.Repository
             }
 
             return FindAllAccommodations().Max(x => x.Id) + 1;
+        }
+
+        public Accommodation FindAccommodationByAccommodationId(int accommodationId)
+        {
+            return FindAllAccommodations().ToList().Find(x => x.Id == accommodationId);
         }
 
         public List<Accommodation> FindAll(string accommodationName, string country, string city, string type, int? maxGuests, int? minDaysReservation)

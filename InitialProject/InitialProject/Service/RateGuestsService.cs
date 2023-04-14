@@ -87,5 +87,10 @@ namespace InitialProject.Service
         {
             rateGuestRepository.UpdateRateGuests(new RateGuest(reservationService.FindReservationByReservationId(saveNewRateGuestDTO.ReservationId), saveNewRateGuestDTO));
         }
+
+        public List<RateGuest> FindOwnerRateGuests(string ownerUsername)
+        {
+            return rateGuestRepository.FindAllRateGuests().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,6 @@ namespace InitialProject.Service
     {
         private readonly ReservationRepository reservationRepository;
 
-        public List<Reservation> AllReservations
-        {
-            get;
-            set;
-        }
-
-        public List<Reservation> OwnerReservations
-        {
-            get;
-            set;
-        }
-
         private string owner;
 
         public string Owner
@@ -35,18 +24,15 @@ namespace InitialProject.Service
             }
         }
 
+        public ReservationService()
+        {
+            reservationRepository = new ReservationRepository();
+        }
+
         public ReservationService(string owner)
         {
             Owner = owner;
             reservationRepository = new ReservationRepository();
-
-            ListInitialization();
-        }
-
-        private void ListInitialization()
-        {
-            AllReservations = new List<Reservation>();
-            OwnerReservations = new List<Reservation>();
         }
 
         public List<Reservation> FindAllReservations()
@@ -67,6 +53,21 @@ namespace InitialProject.Service
         public Reservation FindReservationByReservationId(int reservationId)
         {
             return reservationRepository.FindReservationByReservationId(reservationId);
+        }
+
+        public string FindOwnerByReservationId(int reservationId)
+        {
+            return reservationRepository.FindOwnerByReservationId(reservationId);
+        }
+
+        public List<Reservation> FindAllReservationsByAccommodationId(int accommodationId)
+        {
+            return FindOwnerReservations().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+        }
+
+        public void UpdateDatesForSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest)
+        {
+            reservationRepository.UpdateDatesForSelectedBookingMoveRequest(selectedBookingMoveRequest);
         }
     }
 }
