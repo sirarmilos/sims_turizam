@@ -18,31 +18,7 @@ namespace InitialProject.Service
     {
         private readonly RateGuestRepository rateGuestRepository;
 
-        private readonly ReservationRepository reservationRepository;
-
-        public List<Reservation> AllReservations
-        {
-            get;
-            set;
-        }
-
-        public List<Reservation> OwnerReservations
-        {
-            get;
-            set;
-        }
-
-        public List<RateGuest> AllRateGuests
-        {
-            get;
-            set;
-        }
-
-        public List<RateGuest> OwnerRateGuests
-        {
-            get;
-            set;
-        }
+        private readonly ReservationService reservationService;
 
         private string owner;
 
@@ -59,63 +35,25 @@ namespace InitialProject.Service
         {
             Owner = owner;
             rateGuestRepository = new RateGuestRepository();
-            reservationRepository = new ReservationRepository();
-
-            ListInitialization();
-        }
-
-        private void ListInitialization()
-        {
-            AllReservations = new List<Reservation>();
-            OwnerReservations = new List<Reservation>();
-            AllRateGuests = new List<RateGuest>();
-            OwnerRateGuests = new List<RateGuest>();
+            reservationService = new ReservationService(Owner);
         }
 
         public List<RateGuestsDTO> FindAllGuestsForRate()
         {
-            AllReservations = reservationRepository.FindAllReservations();
-
-            FindOwnerReservations();
-
-            AllRateGuests = rateGuestRepository.FindAllRateGuests();
-
-            FindReservationsForRateGuests();
-
-            FindOwnerRateGuests();
-
-            return FindRateGuestsDTOs();
+            return FindRateGuestsDTOs(reservationService.FindOwnerReservations());
         }
 
-        public void FindOwnerReservations()
-        {
-            OwnerReservations = AllReservations.ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(Owner) == true);
-        }
-
-        public void FindReservationsForRateGuests()
-        {
-            foreach (RateGuest temporaryRateGuest in AllRateGuests.ToList())
-            {
-                temporaryRateGuest.Reservation = AllReservations.ToList().Find(x => x.ReservationId == temporaryRateGuest.Reservation.ReservationId);
-            }
-        }
-
-        public void FindOwnerRateGuests()
-        {
-            OwnerRateGuests = AllRateGuests.ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(Owner) == true);
-        }
-
-        public List<RateGuestsDTO> FindRateGuestsDTOs()
+        public List<RateGuestsDTO> FindRateGuestsDTOs(List<Reservation> ownerReservations)
         {
             List<RateGuestsDTO> rateGuestsDTOs = new List<RateGuestsDTO>();
 
-            foreach (Reservation temporaryReservation in OwnerReservations.ToList())
+            foreach (Reservation temporaryReservation in ownerReservations.ToList())
             {
-                RateGuest temporaryRateGuest = OwnerRateGuests.Find(x => x.Reservation.ReservationId == temporaryReservation.ReservationId);
+                RateGuest temporaryRateGuest = rateGuestRepository.FindOwnerRateGuestByReservationId(Owner, temporaryReservation.ReservationId);
 
                 if(temporaryRateGuest == null)
                 {
-                    RateGuestsDTO rateGuestDTO = IsValidToAdd(temporaryReservation, temporaryRateGuest);
+                    RateGuestsDTO rateGuestDTO = IsValidToAdd(temporaryReservation);
                     if (rateGuestDTO != null)
                     {
                         rateGuestsDTOs.Add(rateGuestDTO);
@@ -126,7 +64,7 @@ namespace InitialProject.Service
             return rateGuestsDTOs;
         }
 
-        public RateGuestsDTO IsValidToAdd(Reservation temporaryReservation, RateGuest temporaryRateGuest)
+        public RateGuestsDTO IsValidToAdd(Reservation temporaryReservation)
         {
             int days = DateTime.Now.Subtract(temporaryReservation.EndDate).Days;
 
@@ -147,16 +85,12 @@ namespace InitialProject.Service
 
         public void SaveNewRateGuest(SaveNewRateGuestDTO saveNewRateGuestDTO)
         {
-            RateGuest rateGuest = new RateGuest(FindReservationByReservationId(saveNewRateGuestDTO.ReservationId), saveNewRateGuestDTO);
-
-            AllRateGuests.Add(rateGuest);
-
-            rateGuestRepository.SaveRateGuests(AllRateGuests);
+            rateGuestRepository.UpdateRateGuests(new RateGuest(reservationService.FindReservationByReservationId(saveNewRateGuestDTO.ReservationId), saveNewRateGuestDTO));
         }
 
-        private Reservation FindReservationByReservationId(int reservationId)
+        public List<RateGuest> FindOwnerRateGuests(string ownerUsername)
         {
-            return AllReservations.Find(x => x.ReservationId == reservationId);
+            return rateGuestRepository.FindAllRateGuests().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Serializer;
+using InitialProject.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace InitialProject.Repository
 {
     public class ReviewRepository
     {
+        private ReservationRepository reservationRepository;
+
         private const string FilePathReview = "../../../Resources/Data/reviews.csv";
 
         private readonly Serializer<Review> reviewSerializer;
@@ -29,6 +32,15 @@ namespace InitialProject.Repository
 
         public List<Review> FindAllReviews()
         {
+            reservationRepository = new ReservationRepository();
+
+            reviews = reviewSerializer.FromCSV(FilePathReview);
+
+            foreach(Review temporaryReview in reviews.ToList())
+            {
+                temporaryReview.Reservation = reservationRepository.FindReservationByReservationId(temporaryReview.Reservation.ReservationId);
+            }
+
             return reviews;
         }
 
@@ -37,5 +49,14 @@ namespace InitialProject.Repository
             reviewSerializer.ToCSV(FilePathReview, allReviews);
         }
 
+        public List<Review> FindReviewsByOwnerUsername(string ownerUsername)
+        {
+            return FindAllReviews().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+        }
+
+        public Review FindOwnerReviewByReservationId(string ownerUsername, int reservationId)
+        {
+            return FindReviewsByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+        }
     }
 }

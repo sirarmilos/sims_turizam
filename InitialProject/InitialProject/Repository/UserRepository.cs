@@ -24,10 +24,17 @@ namespace InitialProject.Repository
 
         public List<User> FindAllUsers()
         {
-            return users;
+            return userSerializer.FromCSV(FilePathUser);
         }
 
-        public void UpdateUsers(List<User> allUsers)
+        public void UpdateUsers(string owner, string superType)
+        {
+            List<User> allUsers = FindAllUsers();
+            allUsers.Where(x => x.Username.Equals(owner) == true).SetValue(x => x.SuperType = superType).ToList();
+            SaveUsers(allUsers);
+        }
+
+        public void SaveUsers(List<User> allUsers)
         {
             userSerializer.ToCSV(FilePathUser, allUsers);
         }

@@ -1,16 +1,21 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Serializer;
+using InitialProject.View;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace InitialProject.Repository
 {
     internal class ReservationRepository
     {
+        private AccommodationRepository accommodationRepository;
+
         private const string FilePathReservation = "../../../Resources/Data/reservation.csv";
 
         private const string FilePathAccommodation = "../../../Resources/Data/accommodation.csv";
@@ -46,14 +51,45 @@ namespace InitialProject.Repository
             }
         }
 
-        public void UpdateReservations(List<Reservation> reservations)
+        public void /* UpdateReservations*/ SaveReservations(List<Reservation> reservations)
         {
             reservationSerializer.ToCSV(FilePathReservation, reservations);
         }
 
         public List<Reservation> FindAllReservations()
         {
+            accommodationRepository = new AccommodationRepository();
+
+            reservations = reservationSerializer.FromCSV(FilePathReservation);
+
+            foreach(Reservation temporaryReservation in reservations.ToList())
+            {
+                temporaryReservation.Accommodation = accommodationRepository.FindAccommodationByAccommodationId(temporaryReservation.Accommodation.Id);
+            }
+
             return reservations;
+        }
+
+        public List<Reservation> FindReservationsByOwnerUsername(string ownerUsername)
+        {
+            return FindAllReservations().ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+        }
+
+        public Reservation FindReservationByReservationId(int reservationId)
+        {
+            return FindAllReservations().ToList().Find(x => x.ReservationId == reservationId);
+        }
+
+        public string FindOwnerByReservationId(int reservationId)
+        {
+            return FindAllReservations().Find(x => x.ReservationId == reservationId).Accommodation.OwnerUsername;
+        }
+
+        public void UpdateDatesForSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest)
+        {
+            List<Reservation> allReservations = FindAllReservations();
+            allReservations.Where(x => x.ReservationId == selectedBookingMoveRequest.ReservationId).SetValue(x => x.StartDate = selectedBookingMoveRequest.NewStartDate).ToList().SetValue(x => x.EndDate = selectedBookingMoveRequest.NewEndDate);
+            SaveReservations(allReservations);
         }
 
         public void Save(string guestUsername, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
@@ -65,7 +101,6 @@ namespace InitialProject.Repository
             reservationSerializer.ToCSV(FilePathReservation, reservations);
 
         }
-
 
         public int NextIdReservation()
         {
@@ -91,6 +126,11 @@ namespace InitialProject.Repository
 
             return accommodationReservations;
         }
+
+        /* public List<Reservation> FindAllReservationsByAccommodationid(int accommodationId)
+        {
+            return FindOwnerReservations().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+        }*/
 
     }
 }

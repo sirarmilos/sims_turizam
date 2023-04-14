@@ -284,7 +284,7 @@ namespace InitialProject.View
 
         private void SaveAccommodation(object sender, RoutedEventArgs e)
         {
-            if (CheckErrorAllFieldsFilled() == false)
+            if (CheckErrorAllFieldsFilled() == true)
             {
                 MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -314,7 +314,7 @@ namespace InitialProject.View
 
         private bool CheckErrorAllFieldsFilled()
         {
-            return tbName.Text.Length > 0 && tbCountry.Text.Length > 0 && tbCity.Text.Length > 0 && tbAddress.Text.Length > 0 && tbMaxGuests.Text.Length > 0 && tbMinDaysReservation.Text.Length > 0 && tbLeftCancelationDays.Text.Length > 0;
+            return string.IsNullOrEmpty(AccommodationName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || !MaxGuests.HasValue || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
         }
 
         private bool CheckErrorImagesNumber()
@@ -379,26 +379,6 @@ namespace InitialProject.View
             {
                 dgImages.Items.Refresh();
                 Images.Remove(SelectedImage);
-            }
-        }
-
-        private void CheckErrorMaxGuests(object sender, TextChangedEventArgs e)
-        {
-            if (MaxGuestsCheck.Equals("") == false)
-            {
-                int checkOut;
-                bool check = int.TryParse(MaxGuestsCheck, out checkOut);
-
-                if (check == false || checkOut <= 0)
-                {
-                    MessageBox.Show("Maximum number of guests must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    tbMaxGuests.Clear();
-                    MaxGuestsCheck = "";
-                }
-                else
-                {
-                    MaxGuests = Convert.ToInt32(MaxGuestsCheck.ToString());
-                }
             }
         }
 

@@ -26,8 +26,6 @@ namespace InitialProject.View
     {
         private readonly ReviewService reviewService;
 
-        private List<ShowGuestReviewsDTO> showGuestReviewsDTOs;
-
         private string owner;
 
         public string Owner
@@ -40,11 +38,8 @@ namespace InitialProject.View
         }
         public List<ShowGuestReviewsDTO> ShowGuestReviewsDTOs
         {
-            get { return showGuestReviewsDTOs; }
-            set
-            {
-                showGuestReviewsDTOs = value;
-            }
+            get;
+            set;
         }
 
         public ShowGuestReviews(string owner)

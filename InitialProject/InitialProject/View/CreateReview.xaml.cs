@@ -23,10 +23,6 @@ namespace InitialProject.View
     {
         private readonly ReviewService reviewService;
 
-        private List<CreateReviewDTO> createReviewDTOs;
-
-        private CreateReviewDTO selectedOwner;
-
         private string guest1;
 
         public string Guest1
