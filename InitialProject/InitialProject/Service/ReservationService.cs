@@ -6,14 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InitialProject.View;
+using System.Diagnostics;
+using System.Windows.Interactivity;
+using System.Windows;
+using System.Xml.Linq;
 
 namespace InitialProject.Service
 {
     public class ReservationService
     {
-        private readonly ReservationRepository reservationRepository;
 
+        private ReservationRepository reservationRepository;
+        private CanceledReservationRepository canceledReservationRepository;
         private string owner;
+        private string guest1;
 
         public string Owner
         {
@@ -24,15 +31,27 @@ namespace InitialProject.Service
             }
         }
 
+        public string Guest1
+        {
+            get { return guest1; }
+            set
+            {
+                guest1 = value;
+            }
+        }
+
         public ReservationService()
         {
             reservationRepository = new ReservationRepository();
+            canceledReservationRepository = new CanceledReservationRepository();
         }
 
-        public ReservationService(string owner)
+        public ReservationService(string username)
         {
-            Owner = owner;
+            Owner = username;
+            Guest1 = username;
             reservationRepository = new ReservationRepository();
+            canceledReservationRepository = new CanceledReservationRepository();
         }
 
         public List<Reservation> FindAllReservations()
@@ -76,6 +95,70 @@ namespace InitialProject.Service
             {
                  reservationRepository.RemoveReservationById(selectedBookingMoveRequest.ReservationId, temporaryReservation.ReservationId);
             }
+        }
+
+
+
+
+        public List<ShowReservationDTO> FindAll(string username)
+        {
+            Guest1 = username;
+
+            List<Reservation> allReservations = reservationRepository.FindAllReservations();
+
+            List<Reservation> guest1Reservations = FindGuest1Reservations(allReservations);
+
+            return GetShowReservationsDTO(guest1Reservations);
+        }
+
+        public List<Reservation> FindGuest1Reservations(List<Reservation> allReservations)
+        {
+            return allReservations.ToList().FindAll(x => x.GuestUsername.Equals(Guest1) == true);
+        }
+
+        public List<ShowReservationDTO> GetShowReservationsDTO(List<Reservation> guest1Reservations)
+        {
+            List<ShowReservationDTO> showReservationDTOs = new List<ShowReservationDTO>();
+
+            foreach (Reservation temporaryReservation in guest1Reservations.ToList())
+            {
+                if (temporaryReservation.GuestUsername.Equals(Guest1))
+                { 
+                    showReservationDTOs.Add(new ShowReservationDTO(temporaryReservation));    
+                }
+            }
+
+            return showReservationDTOs;
+        }
+
+        public bool Remove(ShowReservationDTO showReservationDTO)
+        {
+            Reservation reservation = FindReservationByReservationId(showReservationDTO.ReservationId);
+
+            int days = reservation.StartDate.Subtract(DateTime.Now).Days;
+
+
+            if (days >= reservation.Accommodation.LeftCancelationDays)
+            {
+                CancelReservation(reservation);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private void CancelReservation(Reservation reservation)
+        {
+            List<Reservation> allReservations = reservationRepository.FindAllReservations();
+            reservationRepository = new ReservationRepository();
+            canceledReservationRepository = new CanceledReservationRepository();
+
+            allReservations.Remove(reservation);
+
+            reservationRepository.SaveReservations(allReservations);
+
+            canceledReservationRepository.Save(reservation);
         }
     }
 }

@@ -27,6 +27,15 @@ namespace InitialProject.Repository
 
         public List<Review> FindAll()
         {
+            reservationRepository = new ReservationRepository();
+
+            reviews = reviewSerializer.FromCSV(FilePathReview);
+
+            foreach (Review temporaryReview in reviews.ToList())
+            {
+                temporaryReview.Reservation = reservationRepository.FindReservationByReservationId(temporaryReview.Reservation.ReservationId);
+            }
+
             return reviews;
         }
 
@@ -57,6 +66,20 @@ namespace InitialProject.Repository
         public Review FindOwnerReviewByReservationId(string ownerUsername, int reservationId)
         {
             return FindReviewsByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+        }
+
+        public List<Review> FindGuest1Reviews(string guest1Username)
+        {
+            return reviews.FindAll(x => x.Reservation.GuestUsername.Equals(guest1Username) == true);
+        }
+
+        public void Save(Review review)
+        {
+            reviews = FindAllReviews();
+            
+            reviews.Add(review);    
+
+            reviewSerializer.ToCSV(FilePathReview, reviews);
         }
     }
 }

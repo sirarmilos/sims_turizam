@@ -36,9 +36,21 @@ namespace InitialProject.Service
             }
         }
 
-        public ReservationReschedulingRequestService(string owner)
+        private string guest1;
+
+        public string Guest1
         {
-            Owner = owner;
+            get { return guest1; }
+            set
+            {
+                guest1 = value;
+            }
+        }
+
+        public ReservationReschedulingRequestService(string username)
+        {
+            Owner = username;
+            Guest1 = username;
             reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
             reservationService = new ReservationService(Owner);
 
