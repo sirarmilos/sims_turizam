@@ -22,21 +22,26 @@ namespace InitialProject.Repository
             users = userSerializer.FromCSV(FilePathUser);
         }
 
-        public List<User> FindAllUsers()
+        public List<User> FindAll()
         {
             return userSerializer.FromCSV(FilePathUser);
         }
 
-        public void UpdateUsers(string owner, string superType)
+        public void Update(string owner, string superType)
         {
-            List<User> allUsers = FindAllUsers();
+            List<User> allUsers = FindAll();
             allUsers.Where(x => x.Username.Equals(owner) == true).SetValue(x => x.SuperType = superType).ToList();
-            SaveUsers(allUsers);
+            Save(allUsers);
         }
 
-        public void SaveUsers(List<User> allUsers)
+        public void Save(List<User> allUsers)
         {
             userSerializer.ToCSV(FilePathUser, allUsers);
+        }
+
+        public string FindSuperTypeByOwnerName(string ownerName)
+        {
+            return FindAll().Find(x => x.Username.Equals(ownerName) == true).SuperType;
         }
 
         public string LoginUser(string username, string password)

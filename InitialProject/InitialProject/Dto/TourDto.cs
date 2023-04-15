@@ -9,6 +9,7 @@ namespace InitialProject.Dto
 {
     internal class TourDto
     {
+
         public string TourName { get; set; }
 
         public Location TourLocation { get; set; }
@@ -23,9 +24,11 @@ namespace InitialProject.Dto
 
         public List<string> Images { get; set; }
 
+        public string Username { get; set; }
+
         public TourDto() { }
 
-        public TourDto(string tourName, Location location, string description, Language languages, int maxGuests, int duration, List<string> images)
+        public TourDto(string tourName, Location location, string description, Language languages, int maxGuests, int duration, List<string> images, string username)
         {
             TourName = tourName;
             TourLocation = location;
@@ -34,6 +37,7 @@ namespace InitialProject.Dto
             MaxGuests = maxGuests;
             Duration = duration;
             Images = images;
+            Username = username;
         }
     }
 }

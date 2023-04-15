@@ -22,8 +22,13 @@ namespace InitialProject.View
     public partial class CreateReview : Window
     {
         private readonly ReviewService reviewService;
-
         private string guest1;
+        private int cleanliness;
+        private int staff;
+        private int comfort;
+        private int valueForMoney;
+        private string comment;
+        private string image;
 
         public string Guest1
         {
@@ -33,13 +38,6 @@ namespace InitialProject.View
                 guest1 = value;
             }
         }
-
-        private int cleanliness;
-        private int staff;
-        private int comfort;
-        private int valueForMoney;
-        private string comment;
-        private string image;
 
         public string Image
         {
@@ -127,35 +125,6 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public CreateReview()
-        {
-            InitializeComponent();
-
-            string guest1 = "Guest11";
-            Guest1 = guest1;
-
-            DataContext = this;
-
-            reviewService = new ReviewService(Guest1);
-
-            CreateReviewDTOs = new List<CreateReviewDTO>();
-
-            CreateReviewDTOs = reviewService.FindAllReviewsForRate();
-
-            if (CreateReviewDTOs.Count == 0)
-            {
-                MessageBox.Show("All accommodations are reviewed.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
-            }
-            else
-            {
-                MessageBox.Show("There are " + CreateReviewDTOs.Count + " acommodations left for you to rate.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-
-            SetDefaultValue();
-        }
-
-
         public CreateReview(string guest1)
         {
             InitializeComponent();
@@ -168,7 +137,7 @@ namespace InitialProject.View
 
             CreateReviewDTOs = new List<CreateReviewDTO>();
 
-            CreateReviewDTOs = reviewService.FindAllReviewsForRate();
+            CreateReviewDTOs = reviewService.FindAllReviewsToRate();
 
             if (CreateReviewDTOs.Count == 0)
             {
@@ -252,7 +221,7 @@ namespace InitialProject.View
             }
         }
 
-        private bool CheckErrorUrlExists()
+        private bool CheckErrorUrlExists() // todo: moze da se refaktorise
         {
             string[] allowedExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".jfif" };
             Uri uriResult;
@@ -282,8 +251,6 @@ namespace InitialProject.View
             }
             return false;
         }
-
-
 
         private bool CheckErrorImageAlreadyExists()
         {

@@ -246,6 +246,12 @@ namespace InitialProject.View
             window.Show();
         }
 
+        private void GoToShowReservations(object sender, RoutedEventArgs e)
+        {
+            ShowReservations window = new ShowReservations(Guest1);
+            window.Show();
+        }
+
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
             LoginForm window = new LoginForm();

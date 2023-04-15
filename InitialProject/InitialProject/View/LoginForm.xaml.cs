@@ -109,7 +109,7 @@ namespace InitialProject.View
                 }
                 if (temporaryType.Equals("guide") == true)
                 {
-                    GuideStart window = new GuideStart();
+                    GuideStart window = new GuideStart(Username);
                     window.Show();
                     Close();
                 }

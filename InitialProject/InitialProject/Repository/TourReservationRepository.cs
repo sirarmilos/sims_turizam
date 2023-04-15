@@ -53,6 +53,19 @@ namespace InitialProject.Repository
             return reservations;
         }
 
+        public int GetSumGuestNumber(int guidenceId)
+        {
+            int sum = 0;
+            foreach(TourReservation tr in tourReservations)
+            {
+                if(tr.tourGuidenceId == guidenceId && tr.Confirmed == true)
+                {
+                    sum += tr.numberOfGuests;
+                }
+            }
+            return sum;
+        }
+
         public void UpdateKeyPointField(Dto.ReservationDisplayDto reservationDisplayDto)
         {
             

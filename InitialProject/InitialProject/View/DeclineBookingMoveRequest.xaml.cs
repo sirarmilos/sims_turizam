@@ -36,17 +36,7 @@ namespace InitialProject.View
             }
         }
 
-        private OwnerBookingMoveRequestsDTO selectedBookingMoveRequest;
         private string comment;
-
-        public OwnerBookingMoveRequestsDTO SelectedBookingMoveRequest
-        {
-            get { return selectedBookingMoveRequest; }
-            set
-            {
-                selectedBookingMoveRequest = value;
-            }
-        }
 
         public string Comment
         {
@@ -55,6 +45,12 @@ namespace InitialProject.View
             {
                 comment = value;
             }
+        }
+
+        public OwnerBookingMoveRequestsDTO SelectedBookingMoveRequest
+        {
+            get;
+            set;
         }
 
         public DataGrid DgBookingMoveRequests
@@ -84,7 +80,7 @@ namespace InitialProject.View
 
         private void ConfirmRejection(object sender, RoutedEventArgs e)
         {
-            reservationReschedulingRequestService.SaveRejectedRequest(selectedBookingMoveRequest, comment);
+            reservationReschedulingRequestService.SaveRejectedRequest(SelectedBookingMoveRequest, comment);
             DgBookingMoveRequests.Items.Refresh();
             Close();
         }

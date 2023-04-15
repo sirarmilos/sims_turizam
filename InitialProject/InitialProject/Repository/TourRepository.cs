@@ -55,6 +55,9 @@ namespace InitialProject.Repository
             locationSerializer = new Serializer<Location>();
             locations = locationSerializer.FromCSV(FilePathLocation);
 
+            tourReservationSerializer = new Serializer<TourReservation>();
+            tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
+
 
         }
 
@@ -76,6 +79,41 @@ namespace InitialProject.Repository
             }
 
             return result;
+        }
+
+        public List<int> GetGuestNumber(int tourId)
+        {
+            // type = [(1, <18), (2, 18-50), (3, >50)]
+            List<int> count = new List<int>(new int[3]);
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+            Guest2Repository guest2Repository = new Guest2Repository(); 
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
+            foreach (TourGuidence tourGuidence in tourGuidences)
+            {
+                if(tourGuidence.Finished == true && tourId == tourGuidence.Tour.Id)
+                {
+                    foreach(TourReservation tourReservation in tourReservations)
+                    {
+                        if(tourReservation.tourGuidenceId == tourGuidence.Id)
+                        {
+                            int age = guest2Repository.GetAge(tourReservation.userId);
+                            switch(age)
+                            {
+                                case <= 18:
+                                    count[0]++;
+                                    break;
+                                case >=50:
+                                    count[2]++;
+                                    break;
+                                default:
+                                    count[1]++;
+                                    break;                                   
+                            }
+                        }
+                    }
+                }
+            }
+            return count;
         }
 
         public List<TourDisplayDTO> GetToursForDisplay()
@@ -289,7 +327,7 @@ namespace InitialProject.Repository
 
         public Tour Save(TourDto tourDto)
         {
-            Tour tour = new Tour(NextIdTour(), tourDto.TourName, tourDto.TourLocation, tourDto.Description, tourDto.Languages, tourDto.MaxGuests, tourDto.Duration, tourDto.Images);
+            Tour tour = new Tour(NextIdTour(), tourDto.TourName, tourDto.TourLocation, tourDto.Description, tourDto.Languages, tourDto.MaxGuests, tourDto.Duration, tourDto.Images, tourDto.Username);
             tours.Add(tour);
             tourSerializer.ToCSV(FilePathTour, tours);
             return tour;

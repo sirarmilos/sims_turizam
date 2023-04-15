@@ -27,6 +27,15 @@ namespace InitialProject.Repository
 
         public List<Review> FindAll()
         {
+            reservationRepository = new ReservationRepository();
+
+            reviews = reviewSerializer.FromCSV(FilePathReview);
+
+            foreach (Review temporaryReview in reviews.ToList())
+            {
+                temporaryReview.Reservation = reservationRepository.FindById(temporaryReview.Reservation.ReservationId);
+            }
+
             return reviews;
         }
 
@@ -38,7 +47,7 @@ namespace InitialProject.Repository
 
             foreach(Review temporaryReview in reviews.ToList())
             {
-                temporaryReview.Reservation = reservationRepository.FindReservationByReservationId(temporaryReview.Reservation.ReservationId);
+                temporaryReview.Reservation = reservationRepository.FindById(temporaryReview.Reservation.ReservationId);
             }
 
             return reviews;
@@ -49,14 +58,31 @@ namespace InitialProject.Repository
             reviewSerializer.ToCSV(FilePathReview, allReviews);
         }
 
-        public List<Review> FindReviewsByOwnerUsername(string ownerUsername)
+        public List<Review> FindByOwnerUsername(string ownerUsername)
         {
-            return FindAllReviews().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+            return FindAll().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
         }
 
         public Review FindOwnerReviewByReservationId(string ownerUsername, int reservationId)
         {
-            return FindReviewsByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+            return FindByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+        }
+
+        public List<Review> FindReviewsByGuest1Username(string guest1Username)
+        {
+            return FindAll().ToList().FindAll(x => x.Reservation.GuestUsername.Equals(guest1Username) == true);
+        }
+
+        public Review FindGuest1ReviewByReservationId(string guest1Username, int reservationId)
+        {
+            return FindReviewsByGuest1Username(guest1Username).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+        }
+
+        public void Add(Review review)
+        {
+            reviews = FindAll();
+            reviews.Add(review);
+            Save(reviews);
         }
     }
 }

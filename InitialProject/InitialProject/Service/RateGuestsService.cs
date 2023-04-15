@@ -38,7 +38,7 @@ namespace InitialProject.Service
             reservationService = new ReservationService(Owner);
         }
 
-        public List<RateGuestsDTO> FindAllGuestsForRate()
+        public List<RateGuestsDTO> FindAllGuestsToRate()
         {
             return FindRateGuestsDTOs(reservationService.FindOwnerReservations());
         }
@@ -85,12 +85,12 @@ namespace InitialProject.Service
 
         public void SaveNewRateGuest(SaveNewRateGuestDTO saveNewRateGuestDTO)
         {
-            rateGuestRepository.UpdateRateGuests(new RateGuest(reservationService.FindReservationByReservationId(saveNewRateGuestDTO.ReservationId), saveNewRateGuestDTO));
+            rateGuestRepository.Add(new RateGuest(reservationService.FindById(saveNewRateGuestDTO.ReservationId), saveNewRateGuestDTO));
         }
 
         public List<RateGuest> FindOwnerRateGuests(string ownerUsername)
         {
-            return rateGuestRepository.FindAllRateGuests().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+            return rateGuestRepository.FindOwnerRateGuests(ownerUsername);
         }
     }
 }

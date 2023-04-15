@@ -18,57 +18,15 @@ namespace InitialProject.Service
     {
         private readonly UserService userService;
 
-        private readonly ReservationService reservationService;
+        private  ReservationService reservationService;
 
         private readonly RateGuestsService rateGuestsService;
 
         private readonly ReviewRepository reviewRepository;
 
-        private readonly ReservationRepository reservationRepository;
+        private ReservationRepository reservationRepository;
 
         private readonly RateGuestRepository rateGuestRepository;
-
-        public List<Review> AllReviews
-        {
-            get;
-            set;
-        }
-
-        public List<Reservation> AllReservations
-        {
-            get;
-            set;
-        }
-
-        public List<Review> OwnerReviews
-        {
-            get;
-            set;
-        }
-
-        public List<RateGuest> AllRateGuests
-        {
-            get;
-            set;
-        }
-
-        public List<RateGuest> OwnerRateGuests
-        {
-            get;
-            set;
-        }
-
-        public List<Reservation> Guest1Reservations
-        {
-            get;
-            set;
-        }
-
-        public List<Review> Guest1Reviews
-        {
-            get;
-            set;
-        }
 
         private string owner;
         private string guest1;
@@ -103,65 +61,38 @@ namespace InitialProject.Service
             reviewRepository = new ReviewRepository();
             reservationRepository = new ReservationRepository();
             rateGuestRepository = new RateGuestRepository();
-
-            ListInitialization();
         }
 
-        private void ListInitialization()
+        public List<CreateReviewDTO> FindAllReviewsToRate()
         {
-            AllReviews = new List<Review>();
-            AllReservations = new List<Reservation>();
-            OwnerReviews = new List<Review>();
-            AllRateGuests = new List<RateGuest>();
-            OwnerRateGuests = new List<RateGuest>();
-            Guest1Reservations = new List<Reservation>();
-            Guest1Reviews = new List<Review>();
+            List<Reservation> reservations = FindGuest1Reservations();
+
+            List<Review> reviews = FindGuest1Reviews();
+
+            return FindCreateReviewDTOs(reservations, reviews);
         }
 
-        public List<CreateReviewDTO> FindAllReviewsForRate()
+        public List<Reservation> FindGuest1Reservations()
         {
-            AllReservations = reservationRepository.FindAllReservations();
-
-            FindGuest1Reservations();
-
-            AllReviews = reviewRepository.FindAll();
-
-            FindReservationsForCreateReview();
-
-            FindGuest1Reviews();
-
-            return FindCreateReviewDTOs();
+            return reservationRepository.FindGuest1Reservations(Guest1);
         }
 
-        public void FindGuest1Reservations()
+        public List<Review> FindGuest1Reviews()
         {
-            Guest1Reservations = AllReservations.ToList().FindAll(x => x.GuestUsername.Equals(Guest1) == true);
+            return reviewRepository.FindReviewsByGuest1Username(Guest1);
         }
 
-        public void FindGuest1Reviews()
-        {
-            Guest1Reviews = AllReviews.ToList().FindAll(x => x.Reservation.GuestUsername.Equals(Guest1) == true);
-        }
-
-        public void FindReservationsForCreateReview()
-        {
-            foreach (Review temporaryReview in AllReviews.ToList())
-            {
-                temporaryReview.Reservation = AllReservations.ToList().Find(x => x.ReservationId == temporaryReview.Reservation.ReservationId);
-            }
-        }
-
-        public List<CreateReviewDTO> FindCreateReviewDTOs()
+        public List<CreateReviewDTO> FindCreateReviewDTOs(List<Reservation> guest1reservations, List<Review> guest1Reviews)
         {
             List<CreateReviewDTO> createReviewDTOs = new List<CreateReviewDTO>();
 
-            foreach (Reservation temporaryReservation in Guest1Reservations.ToList())
+            foreach (Reservation temporaryReservation in guest1reservations.ToList())
             {
-                Review temporaryReview = Guest1Reviews.Find(x => x.Reservation.ReservationId == temporaryReservation.ReservationId);
+                Review temporaryReview = reviewRepository.FindGuest1ReviewByReservationId(Guest1, temporaryReservation.ReservationId);
 
                 if(temporaryReview == null)
                 {
-                    CreateReviewDTO createReviewDTO = IsValidToAdd(temporaryReservation, temporaryReview);
+                    CreateReviewDTO createReviewDTO = IsValidToAdd(temporaryReservation);
                     if (createReviewDTO != null)
                     {
                         createReviewDTOs.Add(createReviewDTO);
@@ -172,7 +103,7 @@ namespace InitialProject.Service
             return createReviewDTOs;
         }
 
-        public CreateReviewDTO IsValidToAdd(Reservation temporaryReservation, Review temporaryReview)
+        public CreateReviewDTO IsValidToAdd(Reservation temporaryReservation)
         {
             int days = DateTime.Now.Subtract(temporaryReservation.EndDate).Days;
 
@@ -193,20 +124,15 @@ namespace InitialProject.Service
 
         public void SaveNewReview(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
         {
-            Review review = new Review(FindReservationByReservationId(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
+            Review review = new Review(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
 
-            List<Review> allReviews = reviewRepository.FindAll(); 
-
-            allReviews.Add(review);
-
-            reviewRepository.Save(allReviews); // todo: razmisliti da li je bolje cela ova logika da bude u repozitorijumu, a ne u servisu
+            reviewRepository.Add(review); // mozda Save
         }
 
-        private Reservation FindReservationByReservationId(int reservationId)
-        {
-            List<Reservation> allReservations = reservationRepository.FindAllReservations();
-            return allReservations.Find(x => x.ReservationId == reservationId);
-        }
+
+
+
+
 
         public List<ShowGuestReviewsDTO> FindAllReviews()
         {
@@ -231,19 +157,23 @@ namespace InitialProject.Service
             return showGuestReviewsDTOs;
         }
 
+
+
+
+
         public void CheckSuperOwner(int reservationId)
         {
             string ownerUsername = reservationService.FindOwnerByReservationId(reservationId);
 
-            List<Review> ownerReviews = reviewRepository.FindReviewsByOwnerUsername(ownerUsername);
+            List<Review> ownerReviews = reviewRepository.FindByOwnerUsername(ownerUsername);
 
             if(ownerReviews.Count >= 50 && FindAverageGuestReviews(ownerReviews) > new Decimal(4.5))
             {
-                userService.UpdateUsers(ownerUsername, "super");
+                userService.Update(ownerUsername, "super");
             }
             else if(IsSuperOwner(ownerUsername) == true) // ako je bio super owner, a ne treba vise da bude
             {
-                userService.UpdateUsers(ownerUsername, "no_super");
+                userService.Update(ownerUsername, "no_super");
             }
         }
 

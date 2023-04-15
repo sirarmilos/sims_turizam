@@ -27,12 +27,12 @@ namespace InitialProject.Repository
             rateGuests = rateGuestSerializer.FromCSV(FilePathRateGuest);
         }
 
-        public void SaveRateGuests(List<RateGuest> allRateGuests)
+        public void Save(List<RateGuest> allRateGuests)
         {
             rateGuestSerializer.ToCSV(FilePathRateGuest, allRateGuests);
         }
 
-        public List<RateGuest> FindAllRateGuests()
+        public List<RateGuest> FindAll()
         {
             reservationRepository = new ReservationRepository();
 
@@ -40,27 +40,32 @@ namespace InitialProject.Repository
 
             foreach(RateGuest temporaryRateGuest in rateGuests.ToList())
             {
-                temporaryRateGuest.Reservation = reservationRepository.FindReservationByReservationId(temporaryRateGuest.Reservation.ReservationId);
+                temporaryRateGuest.Reservation = reservationRepository.FindById(temporaryRateGuest.Reservation.ReservationId);
             }
 
             return rateGuests;
         }
 
-        public List<RateGuest> FindRateGuestsByOwnerUsername(string ownerUsername)
+        public List<RateGuest> FindByOwnerUsername(string ownerUsername)
         {
-            return FindAllRateGuests().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+            return FindAll().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
         }
 
         public RateGuest FindOwnerRateGuestByReservationId(string ownerUsername, int reservationId)
         {
-            return FindRateGuestsByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+            return FindByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
         }
 
-        public void UpdateRateGuests(RateGuest rateGuest)
+        public void Add(RateGuest rateGuest)
         {
-            List<RateGuest> allRateGuests = FindAllRateGuests();
+            List<RateGuest> allRateGuests = FindAll();
             allRateGuests.Add(rateGuest);
-            SaveRateGuests(allRateGuests);
+            Save(allRateGuests);
+        }
+
+        public List<RateGuest> FindOwnerRateGuests(string ownerUsername)
+        {
+            return FindAll().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
         }
     }
 }
