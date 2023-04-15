@@ -73,6 +73,17 @@ namespace InitialProject.View
 
         private int counter;
 
+        private string guide;
+
+        public string Guide
+        {
+            get { return guide; }
+            set
+            {
+                guide = value;
+            }
+        }
+
         public string TourName
         {
             get { return tourName; }
@@ -320,11 +331,12 @@ namespace InitialProject.View
         }
 
 
-        public AddNewTour()
+        public AddNewTour(string guide)
         {
             InitializeComponent();
             DataContext = this;
 
+            Guide = guide;
 
             locationRepository = new LocationRepository();
             tourRepository = new TourRepository();
@@ -351,7 +363,7 @@ namespace InitialProject.View
             LocationDto locationDto = new LocationDto(TourCountry, TourCity, TourAddress, TourLatitude, TourLongitude);
             Location location = locationRepository.Save(locationDto);
 
-            TourDto tourDto = new TourDto(TourName, location, Description, Languages, maxGuests, Duration, Images);
+            TourDto tourDto = new TourDto(TourName, location, Description, Languages, maxGuests, Duration, Images, Guide);
             Tour tour = tourRepository.Save(tourDto);
 
 

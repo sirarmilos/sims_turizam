@@ -26,21 +26,41 @@ namespace InitialProject.View
 
         public static Tour tourFiltered { get; set; }
 
-        private readonly TourGuidenceRepository tourGuidenceRepository;
+        public static Tour tourAgeStats { get; set; }
 
-        public GuideStart()
+        public ObservableCollection<int> ageCount { get; set; }
+
+        private readonly TourGuidenceRepository tourGuidenceRepository;
+        private readonly TourRepository tourRepository;
+
+        private string guide;
+
+        public string Guide
+        {
+            get { return guide; }
+            set
+            {
+                guide = value;
+            }
+        }
+
+        public GuideStart(string username)
         {
             InitializeComponent();
             DataContext = this;
+            Guide = username;
             tourGuidenceRepository = new TourGuidenceRepository();
+            tourRepository = new TourRepository();
             tour = tourGuidenceRepository.GetMostVisitedAllTime();
             int year = 2022;
             tourFiltered = tourGuidenceRepository.GetMostVisitedByYear(year);
+            tourAgeStats = tourRepository.GetById(2);
+            ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(tourAgeStats.Id));
         }
 
         private void GoToAddNewTour(object sender, RoutedEventArgs e)
         {
-            AddNewTour window = new AddNewTour();
+            AddNewTour window = new AddNewTour(Guide);
             window.Show();
         }
 

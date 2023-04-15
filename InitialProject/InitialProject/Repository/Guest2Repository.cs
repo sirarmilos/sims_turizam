@@ -88,5 +88,17 @@ namespace InitialProject.Repository
 
         }
 
+        public int GetAge(string username)
+        {
+            foreach(Guest2 guest2 in guests2)
+            {
+                if (guest2.User.Username.Equals(username))
+                {
+                    return guest2.Age;
+                }
+            }
+            return 0;
+        }
+
     }
 }

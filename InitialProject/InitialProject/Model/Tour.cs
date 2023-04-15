@@ -27,9 +27,11 @@ namespace InitialProject.Model
 
         public List<string> Images { get; set; }
 
+        public string GuideUsername { get; set; }
+
         public Tour() { }
 
-        public Tour(int id, string tourName, Location location, string description, Language languages, int maxGuests, int duration, List<string> images)
+        public Tour(int id, string tourName, Location location, string description, Language languages, int maxGuests, int duration, List<string> images, string username)
         {
             Id = id;
             TourName = tourName;
@@ -39,6 +41,7 @@ namespace InitialProject.Model
             MaxGuests = maxGuests;
             Duration = duration;
             Images = images;
+            GuideUsername = username;
         }
 
         public string[] ToCSV()
@@ -53,7 +56,7 @@ namespace InitialProject.Model
 
             imageToString = imageToString.Substring(0, imageToString.Length - 2);
 
-            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Language.ToString(), MaxGuests.ToString(), Duration.ToString(), imageToString};
+            string[] csvValues = { Id.ToString(), TourName, Location.Id.ToString(), Description, Language.ToString(), MaxGuests.ToString(), Duration.ToString(), imageToString, GuideUsername };
             return csvValues;
         }
 
@@ -86,6 +89,8 @@ namespace InitialProject.Model
             }
 
             Images = images;
+
+            GuideUsername = values[8];
 
         } 
 
