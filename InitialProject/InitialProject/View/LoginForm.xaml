@@ -32,7 +32,7 @@
         <TextBox x:Name="tbPassword" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" Text="{Binding Path=Password, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
 
         <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5">
-            <Button x:Name="buttonLogin"  Content="Login" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Log_In" Width="150" Height="50"/>
+            <Button x:Name="buttonLogin"  Content="Login" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Login" Width="150" Height="50"/>
         </Grid>
         
     </Grid>

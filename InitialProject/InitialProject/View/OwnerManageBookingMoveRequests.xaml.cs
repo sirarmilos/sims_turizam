@@ -120,7 +120,7 @@ namespace InitialProject.View
             set;
         }
 
-        public OwnerManageBookingMoveRequests(string owner)
+        public OwnerManageBookingMoveRequests(string owner, string ownerHeader)
         {
             InitializeComponent();
 
@@ -135,6 +135,10 @@ namespace InitialProject.View
             OwnerBookingMoveRequestsDTOs = reservationReschedulingRequestService.FindPendingRequests();
 
             SetDefaultValue();
+
+            usernameAndSuperOwner.Header = ownerHeader;
+
+            rateGuestsNotifications.Header = "Number of unrated guests: " + reservationReschedulingRequestService.FindNumberOfUnratedGuests(Owner);
         }
 
         private void SetDefaultValue()
@@ -155,19 +159,14 @@ namespace InitialProject.View
 
         private void DeclineRequest(object sender, RoutedEventArgs e)
         {
-            DeclineBookingMoveRequest window = new DeclineBookingMoveRequest(reservationReschedulingRequestService, Owner, SelectedBookingMoveRequest, dgBookingMoveRequests);
+            DeclineBookingMoveRequest window = new DeclineBookingMoveRequest(reservationReschedulingRequestService, this);
 
-            window.Show();
-        }
-
-        void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+            window.ShowDialog();
         }
 
         private void AcceptRequestButtonEnable(object sender, SelectionChangedEventArgs e)
         {
-            if(SelectedBookingMoveRequest == null)
+            if (SelectedBookingMoveRequest == null)
             {
                 buttonAcceptRequest.IsEnabled = false;
                 buttonDeclineRequest.IsEnabled = false;
@@ -179,38 +178,41 @@ namespace InitialProject.View
             }
         }
 
+        void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+        }
+
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
         {
             AddNewAccommodation window = new AddNewAccommodation(Owner);
-            window.Show();
+            window.ShowDialog();
         }
 
         private void GoToRateGuests(object sender, RoutedEventArgs e)
         {
-            RateGuests window = new RateGuests(Owner);
-            if (window.dgRateGuests.Items.Count > 0)
-            {
-                window.Show();
-            }
-        }
-
-        private void GoToLogout(object sender, RoutedEventArgs e)
-        {
-            LoginForm window = new LoginForm();
+            RateGuests window = new RateGuests(Owner, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
         {
-            ShowGuestReviews window = new ShowGuestReviews(Owner);
+            ShowGuestReviews window = new ShowGuestReviews(Owner, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner);
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
             window.Show();
             Close();
         }

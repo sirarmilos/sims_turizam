@@ -44,57 +44,19 @@ namespace InitialProject.Repository
             return FindAll().Find(x => x.Username.Equals(ownerName) == true).SuperType;
         }
 
-        public string LoginUser(string username, string password)
+        public bool IsUserExist(string username)
         {
-            User user = new User();
-            if (IsUserExist(username) == false)
-            {
-                return "Greska";
-            }
-
-            user = IsPasswordCorect(username, password);
-
-            if (user == null)
-            {
-                return "Greska";
-            }
-            else
-            {
-                return user.Type;
-            }
+            return FindAll().Exists(x => x.Username.Equals(username) == true);
         }
 
-        private bool IsUserExist(string username)
+        public bool IsPasswordCorrect(string username, string password)
         {
-            foreach (User temporaryUser in users)
-            {
-                if (temporaryUser.Username.Equals(username) == true)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return FindAll().Exists(x => x.Username.Equals(username) == true && x.Password.Equals(password) == true);
         }
 
-        private User IsPasswordCorect(string username, string password)
+        public string FindTypeByUsername(string username)
         {
-            foreach (User temporaryUser in users)
-            {
-                if (temporaryUser.Username.Equals(username) == true)
-                {
-                    if (temporaryUser.Password.Equals(password) == true)
-                    {
-                        return temporaryUser;
-                    }
-
-                    return null;
-                }
-            }
-
-            return null;
+            return FindAll().Find(x => x.Username.Equals(username) == true).Type;
         }
-
-
     }
 }
