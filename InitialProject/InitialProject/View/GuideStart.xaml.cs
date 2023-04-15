@@ -1,5 +1,8 @@
-﻿using System;
+﻿using InitialProject.Model;
+using InitialProject.Repository;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +22,20 @@ namespace InitialProject.View
     /// </summary>
     public partial class GuideStart : Window
     {
+        public static Tour tour { get; set; }
+
+        public static Tour tourFiltered { get; set; }
+
+        private readonly TourGuidenceRepository tourGuidenceRepository;
+
         public GuideStart()
         {
             InitializeComponent();
+            DataContext = this;
+            tourGuidenceRepository = new TourGuidenceRepository();
+            tour = tourGuidenceRepository.GetMostVisitedAllTime();
+            int year = 2022;
+            tourFiltered = tourGuidenceRepository.GetMostVisitedByYear(year);
         }
 
         private void GoToAddNewTour(object sender, RoutedEventArgs e)

@@ -19,6 +19,19 @@
                     <ColumnDefinition Width="119*"/>
                     <ColumnDefinition Width="41*"/>
                 </Grid.ColumnDefinitions>
+                <TextBlock HorizontalAlignment="Left" Margin="205,179,0,0" TextWrapping="Wrap" Text="{Binding tour.TourName}" VerticalAlignment="Top" Width="74"/>
+                <TextBlock HorizontalAlignment="Left" Margin="313,179,0,0" TextWrapping="Wrap" Text="{Binding tour.Location.Country}" VerticalAlignment="Top" Width="74"/>
+                <TextBlock HorizontalAlignment="Left" Margin="437,178,0,0" TextWrapping="Wrap" Text="{Binding tour.Location.City}" VerticalAlignment="Top" Width="74"/>
+                <TextBlock HorizontalAlignment="Left" Margin="558,177,0,0" TextWrapping="Wrap" Text="{Binding tour.Language}" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="74"/>
+                <Label Content="Most Visited Tour All Time: " HorizontalAlignment="Left" Margin="12,174,0,0" VerticalAlignment="Top" Width="165"/>
+
+                <TextBlock HorizontalAlignment="Left" Margin="205,233,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.TourName}" VerticalAlignment="Top" Width="74"/>
+                <TextBlock HorizontalAlignment="Left" Margin="313,232,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.Location.Country}" VerticalAlignment="Top" Width="74"/>
+                <TextBlock HorizontalAlignment="Left" Margin="437,231,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.Location.City}" VerticalAlignment="Top" Width="74"/>
+                <TextBlock HorizontalAlignment="Left" Margin="558,231,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.Language}" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="74"/>
+                <Label Content="Most Visited Tour For Spec. Year: " HorizontalAlignment="Left" Margin="12,226,0,0" VerticalAlignment="Top" Width="188"/>
+
+
             </Grid>
         </DockPanel>
     </Grid>

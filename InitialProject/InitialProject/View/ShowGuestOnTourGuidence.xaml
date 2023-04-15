@@ -23,16 +23,16 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Mark">
-                    <DataGridTemplateColumn.CellTemplate >
+                <DataGridTemplateColumn Header="Tour Key Point Arrivals">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ListBox ItemsSource="{Binding TourKeyPointArrival}">
-                                <ListBox.ItemTemplate>
+                            <ItemsControl ItemsSource="{Binding TourKeyPointArrival, Mode=TwoWay}">
+                                <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <CheckBox Content="{Binding TourKeyPointArrival}"  />
+                                        <CheckBox IsChecked="{Binding Path=Value, Mode=TwoWay}"/>
                                     </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

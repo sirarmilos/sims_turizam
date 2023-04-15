@@ -185,6 +185,111 @@ namespace InitialProject.Repository
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
         }
 
+        public Tour GetMostVisitedAllTime()
+        {
+            int sum = 0;
+            Tour tourMax = new Tour();
+            TourReservationRepository tourReservationRepository = new();
+            TourRepository tourRepository = new();
+            List<Tour> tours = tourRepository.Load();
+            int sumMax = 0;
+            int indicator = 0;
+
+            foreach(Tour t in tours)
+            {
+                foreach (TourGuidence tr in tourGuidences)
+                {
+                    if (tr.Finished == true && t.Id == tr.Tour.Id)
+                    {
+                        sumMax += tourReservationRepository.GetSumGuestNumber(tr.Id);
+                        if(sumMax != 0)
+                            indicator++;
+                    }
+                }
+                if (indicator != 0)
+                {
+                    tourMax = t;
+                    break;
+                }
+            }
+            if (sumMax == 0)
+                return null;
+
+
+
+
+            foreach (Tour t in tours)
+            {
+                sum = 0;
+                foreach (TourGuidence tr in tourGuidences)
+                {
+                    if (tr.Finished == true && t.Id == tr.Tour.Id)
+                    {
+                        sum += tourReservationRepository.GetSumGuestNumber(tr.Id);
+                    }
+                }
+                if (sum > sumMax)
+                {
+                    sumMax = sum;
+                    tourMax = t;
+                }
+            }
+            return tourMax;
+        }
+
+        public Tour GetMostVisitedByYear(int year)
+        {
+            int sum = 0;
+            Tour tourMax = new Tour();
+            TourReservationRepository tourReservationRepository = new();
+            TourRepository tourRepository = new();
+            List<Tour> tours = tourRepository.Load();
+            int sumMax = 0;
+            int indicator = 0;
+
+            foreach (Tour t in tours)
+            {
+                foreach (TourGuidence tr in tourGuidences)
+                {
+                    if (tr.Finished == true && t.Id == tr.Tour.Id && year == tr.StartTime.Year)
+                    {
+                        sumMax += tourReservationRepository.GetSumGuestNumber(tr.Id);
+                        if (sumMax != 0)
+                            indicator++;
+                    }
+                }
+                if (indicator != 0)
+                {
+                    tourMax = t;
+                    break;
+                }
+            }
+            if (sumMax == 0)
+                return null;
+
+
+
+
+            foreach (Tour t in tours)
+            {
+                sum = 0;
+                foreach (TourGuidence tr in tourGuidences)
+                {
+                    if (tr.Finished == true && t.Id == tr.Tour.Id && year == tr.StartTime.Year)
+                    {
+                        sum += tourReservationRepository.GetSumGuestNumber(tr.Id);
+                    }
+                }
+                if (sum > sumMax)
+                {
+                    sumMax = sum;
+                    tourMax = t;
+                }
+            }
+            return tourMax;
+        }
+
+
 
 
         public TourGuidence GetByTourAndDate(Tour tour, DateTime date)
