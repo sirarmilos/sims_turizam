@@ -36,13 +36,14 @@ namespace InitialProject.View
                 owner = value;
             }
         }
+
         public List<ShowGuestReviewsDTO> ShowGuestReviewsDTOs
         {
             get;
             set;
         }
 
-        public ShowGuestReviews(string owner)
+        public ShowGuestReviews(string owner, string ownerHeader)
         {
             InitializeComponent();
 
@@ -56,7 +57,9 @@ namespace InitialProject.View
 
             ShowGuestReviewsDTOs = reviewService.FindAllReviews();
 
-            dgShowGuestReviews.ItemsSource = ShowGuestReviewsDTOs;
+            usernameAndSuperOwner.Header = ownerHeader;
+
+            rateGuestsNotifications.Header = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(Owner);
         }
 
         void LoadingRowForDgShowGuestReviews(object sender, DataGridRowEventArgs e)
@@ -67,35 +70,33 @@ namespace InitialProject.View
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
         {
             AddNewAccommodation window = new AddNewAccommodation(Owner);
-            window.Show();
+            window.ShowDialog();
         }
 
         private void GoToRateGuests(object sender, RoutedEventArgs e)
         {
-            RateGuests window = new RateGuests(Owner);
-            if (window.dgRateGuests.Items.Count > 0)
-            {
-                window.Show();
-            }
-        }
-
-        private void GoToLogout(object sender, RoutedEventArgs e)
-        {
-            LoginForm window = new LoginForm();
+            RateGuests window = new RateGuests(Owner, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
         {
-            ShowGuestReviews window = new ShowGuestReviews(Owner);
+            ShowGuestReviews window = new ShowGuestReviews(Owner, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner);
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
             window.Show();
             Close();
         }

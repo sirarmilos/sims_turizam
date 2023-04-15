@@ -19,6 +19,8 @@ namespace InitialProject.Service
 
         private readonly ReservationService reservationService;
 
+        private readonly RateGuestsService rateGuestsService;
+
         public List<BusyReservation> BusyReservations
         {
             get;
@@ -53,24 +55,9 @@ namespace InitialProject.Service
             Guest1 = username;
             reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
             reservationService = new ReservationService(Owner);
+            rateGuestsService = new RateGuestsService(Owner);
 
             BusyReservations = new List<BusyReservation>();
-        }
-
-        public ReservationReschedulingRequestService(ReservationReschedulingRequestService reservationReschedulingRequestService, string owner)
-        {
-            Owner = owner;
-            reservationReschedulingRequestRepository = reservationReschedulingRequestService.reservationReschedulingRequestRepository;//new ReservationReschedulingRequestRepository();
-            reservationService = new ReservationService();
-            /*reservationRepository = reservationReschedulingRequestService.reservationRepository;// new ReservationRepository();
-
-            AllReservations = reservationReschedulingRequestService.AllReservations;// new List<Reservation>();
-            OwnerReservations = reservationReschedulingRequestService.OwnerReservations; // new List<Reservation>();
-            AllReservationReschedulingRequests = reservationReschedulingRequestService.AllReservationReschedulingRequests; // new List<ReservationReschedulingRequest>();
-            OwnerReservationReschedulingRequests = reservationReschedulingRequestService.OwnerReservationReschedulingRequests; // new List<ReservationReschedulingRequest>();
-            OwnerPendingReservationReschedulingRequests = reservationReschedulingRequestService.OwnerPendingReservationReschedulingRequests; // new List<ReservationReschedulingRequest>();
-            OwnerBookingMoveRequestsDTOs = reservationReschedulingRequestService.OwnerBookingMoveRequestsDTOs; // new List<OwnerBookingMoveRequestsDTO>();*/
-            BusyReservations = reservationReschedulingRequestService.BusyReservations; // new List<BusyReservation>();
         }
 
         public List<OwnerBookingMoveRequestsDTO> FindPendingRequests()
@@ -157,10 +144,6 @@ namespace InitialProject.Service
 
             List<Reservation> cancelledReservations = busyReservationToSelectedBookingMoveRequest.ReservationsToDelete.FindAll(x => x.ReservationId != selectedBookingMoveRequest.ReservationId).ToList();
 
-            // ovde stao, BusyReservations neka ostane globalna, posto je potrebna i u drugoj funkciji
-            // azuriram fajlove svaki put kada se izvrsi nesto, jer nema listi
-            // nije potrebno azurirati ownerBookingMoveRequestsDTOs, jer ce se na kraju pozvati FindPendingReservationReschedulingRequests() koja ce to odraditi
-
             RemoveRequestsToCancelledReservations(selectedBookingMoveRequest, cancelledReservations);
 
             RemoveCancelledReservations(selectedBookingMoveRequest, cancelledReservations); 
@@ -184,8 +167,11 @@ namespace InitialProject.Service
         public void SaveRejectedRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, string comment)
         {
             reservationReschedulingRequestRepository.UpdateRequestToSelectedBookingMoveRequest(selectedBookingMoveRequest, "rejected", comment);
+        }
 
-            FindPendingRequests();
+        public int FindNumberOfUnratedGuests(string ownerUsername)
+        {
+            return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
         }
     }
 }

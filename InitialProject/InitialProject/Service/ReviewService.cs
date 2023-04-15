@@ -186,5 +186,10 @@ namespace InitialProject.Service
         {
             return userService.FindSuperTypeByOwnerName(ownerUsername).Equals("super");
         }
+
+        public int FindNumberOfUnratedGuests(string ownerUsername)
+        {
+            return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
+        }
     }
 }

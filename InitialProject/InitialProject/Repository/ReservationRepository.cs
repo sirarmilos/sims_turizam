@@ -51,7 +51,7 @@ namespace InitialProject.Repository
             }
         }
 
-        public void /* UpdateReservations*/ SaveReservations(List<Reservation> reservations)
+        public void SaveReservations(List<Reservation> reservations)
         {
             reservationSerializer.ToCSV(FilePathReservation, reservations);
         }
@@ -140,16 +140,6 @@ namespace InitialProject.Repository
 
             return accommodationReservations;
         }
-
-        /* public List<Reservation> FindAllReservationsByAccommodationid(int accommodationId)
-        {
-            return FindOwnerReservations().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
-        }*/
-
-
-
-
-
 
         public List<Reservation> FindGuest1Reservations(string guest1)
         {

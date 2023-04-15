@@ -23,65 +23,40 @@ namespace InitialProject.View
     /// </summary>
     public partial class DeclineBookingMoveRequest : Window
     {
+        public OwnerManageBookingMoveRequests ownerManageBookingMoveRequestsForm;
+
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
-
-        private string owner;
-
-        public string Owner
-        {
-            get { return owner; }
-            set
-            {
-                owner = value;
-            }
-        }
-
-        private string comment;
 
         public string Comment
         {
-            get { return comment; }
-            set
-            {
-                comment = value;
-            }
-        }
-
-        public OwnerBookingMoveRequestsDTO SelectedBookingMoveRequest
-        {
             get;
             set;
         }
 
-        public DataGrid DgBookingMoveRequests
-        {
-            get;
-            set;
-        }
-
-        public DeclineBookingMoveRequest(ReservationReschedulingRequestService service, string owner, OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, DataGrid dgBookingMoveRequests)
+        public DeclineBookingMoveRequest(ReservationReschedulingRequestService service, OwnerManageBookingMoveRequests form)
         {
             InitializeComponent();
 
-            Owner = owner;
-
             DataContext = this;
 
-            reservationReschedulingRequestService = new ReservationReschedulingRequestService(service, Owner);
+            reservationReschedulingRequestService = service;
 
-            DgBookingMoveRequests = dgBookingMoveRequests;
-            SelectedBookingMoveRequest = selectedBookingMoveRequest;
+            ownerManageBookingMoveRequestsForm = form;
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
         {
+            ownerManageBookingMoveRequestsForm.dgBookingMoveRequests.ItemsSource = reservationReschedulingRequestService.FindPendingRequests();
+
             Close();
         }
 
         private void ConfirmRejection(object sender, RoutedEventArgs e)
         {
-            reservationReschedulingRequestService.SaveRejectedRequest(SelectedBookingMoveRequest, comment);
-            DgBookingMoveRequests.Items.Refresh();
+            reservationReschedulingRequestService.SaveRejectedRequest(ownerManageBookingMoveRequestsForm.SelectedBookingMoveRequest, Comment);
+
+            ownerManageBookingMoveRequestsForm.dgBookingMoveRequests.ItemsSource = reservationReschedulingRequestService.FindPendingRequests();
+
             Close();
         }
     }

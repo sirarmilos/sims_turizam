@@ -39,20 +39,6 @@ namespace InitialProject.Repository
             return reviews;
         }
 
-        public List<Review> FindAllReviews()
-        {
-            reservationRepository = new ReservationRepository();
-
-            reviews = reviewSerializer.FromCSV(FilePathReview);
-
-            foreach(Review temporaryReview in reviews.ToList())
-            {
-                temporaryReview.Reservation = reservationRepository.FindById(temporaryReview.Reservation.ReservationId);
-            }
-
-            return reviews;
-        }
-
         public void Save(List<Review> allReviews)
         {
             reviewSerializer.ToCSV(FilePathReview, allReviews);

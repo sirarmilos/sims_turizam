@@ -92,5 +92,10 @@ namespace InitialProject.Service
         {
             return rateGuestRepository.FindOwnerRateGuests(ownerUsername);
         }
+
+        public int FindNumberOfUnratedGuests(string ownerUsername)
+        {
+            return FindAllGuestsToRate().Count;
+        }
     }
 }
