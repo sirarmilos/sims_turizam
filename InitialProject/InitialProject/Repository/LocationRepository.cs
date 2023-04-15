@@ -23,14 +23,21 @@ namespace InitialProject.Repository
             locations = locationSerializer.FromCSV(FilePathLocation);
         }
 
-        public List<Location> FindAllLocations()
+        public List<Location> FindAll()
         {
-            return locations;
+            return locationSerializer.FromCSV(FilePathLocation);
         }
 
-        public void SaveLocations(List<Location> allLocations)
+        public void Save(List<Location> allLocations)
         {
             locationSerializer.ToCSV(FilePathLocation, allLocations);
+        }
+
+        public void Add(Location location)
+        {
+            List<Location> allLocations = FindAll();
+            allLocations.Add(location);
+            Save(allLocations);
         }
 
         public Location Save(LocationDto locationDto)
@@ -41,13 +48,18 @@ namespace InitialProject.Repository
             return location;
         }
 
-        public int NextIdLocation()
+        public int NextIdLocation() //
         {
-            if (locations.Count < 1)
+            if (FindAll().Count < 1)
             {
                 return 1;
             }
-            return locations.Max(c => c.Id) + 1;
+            return FindAll().Max(c => c.Id) + 1;
+        }
+
+        public Location FindById(int locationId)
+        {
+            return FindAll().ToList().Find(x => x.Id == locationId);
         }
 
         public Location GetById(int id)

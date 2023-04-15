@@ -1,16 +1,21 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Serializer;
+using InitialProject.View;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace InitialProject.Repository
 {
     internal class ReservationRepository
     {
+        private AccommodationRepository accommodationRepository;
+
         private const string FilePathReservation = "../../../Resources/Data/reservation.csv";
 
         private const string FilePathAccommodation = "../../../Resources/Data/accommodation.csv";
@@ -30,7 +35,7 @@ namespace InitialProject.Repository
 
             accommodationSerializer = new Serializer<Accommodation>();
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-
+            
             foreach (Reservation reservation in reservations)
             {
                 if (accommodations == null)
@@ -46,26 +51,70 @@ namespace InitialProject.Repository
             }
         }
 
-        public void UpdateReservations(List<Reservation> reservations)
+        public void /* UpdateReservations*/ SaveReservations(List<Reservation> reservations)
         {
             reservationSerializer.ToCSV(FilePathReservation, reservations);
         }
 
-        public List<Reservation> FindAllReservations()
+        public List<Reservation> FindAll()
         {
+            accommodationRepository = new AccommodationRepository();
+
+            reservations = reservationSerializer.FromCSV(FilePathReservation);
+
+            foreach(Reservation temporaryReservation in reservations.ToList())
+            {
+                temporaryReservation.Accommodation = accommodationRepository.FindAccommodationByAccommodationId(temporaryReservation.Accommodation.Id);
+            }
+
             return reservations;
+        }
+
+        public List<Reservation> FindByOwnerUsername(string ownerUsername)
+        {
+            return FindAll().ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+        }
+
+        public Reservation FindById(int reservationId)
+        {
+            return FindAll().ToList().Find(x => x.ReservationId == reservationId);
+        }
+
+        public string FindOwnerByReservationId(int reservationId)
+        {
+            return FindAll().Find(x => x.ReservationId == reservationId).Accommodation.OwnerUsername;
+        }
+
+        public void UpdateDatesToSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest)
+        {
+            List<Reservation> allReservations = FindAll();
+            allReservations.Where(x => x.ReservationId == selectedBookingMoveRequest.ReservationId).SetValue(x => x.StartDate = selectedBookingMoveRequest.NewStartDate).ToList().SetValue(x => x.EndDate = selectedBookingMoveRequest.NewEndDate);
+            SaveReservations(allReservations);
+        }
+
+        public void RemoveById(int reservationId, int cancelledReservationId)
+        {
+            List<Reservation> allReservations = FindAll();
+            allReservations.Remove(allReservations.Find(x => x.ReservationId == cancelledReservationId && x.ReservationId != reservationId));
+            SaveReservations(allReservations);
+        }
+
+        public void RemoveById(int reservationId)
+        {
+            List<Reservation> allReservations = FindAll();
+            allReservations.Remove(allReservations.Find(x => x.ReservationId == reservationId));
+            SaveReservations(allReservations);
         }
 
         public void Save(string guestUsername, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
         {
 
             reservations = reservationSerializer.FromCSV(FilePathReservation);
-            Reservation reservation = new Reservation(NextIdReservation(), "username123", accommodation, startDate, endDate, guestsNumber);
+            Reservation reservation = new Reservation(NextIdReservation(), "username123", accommodation, startDate, endDate, guestsNumber); // todo: izmeniti username
             reservations.Add(reservation);
             reservationSerializer.ToCSV(FilePathReservation, reservations);
 
         }
-
 
         public int NextIdReservation()
         {
@@ -92,5 +141,19 @@ namespace InitialProject.Repository
             return accommodationReservations;
         }
 
+        /* public List<Reservation> FindAllReservationsByAccommodationid(int accommodationId)
+        {
+            return FindOwnerReservations().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+        }*/
+
+
+
+
+
+
+        public List<Reservation> FindGuest1Reservations(string guest1)
+        {
+            return FindAll().ToList().FindAll(x => x.GuestUsername.Equals(guest1) == true);
+        }
     }
 }

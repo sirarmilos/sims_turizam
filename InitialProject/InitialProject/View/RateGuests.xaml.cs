@@ -26,10 +26,6 @@ namespace InitialProject.View
     {
         private readonly RateGuestsService rateGuestsService;
 
-        private List<RateGuestsDTO> rateGuestsDTOs;
-
-        private RateGuestsDTO selectedGuest;
-
         private string owner;
 
         public string Owner
@@ -171,7 +167,7 @@ namespace InitialProject.View
 
             RateGuestsDTOs = new List<RateGuestsDTO>();
 
-            RateGuestsDTOs = rateGuestsService.FindAllGuestsForRate();
+            RateGuestsDTOs = rateGuestsService.FindAllGuestsToRate();
 
             if (RateGuestsDTOs.Count == 0)
             {

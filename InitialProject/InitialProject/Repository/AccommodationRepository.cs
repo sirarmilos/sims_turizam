@@ -14,6 +14,8 @@ namespace InitialProject.Repository
 {
     internal class AccommodationRepository
     {
+        private LocationRepository locationRepository;
+
         private const string FilePathAccommodation = "../../../Resources/Data/accommodation.csv";
 
         private const string FilePathLocation = "../../../Resources/Data/location.csv";
@@ -48,14 +50,50 @@ namespace InitialProject.Repository
             }
         }
 
-        public List<Accommodation> FindAllAccommodations()
+        public List<Accommodation> FindAll()
         {
+            locationRepository = new LocationRepository();
+
+            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
+
+            foreach(Accommodation temporaryAccommodation in accommodations.ToList())
+            {
+                temporaryAccommodation.Location = locationRepository.FindById(temporaryAccommodation.Location.Id);
+            }
+
             return accommodations;
         }
 
-        public void SaveAccommodations(List<Accommodation> allAccommodations)
+        public void Save(List<Accommodation> allAccommodations)
         {
             accommodationSerializer.ToCSV(FilePathAccommodation, allAccommodations);
+        }
+
+        public void Add(Accommodation accommodation)
+        {
+            List<Accommodation> allAccommodations = FindAll();
+            allAccommodations.Add(accommodation);
+            Save(allAccommodations);
+        }
+
+        public bool IsAccommodationExist(string accommodationName)
+        {
+            return FindAll().Exists(x => x.AccommodationName.Equals(accommodationName) == true);
+        }
+
+        public int NextId()
+        {
+            if (FindAll().Count < 1)
+            {
+                return 1;
+            }
+
+            return FindAll().Max(x => x.Id) + 1;
+        }
+
+        public Accommodation FindAccommodationByAccommodationId(int accommodationId)
+        {
+            return FindAll().ToList().Find(x => x.Id == accommodationId);
         }
 
         public List<Accommodation> FindAll(string accommodationName, string country, string city, string type, int? maxGuests, int? minDaysReservation)
