@@ -36,6 +36,10 @@ namespace InitialProject.View
 
         private readonly TourReservationRepository tourReservationRepository = new TourReservationRepository();
 
+        private readonly Guest2Repository guest2Repository = new Guest2Repository();
+
+        private readonly string username;
+
         private string TourId { get; set; }
 
         private int numberOfGuests;
@@ -50,9 +54,11 @@ namespace InitialProject.View
             }
         }
 
-        public TourReservation()
+        public TourReservation(string username)
         {
             InitializeComponent();
+            InitializeComboBoxVouchers();
+            this.username = username;
         }
 
 
@@ -63,17 +69,53 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
          
-        public TourReservation(TourDisplayDTO tour)
+        public TourReservation(TourDisplayDTO tour,string username)
         {
             InitializeComponent();
             Tours.Add(tour);
             listTours.ItemsSource = Tours;
+            this.username = username;
+            InitializeComboBoxVouchers();
+        }
+
+        public void InitializeComboBoxVouchers()
+        {
+            List<Voucher> vouchers = guest2Repository.GetGuestsVouchers(username);  
+
+            foreach (Voucher voucher in vouchers)
+            {
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = voucher.voucherType.ToString() + "   " + voucher.expirationDate.ToString();
+                item.Tag = voucher.Id.ToString();
+
+                ComboBoxVouchers.Items.Add(item);
+            }
+
+            ComboBoxVouchers.Items.Insert(0, new ComboBoxItem { Content = "Select a voucher...", Tag = "0" });
+            ComboBoxVouchers.SelectedIndex = 0;
         }
 
 
         private void CreateReservation(object sender, RoutedEventArgs e)
         {
             numberOfGuests = Convert.ToInt32(guestNumber.Text);
+
+            ComboBoxItem selectedItem = ComboBoxVouchers.SelectedItem as ComboBoxItem;
+
+            int voucherId=0;
+
+            if (selectedItem!=null)
+            {
+                string selectedValue = selectedItem.Tag as string;
+
+                if(int.TryParse(selectedValue,out voucherId))
+                {
+                }
+                else
+                {
+                    voucherId = 0;
+                }
+            }
 
             if (listTours.SelectedItems.Count != 1)
             {
@@ -89,8 +131,11 @@ namespace InitialProject.View
 
                 if(numberOfGuests<=tourGuidence.FreeSlots)
                 {
-                    if (tourGuidenceRepository.CreateReservation("korisnik1", tourGuidence, arrivals, numberOfGuests))
+                    if (tourGuidenceRepository.CreateReservation(username, tourGuidence, arrivals, numberOfGuests, voucherId))
+                    {
+                        guest2Repository.UpdateVoucherUsedStatus(voucherId);
                         MessageBox.Show("Uspesna rezervacija ture!");
+                    }
                     else
                         MessageBox.Show("Greska prilikom kreiranja rezervacije!");
                 }
@@ -106,6 +151,7 @@ namespace InitialProject.View
                 }
 
             }
+
         }
 
         private void listTours_SelectionChanged(object sender, SelectionChangedEventArgs e)

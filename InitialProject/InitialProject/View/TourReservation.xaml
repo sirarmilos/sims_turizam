@@ -65,6 +65,8 @@
             <TextBlock HorizontalAlignment="Left" Margin="65,318,0,0" TextWrapping="Wrap" Text="Number of guests for reservation" VerticalAlignment="Top" Height="38" Width="121" RenderTransformOrigin="0.068,1.344"/>
         <TextBox x:Name="guestNumber" HorizontalAlignment="Left" Margin="65,362,0,0" TextWrapping="Wrap" Text="{Binding Path=NumberOfGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="30"/>
         <Button Content="Create reservation" HorizontalAlignment="Left" Margin="616,355,0,0" VerticalAlignment="Top" Height="37" Width="120" Click="CreateReservation"/>
+        <ComboBox x:Name="ComboBoxVouchers" HorizontalAlignment="Left" Margin="262,366,0,0" VerticalAlignment="Top" Width="138" Height="26"/>
+        <Label Content="Vouchers&#xD;&#xA;" HorizontalAlignment="Left" Margin="262,324,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

@@ -33,6 +33,8 @@ namespace InitialProject.View
 
         private readonly TourRepository tourRepository;
 
+        private readonly string username;
+
         public  List<TourDisplayDTO> tourDisplayDTOs {  get; set; }
 
         private string city;
@@ -98,7 +100,7 @@ namespace InitialProject.View
 
 
 
-        public SearchAndShowTours()
+        public SearchAndShowTours(string username)
         {
             InitializeComponent();
             Initializecblang();
@@ -107,7 +109,7 @@ namespace InitialProject.View
 
             tourDisplayDTOs = new List<TourDisplayDTO>();
             tourDisplayDTOs = tourRepository.GetToursForDisplay();
-
+            this.username = username;
         }
 
 
@@ -144,7 +146,7 @@ namespace InitialProject.View
                 {
                     TourDisplayDTO tour = new TourDisplayDTO();
                     tour = (TourDisplayDTO)listTours.SelectedItems[0];
-                    TourReservation tourReservation = new TourReservation(tour);
+                    TourReservation tourReservation = new TourReservation(tour,username);
                     tourReservation.Show();
                 }
             }

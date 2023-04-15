@@ -311,11 +311,11 @@ namespace InitialProject.Repository
             return tourGuidence;
         }
 
-        public bool CreateReservation(string username, TourGuidence tourGuidence, List<Boolean> arrivals, int numberOfGuests)
+        public bool CreateReservation(string username, TourGuidence tourGuidence, List<Boolean> arrivals, int numberOfGuests, int voucherId)
         {
             try
             {
-                TourReservation reservation = new TourReservation(username,tourGuidence.Id, arrivals, numberOfGuests, false);
+                TourReservation reservation = new TourReservation(username,tourGuidence.Id, arrivals, numberOfGuests, false,voucherId);
                 tourReservations.Add(reservation);
                 tourReservationSerializer.ToCSV(FilePathReservatedTours,tourReservations);
                 UpdateTourGuidenceFreeSlot(tourGuidence,numberOfGuests);

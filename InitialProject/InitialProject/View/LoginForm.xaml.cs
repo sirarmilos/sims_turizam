@@ -115,7 +115,7 @@ namespace InitialProject.View
                 }
                 if (temporaryType.Equals("guest2") == true)
                 {
-                    Guest2Start window = new Guest2Start();
+                    Guest2Start window = new Guest2Start(Username);
                     window.Show();
                     Close();
                 }
