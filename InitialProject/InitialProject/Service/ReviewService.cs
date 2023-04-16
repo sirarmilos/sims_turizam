@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Interactivity;
 using System.Windows;
 using System.Xml.Linq;
+using InitialProject.IRepository;
 
 namespace InitialProject.Service
 {
@@ -18,15 +19,13 @@ namespace InitialProject.Service
     {
         private readonly UserService userService;
 
-        private  ReservationService reservationService;
+        private ReservationService reservationService;
 
         private readonly RateGuestsService rateGuestsService;
 
-        private readonly ReviewRepository reviewRepository;
+        private readonly IReviewRepository reviewRepository;
 
-        private ReservationRepository reservationRepository;
-
-        private readonly RateGuestRepository rateGuestRepository;
+        private IReservationRepository reservationRepository; //
 
         private string owner;
         private string guest1;
@@ -60,7 +59,6 @@ namespace InitialProject.Service
 
             reviewRepository = new ReviewRepository();
             reservationRepository = new ReservationRepository();
-            rateGuestRepository = new RateGuestRepository();
         }
 
         public List<CreateReviewDTO> FindAllReviewsToRate()

@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using System;
@@ -12,7 +13,7 @@ namespace InitialProject.Service
 {
     public class AccommodationService
     {
-        private readonly AccommodationRepository accommodationRepository;
+        private readonly IAccommodationRepository accommodationRepository;
 
         private readonly LocationService locationService;
 

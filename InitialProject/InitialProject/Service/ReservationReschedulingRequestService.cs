@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.Serializer;
@@ -15,7 +16,7 @@ namespace InitialProject.Service
 {
     public class ReservationReschedulingRequestService
     {
-        private readonly ReservationReschedulingRequestRepository reservationReschedulingRequestRepository;
+        private readonly IReservationReschedulingRequestRepository reservationReschedulingRequestRepository;
 
         private readonly ReservationService reservationService;
 

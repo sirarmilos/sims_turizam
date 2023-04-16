@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Dto
 {
-    internal class LocationDto
+    public class LocationDto
     {
         public string Country { get; set; }
 

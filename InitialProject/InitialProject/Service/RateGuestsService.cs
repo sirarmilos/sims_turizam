@@ -11,12 +11,13 @@ using System.Threading.Tasks;
 using System.Windows.Interactivity;
 using System.Windows;
 using System.Xml.Linq;
+using InitialProject.IRepository;
 
 namespace InitialProject.Service
 {
     public class RateGuestsService
     {
-        private readonly RateGuestRepository rateGuestRepository;
+        private readonly IRateGuestRepository rateGuestRepository;
 
         private readonly ReservationService reservationService;
 

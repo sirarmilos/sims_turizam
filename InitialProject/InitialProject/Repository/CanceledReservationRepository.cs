@@ -1,10 +1,11 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using System.Collections.Generic;
 
 namespace InitialProject.Repository
 {
-    internal class CanceledReservationRepository
+    internal class CanceledReservationRepository : ICanceledReservationRepository
     {
         private const string FilePathCanceledReservations = "../../../Resources/Data/canceledreservations.csv";
 

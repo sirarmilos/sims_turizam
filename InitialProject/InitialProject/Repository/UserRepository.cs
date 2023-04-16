@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
@@ -8,18 +9,15 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    class UserRepository
+    public class UserRepository : IUserRepository
     {
         private const string FilePathUser = "../../../Resources/Data/users.csv";
 
         private readonly Serializer<User> userSerializer;
 
-        private List<User> users;
-
         public UserRepository()
         {
             userSerializer = new Serializer<User>();
-            users = userSerializer.FromCSV(FilePathUser);
         }
 
         public List<User> FindAll()
