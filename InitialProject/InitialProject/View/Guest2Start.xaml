@@ -12,12 +12,15 @@
                 <MenuItem Header="Search and show tours" Click="GoToSearchAndShowTours" />
                 <MenuItem Header="Tour attendance" Click="ShowTourAttendance" />
                 <MenuItem Header="User info" Click="ShowUserInfo" />
+                <MenuItem Header="Notification page" Click="ShowNotifications" />
+                <MenuItem Header="Rate guide" Click="RateGuide" />
                 <MenuItem Header="Logout" Click="GoToLogout"/>
             </Menu>
             <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="119*"/>
-                    <ColumnDefinition Width="41*"/>
+                    <ColumnDefinition Width="363*"/>
+                    <ColumnDefinition Width="232*"/>
+                    <ColumnDefinition Width="205*"/>
                 </Grid.ColumnDefinitions>
             </Grid>
         </DockPanel>

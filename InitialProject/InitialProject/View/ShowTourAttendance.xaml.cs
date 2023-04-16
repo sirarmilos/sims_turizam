@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InitialProject.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,10 +23,14 @@ namespace InitialProject.View
     {
 
         private readonly string username;
+        private readonly TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
         public ShowTourAttendance(string username)
         {
             InitializeComponent();
             this.username = username;
         }
+
+
+
     }
 }

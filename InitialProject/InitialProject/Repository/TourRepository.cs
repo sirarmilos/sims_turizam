@@ -123,6 +123,52 @@ namespace InitialProject.Repository
             return tourDisplayDTOs;
         }
 
+        public TourDisplayDTO GetTourForDisplay(int tourReservationId)
+        {
+            TourDisplayDTO tourDisplayDTO = new TourDisplayDTO();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
+            TourReservationRepository tourReservationRepository = new TourReservationRepository();
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
+            List<TourReservation> tourReservations = tourReservationRepository.GetAll();
+
+
+            foreach (TourReservation tourReservation in tourReservations)
+            {
+                foreach (TourGuidence tourGuidence in tourGuidences)
+                {
+                    if (tourGuidence.Id == tourReservation.tourGuidenceId && tourReservationId==tourReservation.Id)
+                    {
+
+                        tourDisplayDTO.TourName = tourGuidence.Tour.TourName;
+                        tourDisplayDTO.Location = tourGuidence.Tour.Location;
+                        tourDisplayDTO.Description = tourGuidence.Tour.Description;
+                        tourDisplayDTO.Language = tourGuidence.Tour.Language;
+                        tourDisplayDTO.FreeSlots = tourGuidence.FreeSlots;
+                        tourDisplayDTO.TourDate = tourGuidence.StartTime;
+
+                        tourDisplayDTO.TourKeyPoints = new List<TourKeyPoint>();
+
+                        foreach (TourKeyPoint tourKeyPoint in tourKeyPointRepository.GetAll())
+                        {
+                            if (tourKeyPoint.TourGuidence.Id == tourGuidence.Id)
+                            {
+                                tourDisplayDTO.TourKeyPoints.Add(tourKeyPoint);
+                            }
+                        }
+
+                        tourDisplayDTO.Duration = tourGuidence.Tour.Duration;
+                        tourDisplayDTO.Images = tourGuidence.Tour.Images;
+
+                        break;
+                    }
+
+                }
+            }
+
+            return tourDisplayDTO;
+        }
+
         public bool CreateReservation(string username,TourGuidence tourGuidence, List<Boolean> arrivals, int numberOfGuests,int voucherId)
         {
             try
