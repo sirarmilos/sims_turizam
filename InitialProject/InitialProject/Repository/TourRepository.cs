@@ -81,41 +81,6 @@ namespace InitialProject.Repository
             return result;
         }
 
-        public List<int> GetGuestNumber(int tourId)
-        {
-            // type = [(1, <18), (2, 18-50), (3, >50)]
-            List<int> count = new List<int>(new int[3]);
-            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
-            Guest2Repository guest2Repository = new Guest2Repository(); 
-            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
-            foreach (TourGuidence tourGuidence in tourGuidences)
-            {
-                if(tourGuidence.Finished == true && tourId == tourGuidence.Tour.Id)
-                {
-                    foreach(TourReservation tourReservation in tourReservations)
-                    {
-                        if(tourReservation.tourGuidenceId == tourGuidence.Id)
-                        {
-                            int age = guest2Repository.GetAge(tourReservation.userId);
-                            switch(age)
-                            {
-                                case <= 18:
-                                    count[0]++;
-                                    break;
-                                case >=50:
-                                    count[2]++;
-                                    break;
-                                default:
-                                    count[1]++;
-                                    break;                                   
-                            }
-                        }
-                    }
-                }
-            }
-            return count;
-        }
-
         public List<TourDisplayDTO> GetToursForDisplay()
         {
             List<TourDisplayDTO> tourDisplayDTOs = new List<TourDisplayDTO>();
@@ -364,6 +329,71 @@ namespace InitialProject.Repository
         }
 
         public Tour GetById(int id) => tours.FirstOrDefault(x => x.Id == id);
+
+        public List<int> GetGuestNumber(int tourId)
+        {
+            // type = [(1, <18), (2, 18-50), (3, >50)]
+            List<int> count = new List<int>(new int[3]);
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+            Guest2Repository guest2Repository = new Guest2Repository();
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
+            foreach (TourGuidence tourGuidence in tourGuidences)
+            {
+                if (tourGuidence.Finished == true && tourId == tourGuidence.Tour.Id)
+                {
+                    foreach (TourReservation tourReservation in tourReservations)
+                    {
+                        if (tourReservation.tourGuidenceId == tourGuidence.Id)
+                        {
+                            int age = guest2Repository.GetAge(tourReservation.userId);
+                            switch (age)
+                            {
+                                case <= 18:
+                                    count[0]++;
+                                    break;
+                                case >= 50:
+                                    count[2]++;
+                                    break;
+                                default:
+                                    count[1]++;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            return count;
+        }
+
+        public List<double> GetVoucherPercentage(int tourId)
+        {
+            List<double> retVal = new List<double>(new double[2]);
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
+            double withVoucher = 0, count = 0;
+
+            foreach(TourGuidence tg in tourGuidences)
+            {
+                if(tg.Finished == true && tg.Tour.Id == tourId)
+                {
+                    foreach(TourReservation tr in tourReservations)
+                    {
+                        if(tg.Id == tr.tourGuidenceId && tr.Confirmed == true)
+                        {
+                            if(tr.VoucherId != 0)
+                            {
+                                withVoucher++;
+                            }
+
+                                count++;
+                        }
+                    }
+                }
+            }
+            retVal[0] = Math.Round((withVoucher / count) * 100, 2);
+            retVal[1] = Math.Round((1-(withVoucher / count)) * 100,2);
+            return retVal;  
+        }
 
 
 

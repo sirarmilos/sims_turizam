@@ -3,7 +3,9 @@ using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,17 +22,20 @@ namespace InitialProject.View
     /// <summary>
     /// Interaction logic for GuideStart.xaml
     /// </summary>
-    public partial class GuideStart : Window
+    public partial class GuideStart : Window, INotifyPropertyChanged
     {
         public static Tour tour { get; set; }
 
         public static Tour tourFiltered { get; set; }
 
-        public static Tour tourAgeStats { get; set; }
+        public static ObservableCollection<Tour> tourAgeStats { get; set; }
 
         public ObservableCollection<int> ageCount { get; set; }
 
+        private ObservableCollection<double> voucherPercentage;
+
         private readonly TourGuidenceRepository tourGuidenceRepository;
+
         private readonly TourRepository tourRepository;
 
         private string guide;
@@ -44,6 +49,30 @@ namespace InitialProject.View
             }
         }
 
+        public string WithVoucher
+        {
+            get { return voucherPercentage[0].ToString(); }
+        }
+
+        public string WithoutVoucher
+        {
+            get { return voucherPercentage[1].ToString(); }
+        }
+
+        public string Under18
+        {
+            get { return ageCount[0].ToString(); }
+        }
+
+        public string From18To50
+        {
+            get { return ageCount[1].ToString(); }
+        }
+
+        public string Above50
+        {
+            get { return ageCount[2].ToString(); }
+        }
         public GuideStart(string username)
         {
             InitializeComponent();
@@ -54,8 +83,17 @@ namespace InitialProject.View
             tour = tourGuidenceRepository.GetMostVisitedAllTime();
             int year = 2022;
             tourFiltered = tourGuidenceRepository.GetMostVisitedByYear(year);
-            tourAgeStats = tourRepository.GetById(2);
-            ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(tourAgeStats.Id));
+            //tourAgeStats = tourRepository.GetById(3);
+            tourAgeStats = new ObservableCollection<Tour>(tourRepository.Load());
+            //ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(tourAgeStats.Id));
+           // voucherPercentage = new ObservableCollection<double>(/*tourRepository.GetVoucherPercentage(tourAgeStats.Id)*/);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void GoToAddNewTour(object sender, RoutedEventArgs e)
@@ -81,6 +119,26 @@ namespace InitialProject.View
             LoginForm window = new LoginForm();
             window.Show();
             Close();
+        }
+
+        private void SelectTour(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem != null)
+            {
+                Tour tour = comboBox.SelectedItem as Tour;
+                DisplayStatistics(tour.Id);
+            }
+        }
+
+        private void DisplayStatistics(int id)
+        {
+            voucherPercentage = new ObservableCollection<double>(tourRepository.GetVoucherPercentage(id));
+            ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(id));
+            OnPropertyChanged(nameof(WithVoucher));
+            OnPropertyChanged(nameof(WithoutVoucher));
+            OnPropertyChanged(nameof(Under18));
+            OnPropertyChanged(nameof(From18To50));
+            OnPropertyChanged(nameof(Above50));
         }
     }
 }
