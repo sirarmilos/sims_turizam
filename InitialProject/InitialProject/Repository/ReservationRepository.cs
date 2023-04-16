@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.View;
@@ -12,7 +13,7 @@ using System.Windows;
 
 namespace InitialProject.Repository
 {
-    internal class ReservationRepository
+    public class ReservationRepository : IReservationRepository
     {
         private AccommodationRepository accommodationRepository;
 

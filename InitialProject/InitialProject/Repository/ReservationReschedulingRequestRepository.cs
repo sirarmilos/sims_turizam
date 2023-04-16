@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
@@ -11,7 +12,7 @@ using System.Xml.Linq;
 
 namespace InitialProject.Repository
 {
-    public class ReservationReschedulingRequestRepository
+    public class ReservationReschedulingRequestRepository : IReservationReschedulingRequestRepository
     {
         private ReservationRepository reservationRepository;
 
@@ -24,7 +25,6 @@ namespace InitialProject.Repository
         public ReservationReschedulingRequestRepository()
         {
             reservationReschedulingRequestSerializer = new Serializer<ReservationReschedulingRequest>();
-            reservationReschedulingRequests = reservationReschedulingRequestSerializer.FromCSV(FilePathRescheduledReservations);
         }
 
         public List<ReservationReschedulingRequest> FindAll()

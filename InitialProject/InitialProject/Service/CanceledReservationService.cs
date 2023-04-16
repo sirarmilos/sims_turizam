@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace InitialProject.Service
 {
     public class CanceledReservationService
     {
-        private CanceledReservationRepository canceledReservationRepository;
+        private ICanceledReservationRepository canceledReservationRepository;
 
         public CanceledReservationService()
         {

@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.View;
 using System;
@@ -11,7 +12,7 @@ using System.Windows;
 
 namespace InitialProject.Repository
 {
-    public class RateGuestRepository
+    public class RateGuestRepository : IRateGuestRepository
     {
         private ReservationRepository reservationRepository;
 
@@ -24,7 +25,6 @@ namespace InitialProject.Repository
         public RateGuestRepository()
         {
             rateGuestSerializer = new Serializer<RateGuest>();
-            rateGuests = rateGuestSerializer.FromCSV(FilePathRateGuest);
         }
 
         public void Save(List<RateGuest> allRateGuests)

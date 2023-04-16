@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.View;
 using System;
@@ -12,7 +13,7 @@ using System.Xml.Linq;
 
 namespace InitialProject.Repository
 {
-    internal class AccommodationRepository
+    public class AccommodationRepository : IAccommodationRepository
     {
         private LocationRepository locationRepository;
 
@@ -110,7 +111,7 @@ namespace InitialProject.Repository
             return accommodationNameResults.Intersect(cityResults).Intersect(countryResults).Intersect(typeResults).Intersect(maxGuestsResults).Intersect(minDaysReservationResults).ToList();
         }
 
-        private bool AreReservationDaysContained(int? minDaysReservation, out List<Accommodation> minDaysReservationResults)
+        public bool AreReservationDaysContained(int? minDaysReservation, out List<Accommodation> minDaysReservationResults)
         {
             if ((minDaysReservation != null) && (minDaysReservation >= 0))
             {
@@ -128,7 +129,7 @@ namespace InitialProject.Repository
             return true;
         }
 
-        private bool IsGuestsNumberContained(int? maxGuests, out List<Accommodation> maxGuestsResults)
+        public bool IsGuestsNumberContained(int? maxGuests, out List<Accommodation> maxGuestsResults)
         {
             if ((maxGuests != null) && (maxGuests > 0))
             {
@@ -146,7 +147,7 @@ namespace InitialProject.Repository
             return true;
         }
 
-        private bool IsTypeContained(string type, out List<Accommodation> typeResults)
+        public bool IsTypeContained(string type, out List<Accommodation> typeResults)
         {
             if (!string.IsNullOrWhiteSpace(type))
             {
@@ -165,7 +166,7 @@ namespace InitialProject.Repository
             return true;
         }
 
-        private bool IsCityContained(string city, out List<Accommodation> cityResults)
+        public bool IsCityContained(string city, out List<Accommodation> cityResults)
         {
             if (!string.IsNullOrWhiteSpace(city))
             {
@@ -184,7 +185,7 @@ namespace InitialProject.Repository
             return true;
         }
 
-        private bool IsCountryContained(string country, out List<Accommodation> countryResults)
+        public bool IsCountryContained(string country, out List<Accommodation> countryResults)
         {
             if (!string.IsNullOrWhiteSpace(country))
             {
@@ -203,7 +204,7 @@ namespace InitialProject.Repository
             return true;
         }
 
-        private bool IsNameContained(string accommodationName, out List<Accommodation> accommodationNameResults)
+        public bool IsNameContained(string accommodationName, out List<Accommodation> accommodationNameResults)
         {
             if (!string.IsNullOrWhiteSpace(accommodationName))
             {

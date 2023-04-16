@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Windows.Interactivity;
 using System.Windows;
 using System.Xml.Linq;
+using InitialProject.IRepository;
 
 namespace InitialProject.Service
 {
@@ -18,7 +19,7 @@ namespace InitialProject.Service
     {
         private readonly CanceledReservationService canceledReservationService;
 
-        private ReservationRepository reservationRepository;
+        private IReservationRepository reservationRepository;
 
         private string owner;
 

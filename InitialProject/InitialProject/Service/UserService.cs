@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.Serializer;
 using System;
@@ -11,7 +12,7 @@ namespace InitialProject.Service
 {
     public class UserService
     {
-        private readonly UserRepository userRepository;
+        private readonly IUserRepository userRepository;
 
         private RateGuestsService rateGuestsService;
 
