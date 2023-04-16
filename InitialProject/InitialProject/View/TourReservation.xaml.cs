@@ -131,7 +131,7 @@ namespace InitialProject.View
 
                 if(numberOfGuests<=tourGuidence.FreeSlots)
                 {
-                    if (tourGuidenceRepository.CreateReservation(username, tourGuidence, arrivals, numberOfGuests, voucherId))
+                    if (tourGuidenceRepository.CreateReservation(username, tourGuidence, arrivals, numberOfGuests, voucherId, tourReservationRepository.NextId()))
                     {
                         guest2Repository.UpdateVoucherUsedStatus(voucherId);
                         MessageBox.Show("Uspesna rezervacija ture!");

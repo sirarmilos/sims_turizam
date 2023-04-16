@@ -50,5 +50,17 @@ namespace InitialProject.View
             Guest2Info window = new Guest2Info(username);
             window.Show();
         }
+
+        private void ShowNotifications(object sender, RoutedEventArgs e)
+        {
+            ShowGuest2Notifications window = new ShowGuest2Notifications(username);
+            window.Show();
+        }
+
+        private void RateGuide(object sender, RoutedEventArgs e)
+        {
+            RateGuide window = new RateGuide(username);
+            window.Show();
+        }
     }
 }

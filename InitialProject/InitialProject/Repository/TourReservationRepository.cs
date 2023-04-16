@@ -94,5 +94,15 @@ namespace InitialProject.Repository
         }
 
 
+        public int NextId()
+        {
+            tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
+            if (tourReservations.Count < 1)
+            {
+                return 1;
+            }
+            return tourReservations.Max(c => c.Id) + 1;
+        }
+
     }
 }

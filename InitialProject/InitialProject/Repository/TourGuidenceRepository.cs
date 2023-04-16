@@ -24,8 +24,6 @@ namespace InitialProject.Repository
 
         private List<TourReservation> tourReservations;
 
-
-
         public TourGuidenceRepository()
         {
             tourGuidenceSerializer = new Serializer<TourGuidence>();
@@ -48,6 +46,61 @@ namespace InitialProject.Repository
             TourGuidence tG = tourGuidences.FirstOrDefault(x => x.Id == tourGuidence.Id);
             tG = tourGuidence;
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
+        }
+
+        public List<int> NotifyGuestOfTourStarting(string username)
+        {
+            List<int> results = new List<int>();
+            foreach (TourReservation tourReservation in tourReservations)
+            {
+                if (tourReservation.userId.Equals(username))
+                {
+                    foreach (TourGuidence tourGuidence in tourGuidences)
+                    {
+                        if (tourReservation.tourGuidenceId == tourGuidence.Id)
+                        {
+                            if(tourGuidence.Finished==false && tourGuidence.Started==true && tourReservation.Confirmed==false)
+                            {
+                                results.Add(tourReservation.Id);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public void ConfirmTourAttendance(string username, int tourReservationId)
+        {
+            List<TourReservation> result = tourReservations;
+            foreach(TourReservation tourReservation in tourReservations)
+            {
+                if(tourReservation.Id==tourReservationId && tourReservation.userId.Equals(username))
+                {
+                    tourReservation.Confirmed = true;
+                    tourReservationSerializer.ToCSV(FilePathReservatedTours,result);
+                    break;
+                }
+            }
+        }
+
+
+        public void UpdateTourGuidenceFreeSlot(TourGuidence reservatedTourGuidence, int numberOfGuests)
+        {
+
+            List<TourGuidence> result = tourGuidences;
+
+            foreach (TourGuidence tourGuidence in tourGuidences)
+            {
+                if (tourGuidence.Equals(reservatedTourGuidence))
+                {
+                    tourGuidence.FreeSlots = tourGuidence.FreeSlots - numberOfGuests;
+                    tourGuidenceSerializer.ToCSV(FilePathTourGuidence, result);
+                    break;
+                }
+            }
+
         }
 
         public int NextIdTourGuidence()
@@ -311,11 +364,11 @@ namespace InitialProject.Repository
             return tourGuidence;
         }
 
-        public bool CreateReservation(string username, TourGuidence tourGuidence, List<Boolean> arrivals, int numberOfGuests, int voucherId)
+        public bool CreateReservation(string username, TourGuidence tourGuidence, List<Boolean> arrivals, int numberOfGuests, int voucherId, int Id)
         {
             try
             {
-                TourReservation reservation = new TourReservation(username,tourGuidence.Id, arrivals, numberOfGuests, false,voucherId);
+                TourReservation reservation = new TourReservation(username,tourGuidence.Id, arrivals, numberOfGuests, false,voucherId,Id);
                 tourReservations.Add(reservation);
                 tourReservationSerializer.ToCSV(FilePathReservatedTours,tourReservations);
                 UpdateTourGuidenceFreeSlot(tourGuidence,numberOfGuests);
@@ -327,22 +380,7 @@ namespace InitialProject.Repository
             }
         }
 
-        public void UpdateTourGuidenceFreeSlot(TourGuidence reservatedTourGuidence, int numberOfGuests)
-        {
 
-            List<TourGuidence> result = tourGuidences;
-
-            foreach (TourGuidence tourGuidence in tourGuidences)
-            {
-                if (tourGuidence.Equals(reservatedTourGuidence))
-                {
-                    tourGuidence.FreeSlots = tourGuidence.FreeSlots - numberOfGuests;
-                    tourGuidenceSerializer.ToCSV(FilePathTourGuidence, result);
-                    break;
-                }
-            }
-
-        }
 
 
 

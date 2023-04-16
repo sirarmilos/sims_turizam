@@ -1,5 +1,7 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Serializer;
+using InitialProject.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +15,15 @@ namespace InitialProject.Repository
     {
         private const string FilePathGuest2 = "../../../Resources/Data/guest2.csv";
         private const string FilePathVouchers = "../../../Resources/Data/vouchers.csv";
+        private const string FilePathGuideReviews = "../../../Resources/Data/guidereviews.csv";
 
         private readonly Serializer<Guest2> guest2Serializer;
         private readonly Serializer<Voucher> voucherSerializer;
+        private readonly Serializer<Model.RateGuide> rateGuideSerializer;
 
         private List<Guest2> guests2;
         private List<Voucher> vouchers;
+        private List<Model.RateGuide> rateGuides;
 
         public Guest2Repository()
         {
@@ -27,6 +32,9 @@ namespace InitialProject.Repository
 
             voucherSerializer = new Serializer<Voucher>();
             vouchers = voucherSerializer.FromCSV(FilePathVouchers);
+
+            rateGuideSerializer = new Serializer<Model.RateGuide>();
+            rateGuides = rateGuideSerializer.FromCSV(FilePathGuideReviews);
         }
 
         public int NextIdVoucher()
@@ -98,6 +106,14 @@ namespace InitialProject.Repository
                 }
             }
             return 0;
+        }
+
+        public void GuideRating(string username, string guideId,int guideGeneralKnowledge,int guideLanguageKnowledge,int generalTourExperience,List<string> pictures)
+        {
+            Model.RateGuide rateGuide = new Model.RateGuide(username,guideId,guideGeneralKnowledge,guideLanguageKnowledge,generalTourExperience,pictures);
+            rateGuides.Add(rateGuide);
+            rateGuideSerializer.ToCSV(FilePathGuideReviews,rateGuides);
+        
         }
 
     }

@@ -11,7 +11,6 @@ namespace InitialProject.Model
     class RateGuide : ISerializable
     {
         public string UserId { get; set; }
-
         public string GuideId { get; set; }
         public int GuideKnowledge { get; set; }
         public int GuideLanguage { get; set; }

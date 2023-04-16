@@ -16,8 +16,9 @@ namespace InitialProject.Model
         public List<Boolean> TourKeyPointArrival { get; set; }
         public int numberOfGuests { get; set; }
         public Boolean Confirmed { get; set; }
-
         public int VoucherId { get; set; }
+
+        public int Id { get; set; }
 
         public TourReservation() { }
 
@@ -29,6 +30,17 @@ namespace InitialProject.Model
             this.numberOfGuests = numberOfGuests;
             Confirmed = confirmed;
             VoucherId = voucherId;
+        }
+
+        public TourReservation(string userId, int reservatedTourId, List<Boolean> arrivalTourKeyPoint, int numberOfGuests, Boolean confirmed, int voucherId, int id)
+        {
+            this.userId = userId;
+            this.tourGuidenceId = reservatedTourId;
+            TourKeyPointArrival = arrivalTourKeyPoint;
+            this.numberOfGuests = numberOfGuests;
+            Confirmed = confirmed;
+            VoucherId = voucherId;
+            Id = id;
         }
 
         public string[] ToCSV()
@@ -44,7 +56,7 @@ namespace InitialProject.Model
             boolToString = boolToString.Substring(0, boolToString.Length - 2);
 
 
-            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), boolToString.ToString(), numberOfGuests.ToString(), Confirmed.ToString(), VoucherId.ToString() };
+            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), boolToString.ToString(), numberOfGuests.ToString(), Confirmed.ToString(), VoucherId.ToString(), Id.ToString() };
             return csvValues;
         }
 
@@ -72,6 +84,8 @@ namespace InitialProject.Model
             Confirmed = Convert.ToBoolean(values[4]);
 
             VoucherId = Convert.ToInt32(values[5]);
+
+            Id = Convert.ToInt32(values[6]);
         }
 
 
