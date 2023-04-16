@@ -22,6 +22,15 @@ namespace InitialProject.Model
         public Voucher()
         { }
 
+        public Voucher(int id, User user, VoucherType voucherType, DateTime expirationDate, bool isUsed)
+        {
+            Id = id;
+            this.user = user;
+            this.voucherType = voucherType;
+            this.expirationDate = expirationDate;
+            IsUsed = isUsed;
+        }   
+
         public string[] ToCSV()
         {
             string[] csvValues = {Id.ToString(), user.Username.ToString(), voucherType.ToString(), expirationDate.ToString(), IsUsed.ToString() };

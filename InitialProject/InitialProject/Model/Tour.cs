@@ -73,7 +73,7 @@ namespace InitialProject.Model
 
             Description = values[3];
 
-            Language Languages = (Language)Enum.Parse(typeof(Language), values[4]);
+            Language = (Language)Enum.Parse(typeof(Language), values[4]);
 
             MaxGuests = Convert.ToInt32(values[5]);
 

@@ -29,11 +29,14 @@ namespace InitialProject.View
 
         private readonly TourGuidenceRepository tourGuidenceRepository;
 
+        private readonly VoucherRepository voucherRepository;
+
         public FutureTours()
         {
             InitializeComponent();
             DataContext = this;
             tourGuidenceRepository = new TourGuidenceRepository();
+            voucherRepository = new VoucherRepository();
             tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceRepository.GetAllFutureTours());
         }
 
@@ -51,6 +54,7 @@ namespace InitialProject.View
             {
                 tourGuidenceRepository.UpdateCancelField(selectedGuidence.Id);
                 MessageBox.Show("Tour successfully cancelled!");
+                voucherRepository.CreateForCancelledTourGuidence(selectedGuidence.Id);
                 FutureTours window = new FutureTours();
                 this.Close();
                 window.Show();
