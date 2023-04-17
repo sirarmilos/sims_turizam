@@ -45,14 +45,27 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ViewedByGuest}" Value="False">
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ViewedByGuest}" Value="False" />
+                                        <Condition Binding="{Binding Status}" Value="accepted" />
+                                    </MultiDataTrigger.Conditions>
                                     <Setter Property="Text" Value="unread" />
                                     <Setter Property="Foreground" Value="Green" />
-                                </DataTrigger>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Status}" Value="rejected" />
+                                        <Condition Binding="{Binding ViewedByGuest}" Value="False" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Text" Value="unread" />
+                                    <Setter Property="Foreground" Value="Green" />
+                                </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 

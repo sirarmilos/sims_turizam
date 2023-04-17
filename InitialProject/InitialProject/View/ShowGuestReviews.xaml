@@ -19,7 +19,17 @@
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
-   
+            <Menu DockPanel.Dock ="Top">
+                <MenuItem Header="Add new accommodation" Command="{Binding GoToAddNewAccommodationCommand}"/>
+                <MenuItem Header="Rate guests" Command="{Binding GoToRateGuestsCommand}"/>
+                <MenuItem Header="Show guest reviews" Command="{Binding GoToShowGuestReviewsCommand}"/>
+                <MenuItem Header="Manage booking move requests" Command="{Binding GoToShowOwnerManageBookingMoveRequestsCommand}"/>
+                <MenuItem IsEnabled="False" Header="{Binding UsernameAndSuperOwner}"/>
+                <MenuItem Header="Logout" Command="{Binding GoToLogoutCommand}"/>
+                <MenuItem x:Name="notifications" Header="Notifications">
+                    <MenuItem x:Name="rateGuestsNotifications" Header="{Binding RateGuestsNotifications}"/>
+                </MenuItem>
+            </Menu>
         </DockPanel>
 
         <Label x:Name="labelAListOfAllGuestReviews" Grid.Column="0" Grid.Row="1" Content="A list of all guest reviews" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,0,0,0"/>

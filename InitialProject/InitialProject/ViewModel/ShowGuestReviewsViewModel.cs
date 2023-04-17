@@ -1,6 +1,7 @@
 ﻿using InitialProject.DTO;
 using InitialProject.Service;
 using InitialProject.View;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,14 @@ using System.Windows;
 
 namespace InitialProject.ViewModel
 {
-    public class ShowGuestReviewsViewModel
+    public class ShowGuestReviewsViewModel : Window
     {
         private readonly ReviewService reviewService;
 
-        private string owner;
-
-        public string Owner
+        public string OwnerUsername
         {
-            get { return owner; }
-            set
-            {
-                owner = value;
-            }
+            get;
+            set;
         }
 
         public string UsernameAndSuperOwner
@@ -43,57 +39,89 @@ namespace InitialProject.ViewModel
             set;
         }
 
-        public ShowGuestReviewsViewModel(string owner, string ownerHeader)
+        public DelegateCommand GoToAddNewAccommodationCommand
         {
-            Owner = owner;
+            get;
+        }
 
-            reviewService = new ReviewService(Owner);
+        public DelegateCommand GoToRateGuestsCommand
+        {
+            get;
+        }
+
+        public DelegateCommand GoToShowGuestReviewsCommand
+        {
+            get;
+        }
+
+        public DelegateCommand GoToShowOwnerManageBookingMoveRequestsCommand 
+        {
+            get;
+        }
+
+        public DelegateCommand GoToLogoutCommand 
+        {
+            get;
+        }
+
+        public ShowGuestReviewsViewModel(string ownerUsername, string ownerHeader)
+        {
+            GoToAddNewAccommodationCommand = new DelegateCommand(GoToAddNewAccommodation);
+            GoToRateGuestsCommand = new DelegateCommand(GoToRateGuests);
+            GoToShowGuestReviewsCommand = new DelegateCommand(GoToShowGuestReviews);
+            GoToShowOwnerManageBookingMoveRequestsCommand = new DelegateCommand(GoToShowOwnerManageBookingMoveRequests);
+            GoToLogoutCommand = new DelegateCommand(GoToLogout);
+
+            OwnerUsername = ownerUsername;
+
+            reviewService = new ReviewService(OwnerUsername);
 
             ShowGuestReviewsDTOs = new List<ShowGuestReviewsDTO>();
 
             ShowGuestReviewsDTOs = reviewService.FindAllReviews();
 
-            // usernameAndSuperOwner.Header = ownerHeader;
-
-            UsernameAndSuperOwner = ownerHeader;
-
-            RateGuestsNotifications = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(Owner);
-
-            // rateGuestsNotifications.Header = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(Owner);
+            SetMenu(ownerHeader);
         }
 
-        public void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
+        private void SetMenu(string ownerHeader)
         {
-            AddNewAccommodation window = new AddNewAccommodation("Owner1");
+            UsernameAndSuperOwner = ownerHeader;
+
+            RateGuestsNotifications = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(OwnerUsername) + ".";
+        }
+
+        public void GoToAddNewAccommodation()
+        {
+            AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
             window.ShowDialog();
         }
 
-        private void GoToRateGuests(object sender, RoutedEventArgs e)
+        private void GoToRateGuests()
         {
-            RateGuests window = new RateGuests("Owner1", UsernameAndSuperOwner);
+            RateGuests window = new RateGuests(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
-            // Close();
+            Close();
         }
 
-        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
+        private void GoToShowGuestReviews()
         {
-            ShowGuestReviews window = new ShowGuestReviews("Owner1", UsernameAndSuperOwner);
+            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
-            // Close();
+            Close();
         }
 
-        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
+        private void GoToShowOwnerManageBookingMoveRequests()
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests("Owner1", UsernameAndSuperOwner);
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
-            // Close();
+            Close();
         }
 
-        private void GoToLogout(object sender, RoutedEventArgs e)
+        private void GoToLogout()
         {
             LoginForm window = new LoginForm();
             window.Show();
-            // Close();
+            Close();
         }
     }
 }

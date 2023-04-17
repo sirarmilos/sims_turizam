@@ -88,6 +88,8 @@ namespace InitialProject.Repository
             {
                 requestAlreadyExists.NewStartDate = newStartDate; 
                 requestAlreadyExists.NewEndDate = newEndDate;
+                requestAlreadyExists.Status = "pending";
+                requestAlreadyExists.ViewedByGuest = false;
 
                 RemoveRequestByReservationId(reservation.ReservationId);
 
@@ -127,7 +129,7 @@ namespace InitialProject.Repository
         public void UpdateViewedRequestsByGuest1(string guest1Username) 
         {
             List<ReservationReschedulingRequest> allReservationReschedulingRequests = FindAll();
-            allReservationReschedulingRequests.Where(x => x.Reservation.GuestUsername.Equals(guest1Username) ).SetValue(x => x.ViewedByGuest = true);
+            allReservationReschedulingRequests.Where(x => x.Reservation.GuestUsername.Equals(guest1Username) && ( !x.Status.Equals("pending") && (x.ViewedByGuest == false)) ).SetValue(x => x.ViewedByGuest = true);
             Save(allReservationReschedulingRequests);
         }
     }

@@ -30,18 +30,6 @@ namespace InitialProject.DTO
 
         }
 
-        public OwnerBookingMoveRequestsDTO(int reservationId, string guestUsername, string accommodationName, DateTime oldStartDate, DateTime oldEndDate, DateTime newStartDate, DateTime newEndDate, string newDateAvailable)
-        {
-            ReservationId = reservationId;
-            GuestUsername = guestUsername;
-            AccommodationName = accommodationName;
-            OldStartDate = oldStartDate;
-            OldEndDate = oldEndDate;
-            NewStartDate = newStartDate;
-            NewEndDate = newEndDate;
-            NewDateAvailable = newDateAvailable;
-        }
-
         public OwnerBookingMoveRequestsDTO(Reservation reservation, ReservationReschedulingRequest reservationReschedulingRequest, string newDateAvailable)
         {
             ReservationId = reservation.ReservationId;

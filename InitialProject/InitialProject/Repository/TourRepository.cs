@@ -21,7 +21,7 @@ namespace InitialProject.Repository
 
         private const string FilePathTourKeyPoints = "../../../Resources/Data/tourkeypoints.csv";
 
-        private const string FilePathLocation = "../../../Resources/Data/location.csv";
+        private const string FilePathLocation = "../../../Resources/Data/locations.csv";
 
         private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
 

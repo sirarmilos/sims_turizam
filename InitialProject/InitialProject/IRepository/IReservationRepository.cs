@@ -29,7 +29,7 @@ namespace InitialProject.IRepository
 
         void Save(string guestUsername, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber);
 
-        int NextIdReservation();
+        int NextId();
 
         List<Reservation> FindAllByAccommodation(int id);
 

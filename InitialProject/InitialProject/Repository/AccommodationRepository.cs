@@ -17,9 +17,9 @@ namespace InitialProject.Repository
     {
         private LocationRepository locationRepository;
 
-        private const string FilePathAccommodation = "../../../Resources/Data/accommodation.csv";
+        private const string FilePathAccommodation = "../../../Resources/Data/accommodations.csv";
 
-        private const string FilePathLocation = "../../../Resources/Data/location.csv";
+        private const string FilePathLocation = "../../../Resources/Data/locations.csv";
 
         private readonly Serializer<Accommodation> accommodationSerializer;
 
@@ -92,7 +92,7 @@ namespace InitialProject.Repository
             return FindAll().Max(x => x.Id) + 1;
         }
 
-        public Accommodation FindAccommodationByAccommodationId(int accommodationId)
+        public Accommodation FindById(int accommodationId)
         {
             return FindAll().ToList().Find(x => x.Id == accommodationId);
         }
@@ -103,91 +103,32 @@ namespace InitialProject.Repository
         // moraju da dele allAccommodations, nez da l u rep ili servisu da ostavim
         public List<Accommodation> FindAllByAccommodationName(List<Accommodation> allAccommodations, string name) 
         {
-            //List<Accommodation> searchResult = new List<Accommodation>();
-
-            //foreach (Accommodation accommodation in accommodations)
-            //{
-            //    if (accommodation.AccommodationName.ToLower().StartsWith(name.ToLower()))
-            //        searchResult.Add(accommodation);
-            //}
-            //return searchResult;
-
             return allAccommodations.FindAll(x => x.AccommodationName.ToLower().StartsWith(name.ToLower()) == true);
         }
 
         public List<Accommodation> FindAllByCountry(List<Accommodation> allAccommodations, string name)
         {
-            //List<Accommodation> searchResult = new List<Accommodation>();
-
-            //foreach (Accommodation accommodation in accommodations)
-            //{
-            //    if (accommodation.Location.Country.ToLower().StartsWith(name.ToLower()))
-            //        searchResult.Add(accommodation);
-            //}
-
-            //return searchResult;
-
             return allAccommodations.FindAll(x => x.Location.Country.ToLower().StartsWith(name.ToLower()) == true);
         }
 
         public List<Accommodation> FindAllByCity(List<Accommodation> allAccommodations, string name)
         {
-            //List<Accommodation> searchResult = new List<Accommodation>();
-
-            //foreach (Accommodation accommodation in accommodations)
-            //{
-            //    if (accommodation.Location.City.ToLower().StartsWith(name.ToLower()))
-            //        searchResult.Add(accommodation);
-            //}
-
-            //return searchResult;
-
             return allAccommodations.FindAll(x => x.Location.City.ToLower().StartsWith(name.ToLower()) == true);
         }
 
         public List<Accommodation> FindAllByMaxGuestsNumber(List<Accommodation> allAccommodations, int? quantity)
         {
-            //List<Accommodation> searchResult = new List<Accommodation>();
-
-            //foreach (Accommodation accommodation in accommodations)
-            //{
-            //    if (accommodation.MaxGuests >= quantity)
-            //        searchResult.Add(accommodation);
-            //}
-
-            //return searchResult;
-
             return allAccommodations.FindAll(x => x.MaxGuests >= quantity);
         }
 
         public List<Accommodation> FindAllByType(List<Accommodation> allAccommodations, string name)
         {
-            //List<Accommodation> searchResult = new List<Accommodation>();
-
-            //foreach (Accommodation accommodation in accommodations)
-            //{
-            //    if (accommodation.Type.ToLower().Equals(name.ToLower()))
-            //        searchResult.Add(accommodation);
-            //}
-
-            //return searchResult;
             return allAccommodations.FindAll(x => x.Type.ToLower().Equals(name.ToLower()) == true);
         }
 
         public List<Accommodation> FindAllAboveMinReservationDays(List<Accommodation> allAccommodations, int? minDaysReservation)
         {
-            //List<Accommodation> searchResult = new List<Accommodation>();
-
-            //foreach (Accommodation accommodation in accommodations)
-            //{
-            //    if (accommodation.MinDaysReservation <= minDaysReservation)
-            //        searchResult.Add(accommodation);
-            //}
-
-            //return searchResult;
             return allAccommodations.FindAll(x => x.MinDaysReservation <= minDaysReservation);
         }
-
-
     }
 }

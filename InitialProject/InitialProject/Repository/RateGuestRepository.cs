@@ -62,10 +62,5 @@ namespace InitialProject.Repository
             allRateGuests.Add(rateGuest);
             Save(allRateGuests);
         }
-
-        public List<RateGuest> FindOwnerRateGuests(string ownerUsername)
-        {
-            return FindAll().ToList().FindAll(x => x.Reservation.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
-        }
     }
 }

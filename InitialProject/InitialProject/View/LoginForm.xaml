@@ -25,14 +25,14 @@
             <ColumnDefinition Width="160" />
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="labelUsername" Grid.Column="1" Grid.Row="1" Content="Username:" HorizontalAlignment="Left" Width="120"/>
+        <Label Target="{x:Reference tbUsername}" x:Name="labelUsername" Grid.Column="1" Grid.Row="1" Content="Username:" HorizontalAlignment="Left" Width="120" MouseLeftButtonUp="labeltbFocus"/>
         <TextBox x:Name="tbUsername" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding Path=Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
-        
-        <Label x:Name="labelPassword" Grid.Column="1" Grid.Row="3" Content="Password:" HorizontalAlignment="Left" Width="120"/>
+
+        <Label Target="{x:Reference tbPassword}" x:Name="labelPassword" Grid.Column="1" Grid.Row="3" Content="Password:" HorizontalAlignment="Left" Width="120" MouseLeftButtonUp="labeltbFocus"/>
         <TextBox x:Name="tbPassword" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" Text="{Binding Path=Password, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
 
         <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5">
-            <Button x:Name="buttonLogin"  Content="Login" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Login" Width="150" Height="50"/>
+            <Button x:Name="buttonLogin" Content="Login" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Login" Width="150" Height="50"/>
         </Grid>
         
     </Grid>
