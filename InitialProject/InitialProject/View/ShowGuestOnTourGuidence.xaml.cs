@@ -27,20 +27,51 @@ namespace InitialProject.View
         public static List<Dto.ReservationDisplayDto> tourReservations { get; set; }
 
         private readonly TourReservationRepository tourReservationRepository;
-        
+
+        private string guest;
+
+        public string Guest
+        {
+            get { return guest; }
+            set
+            {
+                guest = value;
+            }
+        }
+
+        private string keyPointId;
+
+        public string KeyPointId
+        {
+            get { return keyPointId; }
+            set
+            {
+                keyPointId = value;
+            }
+        }
+
+        public int GuidenceId { get; set; }
+
         public ShowGuestOnTourGuidence(int guidenceId)
         {
             InitializeComponent();
             DataContext = this;
             tourReservationRepository = new TourReservationRepository();
             tourReservations = new List<Dto.ReservationDisplayDto> (tourReservationRepository.GetAllForOneTourGuidence(guidenceId));
-           
+            GuidenceId = guidenceId;
         }
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            tourReservationRepository.UpdateKeyPointArrivals();
-            this.Close();
+
+            if(tourReservationRepository.UpdateKeyPointArrivals(GuidenceId, Guest, Convert.ToInt32(KeyPointId)) == 1)
+            {
+                MessageBox.Show("Successfully marked!");
+            }
+            else
+            {
+                MessageBox.Show("Error");
+            }
         }
 
 

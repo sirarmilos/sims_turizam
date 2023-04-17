@@ -19,7 +19,7 @@ namespace InitialProject.Model
         public int TourExperience { get; set; }
         public string Comment { get; set; }
         public List<string> Images { get; set; }
-        public Boolean IsDeleted { get; set; }
+        public Boolean Valid { get; set; }
 
         public RateGuide() { }
 
@@ -33,7 +33,7 @@ namespace InitialProject.Model
             TourExperience = tourExperience;
             Comment = comment;
             Images = images;
-            IsDeleted = false;
+            Valid = true;
         }
 
         public string[] ToCSV()
@@ -48,7 +48,7 @@ namespace InitialProject.Model
 
             imageToString = imageToString.Substring(0, imageToString.Length - 2);
 
-            string[] csvValues = { UserId.ToString(), GuideId.ToString(), tourGuidenceId.ToString(), GuideKnowledge.ToString(), GuideKnowledge.ToString(), TourExperience.ToString(), Comment.ToString(), imageToString.ToString(), IsDeleted.ToString() };
+            string[] csvValues = { UserId.ToString(), GuideId.ToString(), tourGuidenceId.ToString(), GuideKnowledge.ToString(), GuideKnowledge.ToString(), TourExperience.ToString(), Comment.ToString(), imageToString.ToString(), Valid.ToString() };
 
             return csvValues;
         }
@@ -75,7 +75,7 @@ namespace InitialProject.Model
 
             Images = images;
 
-            IsDeleted = Convert.ToBoolean(values[8]);
+            Valid = Convert.ToBoolean(values[8]);
         }
 
     }

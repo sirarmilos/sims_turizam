@@ -10,7 +10,7 @@
         <DataGrid x:Name="dataGrid" ItemsSource="{Binding tourReservations}" AutoGenerateColumns="False" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Guest Name" Binding="{Binding userId}" />
-                <DataGridTemplateColumn Header="Key Point Name">
+                <!--<DataGridTemplateColumn Header="Key Point Name">
                     <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
                             <ListBox ItemsSource="{Binding TourKeyPoints}">
@@ -22,8 +22,8 @@
                             </ListBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Tour Key Point Arrivals">
+                </DataGridTemplateColumn>-->
+                <!--<DataGridTemplateColumn Header="Tour Key Point Arrivals">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding TourKeyPointArrival, Mode=TwoWay}">
@@ -35,10 +35,14 @@
                             </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="CONFIRM" HorizontalAlignment="Left" Margin="711,103,0,0" VerticalAlignment="Top" Click="Save"/>
+        <Button Content="CONFIRM" HorizontalAlignment="Left" Margin="690,333,0,0" VerticalAlignment="Top" Click="Save"/>
+        <TextBox HorizontalAlignment="Left" Margin="658,251,0,0" TextWrapping="Wrap" Text="{Binding Guest, Mode=OneWayToSource}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="658,301,0,0" TextWrapping="Wrap" Text="{Binding KeyPointId, Mode=OneWayToSource}" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Guest" HorizontalAlignment="Left" Margin="588,247,0,0" VerticalAlignment="Top"/>
+        <Label Content="Key Point Ordinal number" HorizontalAlignment="Left" Margin="490,297,0,0" VerticalAlignment="Top"/>
 
 
 

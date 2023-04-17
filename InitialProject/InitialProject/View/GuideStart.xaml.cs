@@ -140,5 +140,11 @@ namespace InitialProject.View
             OnPropertyChanged(nameof(From18To50));
             OnPropertyChanged(nameof(Above50));
         }
+
+        private void GoToShowReviews(object sender, RoutedEventArgs e)
+        {
+            ShowReviewsGuest2 window = new ShowReviewsGuest2(Guide);
+            window.Show();
+        }
     }
 }

@@ -104,9 +104,30 @@ namespace InitialProject.Repository
 
         }
 
-        public void UpdateKeyPointArrivals()
+        public int UpdateKeyPointArrivals(int guidenceId, string username, int keyPoint)
         {
-            tourReservationSerializer.ToCSV(FilePathReservatedTours, tourReservations);
+
+            foreach(TourReservation tr in tourReservations)
+            {
+                if(username == tr.userId && tr.tourGuidenceId== guidenceId)
+                {
+                    if(keyPoint > tr.TourKeyPointArrival.Count)
+                    {
+                        return -1;
+                    }
+
+                    for (int i = 0; i < tr.TourKeyPointArrival.Count; i++)
+                    {
+                        if (tr.TourKeyPointArrival[i] == true)
+                            return -1;
+                    }
+
+                    tr.TourKeyPointArrival[keyPoint-1] = true;
+                    tourReservationSerializer.ToCSV(FilePathReservatedTours, tourReservations);
+                    return 1;
+                }
+            }
+            return -1;
         }
 
 
@@ -120,5 +141,18 @@ namespace InitialProject.Repository
             return tourReservations.Max(c => c.Id) + 1;
         }
 
+        public TourReservation FindByGuestAndGuidence(string userId, int tourGuidenceId)
+        {
+            TourReservation retVal = new TourReservation();
+            foreach(TourReservation reservation in tourReservations)
+            {
+                if(reservation.userId == userId && reservation.tourGuidenceId == tourGuidenceId)
+                {
+                    retVal = reservation;
+                    break;
+                }
+            }
+            return retVal;
+        }
     }
 }
