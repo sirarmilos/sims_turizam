@@ -27,6 +27,7 @@ namespace InitialProject.View
 
         private readonly TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
         private readonly TourReservationRepository tourReservationRepository = new TourReservationRepository();
+        private readonly TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
         private readonly TourRepository tourRepository = new TourRepository();
 
         public ShowTourAttendance(string username)
@@ -48,15 +49,44 @@ namespace InitialProject.View
 
             foreach (int tourReservationId in tourReservationIds)
             {
-               Model.TourReservation tourReservation = tourReservationRepository.GetById(tourReservationId);
+                Model.TourReservation tourReservation = tourReservationRepository.GetById(tourReservationId);
 
+
+                TourAttendanceDTO tourAttendanceDTO = tourGuidenceRepository.GetTourAttendanceDTO(tourReservationId);
+               
                 DataGrid dataGrid = new DataGrid();
+                dataGrid.Padding = new Thickness(10);
 
-                List<Model.TourReservation> tourReservationDisplay = new List<Model.TourReservation>();
+                List<TourAttendanceDTO> tourAttendanceDTOs = new List<TourAttendanceDTO>();
+                tourAttendanceDTOs.Add(tourAttendanceDTO);
 
-                tourReservationDisplay.Add(tourReservation);
+                dataGrid.ItemsSource = tourAttendanceDTOs;
+                dataGrid.AutoGenerateColumns = true;
 
-                dataGrid.ItemsSource = tourReservationDisplay;
+                DataGridTextColumn guideName = new DataGridTextColumn();
+                guideName.Header = "Guide";
+                guideName.Binding = new Binding("GuideUsername");
+                //guideName.DisplayIndex = 0;
+                dataGrid.Columns.Add(guideName);
+
+
+                DataGridTextColumn date = new DataGridTextColumn();
+                date.Header = "Date";
+                date.Binding = new Binding("Date");
+                dataGrid.Columns.Add(date);
+
+                int br = 0;
+                foreach (TourKeyPoint tourKeyPoint in tourAttendanceDTO.TourKeyPoints)
+                {
+                    DataGridTextColumn tkp = new DataGridTextColumn();
+                    tkp.Header = tourKeyPoint.KeyPointName;
+                    tkp.Binding = new Binding("TourKeyPoints[br].Passed");
+                    dataGrid.Columns.Add(tkp);
+                    br++;
+                }
+
+
+            
 
                 DataGridTemplateColumn buttonColumn = new DataGridTemplateColumn();
                 buttonColumn.Header = "Button Column";
