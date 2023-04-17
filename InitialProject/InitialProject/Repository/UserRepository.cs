@@ -57,7 +57,7 @@ namespace InitialProject.Repository
             return FindAll().Find(x => x.Username.Equals(username) == true).Type;
         }
 
-        public User GetByUsername(string username)
+        public User FindByUsername(string username)
         {
             User user = new User();
 

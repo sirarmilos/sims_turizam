@@ -28,7 +28,7 @@ namespace InitialProject.Service
             {
                 if (reservation.tourGuidenceId == guidenceId)
                 {
-                    User guest = userRepository.GetByUsername(reservation.userId);
+                    User guest = userRepository.FindByUsername(reservation.userId);
                     Voucher v = new Voucher(voucherRepository.NextId(), guest, VoucherType.TOURCANCELATION, DateTime.Now.AddYears(1), false);
                     vouchers.Add(v);
                 }

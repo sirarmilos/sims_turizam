@@ -24,6 +24,7 @@ namespace InitialProject.IRepository
 
         string FindTypeByUsername(string username);
 
-        User GetByUsername(string username);
+        User FindByUsername(string username);
+
     }
 }
