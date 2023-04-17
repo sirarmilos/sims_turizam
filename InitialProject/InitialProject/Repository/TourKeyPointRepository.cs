@@ -51,9 +51,15 @@ namespace InitialProject.Repository
             Save(tourKeyPoints);
         }
 
-        public void UpdateCheckedKeyPoints()
+        public void UpdateCheckedKeyPoints(List<TourKeyPoint> keyPoints)
         {
+            foreach(TourKeyPoint tourKeyPoint in keyPoints)
+            {
+                TourKeyPoint kp = GetById(tourKeyPoint.Id);
+                kp.Passed = tourKeyPoint.Passed;
+            }
             Save(tourKeyPoints);
+
         }
     }
 }

@@ -50,7 +50,7 @@ namespace InitialProject.View
 
         private void SaveCheckedKeyPoints(object sender, RoutedEventArgs e)
         {
-            tourKeyPointRepository.UpdateCheckedKeyPoints();
+            tourKeyPointRepository.UpdateCheckedKeyPoints(tourKeyPoints.ToList());
             if (tourKeyPoints[tourKeyPoints.Count - 1].Passed == true)
             {
                 tourGuidenceRepository.UpdateFinishedField(TourGuidence.Id);
