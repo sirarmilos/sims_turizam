@@ -40,7 +40,7 @@ namespace InitialProject.Service
         {
             List<double> retVal = new List<double>(new double[2]);
 
-            TourGuidanceService tourGuidanceService = new TourGuidanceService();
+            TourGuidenceService tourGuidanceService = new TourGuidenceService();
             TourReservationService tourReservationService = new TourReservationService();
 
             List<TourGuidence> tourGuidences = tourGuidanceService.GetAll();

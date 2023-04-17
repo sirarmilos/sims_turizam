@@ -23,7 +23,7 @@ namespace InitialProject.Service
         public List<TourDisplayDTO> GetToursForDisplay()
         {
             List<TourDisplayDTO> tourDisplayDTOs = new List<TourDisplayDTO>();
-            TourGuidanceService tourGuidanceService = new TourGuidanceService();
+            TourGuidenceService tourGuidanceService = new TourGuidenceService();
             TourKeyPointService tourKeyPointService = new TourKeyPointService();    
 
 
@@ -68,7 +68,7 @@ namespace InitialProject.Service
 
             TourKeyPointService tourKeyPointService = new TourKeyPointService();
             TourReservationService tourReservationService = new TourReservationService();
-            TourGuidanceService tourGuidanceService = new TourGuidanceService();
+            TourGuidenceService tourGuidanceService = new TourGuidenceService();
 
 
 
