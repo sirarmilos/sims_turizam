@@ -108,9 +108,9 @@ namespace InitialProject.Repository
             return 0;
         }
 
-        public void GuideRating(string username, string guideId,int guideGeneralKnowledge,int guideLanguageKnowledge,int generalTourExperience,List<string> pictures)
+        public void GuideRating(string userId, string guideId, int tourGuidenceId, int guideKnowledge, int guideLanguage, int tourExperience, string comment, List<string> images)
         {
-            Model.RateGuide rateGuide = new Model.RateGuide(username,guideId,guideGeneralKnowledge,guideLanguageKnowledge,generalTourExperience,pictures);
+            Model.RateGuide rateGuide = new Model.RateGuide(userId,guideId,tourGuidenceId,guideKnowledge,guideLanguage,tourExperience,comment,images);
             rateGuides.Add(rateGuide);
             rateGuideSerializer.ToCSV(FilePathGuideReviews,rateGuides);
         

@@ -71,6 +71,29 @@ namespace InitialProject.Repository
             return results;
         }
 
+        public List<int> GetTourReservationsForTracking(string username)
+        {
+            List<int> results = new List<int>();
+            foreach (TourReservation tourReservation in tourReservations)
+            {
+                if (tourReservation.userId.Equals(username))
+                {
+                    foreach (TourGuidence tourGuidence in tourGuidences)
+                    {
+                        if (tourReservation.tourGuidenceId == tourGuidence.Id)
+                        {
+                            if (tourGuidence.Started == true && tourReservation.Confirmed == true)
+                            {
+                                results.Add(tourReservation.Id);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
         public void ConfirmTourAttendance(string username, int tourReservationId)
         {
             List<TourReservation> result = tourReservations;
@@ -380,8 +403,24 @@ namespace InitialProject.Repository
             }
         }
 
+        public string GetGuide(int tourGuidenceId)
+        {
+            string guideUsername= "";
 
+            foreach(TourGuidence tourGuidence in tourGuidences)
+            {
+                if(tourGuidence.Id==tourGuidenceId)
+                {
+                    guideUsername += tourGuidence.Tour.GuideUsername;
+                    break;
+                }
 
+            }
+
+            return guideUsername;
+
+        }
+        
 
 
 
