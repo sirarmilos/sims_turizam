@@ -50,6 +50,12 @@ namespace InitialProject.Service
             }
         }
 
+        public ReservationReschedulingRequestService()
+        {
+            reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
+
+        }
+
         public ReservationReschedulingRequestService(string username)
         {
             Owner = username;
@@ -174,5 +180,66 @@ namespace InitialProject.Service
         {
             return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
         }
+
+
+
+
+
+
+        public void CreateRequest(CreateReservationReschedulingRequestDTO request)
+        {
+            Reservation reservation = reservationService.FindById(request.ShowReservationDTO.ReservationId);
+
+            reservationReschedulingRequestRepository.Create(reservation, request.NewStartDate, request.NewEndDate, "pending", "");
+        }
+
+        public List<Guest1RebookingRequestsDTO> FindAllByGuest1Username()
+        {
+            List<Reservation> guest1Reservations = reservationService.FindGuest1Reservations(Guest1);
+
+            return GetGuest1RebookingRequestsDTOs(guest1Reservations);
+        }
+
+        public List<Guest1RebookingRequestsDTO> GetGuest1RebookingRequestsDTOs(List<Reservation> guest1Reservations)
+        {
+            List<Guest1RebookingRequestsDTO> guest1RebookingRequestsDTOs = new List<Guest1RebookingRequestsDTO>();
+
+            foreach (Reservation temporaryReservation in guest1Reservations.ToList())
+            {
+                ReservationReschedulingRequest temporaryRebookingRequest = 
+                    reservationReschedulingRequestRepository.FindRequestByReservationId(temporaryReservation.ReservationId, Guest1);
+
+                if (temporaryRebookingRequest != null)
+                {
+                    Guest1RebookingRequestsDTO temporaryRebookingRequestDTO = 
+                        new Guest1RebookingRequestsDTO(temporaryReservation, temporaryRebookingRequest);
+                    guest1RebookingRequestsDTOs.Add(temporaryRebookingRequestDTO);
+                }
+            }
+
+            return guest1RebookingRequestsDTOs;
+        }
+
+        public void RemoveRequestsToCancelledReservation(int reservationId)
+        {
+            reservationReschedulingRequestRepository.RemoveRequestByReservationId(reservationId);   
+        }
+
+
+        public void UpdateViewedRequestsByGuest1()
+        {
+            reservationReschedulingRequestRepository.UpdateViewedRequestsByGuest1(Guest1);
+        }
+
+        public bool Guest1HasNotification(string guest1Username)
+        {
+            return reservationReschedulingRequestRepository.FindAll().Any(x => x.Reservation.GuestUsername.Equals(guest1Username) && (x.ViewedByGuest == false));
+        }
+
+        public bool Guest1HasNotification()
+        {
+            return reservationReschedulingRequestRepository.FindAll().Any(x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false));
+        }
+
     }
 }

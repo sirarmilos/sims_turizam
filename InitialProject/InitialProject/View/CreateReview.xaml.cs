@@ -118,6 +118,28 @@ namespace InitialProject.View
             }
         }
 
+        private bool notification;
+        public bool Notification
+        {
+            get { return notification; }
+            set
+            {
+                notification = value;
+            }
+        }
+
+        private void CheckNotification()
+        {
+            if (Notification)
+            {
+                NotificationMenuItem.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                NotificationMenuItem.Visibility = Visibility.Collapsed;
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -128,12 +150,12 @@ namespace InitialProject.View
         public CreateReview(string guest1)
         {
             InitializeComponent();
-
+            DataContext = this;
             Guest1 = guest1;
 
-            DataContext = this;
-
             reviewService = new ReviewService(Guest1);
+            Notification = reviewService.Guest1HasNotification();
+            CheckNotification();
 
             CreateReviewDTOs = new List<CreateReviewDTO>();
 
@@ -142,7 +164,7 @@ namespace InitialProject.View
             if (CreateReviewDTOs.Count == 0)
             {
                 MessageBox.Show("All accommodations are reviewed.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
+                
             }
             else
             {
@@ -154,13 +176,15 @@ namespace InitialProject.View
 
         private void SaveReview(object sender, RoutedEventArgs e)
         {
-            SaveNewCreateReviewDTO saveNewCreateReviewDTO = new SaveNewCreateReviewDTO(SelectedAccommodation.ReservationId, Cleanliness, Staff, Comfort, ValueForMoney, Comment, Images);
+            SaveNewCreateReviewDTO saveNewCreateReviewDTO = 
+                new SaveNewCreateReviewDTO(SelectedAccommodation.ReservationId, Cleanliness, Staff, Comfort, ValueForMoney, Comment, Images);
 
             reviewService.SaveNewReview(saveNewCreateReviewDTO);
 
             reviewService.CheckSuperOwner(saveNewCreateReviewDTO.ReservationId);
 
             CreateReviewDTOs.Remove(SelectedAccommodation);
+
             dgCreateReview.Items.Refresh();
 
             SetDefaultValue();
@@ -308,11 +332,41 @@ namespace InitialProject.View
             ValueForMoney = Convert.ToInt32(sliderValueForMoney.Value);
         }
 
+        private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        {
+            Guest1Start window = new Guest1Start(Guest1);
+            window.Show();
+            Close();
+        }
+
         private void GoToSearchAndShowAccommodation(object sender, RoutedEventArgs e)
         {
             SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
             window.Show();
+            Close();
         }
+
+        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        {
+            CreateReview window = new CreateReview(Guest1);
+            window.Show();
+            Close();
+        }
+
+        private void GoToShowReservations(object sender, RoutedEventArgs e)
+        {
+            ShowReservations window = new ShowReservations(Guest1);
+            window.Show();
+            Close();
+        }
+
+        private void GoToGuest1Requests(object sender, RoutedEventArgs e)
+        {
+            Guest1Requests window = new Guest1Requests(Guest1);
+            window.Show();
+            Close();
+        }
+
 
         private void GoToLogout(object sender, RoutedEventArgs e)
         {

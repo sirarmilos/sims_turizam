@@ -107,11 +107,11 @@ namespace InitialProject.Repository
             SaveReservations(allReservations);
         }
 
-        public void Save(string guestUsername, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
+        public void Save(string guest1Username, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
         {
 
             reservations = reservationSerializer.FromCSV(FilePathReservation);
-            Reservation reservation = new Reservation(NextIdReservation(), "username123", accommodation, startDate, endDate, guestsNumber); // todo: izmeniti username
+            Reservation reservation = new Reservation(NextIdReservation(), guest1Username, accommodation, startDate, endDate, guestsNumber); 
             reservations.Add(reservation);
             reservationSerializer.ToCSV(FilePathReservation, reservations);
 

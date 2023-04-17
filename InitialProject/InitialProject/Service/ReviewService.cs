@@ -25,7 +25,7 @@ namespace InitialProject.Service
 
         private readonly IReviewRepository reviewRepository;
 
-        private IReservationRepository reservationRepository; //
+        private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
         private string owner;
         private string guest1;
@@ -56,31 +56,19 @@ namespace InitialProject.Service
             userService = new UserService();
             reservationService = new ReservationService();
             rateGuestsService = new RateGuestsService(Owner);
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService();    
 
             reviewRepository = new ReviewRepository();
-            reservationRepository = new ReservationRepository();
         }
 
         public List<CreateReviewDTO> FindAllReviewsToRate()
         {
-            List<Reservation> reservations = FindGuest1Reservations();
+            List<Reservation> reservations = reservationService.FindGuest1Reservations(Guest1);
 
-            List<Review> reviews = FindGuest1Reviews();
-
-            return FindCreateReviewDTOs(reservations, reviews);
+            return FindCreateReviewDTOs(reservations);
         }
 
-        public List<Reservation> FindGuest1Reservations()
-        {
-            return reservationRepository.FindGuest1Reservations(Guest1);
-        }
-
-        public List<Review> FindGuest1Reviews()
-        {
-            return reviewRepository.FindReviewsByGuest1Username(Guest1);
-        }
-
-        public List<CreateReviewDTO> FindCreateReviewDTOs(List<Reservation> guest1reservations, List<Review> guest1Reviews)
+        public List<CreateReviewDTO> FindCreateReviewDTOs(List<Reservation> guest1reservations)
         {
             List<CreateReviewDTO> createReviewDTOs = new List<CreateReviewDTO>();
 
@@ -127,6 +115,11 @@ namespace InitialProject.Service
             reviewRepository.Add(review); // mozda Save
         }
 
+        public bool Guest1HasNotification()
+        {
+            return reservationReschedulingRequestService.Guest1HasNotification(Guest1);
+        }
+
 
 
 
@@ -154,10 +147,6 @@ namespace InitialProject.Service
 
             return showGuestReviewsDTOs;
         }
-
-
-
-
 
         public void CheckSuperOwner(int reservationId)
         {
