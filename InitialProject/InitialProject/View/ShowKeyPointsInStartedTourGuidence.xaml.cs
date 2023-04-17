@@ -28,6 +28,8 @@ namespace InitialProject.View
         private readonly TourKeyPointRepository tourKeyPointRepository;
 
         private readonly TourGuidenceRepository tourGuidenceRepository;
+
+        private readonly TourGuidenceService tourGuidenceService;
         public static ObservableCollection<TourKeyPoint> tourKeyPoints { get; set; }
 
         public TourGuidence TourGuidence { get; set; }
@@ -42,6 +44,7 @@ namespace InitialProject.View
             DataContext = this;
             tourKeyPointRepository = new TourKeyPointRepository();
             tourGuidenceRepository = new TourGuidenceRepository();
+            tourGuidenceService = new TourGuidenceService();
             tourKeyPoints = new ObservableCollection<TourKeyPoint>(tourKeyPointService.GetByTourGuidance(guidence.Id));
             tourKeyPoints[0].Passed = true;
             TourGuidence = guidence;
@@ -53,7 +56,7 @@ namespace InitialProject.View
             tourKeyPointRepository.UpdateCheckedKeyPoints(tourKeyPoints.ToList());
             if (tourKeyPoints[tourKeyPoints.Count - 1].Passed == true)
             {
-                tourGuidenceRepository.UpdateFinishedField(TourGuidence.Id);
+                tourGuidenceService.UpdateFinishedField(TourGuidence.Id);
             }
             this.Close();
         }
@@ -68,7 +71,7 @@ namespace InitialProject.View
 
         private void StartTourGuidence(object sender, RoutedEventArgs e)
         {
-            if (tourGuidenceRepository.CheckGuidencesForStart(TourGuidences))
+            if (tourGuidenceService.CheckGuidencesForStart(TourGuidences))
             {
                 MessageBox.Show("You already started another tour!");
                 this.Close();
@@ -77,7 +80,7 @@ namespace InitialProject.View
             }
             else
             {
-                tourGuidenceRepository.UpdateStartedField(TourGuidence.Id);
+                tourGuidenceService.UpdateStartedField(TourGuidence.Id);
                 MessageBox.Show("Tour successfully started");
                 //ShowKeyPointsInStartedTourGuidence window = new(TourGuidence, TourGuidences);
                 this.Close();
@@ -96,7 +99,7 @@ namespace InitialProject.View
             }
             else
             {
-                tourGuidenceRepository.UpdateFinishedField(TourGuidence.Id);
+                tourGuidenceService.UpdateFinishedField(TourGuidence.Id);
                 MessageBox.Show("Tour successfully finished");
                 this.Close();
                 ShowTourGuidences window = new();

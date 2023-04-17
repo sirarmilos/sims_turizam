@@ -47,7 +47,7 @@ namespace InitialProject.Model
             Location = location;
 
 
-            TourGuidanceService tourGuidanceService = new TourGuidanceService();
+            TourGuidenceService tourGuidanceService = new TourGuidenceService();
             TourGuidence tourGuidence = tourGuidanceService.GetById(Convert.ToInt32(values[3]));
             TourGuidence = tourGuidence;
 

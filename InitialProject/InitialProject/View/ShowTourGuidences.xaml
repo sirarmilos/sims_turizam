@@ -41,14 +41,14 @@
             </ContentControl.Style>
         </ContentControl>-->
 
-        <DataGrid x:Name="dataGrid" ItemsSource="{Binding tourGuidences}" CanUserAddRows="False" Height="NaN" Margin="40,64,188,73"  AutoGenerateColumns="False" >
+        <DataGrid x:Name="dataGrid" ItemsSource="{Binding tourGuidences}" SelectedItem="{Binding selectedGuidence}" CanUserAddRows="False" Height="NaN" Margin="40,64,188,73"  AutoGenerateColumns="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tour Name" Binding="{Binding Tour.TourName}"/>
                 <DataGridTextColumn Header="Date of Start" Binding="{Binding StartTime}"/>
                 <DataGridTemplateColumn Header="Action">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="DETAILS" Click="DetailsTourGuidence"/>
+                            <Button Content="DETAILS" CommandParameter="{Binding}" Command="{Binding DataContext.DetailsTourGuidenceCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

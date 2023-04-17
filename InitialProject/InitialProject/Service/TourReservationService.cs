@@ -110,7 +110,7 @@ namespace InitialProject.Service
             {
                 List<Boolean> arrivals = new List<Boolean>();
                 arrivals = SetArrivalsToFalse(tourGuidence.Id);
-                TourGuidanceService tourGuidanceService = new TourGuidanceService();
+                TourGuidenceService tourGuidanceService = new TourGuidenceService();
 
                 List<Model.TourReservation> tourReservations = tourReservationRepository.GetAll();
                 Model.TourReservation reservation = new Model.TourReservation(username, tourGuidence.Id, arrivals, numberOfGuests, false, voucherId, Id);

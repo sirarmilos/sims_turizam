@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,13 +32,16 @@ namespace InitialProject.View
 
         private readonly VoucherRepository voucherRepository;
 
+        private readonly TourGuidenceService tourGuidenceService;
+
         public FutureTours()
         {
             InitializeComponent();
             DataContext = this;
             tourGuidenceRepository = new TourGuidenceRepository();
             voucherRepository = new VoucherRepository();
-            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceRepository.GetAllFutureTours());
+            tourGuidenceService = new TourGuidenceService();
+            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceService.GetAllFutureTours());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -50,9 +54,9 @@ namespace InitialProject.View
         {
             TourGuidence selectedGuidence = (TourGuidence)dataGrid.SelectedItem;
 
-            if (tourGuidenceRepository.CheckValidDateForCancel(selectedGuidence.StartTime))
+            if (tourGuidenceService.CheckValidDateForCancel(selectedGuidence.StartTime))
             {
-                tourGuidenceRepository.UpdateCancelField(selectedGuidence.Id);
+                tourGuidenceService.UpdateCancelledField(selectedGuidence.Id);
                 MessageBox.Show("Tour successfully cancelled!");
                 voucherRepository.CreateForCancelledTourGuidence(selectedGuidence.Id);
                 FutureTours window = new FutureTours();

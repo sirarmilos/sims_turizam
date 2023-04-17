@@ -1,5 +1,7 @@
 ﻿using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
+using InitialProject.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,33 +26,10 @@ namespace InitialProject.View
     /// </summary>
     public partial class ShowTourGuidences : Window
     {
-        public static ObservableCollection<TourGuidence> tourGuidences { get; set; }
-
-        private readonly TourGuidenceRepository tourGuidenceRepository;
-
-
-
         public ShowTourGuidences()
         {
             InitializeComponent();
-            DataContext = this;
-            tourGuidenceRepository = new TourGuidenceRepository();
-            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceRepository.GetAllForToday());
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void DetailsTourGuidence(object sender, RoutedEventArgs e)
-        {
-            TourGuidence selectedGuidence = (TourGuidence)dataGrid.SelectedItem;
-
-            ShowKeyPointsInStartedTourGuidence window = new ShowKeyPointsInStartedTourGuidence(selectedGuidence, tourGuidences.ToList());
-            window.Show();
-            this.Close();
+            this.DataContext = new ShowTourGuidencesViewModel();
         }
     }
 }

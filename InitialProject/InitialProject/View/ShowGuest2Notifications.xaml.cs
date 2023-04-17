@@ -26,7 +26,7 @@ namespace InitialProject.View
         private readonly TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
         private readonly TourRepository tourRepository = new TourRepository();
 
-        private readonly TourGuidanceService tourGuidanceService = new TourGuidanceService();
+        private readonly TourGuidenceService tourGuidanceService = new TourGuidenceService();
         private readonly TourReservationService tourReservationService = new TourReservationService();
 
         private readonly string username;

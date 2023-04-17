@@ -31,7 +31,7 @@ namespace InitialProject.View
         private readonly TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
         private readonly TourRepository tourRepository = new TourRepository();
 
-        private readonly TourGuidanceService tourGuidanceService = new TourGuidanceService();
+        private readonly TourGuidenceService tourGuidanceService = new TourGuidenceService();
 
         public ShowTourAttendance(string username)
         {

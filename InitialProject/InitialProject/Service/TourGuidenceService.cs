@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Service
 {
-    internal class TourGuidanceService
+    internal class TourGuidenceService
     {
         private readonly TourGuidenceRepository tourGuidenceRepository;
 
-        public TourGuidanceService()
+        public TourGuidenceService()
         {
             tourGuidenceRepository = new TourGuidenceRepository();  
         }
@@ -105,6 +105,91 @@ namespace InitialProject.Service
                 }
             }
 
+        }
+
+        public List<TourGuidence> GetAllForToday()
+        {
+            List<TourGuidence> todaysTour = new();
+            DateTime systemDate = DateTime.Today;
+
+            foreach (TourGuidence t in tourGuidenceRepository.GetAll())
+            {
+                if (systemDate == t.StartTime.Date && t.StartTime.TimeOfDay>=DateTime.Now.TimeOfDay && t.Finished == false)
+                {
+                    todaysTour.Add(t);
+                }
+
+            }
+            return todaysTour;
+        }
+
+        public List<TourGuidence> GetAllFutureTours()
+        {
+            List<TourGuidence> futureTours = new();
+            futureTours = tourGuidenceRepository.GetAll().Where(item => item.StartTime >= DateTime.Now).ToList();
+            return futureTours;
+        }
+
+        public bool CheckValidDateForCancel(DateTime date)
+        {
+            TimeSpan timeDiff = date - DateTime.Now;
+            return timeDiff.TotalHours >= 48;
+        }
+
+        public void UpdateStartedField(int guidenceId)
+        {
+            List<TourGuidence> guidences = new List<TourGuidence>();
+            guidences = tourGuidenceRepository.GetAll();
+            foreach (TourGuidence guidence in guidences)
+            {
+                if (guidence.Id == guidenceId)
+                {
+                    guidence.Started = true;
+                    break;
+                }
+            }
+            tourGuidenceRepository.Save(guidences);
+        }
+
+        public void UpdateFinishedField(int tourGuidenceId)
+        {
+
+            List<TourGuidence> guidences = new List<TourGuidence>();
+            guidences = tourGuidenceRepository.GetAll();
+            foreach (TourGuidence tg in guidences)
+            {
+                if (tg.Id == tourGuidenceId && tg.Finished == false)
+                {
+                    tg.Finished = true;
+                    break;
+                }
+            }
+            tourGuidenceRepository.Save(guidences);
+        }
+
+        public void UpdateCancelledField(int guidenceId)
+        {
+            List<TourGuidence> guidences = new List<TourGuidence>();
+            guidences = tourGuidenceRepository.GetAll();
+            foreach (TourGuidence guidence in guidences)
+            {
+                if (guidence.Id == guidenceId)
+                {
+                    guidence.Cancelled = true;
+                    break;
+                }
+            }
+            tourGuidenceRepository.Save(guidences);
+        }
+
+        public bool CheckGuidencesForStart(List<TourGuidence> guidences)
+        {
+            foreach (TourGuidence t in guidences)
+            {
+                if (t.Started == true)
+                    return true;
+            }
+            return false;
         }
 
     }
