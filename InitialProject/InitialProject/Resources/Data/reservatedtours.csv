@@ -1,7 +1,7 @@
-Guest21|1|False, False, False, False, False|3|True|0
-Guest22|1|False, False, False, False, False|4|True|2
-Guest21|2|False, False, False, False, False|5|False|0
-Guest21|4|False, False, False, False, False|3|True|0
-Guest21|5|False, False, False, False, False|4|True|0
-Guest23|4|False, False, False, False, False|5|True|1
-Guest23|5|False, False, False, False, False|1|True|0
+Guest21|1|False, False, False, False|3|True|0|1
+Guest22|1|False, False, False, False|4|True|2|2
+Guest21|2|False, False, False, False|5|False|0|3
+Guest21|4|False, False|3|True|0|4
+Guest21|5|False, False|4|True|0|5
+Guest23|4|False, False|5|True|1|6
+Guest23|5|False, False|1|True|0|7

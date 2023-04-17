@@ -42,7 +42,7 @@ namespace InitialProject.Model
             Id = Convert.ToInt32(values[0]);
             user = userRepository.GetByUsername(values[1]);
             voucherType = Enum.Parse<VoucherType>(values[2]);
-            expirationDate = DateTime.Parse(values[3]);
+            expirationDate = Convert.ToDateTime(values[3]);
             IsUsed = Convert.ToBoolean(values[4]);
         }
     }
