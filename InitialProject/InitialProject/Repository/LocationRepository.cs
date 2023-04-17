@@ -12,7 +12,7 @@ namespace InitialProject.Repository
 {
     public class LocationRepository : ILocationRepository
     {
-        private const string FilePathLocation = "../../../Resources/Data/location.csv";
+        private const string FilePathLocation = "../../../Resources/Data/locations.csv";
 
         private readonly Serializer<Location> locationSerializer;
 

@@ -15,15 +15,10 @@ namespace InitialProject.ViewModel
     {
         private readonly ReviewService reviewService;
 
-        private string owner;
-
-        public string Owner
+        public string OwnerUsername
         {
-            get { return owner; }
-            set
-            {
-                owner = value;
-            }
+            get;
+            set;
         }
 
         public string UsernameAndSuperOwner
@@ -69,7 +64,7 @@ namespace InitialProject.ViewModel
             get;
         }
 
-        public ShowGuestReviewsViewModel(string owner, string ownerHeader)
+        public ShowGuestReviewsViewModel(string ownerUsername, string ownerHeader)
         {
             GoToAddNewAccommodationCommand = new DelegateCommand(GoToAddNewAccommodation);
             GoToRateGuestsCommand = new DelegateCommand(GoToRateGuests);
@@ -77,42 +72,47 @@ namespace InitialProject.ViewModel
             GoToShowOwnerManageBookingMoveRequestsCommand = new DelegateCommand(GoToShowOwnerManageBookingMoveRequests);
             GoToLogoutCommand = new DelegateCommand(GoToLogout);
 
-            Owner = owner;
+            OwnerUsername = ownerUsername;
 
-            reviewService = new ReviewService(Owner);
+            reviewService = new ReviewService(OwnerUsername);
 
             ShowGuestReviewsDTOs = new List<ShowGuestReviewsDTO>();
 
             ShowGuestReviewsDTOs = reviewService.FindAllReviews();
 
+            SetMenu(ownerHeader);
+        }
+
+        private void SetMenu(string ownerHeader)
+        {
             UsernameAndSuperOwner = ownerHeader;
 
-            RateGuestsNotifications = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(Owner);
+            RateGuestsNotifications = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(OwnerUsername) + ".";
         }
 
         public void GoToAddNewAccommodation()
         {
-            AddNewAccommodation window = new AddNewAccommodation("Owner1");
+            AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
             window.ShowDialog();
         }
 
         private void GoToRateGuests()
         {
-            RateGuests window = new RateGuests("Owner1", UsernameAndSuperOwner);
+            RateGuests window = new RateGuests(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
             Close();
         }
 
         private void GoToShowGuestReviews()
         {
-            ShowGuestReviews window = new ShowGuestReviews("Owner1", UsernameAndSuperOwner);
+            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
             Close();
         }
 
         private void GoToShowOwnerManageBookingMoveRequests()
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests("Owner1", UsernameAndSuperOwner);
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
             Close();
         }

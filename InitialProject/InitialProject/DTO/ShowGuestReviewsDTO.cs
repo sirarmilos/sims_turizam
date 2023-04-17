@@ -28,17 +28,6 @@ namespace InitialProject.DTO
 
         }
 
-        public ShowGuestReviewsDTO(string accommodationName, string guestUsername, int cleanliness, int staff, int comfort, int valueForMoney, string comment)
-        {
-            AccommodationName = accommodationName;
-            GuestUsername = guestUsername;
-            Cleanliness = cleanliness;
-            Staff = staff;
-            Comfort = comfort;
-            ValueForMoney = valueForMoney;
-            Comment = comment;
-        }
-
         public ShowGuestReviewsDTO(Review review)
         {
             AccommodationName = review.Reservation.Accommodation.AccommodationName;

@@ -27,15 +27,10 @@ namespace InitialProject.View
     {
         private readonly RateGuestsService rateGuestsService;
 
-        private string owner;
-
-        public string Owner
+        public string OwnerUsername
         {
-            get { return owner; }
-            set
-            {
-                owner = value;
-            }
+            get;
+            set;
         }
 
         private int cleanliness;
@@ -156,25 +151,30 @@ namespace InitialProject.View
             }
         }
 
-        public RateGuests(string owner, string ownerHeader)
+        public RateGuests(string ownerUsername, string ownerHeader)
         {
             InitializeComponent();
 
-            Owner = owner;
+            OwnerUsername = ownerUsername;
 
             DataContext = this;
 
-            rateGuestsService = new RateGuestsService(Owner);
-
-            usernameAndSuperOwner.Header = ownerHeader;
+            rateGuestsService = new RateGuestsService(OwnerUsername);
 
             RateGuestsDTOs = new List<RateGuestsDTO>();
 
             RateGuestsDTOs = rateGuestsService.FindAllGuestsToRate();
 
-            rateGuestsNotifications.Header = "Number of unrated guests: " + RateGuestsDTOs.Count; // rateGuestsService.FindNumberOfUnratedGuests(Owner);
-
             SetDefaultValue();
+
+            SetMenu(ownerHeader);
+        }
+
+        private void SetMenu(string ownerHeader)
+        {
+            usernameAndSuperOwner.Header = ownerHeader;
+
+            rateGuestsNotifications.Header = "Number of unrated guests: " + RateGuestsDTOs.Count + ".";
         }
 
         private void SetDefaultValue()
@@ -187,6 +187,7 @@ namespace InitialProject.View
             Comment = string.Empty;
             tbComment.Text = string.Empty;
             buttonRate.IsEnabled = false;
+            groupBoxRateFields.IsEnabled = false;
         }
 
         private void SaveRateGuest(object sender, RoutedEventArgs e)
@@ -218,6 +219,18 @@ namespace InitialProject.View
             else
             {
                 buttonRate.IsEnabled = true;
+            }
+        }
+
+        private void RateFieldsEnable(object sender, SelectionChangedEventArgs e)
+        {
+            if (SelectedGuest == null)
+            {
+                groupBoxRateFields.IsEnabled = false;
+            }
+            else
+            {
+                groupBoxRateFields.IsEnabled = true;
             }
         }
 
@@ -257,27 +270,27 @@ namespace InitialProject.View
 
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
         {
-            AddNewAccommodation window = new AddNewAccommodation(Owner);
+            AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
             window.ShowDialog();
         }
 
         private void GoToRateGuests(object sender, RoutedEventArgs e)
         {
-            RateGuests window = new RateGuests(Owner, usernameAndSuperOwner.Header.ToString());
+            RateGuests window = new RateGuests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
         {
-            ShowGuestReviews window = new ShowGuestReviews(Owner, usernameAndSuperOwner.Header.ToString());
+            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner, usernameAndSuperOwner.Header.ToString());
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }

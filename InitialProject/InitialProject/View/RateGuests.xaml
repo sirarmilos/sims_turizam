@@ -38,14 +38,14 @@
 
         <Label x:Name="labelAListOfAllGuestsYouCanRate" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all guests you can rate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,0,0" Width="330" Height="30"/>
 
-        <DataGrid x:Name="dgRateGuests" LoadingRow="LoadingRowForDgRateGuests" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding RateGuestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedGuest, Mode=TwoWay}" SelectionChanged="RateButtonEnable" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="25,25,25,0" Height="200">
+        <DataGrid x:Name="dgRateGuests" LoadingRow="LoadingRowForDgRateGuests" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding RateGuestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedGuest, Mode=TwoWay}"  AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RateButtonEnable" Margin="25,25,25,0" Height="200">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="150"/>
                 <DataGridTextColumn Header="Rate guest deadline" Binding="{Binding RateGuestsDeadline}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <GroupBox Grid.Column="1" Grid.Row="3" Header="Rate guest">
+        <GroupBox x:Name="groupBoxRateFields" Grid.Column="1" Grid.Row="3" Header="Rate guest">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />
@@ -61,15 +61,15 @@
                     <ColumnDefinition Width="690" />
                 </Grid.ColumnDefinitions>
 
-                <Label x:Name="labelCleanliness" Target="{x:Reference tbCleanliness}" Grid.Column="0" Grid.Row="1" Content="Cleanliness:" HorizontalAlignment="Left" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150"/>
+                <Label x:Name="labelCleanliness" Target="{x:Reference sliderCleanliness}" Grid.Column="0" Grid.Row="1" Content="Cleanliness:" HorizontalAlignment="Left" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150"/>
                 <TextBox x:Name="tbCleanliness" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Text="{Binding ElementName=sliderCleanliness, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" IsReadOnly="True" Width="50"/>
                 <Slider Grid.Column="1" Grid.Row="1" x:Name="sliderCleanliness" HorizontalAlignment="Left" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderCleanlinessValueChange" Width="200"/>
 
-                <Label x:Name="labelFollowRules" Target="{x:Reference tbFollowRules}" Grid.Column="0" Grid.Row="2" Content="Follow rules:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150"/>
+                <Label x:Name="labelFollowRules" Target="{x:Reference sliderFollowRules}" Grid.Column="0" Grid.Row="2" Content="Follow rules:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150"/>
                 <TextBox x:Name="tbFollowRules" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Text="{Binding ElementName=sliderFollowRules, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="50" IsReadOnly="True"/>
                 <Slider Grid.Column="1" Grid.Row="2" x:Name="sliderFollowRules" HorizontalAlignment="Left" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderFollowRulesValueChange" Width="200"/>
 
-                <Label x:Name="labelBehavior"  Target="{x:Reference tbBehavior}" Grid.Column="0" Grid.Row="3" Content="Behavior:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150"/>
+                <Label x:Name="labelBehavior"  Target="{x:Reference sliderBehavior}" Grid.Column="0" Grid.Row="3" Content="Behavior:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150"/>
                 <TextBox x:Name="tbBehavior" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" Text="{Binding ElementName=sliderBehavior, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="50" IsReadOnly="True"/>
                 <Slider Grid.Column="1" Grid.Row="3" x:Name="sliderBehavior" HorizontalAlignment="Left" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderBehaviorValueChange" Width="200"/>
 
@@ -81,7 +81,7 @@
                     </StackPanel>
                 </GroupBox>
 
-                <Label x:Name="labelCommunicativeness" Target="{x:Reference tbCommunicativeness}" Grid.Column="0" Grid.Row="5" Content="Communicativeness:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150"/>
+                <Label x:Name="labelCommunicativeness" Target="{x:Reference sliderCommunicativeness}" Grid.Column="0" Grid.Row="5" Content="Communicativeness:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150"/>
                 <TextBox x:Name="tbCommunicativeness" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right" Text="{Binding ElementName=sliderCommunicativeness, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="50" IsReadOnly="True"/>
                 <Slider Grid.Column="1" Grid.Row="5" x:Name="sliderCommunicativeness" HorizontalAlignment="Left" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderCommunicativenessValueChange" Width="200"/>
 

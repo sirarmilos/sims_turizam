@@ -28,10 +28,14 @@ namespace InitialProject.IRepository
 
 
 
-        public ReservationReschedulingRequest FindRequestByReservationId(int reservationId, string guest1Username);
+        void Create(Reservation reservation, DateTime newStartDate, DateTime newEndDate, string status, string comment);
 
-        public void Create(Reservation reservation, DateTime newStartDate, DateTime newEndDate, string status, string comment);
+        int NextId();
 
-        public void UpdateViewedRequestsByGuest1(string guest1Username);
+        List<ReservationReschedulingRequest> FindAllByGuest1Username(string guest1Username);
+
+        ReservationReschedulingRequest FindRequestByReservationId(int reservationId, string guest1Username);
+
+        void UpdateViewedRequestsByGuest1(string guest1Username);
     }
 }

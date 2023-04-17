@@ -31,15 +31,10 @@ namespace InitialProject.View
     {
         private readonly AccommodationService accommodationService;
 
-        private string owner;
-
-        public string Owner
+        public string OwnerUsername
         {
-            get { return owner; }
-            set
-            {
-                owner = value;
-            }
+            get;
+            set;
         }
 
         private string accommodationName;
@@ -254,11 +249,11 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public AddNewAccommodation(string owner)
+        public AddNewAccommodation(string ownerUsername)
         {
             InitializeComponent();
 
-            Owner = owner;
+            OwnerUsername = ownerUsername;
 
             DataContext = this;
 
@@ -280,6 +275,7 @@ namespace InitialProject.View
             else if(CheckErrorImagesNumber() == false)
             {
                 MessageBox.Show("You must enter at least one accommodation image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 tbImage.Focus();
             }
             else if(accommodationService.IsAccommodationNameExist(AccommodationName) == true)
@@ -291,7 +287,7 @@ namespace InitialProject.View
             }
             else
             {
-                SaveNewAccommodationDTO saveNewAccommodationDTO = new SaveNewAccommodationDTO(AccommodationName, Owner, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images);
+                SaveNewAccommodationDTO saveNewAccommodationDTO = new SaveNewAccommodationDTO(AccommodationName, OwnerUsername, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images);
 
                 accommodationService.SaveNewAccommodation(saveNewAccommodationDTO);
 

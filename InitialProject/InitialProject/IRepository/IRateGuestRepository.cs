@@ -20,7 +20,5 @@ namespace InitialProject.IRepository
         RateGuest FindOwnerRateGuestByReservationId(string ownerUsername, int reservationId);
 
         void Add(RateGuest rateGuest);
-
-        List<RateGuest> FindOwnerRateGuests(string ownerUsername);
     }
 }

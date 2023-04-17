@@ -17,9 +17,9 @@ namespace InitialProject.Repository
     {
         private AccommodationRepository accommodationRepository;
 
-        private const string FilePathReservation = "../../../Resources/Data/reservation.csv";
+        private const string FilePathReservation = "../../../Resources/Data/reservations.csv";
 
-        private const string FilePathAccommodation = "../../../Resources/Data/accommodation.csv";
+        private const string FilePathAccommodation = "../../../Resources/Data/accommodations.csv";
 
         private readonly Serializer<Reservation> reservationSerializer;
 
@@ -65,7 +65,7 @@ namespace InitialProject.Repository
 
             foreach(Reservation temporaryReservation in reservations.ToList())
             {
-                temporaryReservation.Accommodation = accommodationRepository.FindAccommodationByAccommodationId(temporaryReservation.Accommodation.Id);
+                temporaryReservation.Accommodation = accommodationRepository.FindById(temporaryReservation.Accommodation.Id);
             }
 
             return reservations;
@@ -111,20 +111,19 @@ namespace InitialProject.Repository
         {
 
             reservations = reservationSerializer.FromCSV(FilePathReservation);
-            Reservation reservation = new Reservation(NextIdReservation(), guest1Username, accommodation, startDate, endDate, guestsNumber); 
+            Reservation reservation = new Reservation(NextId(), guest1Username, accommodation, startDate, endDate, guestsNumber); 
             reservations.Add(reservation);
             reservationSerializer.ToCSV(FilePathReservation, reservations);
 
         }
 
-        public int NextIdReservation()
+        public int NextId()
         {
-            reservations = reservationSerializer.FromCSV(FilePathReservation);
-            if (reservations.Count < 1)
+            if (FindAll().Count < 1)
             {
                 return 1;
             }
-            return reservations.Max(c => c.ReservationId) + 1;
+            return FindAll().Max(c => c.ReservationId) + 1;
         }
 
         public List<Reservation> FindAllByAccommodation(int id)

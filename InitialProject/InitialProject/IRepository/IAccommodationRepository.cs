@@ -20,7 +20,7 @@ namespace InitialProject.IRepository
 
         int NextId();
 
-        Accommodation FindAccommodationByAccommodationId(int accommodationId);
+        Accommodation FindById(int accommodationId);
 
         List<Accommodation> FindAllByAccommodationName(List<Accommodation> allAccommodations, string name);
 
