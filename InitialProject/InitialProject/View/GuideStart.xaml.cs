@@ -83,6 +83,7 @@ namespace InitialProject.View
             InitializeComponent();
             DataContext = this;
             Guide = username;
+            voucherService = new VoucherService();
             tourGuidenceRepository = new TourGuidenceRepository();
             tourRepository = new TourRepository();
             tour = tourGuidenceRepository.GetMostVisitedAllTime();
