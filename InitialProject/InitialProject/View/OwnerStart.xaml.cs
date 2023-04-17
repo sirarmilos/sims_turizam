@@ -27,35 +27,35 @@ namespace InitialProject.View
     {
         private readonly UserService userService;
 
-        private string owner;
-
-        public string Owner
+        public string OwnerUsername
         {
-            get { return owner; }
-            set
-            {
-                owner = value;
-            }
+            get;
+            set;
         }
 
         public OwnerStart(string username)
         {
             InitializeComponent();
 
-            Owner = username;
+            OwnerUsername = username;
 
             userService = new UserService();
 
-            usernameAndSuperOwner.Header = Owner + CheckSuperType();
+            SetMenu();
+        }
 
-            rateGuestsNotifications.Header = "Number of unrated guests: " + userService.FindNumberOfUnratedGuests(Owner);
+        private void SetMenu()
+        {
+            usernameAndSuperOwner.Header = OwnerUsername + CheckSuperType();
+
+            rateGuestsNotifications.Header = "Number of unrated guests: " + userService.FindNumberOfUnratedGuests(OwnerUsername) + ".";
         }
 
         private string CheckSuperType()
         {
             string superType = string.Empty;
 
-            if (userService.FindSuperTypeByOwnerName(Owner).Equals("super") == true)
+            if (userService.FindSuperTypeByOwnerName(OwnerUsername).Equals("super") == true)
             {
                 superType = " (Super owner)";
             }
@@ -65,27 +65,27 @@ namespace InitialProject.View
 
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
         {
-            AddNewAccommodation window = new AddNewAccommodation(Owner);
+            AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
             window.ShowDialog();
         }
 
         private void GoToRateGuests(object sender, RoutedEventArgs e)
         {
-            RateGuests window = new RateGuests(Owner, usernameAndSuperOwner.Header.ToString());
+            RateGuests window = new RateGuests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
         {
-            ShowGuestReviews window = new ShowGuestReviews(Owner, usernameAndSuperOwner.Header.ToString());
+            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner, usernameAndSuperOwner.Header.ToString());
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }

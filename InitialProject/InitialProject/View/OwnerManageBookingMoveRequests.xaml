@@ -36,7 +36,7 @@
 
         <Label x:Name="labelAListOfAllBookingMoveRequests" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all booking move requests" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,0,0,0"/>
 
-        <DataGrid x:Name="dgBookingMoveRequests" LoadingRow="LoadingRowForDgBookingMoveRequests" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding OwnerBookingMoveRequestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedBookingMoveRequest, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" Margin="10" SelectionChanged="AcceptRequestButtonEnable">
+        <DataGrid x:Name="dgBookingMoveRequests" LoadingRow="LoadingRowForDgBookingMoveRequests" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding OwnerBookingMoveRequestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedBookingMoveRequest, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="AcceptRequestButtonEnable" Margin="10">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="100"/>
                 <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="*"/>

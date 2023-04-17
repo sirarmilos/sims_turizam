@@ -91,7 +91,7 @@ namespace InitialProject.Service
 
         public List<RateGuest> FindOwnerRateGuests(string ownerUsername)
         {
-            return rateGuestRepository.FindOwnerRateGuests(ownerUsername);
+            return rateGuestRepository.FindByOwnerUsername(ownerUsername);
         }
 
         public int FindNumberOfUnratedGuests(string ownerUsername)

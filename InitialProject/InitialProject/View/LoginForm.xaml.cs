@@ -72,11 +72,13 @@ namespace InitialProject.View
                 tbUsername.Text = string.Empty;
                 tbPassword.Text = string.Empty;
                 MessageBox.Show("Username you entered does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbUsername.Focus();
             }
             else if(userService.IsPasswordCorrect(Username, Password) == false)
             {
                 tbPassword.Text = string.Empty;
                 MessageBox.Show("Password you entered is incorrect.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                tbPassword.Focus();
             }
             else
             {
@@ -108,6 +110,15 @@ namespace InitialProject.View
                 }
 
                 MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void labeltbFocus(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 1)
+            {
+                var label = (Label)sender;
+                Keyboard.Focus(label.Target);
             }
         }
     }
