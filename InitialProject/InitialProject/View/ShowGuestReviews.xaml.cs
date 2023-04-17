@@ -2,6 +2,7 @@
 using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.Service;
+using InitialProject.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,42 +25,11 @@ namespace InitialProject.View
     /// </summary>
     public partial class ShowGuestReviews : Window
     {
-        private readonly ReviewService reviewService;
 
-        private string owner;
-
-        public string Owner
-        {
-            get { return owner; }
-            set
-            {
-                owner = value;
-            }
-        }
-
-        public List<ShowGuestReviewsDTO> ShowGuestReviewsDTOs
-        {
-            get;
-            set;
-        }
-
-        public ShowGuestReviews(string owner, string ownerHeader)
+        public ShowGuestReviews(string owner, string header)
         {
             InitializeComponent();
-
-            Owner = owner;
-
-            DataContext = this;
-
-            reviewService = new ReviewService(Owner);
-
-            ShowGuestReviewsDTOs = new List<ShowGuestReviewsDTO>();
-
-            ShowGuestReviewsDTOs = reviewService.FindAllReviews();
-
-            usernameAndSuperOwner.Header = ownerHeader;
-
-            rateGuestsNotifications.Header = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(Owner);
+            this.DataContext = new ShowGuestReviewsViewModel(owner, header);
         }
 
         void LoadingRowForDgShowGuestReviews(object sender, DataGridRowEventArgs e)
@@ -67,38 +37,6 @@ namespace InitialProject.View
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
-        private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
-        {
-            AddNewAccommodation window = new AddNewAccommodation(Owner);
-            window.ShowDialog();
-        }
 
-        private void GoToRateGuests(object sender, RoutedEventArgs e)
-        {
-            RateGuests window = new RateGuests(Owner, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
-        {
-            ShowGuestReviews window = new ShowGuestReviews(Owner, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
-        {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToLogout(object sender, RoutedEventArgs e)
-        {
-            LoginForm window = new LoginForm();
-            window.Show();
-            Close();
-        }
     }
 }
