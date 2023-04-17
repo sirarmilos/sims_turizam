@@ -77,7 +77,6 @@ namespace InitialProject.Service
 
             allAccommodations = accommodationNameResults.Intersect(cityResults).Intersect(countryResults).Intersect(typeResults).Intersect(maxGuestsResults).Intersect(minDaysReservationResults).ToList();
 
-
             return allAccommodations;
         }
 

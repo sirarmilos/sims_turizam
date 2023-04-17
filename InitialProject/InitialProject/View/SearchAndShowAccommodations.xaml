@@ -25,6 +25,7 @@
                 <MenuItem Header="Home" Click="GoToGuest1Start"/>
                 <MenuItem Header="Create Review" Click="GoToCreateReview"/>
                 <MenuItem Header="My reservations" Click="GoToShowReservations"/>
+                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
                 <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
             </Menu>

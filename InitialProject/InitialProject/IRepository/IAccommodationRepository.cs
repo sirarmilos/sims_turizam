@@ -22,20 +22,6 @@ namespace InitialProject.IRepository
 
         Accommodation FindAccommodationByAccommodationId(int accommodationId);
 
-        //List<Accommodation> FindAll(string accommodationName, string country, string city, string type, int? maxGuests, int? minDaysReservation);
-
-        //bool AreReservationDaysContained(int? minDaysReservation, out List<Accommodation> minDaysReservationResults);
-
-        //bool IsGuestsNumberContained(int? maxGuests, out List<Accommodation> maxGuestsResults);
-
-        //bool IsTypeContained(string type, out List<Accommodation> typeResults);
-
-        //bool IsCityContained(string city, out List<Accommodation> cityResults);
-
-        //bool IsCountryContained(string country, out List<Accommodation> countryResults);
-
-        //bool IsNameContained(string accommodationName, out List<Accommodation> accommodationNameResults);
-
         List<Accommodation> FindAllByAccommodationName(List<Accommodation> allAccommodations, string name);
 
         List<Accommodation> FindAllByCountry(List<Accommodation> allAccommodations, string name);

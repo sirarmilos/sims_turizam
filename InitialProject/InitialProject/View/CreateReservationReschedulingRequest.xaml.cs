@@ -120,13 +120,12 @@ namespace InitialProject.View
                 if (!IsSearchInputValid()) return;
 
                 CreateReservationReschedulingRequestDTO request = 
-                    new CreateReservationReschedulingRequestDTO(showReservationDTO, StartDate,EndDate);
+                    new CreateReservationReschedulingRequestDTO(showReservationDTO, StartDate, EndDate);
 
                 reservationReschedulingRequestService.CreateRequest(request);
 
                 MessageBox.Show(
                     $"The request has been successfully created!");
-                Close();
             }
             else
             {

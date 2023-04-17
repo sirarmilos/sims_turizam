@@ -233,12 +233,12 @@ namespace InitialProject.Service
 
         public bool Guest1HasNotification(string guest1Username)
         {
-            return reservationReschedulingRequestRepository.FindAll().Any(x => x.Reservation.GuestUsername.Equals(guest1Username) && (x.ViewedByGuest == false));
+            return reservationReschedulingRequestRepository.FindAll().Any(x => x.Reservation.GuestUsername.Equals(guest1Username) && (x.ViewedByGuest == false) && (x.Status.Equals("pending") == false));
         }
 
         public bool Guest1HasNotification()
         {
-            return reservationReschedulingRequestRepository.FindAll().Any(x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false));
+            return reservationReschedulingRequestRepository.FindAll().Any(x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false) && (x.Status.Equals("pending") == false));
         }
 
     }

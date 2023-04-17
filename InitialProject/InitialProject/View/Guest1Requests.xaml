@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="Owner manage booking move requests" Height="450" Width="800"
+        Title="Guest1 manage reservation rescheduling requests" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
