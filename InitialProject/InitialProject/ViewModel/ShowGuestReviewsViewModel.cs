@@ -1,6 +1,7 @@
 ﻿using InitialProject.DTO;
 using InitialProject.Service;
 using InitialProject.View;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Windows;
 
 namespace InitialProject.ViewModel
 {
-    public class ShowGuestReviewsViewModel
+    public class ShowGuestReviewsViewModel : Window
     {
         private readonly ReviewService reviewService;
 
@@ -43,8 +44,39 @@ namespace InitialProject.ViewModel
             set;
         }
 
+        public DelegateCommand GoToAddNewAccommodationCommand
+        {
+            get;
+        }
+
+        public DelegateCommand GoToRateGuestsCommand
+        {
+            get;
+        }
+
+        public DelegateCommand GoToShowGuestReviewsCommand
+        {
+            get;
+        }
+
+        public DelegateCommand GoToShowOwnerManageBookingMoveRequestsCommand 
+        {
+            get;
+        }
+
+        public DelegateCommand GoToLogoutCommand 
+        {
+            get;
+        }
+
         public ShowGuestReviewsViewModel(string owner, string ownerHeader)
         {
+            GoToAddNewAccommodationCommand = new DelegateCommand(GoToAddNewAccommodation);
+            GoToRateGuestsCommand = new DelegateCommand(GoToRateGuests);
+            GoToShowGuestReviewsCommand = new DelegateCommand(GoToShowGuestReviews);
+            GoToShowOwnerManageBookingMoveRequestsCommand = new DelegateCommand(GoToShowOwnerManageBookingMoveRequests);
+            GoToLogoutCommand = new DelegateCommand(GoToLogout);
+
             Owner = owner;
 
             reviewService = new ReviewService(Owner);
@@ -53,47 +85,43 @@ namespace InitialProject.ViewModel
 
             ShowGuestReviewsDTOs = reviewService.FindAllReviews();
 
-            // usernameAndSuperOwner.Header = ownerHeader;
-
             UsernameAndSuperOwner = ownerHeader;
 
             RateGuestsNotifications = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(Owner);
-
-            // rateGuestsNotifications.Header = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(Owner);
         }
 
-        public void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
+        public void GoToAddNewAccommodation()
         {
             AddNewAccommodation window = new AddNewAccommodation("Owner1");
             window.ShowDialog();
         }
 
-        private void GoToRateGuests(object sender, RoutedEventArgs e)
+        private void GoToRateGuests()
         {
             RateGuests window = new RateGuests("Owner1", UsernameAndSuperOwner);
             window.Show();
-            // Close();
+            Close();
         }
 
-        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
+        private void GoToShowGuestReviews()
         {
             ShowGuestReviews window = new ShowGuestReviews("Owner1", UsernameAndSuperOwner);
             window.Show();
-            // Close();
+            Close();
         }
 
-        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
+        private void GoToShowOwnerManageBookingMoveRequests()
         {
             OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests("Owner1", UsernameAndSuperOwner);
             window.Show();
-            // Close();
+            Close();
         }
 
-        private void GoToLogout(object sender, RoutedEventArgs e)
+        private void GoToLogout()
         {
             LoginForm window = new LoginForm();
             window.Show();
-            // Close();
+            Close();
         }
     }
 }

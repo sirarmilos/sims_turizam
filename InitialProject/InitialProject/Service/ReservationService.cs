@@ -48,7 +48,7 @@ namespace InitialProject.Service
         {
             reservationRepository = new ReservationRepository();
             canceledReservationService = new CanceledReservationService();
-            reservationReschedulingRequestService = new ReservationReschedulingRequestService();//dodao
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }
 
         public ReservationService(string username)
@@ -57,23 +57,13 @@ namespace InitialProject.Service
             Guest1 = username;
             reservationRepository = new ReservationRepository();
             canceledReservationService = new CanceledReservationService();
-            reservationReschedulingRequestService = new ReservationReschedulingRequestService();//dodao
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }
-
-        /* public List<Reservation> FindAllReservations()
-        {
-            return reservationRepository.FindAllReservations();
-        }*/
 
         public List<Reservation> FindOwnerReservations()
         {
             return reservationRepository.FindByOwnerUsername(Owner);
         }
-
-        /* public Reservation FindReservationsForOwnerRateGuests(RateGuest rateGuest)
-        {
-            return reservationRepository.FindById(rateGuest.Reservation.ReservationId);
-        }*/
 
         public Reservation FindById(int reservationId)
         {
