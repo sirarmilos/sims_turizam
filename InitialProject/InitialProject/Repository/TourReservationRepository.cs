@@ -28,6 +28,22 @@ namespace InitialProject.Repository
             return tourReservations;
         }
 
+        public TourReservation GetById(int id)
+        {
+            TourReservation result = new TourReservation();
+            foreach(TourReservation tourReservation in tourReservations)
+            {
+                if(id==tourReservation.Id)
+                {
+                    result = tourReservation;
+                    break;
+                }
+            }
+
+            return result;
+
+        }
+
         public List<Dto.ReservationDisplayDto> GetAllForOneTourGuidence(int guidenceId)
         {
             List<Dto.ReservationDisplayDto> reservations = new List<Dto.ReservationDisplayDto>();

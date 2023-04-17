@@ -23,12 +23,16 @@ namespace InitialProject.View
         private List<string> pictures = new List<string>();
 
         private readonly string username;
+        private readonly string guideUsername;
+        private readonly int tourGuidenceId;
 
         private readonly Guest2Repository guest2Repository = new Guest2Repository();
-        public RateGuide(string username)
+        public RateGuide(string username,int tourGuidenceId,string guideUsername)
         {
             InitializeComponent();
             this.username = username;
+            this.guideUsername = guideUsername;
+            this.tourGuidenceId = tourGuidenceId;
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -40,34 +44,34 @@ namespace InitialProject.View
         private void RateGuidee(object sender, RoutedEventArgs e)
         {
      
-            string guideGeneralKnowledgeValue = null;
+            int guideGeneralKnowledgeValue = 0;
             foreach (RadioButton radioButton in ((StackPanel)GuideKnowledge.Content).Children)
             {
                 if (radioButton.IsChecked == true)
                 {
-                    guideGeneralKnowledgeValue = radioButton.Content.ToString();
+                    guideGeneralKnowledgeValue = Convert.ToInt32(radioButton.Content.ToString());
                     break;
                 }
             }
 
             // Get the selected value of the "Guide language knowledge" radio button group
-            string guideLanguageKnowledgeValue = null;
+            int guideLanguageKnowledgeValue = 0;
             foreach (RadioButton radioButton in ((StackPanel)GuideLanguage.Content).Children)
             {
                 if (radioButton.IsChecked == true)
                 {
-                    guideLanguageKnowledgeValue = radioButton.Content.ToString();
+                    guideLanguageKnowledgeValue = Convert.ToInt32(radioButton.Content.ToString());
                     break;
                 }
             }
 
             // Get the selected value of the "General tour experience" radio button group
-            string generalTourExperienceValue = null;
+            int generalTourExperienceValue = 0;
             foreach (RadioButton radioButton in ((StackPanel)TourExperience.Content).Children)
             {
                 if (radioButton.IsChecked == true)
                 {
-                    generalTourExperienceValue = radioButton.Content.ToString();
+                    generalTourExperienceValue = Convert.ToInt32(radioButton.Content.ToString());
                     break;
                 }
             }
@@ -75,7 +79,7 @@ namespace InitialProject.View
 
             try 
             {
-                guest2Repository.GuideRating(username,"Guide1",Convert.ToInt32(guideGeneralKnowledgeValue),Convert.ToInt32(guideLanguageKnowledgeValue),Convert.ToInt32(generalTourExperienceValue),pictures);
+                guest2Repository.GuideRating(username,guideUsername,tourGuidenceId,guideGeneralKnowledgeValue,guideGeneralKnowledgeValue,generalTourExperienceValue,tourComment.Text,pictures);
                 MessageBox.Show("Success!");
             }
             catch

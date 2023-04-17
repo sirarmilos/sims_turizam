@@ -1,4 +1,6 @@
-Guest21|6|False, False|3|False|0|1
-Guest21|6|False, False|3|False|1|2
-Guest21|4|False, False|5|False|0|3
-Guest21|4|False, False|3|False|0|4
+Guest21|6|False, False|3|True|0|1
+Guest21|6|False, False|3|True|1|2
+Guest21|4|False, False|5|True|0|3
+Guest21|4|False, False|3|True|0|4
+Guest22|3|False, False, False, False|4|True|0|5
+Guest22|7|False, False|4|True|0|6

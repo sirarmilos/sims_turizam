@@ -59,8 +59,8 @@ namespace InitialProject.View
 
         private void RateGuide(object sender, RoutedEventArgs e)
         {
-            RateGuide window = new RateGuide(username);
-            window.Show();
+           // RateGuide window = new RateGuide(username);
+            //window.Show();
         }
     }
 }
