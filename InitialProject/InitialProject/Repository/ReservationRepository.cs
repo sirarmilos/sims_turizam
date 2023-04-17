@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.View;
@@ -12,7 +13,7 @@ using System.Windows;
 
 namespace InitialProject.Repository
 {
-    internal class ReservationRepository
+    public class ReservationRepository : IReservationRepository
     {
         private AccommodationRepository accommodationRepository;
 
@@ -51,7 +52,7 @@ namespace InitialProject.Repository
             }
         }
 
-        public void /* UpdateReservations*/ SaveReservations(List<Reservation> reservations)
+        public void SaveReservations(List<Reservation> reservations)
         {
             reservationSerializer.ToCSV(FilePathReservation, reservations);
         }
@@ -106,11 +107,11 @@ namespace InitialProject.Repository
             SaveReservations(allReservations);
         }
 
-        public void Save(string guestUsername, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
+        public void Save(string guest1Username, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
         {
 
             reservations = reservationSerializer.FromCSV(FilePathReservation);
-            Reservation reservation = new Reservation(NextIdReservation(), "username123", accommodation, startDate, endDate, guestsNumber); // todo: izmeniti username
+            Reservation reservation = new Reservation(NextIdReservation(), guest1Username, accommodation, startDate, endDate, guestsNumber); 
             reservations.Add(reservation);
             reservationSerializer.ToCSV(FilePathReservation, reservations);
 
@@ -140,16 +141,6 @@ namespace InitialProject.Repository
 
             return accommodationReservations;
         }
-
-        /* public List<Reservation> FindAllReservationsByAccommodationid(int accommodationId)
-        {
-            return FindOwnerReservations().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
-        }*/
-
-
-
-
-
 
         public List<Reservation> FindGuest1Reservations(string guest1)
         {

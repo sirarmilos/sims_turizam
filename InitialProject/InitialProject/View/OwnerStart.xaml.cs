@@ -46,48 +46,53 @@ namespace InitialProject.View
 
             userService = new UserService();
 
-            string superType = "";
+            usernameAndSuperOwner.Header = Owner + CheckSuperType();
 
-            if(userService.FindSuperTypeByOwnerName(Owner).Equals("super") == true)
+            rateGuestsNotifications.Header = "Number of unrated guests: " + userService.FindNumberOfUnratedGuests(Owner);
+        }
+
+        private string CheckSuperType()
+        {
+            string superType = string.Empty;
+
+            if (userService.FindSuperTypeByOwnerName(Owner).Equals("super") == true)
             {
                 superType = " (Super owner)";
             }
 
-            usernameAndSuperOwner.Header = Owner + superType;
+            return superType;
         }
 
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
         {
             AddNewAccommodation window = new AddNewAccommodation(Owner);
-            window.Show();
+            window.ShowDialog();
         }
 
         private void GoToRateGuests(object sender, RoutedEventArgs e)
         {
-            RateGuests window = new RateGuests(Owner);
-            if (window.dgRateGuests.Items.Count > 0)
-            {
-                window.Show();
-            }
-        }
-
-        private void GoToLogout(object sender, RoutedEventArgs e)
-        {
-            LoginForm window = new LoginForm();
+            RateGuests window = new RateGuests(Owner, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
         {
-            ShowGuestReviews window = new ShowGuestReviews(Owner);
+            ShowGuestReviews window = new ShowGuestReviews(Owner, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner);
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
             window.Show();
             Close();
         }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Interactivity;
 using System.Windows;
 using System.Xml.Linq;
+using InitialProject.IRepository;
 
 namespace InitialProject.Service
 {
@@ -18,15 +19,13 @@ namespace InitialProject.Service
     {
         private readonly UserService userService;
 
-        private  ReservationService reservationService;
+        private ReservationService reservationService;
 
         private readonly RateGuestsService rateGuestsService;
 
-        private readonly ReviewRepository reviewRepository;
+        private readonly IReviewRepository reviewRepository;
 
-        private ReservationRepository reservationRepository;
-
-        private readonly RateGuestRepository rateGuestRepository;
+        private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
         private string owner;
         private string guest1;
@@ -57,32 +56,19 @@ namespace InitialProject.Service
             userService = new UserService();
             reservationService = new ReservationService();
             rateGuestsService = new RateGuestsService(Owner);
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService();    
 
             reviewRepository = new ReviewRepository();
-            reservationRepository = new ReservationRepository();
-            rateGuestRepository = new RateGuestRepository();
         }
 
         public List<CreateReviewDTO> FindAllReviewsToRate()
         {
-            List<Reservation> reservations = FindGuest1Reservations();
+            List<Reservation> reservations = reservationService.FindGuest1Reservations(Guest1);
 
-            List<Review> reviews = FindGuest1Reviews();
-
-            return FindCreateReviewDTOs(reservations, reviews);
+            return FindCreateReviewDTOs(reservations);
         }
 
-        public List<Reservation> FindGuest1Reservations()
-        {
-            return reservationRepository.FindGuest1Reservations(Guest1);
-        }
-
-        public List<Review> FindGuest1Reviews()
-        {
-            return reviewRepository.FindReviewsByGuest1Username(Guest1);
-        }
-
-        public List<CreateReviewDTO> FindCreateReviewDTOs(List<Reservation> guest1reservations, List<Review> guest1Reviews)
+        public List<CreateReviewDTO> FindCreateReviewDTOs(List<Reservation> guest1reservations)
         {
             List<CreateReviewDTO> createReviewDTOs = new List<CreateReviewDTO>();
 
@@ -129,6 +115,11 @@ namespace InitialProject.Service
             reviewRepository.Add(review); // mozda Save
         }
 
+        public bool Guest1HasNotification()
+        {
+            return reservationReschedulingRequestService.Guest1HasNotification(Guest1);
+        }
+
 
 
 
@@ -157,10 +148,6 @@ namespace InitialProject.Service
             return showGuestReviewsDTOs;
         }
 
-
-
-
-
         public void CheckSuperOwner(int reservationId)
         {
             string ownerUsername = reservationService.FindOwnerByReservationId(reservationId);
@@ -185,6 +172,11 @@ namespace InitialProject.Service
         private bool IsSuperOwner(string ownerUsername)
         {
             return userService.FindSuperTypeByOwnerName(ownerUsername).Equals("super");
+        }
+
+        public int FindNumberOfUnratedGuests(string ownerUsername)
+        {
+            return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
         }
     }
 }

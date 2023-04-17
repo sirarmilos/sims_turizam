@@ -1,5 +1,7 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,9 +17,9 @@ namespace InitialProject.View
 {
     public partial class AccommodationReservation : Window
     {
+        private readonly ReservationService reservationService;
         private Accommodation accommodation;
         private Location location;
-        private readonly ReservationRepository reservationRepository;
         private int calendarReservationDays;
         private int guestsNumber;
         private List<DateSlot> freeDateSlots;
@@ -117,13 +119,40 @@ namespace InitialProject.View
             }
         }
 
-        public AccommodationReservation(Accommodation accommodation)
+
+        private bool notification;
+        public bool Notification
+        {
+            get { return notification; }
+            set
+            {
+                notification = value;
+            }
+        }
+
+        private void CheckNotification()
+        {
+            if (Notification)
+            {
+                NotificationMenuItem.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                NotificationMenuItem.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public AccommodationReservation(Accommodation accommodation, string username)
         {
             InitializeComponent();
             DataContext = this;
+            Guest1 = username;
+            reservationService = new ReservationService(Guest1);
+            Notification = reservationService.Guest1HasNotification();
+            CheckNotification();
+
             Accommodation = accommodation;
             Location = accommodation.Location;
-            reservationRepository = new ReservationRepository();
             FreeDateSlots = new List<DateSlot>();
 
             AccommodationLabel.Content = accommodation.AccommodationName;
@@ -247,130 +276,11 @@ namespace InitialProject.View
         {
             FreeDateSlots.Clear();
 
-            List<Reservation> accommodationReservations = reservationRepository.FindAllByAccommodation(Accommodation.Id);
-
-            if (accommodationReservations.Count > 0)
-            {
-                accommodationReservations.Sort((r1, r2) => r1.StartDate.CompareTo(r2.StartDate));
-            }
-            else
-            {
-                if (StartDate.AddDays(CalendarReservationDays) <= EndDate)
-                {
-                    DateSlot temporary = new DateSlot(startDate, endDate);
-                    FreeDateSlots.Add(temporary);
-                    return FreeDateSlots;
-                }
-
-                return null;
-            }
-
-            if (IsDateSlotAfterReservations(accommodationReservations)) return FreeDateSlots;
-
-            if (IsDateSlotBeforeReservations(accommodationReservations)) return FreeDateSlots;
-
-            FindDateSlotsAmongReservations(accommodationReservations);
-
+            FreeDateSlots = reservationService.FindAvailableDateSlots(FreeDateSlots, Accommodation, StartDate, EndDate, CalendarReservationDays); 
+            
             return FreeDateSlots;
         }
 
-        private void FindDateSlotsAmongReservations(List<Reservation> accommodationReservations)
-        {
-            DateSlot dateSlot;
-
-            foreach (Reservation reservation in accommodationReservations)
-            {
-                bool isFoundGap = (StartDate.AddDays(CalendarReservationDays) < reservation.StartDate) &&
-                                  (StartDate.AddDays(CalendarReservationDays) <= EndDate);
-                if (isFoundGap)
-                {
-                    if (accommodationReservations.Last() == reservation)
-                    {
-                        AddDateSlotsWithinLastReservation(reservation);
-
-                        return;
-                    }
-                    
-                    if (reservation.StartDate > EndDate)
-                    {
-                        dateSlot = new DateSlot(StartDate, EndDate); 
-                    }
-                    else
-                    {
-                        dateSlot = new DateSlot(StartDate, reservation.StartDate.AddDays(-1)); 
-                    }
-                    
-                    FreeDateSlots.Add(dateSlot);
-                }
-
-                else
-                {
-                    bool isFoundGapAfterLastReservation = (accommodationReservations.Last() == reservation) &&
-                            (reservation.EndDate.AddDays(CalendarReservationDays + 1) <= EndDate);
-                    if (isFoundGapAfterLastReservation)
-                    {
-                        dateSlot = new DateSlot(reservation.EndDate.AddDays(1), EndDate);
-                        FreeDateSlots.Add(dateSlot);
-                        return;
-                    }
-                }
-
-
-                bool isStartDateOverlappedByReservation = reservation.EndDate.AddDays(1) >= StartDate;
-                if (isStartDateOverlappedByReservation)
-                {
-                    StartDate = reservation.EndDate.AddDays(1);
-                }
-            }
-        }
-
-        private void AddDateSlotsWithinLastReservation(Reservation reservation)
-        {
-            DateSlot dateSlot;
-            if (reservation.EndDate.AddDays(CalendarReservationDays) <= EndDate)
-            {
-                dateSlot = new DateSlot(StartDate,
-                    reservation.StartDate.AddDays(-1)); 
-                FreeDateSlots.Add(dateSlot);
-                dateSlot = new DateSlot(reservation.EndDate.AddDays(1), EndDate); 
-                FreeDateSlots.Add(dateSlot);
-            }
-            else
-            {
-                dateSlot = new DateSlot(StartDate, EndDate); 
-                FreeDateSlots.Add(dateSlot);
-            }
-        }
-
-        private bool IsDateSlotBeforeReservations(List<Reservation> accommodationReservations)
-        {
-            if (accommodationReservations.First().StartDate > EndDate)
-            {
-                if (StartDate.AddDays(CalendarReservationDays) <= EndDate)
-                {
-                    DateSlot temporary = new DateSlot(startDate, endDate);
-                    FreeDateSlots.Add(temporary);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool IsDateSlotAfterReservations(List<Reservation> accommodationReservations)
-        {
-            if (accommodationReservations.Last().EndDate < StartDate)
-            {
-                if (StartDate.AddDays(CalendarReservationDays) <= EndDate)
-                {
-                    DateSlot temporary = new DateSlot(startDate, endDate);
-                    FreeDateSlots.Add(temporary);
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         private void CreateReservation(object sender, RoutedEventArgs e)
         {
@@ -387,7 +297,7 @@ namespace InitialProject.View
                 // the user can choose only within offered dates
                 if (!IsUsedOfferedDate()) return;
 
-                reservationRepository.Save("username", Accommodation, StartDate, EndDate, GuestsNumber);
+                reservationService.Save(new ShowReservationDTO(Accommodation, StartDate, EndDate, GuestsNumber));
                 MessageBox.Show($"A reservation has been successfully created.");
             }
             else
@@ -436,6 +346,19 @@ namespace InitialProject.View
             return false;
         }
 
+        private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        {
+            Guest1Start window = new Guest1Start(Guest1);
+            window.Show();
+            Close();
+        }
+        private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
+            window.Show();
+            Close();
+        }
+
         private void GoToCreateReview(object sender, RoutedEventArgs e)
         {
             CreateReview window = new CreateReview(Guest1);
@@ -443,12 +366,20 @@ namespace InitialProject.View
             Close();
         }
 
-        private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
+        private void GoToShowReservations(object sender, RoutedEventArgs e)
         {
-            SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
+            ShowReservations window = new ShowReservations(Guest1);
             window.Show();
             Close();
         }
+
+        private void GoToGuest1Requests(object sender, RoutedEventArgs e)
+        {
+            Guest1Requests window = new Guest1Requests(Guest1);
+            window.Show();
+            Close();
+        }
+
 
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
