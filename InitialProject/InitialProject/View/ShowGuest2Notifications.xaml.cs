@@ -1,6 +1,7 @@
 ﻿using InitialProject.Dto;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +26,16 @@ namespace InitialProject.View
         private readonly TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
         private readonly TourRepository tourRepository = new TourRepository();
 
+        private readonly TourGuidanceService tourGuidanceService = new TourGuidanceService();
+        private readonly TourReservationService tourReservationService = new TourReservationService();
+
         private readonly string username;
         public ShowGuest2Notifications(string username)
         {
             InitializeComponent();
             this.username = username;
 
-            List<int> tourReservationIds = tourGuidenceRepository.NotifyGuestOfTourStarting(username);
+            List<int> tourReservationIds = tourGuidanceService.NotifyGuestOfTourStarting(username);
 
             Grid grid = new Grid();
 
@@ -79,7 +83,7 @@ namespace InitialProject.View
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             int tourGuidenceId = (int)((Button)sender).Tag;
-            tourGuidenceRepository.ConfirmTourAttendance(username,tourGuidenceId);
+            tourReservationService.ConfirmTourAttendance(username,tourGuidenceId);
         }
     }
 }

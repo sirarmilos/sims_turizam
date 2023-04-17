@@ -1,5 +1,6 @@
 ﻿using InitialProject.Repository;
 using InitialProject.Serializer;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,8 +46,9 @@ namespace InitialProject.Model
             Location location = locationRepository.FindById(Convert.ToInt32(values[2]));
             Location = location;
 
-            TourGuidenceRepository tourGuidenceRepository = new();
-            TourGuidence tourGuidence = tourGuidenceRepository.GetById(Convert.ToInt32(values[3]));
+
+            TourGuidanceService tourGuidanceService = new TourGuidanceService();
+            TourGuidence tourGuidence = tourGuidanceService.GetById(Convert.ToInt32(values[3]));
             TourGuidence = tourGuidence;
 
             Passed = Convert.ToBoolean(values[4]);

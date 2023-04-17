@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,8 @@ namespace InitialProject.View
     /// </summary>
     public partial class ShowKeyPointsInStartedTourGuidence : Window
     {
+        private readonly TourKeyPointService tourKeyPointService = new TourKeyPointService();
+
         private readonly TourKeyPointRepository tourKeyPointRepository;
 
         private readonly TourGuidenceRepository tourGuidenceRepository;
@@ -39,7 +42,7 @@ namespace InitialProject.View
             DataContext = this;
             tourKeyPointRepository = new TourKeyPointRepository();
             tourGuidenceRepository = new TourGuidenceRepository();
-            tourKeyPoints = new ObservableCollection<TourKeyPoint>(tourKeyPointRepository.Load(guidence.Id));
+            tourKeyPoints = new ObservableCollection<TourKeyPoint>(tourKeyPointService.GetByTourGuidance(guidence.Id));
             tourKeyPoints[0].Passed = true;
             TourGuidence = guidence;
             this.TourGuidences = guidences;

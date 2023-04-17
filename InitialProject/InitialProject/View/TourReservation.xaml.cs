@@ -1,6 +1,7 @@
 ﻿using InitialProject.Dto;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,6 +38,8 @@ namespace InitialProject.View
         private readonly TourReservationRepository tourReservationRepository = new TourReservationRepository();
 
         private readonly Guest2Repository guest2Repository = new Guest2Repository();
+
+        private TourReservationService tourReservationService = new TourReservationService();
 
         private readonly string username;
 
@@ -127,11 +130,10 @@ namespace InitialProject.View
                 DateTime dateTime = tourDisplayDTO.TourDate;
                 Tour tour = tourRepository.GetByName(tourDisplayDTO.TourName);
                 TourGuidence tourGuidence = tourGuidenceRepository.GetByTourAndDate(tour,dateTime);
-                List<Boolean> arrivals = tourReservationRepository.SetArrivalsToFalse(tourGuidence.Id);
 
                 if(numberOfGuests<=tourGuidence.FreeSlots)
                 {
-                    if (tourGuidenceRepository.CreateReservation(username, tourGuidence, arrivals, numberOfGuests, voucherId, tourReservationRepository.NextId()))
+                    if (tourReservationService.CreateReservation(username, tourGuidence, numberOfGuests, voucherId, tourReservationRepository.NextId()))
                     {
                         guest2Repository.UpdateVoucherUsedStatus(voucherId);
                         MessageBox.Show("Uspesna rezervacija ture!");

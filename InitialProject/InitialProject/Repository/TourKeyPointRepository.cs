@@ -17,25 +17,16 @@ namespace InitialProject.Repository
 
         private List<TourKeyPoint> tourKeyPoints;  
         
+
         public TourKeyPointRepository()
         {
             tourKeyPointSerializer = new Serializer<TourKeyPoint>();
             tourKeyPoints = tourKeyPointSerializer.FromCSV(FilePathTourKeyPoint);
         }
 
-        public TourKeyPoint Save(TourKeyPointDto tourKeyPointDto)
+        public void Save(List<TourKeyPoint>  tourKeyPoints)
         {
-            TourKeyPoint tourKeyPoint = new(NextId(), tourKeyPointDto.TourKeyPointName, tourKeyPointDto.Location, null, false);
-            tourKeyPoints.Add(tourKeyPoint);
-            //tourKeyPointSerializer.ToCSV(FilePathTourKeyPoint, tourKeyPoints);
-            return tourKeyPoint;
-        }
-
-        public void Update(TourKeyPoint tourKeyPoint)
-        {
-            TourKeyPoint tKP = tourKeyPoints.FirstOrDefault(x => x.Id == tourKeyPoint.Id);
-            tKP = tourKeyPoint;
-            tourKeyPointSerializer.ToCSV(FilePathTourKeyPoint, tourKeyPoints);
+            tourKeyPointSerializer.ToCSV(FilePathTourKeyPoint,tourKeyPoints);
         }
 
         public int NextId()
@@ -54,33 +45,15 @@ namespace InitialProject.Repository
             return tourKeyPoints;
         }
 
-        public void SaveKeyPoint(TourKeyPoint t)
-        {
-            tourKeyPoints.Add(t);
-            tourKeyPointSerializer.ToCSV(FilePathTourKeyPoint, tourKeyPoints);
-        }
-
         internal void SaveToFile(TourKeyPoint tkp)
         {
-            //tkp.Id = NextId();
             tourKeyPoints.Add(tkp);
-            tourKeyPointSerializer.ToCSV(FilePathTourKeyPoint, tourKeyPoints);
-        }
-
-        public List<TourKeyPoint> Load(int id)
-        {
-            List<TourKeyPoint> keyPoints = new List<TourKeyPoint>();
-            foreach (TourKeyPoint tkp in tourKeyPoints)
-            {
-                if (id == tkp.TourGuidence.Id)
-                    keyPoints.Add(tkp);
-            }
-            return keyPoints;
+            Save(tourKeyPoints);
         }
 
         public void UpdateCheckedKeyPoints()
         {
-            tourKeyPointSerializer.ToCSV(FilePathTourKeyPoint, tourKeyPoints);
+            Save(tourKeyPoints);
         }
     }
 }

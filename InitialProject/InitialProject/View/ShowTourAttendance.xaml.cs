@@ -1,6 +1,7 @@
 ﻿using InitialProject.Dto;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,12 +31,14 @@ namespace InitialProject.View
         private readonly TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
         private readonly TourRepository tourRepository = new TourRepository();
 
+        private readonly TourGuidanceService tourGuidanceService = new TourGuidanceService();
+
         public ShowTourAttendance(string username)
         {
             InitializeComponent();
             this.username = username;
 
-            List<int> tourReservationIds = tourGuidenceRepository.GetTourReservationsForTracking(username);
+            List<int> tourReservationIds = tourGuidanceService.GetTourReservationsForTracking(username);
 
             Grid grid = new Grid();
 

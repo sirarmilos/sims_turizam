@@ -49,6 +49,7 @@ namespace InitialProject.View
             }
         }
 
+
         public string WithVoucher
         {
             get { return voucherPercentage[0].ToString(); }
@@ -73,6 +74,7 @@ namespace InitialProject.View
         {
             get { return ageCount[2].ToString(); }
         }
+
         public GuideStart(string username)
         {
             InitializeComponent();

@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,6 +28,8 @@ namespace InitialProject.View
         public static List<Dto.ReservationDisplayDto> tourReservations { get; set; }
 
         private readonly TourReservationRepository tourReservationRepository;
+
+        private readonly TourReservationService tourReservationService;
 
         private string guest;
 
@@ -57,14 +60,15 @@ namespace InitialProject.View
             InitializeComponent();
             DataContext = this;
             tourReservationRepository = new TourReservationRepository();
-            tourReservations = new List<Dto.ReservationDisplayDto> (tourReservationRepository.GetAllForOneTourGuidence(guidenceId));
+            tourReservationService = new TourReservationService();
+            tourReservations = new List<Dto.ReservationDisplayDto> (tourReservationService.GetAllForOneTourGuidence(guidenceId));
             GuidenceId = guidenceId;
         }
 
         private void Save(object sender, RoutedEventArgs e)
         {
-
-            if(tourReservationRepository.UpdateKeyPointArrivals(GuidenceId, Guest, Convert.ToInt32(KeyPointId)) == 1)
+            int br = tourReservationService.UpdateKeyPointArrivals(GuidenceId, Guest, Convert.ToInt32(KeyPointId));
+            if (br == 1)
             {
                 MessageBox.Show("Successfully marked!");
             }

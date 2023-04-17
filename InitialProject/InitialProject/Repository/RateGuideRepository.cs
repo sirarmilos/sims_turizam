@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Serializer;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,15 @@ namespace InitialProject.Repository
 
         private List<RateGuide> rates;
 
+
+        private readonly TourReservationService tourReservationService;
+
         public RateGuideRepository()
         {
             rateGuideSerializer = new Serializer<RateGuide>();
             rates = rateGuideSerializer.FromCSV(FilePathRateGuide);
+
+            tourReservationService = new TourReservationService();
         }
 
         public List<Dto.RateGuideDisplayDto> GetForDisplay(string guide)
@@ -33,7 +39,7 @@ namespace InitialProject.Repository
                 if(rate.GuideId == guide)
                 {
                     Dto.RateGuideDisplayDto rateGuide = new Dto.RateGuideDisplayDto();
-                    TourReservation tourReservation = tourReservationRepository.FindByGuestAndGuidence(rate.UserId, rate.tourGuidenceId);
+                    TourReservation tourReservation = tourReservationService.FindByGuestAndGuidence(rate.UserId, rate.tourGuidenceId);
                     int counter = 0;
                     for(int i=0; i< tourReservation.TourKeyPointArrival.Count; i++)
                     {

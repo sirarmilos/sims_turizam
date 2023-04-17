@@ -1,6 +1,7 @@
-﻿using InitialProject.Dto;
+﻿ using InitialProject.Dto;
 using InitialProject.Model;
 using InitialProject.Serializer;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,9 @@ namespace InitialProject.Repository
         private List<TourReservation> tourReservations;
 
 
+        private TourReservationService tourReservationService;
+
+
         public TourGuidenceRepository()
         {
             tourGuidenceSerializer = new Serializer<TourGuidence>();
@@ -36,14 +40,13 @@ namespace InitialProject.Repository
             tourReservationSerializer = new Serializer<TourReservation>();
             tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
 
+
+            tourReservationService = new TourReservationService();
         }
 
-        public TourGuidence Save(DateTime startTime)
+        public void Save(List<TourGuidence> tourGuidences)
         {
-            TourGuidence tourGuidence = new(NextIdTourGuidence(), null, startTime, false, false, false);
-            tourGuidences.Add(tourGuidence);
-            //tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
-            return tourGuidence;
+            tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
         }
 
         public void Update(TourGuidence tourGuidence)
@@ -52,85 +55,7 @@ namespace InitialProject.Repository
             tG = tourGuidence;
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
         }
-
-        public List<int> NotifyGuestOfTourStarting(string username)
-        {
-            List<int> results = new List<int>();
-            foreach (TourReservation tourReservation in tourReservations)
-            {
-                if (tourReservation.userId.Equals(username))
-                {
-                    foreach (TourGuidence tourGuidence in tourGuidences)
-                    {
-                        if (tourReservation.tourGuidenceId == tourGuidence.Id)
-                        {
-                            if(tourGuidence.Finished==false && tourGuidence.Started==true && tourReservation.Confirmed==false)
-                            {
-                                results.Add(tourReservation.Id);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return results;
-        }
-
-        public List<int> GetTourReservationsForTracking(string username)
-        {
-            List<int> results = new List<int>();
-            foreach (TourReservation tourReservation in tourReservations)
-            {
-                if (tourReservation.userId.Equals(username))
-                {
-                    foreach (TourGuidence tourGuidence in tourGuidences)
-                    {
-                        if (tourReservation.tourGuidenceId == tourGuidence.Id)
-                        {
-                            if (tourGuidence.Started == true && tourReservation.Confirmed == true)
-                            {
-                                results.Add(tourReservation.Id);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return results;
-        }
-
-        public void ConfirmTourAttendance(string username, int tourReservationId)
-        {
-            List<TourReservation> result = tourReservations;
-            foreach(TourReservation tourReservation in tourReservations)
-            {
-                if(tourReservation.Id==tourReservationId && tourReservation.userId.Equals(username))
-                {
-                    tourReservation.Confirmed = true;
-                    tourReservationSerializer.ToCSV(FilePathReservatedTours,result);
-                    break;
-                }
-            }
-        }
-
-
-        public void UpdateTourGuidenceFreeSlot(TourGuidence reservatedTourGuidence, int numberOfGuests)
-        {
-
-            List<TourGuidence> result = tourGuidences;
-
-            foreach (TourGuidence tourGuidence in tourGuidences)
-            {
-                if (tourGuidence.Equals(reservatedTourGuidence))
-                {
-                    tourGuidence.FreeSlots = tourGuidence.FreeSlots - numberOfGuests;
-                    tourGuidenceSerializer.ToCSV(FilePathTourGuidence, result);
-                    break;
-                }
-            }
-
-        }
-
+ 
         public int NextIdTourGuidence()
         {
             if (tourGuidences.Count < 1)
@@ -152,21 +77,13 @@ namespace InitialProject.Repository
             t.Id = NextIdTourGuidence();
             tourGuidences.Add(t);
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
-            int a = 7;
         }
 
         public List<TourGuidence> GetAllForToday()
         {
             List<TourGuidence> todaysTour = new();
             DateTime systemDate = DateTime.Today;
-            /*foreach(TourGuidence t in tourGuidences)
-            {
-                if(DateTime.Compare(t.StartTime, DateTime.Now) > 0)
-                {
-                    todaysTour.Add(t);
-                }
 
-            }*/
             foreach (TourGuidence t in tourGuidences)
             {
                 if (systemDate == t.StartTime.Date && t.Finished==false)
@@ -216,30 +133,6 @@ namespace InitialProject.Repository
 
         public void UpdateStartedField(int guidenceId)
         {
-            /*foreach (TourGuidence guidence in tourGuidences)
-            {
-                if (guidence.Started == true && guidence.Finished == false && guidence.Id != guidenceId)
-                {
-                    
-                    return -1;
-                }
-
-            }
-
-            foreach (TourGuidence guidence in tourGuidences)
-            {
-                if (guidence.Id == guidenceId)
-                {
-                    if (guidence.Started == false)
-                    {
-                        guidence.Started = true;
-                    }
-                    tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
-                    return 1;
-                }
-            }
-            return 0;*/
-
             foreach (TourGuidence guidence in tourGuidences)
             {
                 if (guidence.Id == guidenceId)
@@ -249,8 +142,6 @@ namespace InitialProject.Repository
                 }
             }
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
-
-
         }
 
         public void UpdateFinishedField(int tourGuidenceId)
@@ -282,7 +173,7 @@ namespace InitialProject.Repository
                 {
                     if (tr.Finished == true && t.Id == tr.Tour.Id)
                     {
-                        sumMax += tourReservationRepository.GetSumGuestNumber(tr.Id);
+                        sumMax += tourReservationService.GetSumGuestNumber(tr.Id);
                         if(sumMax != 0)
                             indicator++;
                     }
@@ -306,7 +197,7 @@ namespace InitialProject.Repository
                 {
                     if (tr.Finished == true && t.Id == tr.Tour.Id)
                     {
-                        sum += tourReservationRepository.GetSumGuestNumber(tr.Id);
+                        sum += tourReservationService.GetSumGuestNumber(tr.Id);
                     }
                 }
                 if (sum > sumMax)
@@ -334,7 +225,7 @@ namespace InitialProject.Repository
                 {
                     if (tr.Finished == true && t.Id == tr.Tour.Id && year == tr.StartTime.Year)
                     {
-                        sumMax += tourReservationRepository.GetSumGuestNumber(tr.Id);
+                        sumMax += tourReservationService.GetSumGuestNumber(tr.Id);
                         if (sumMax != 0)
                             indicator++;
                     }
@@ -358,7 +249,7 @@ namespace InitialProject.Repository
                 {
                     if (tr.Finished == true && t.Id == tr.Tour.Id && year == tr.StartTime.Year)
                     {
-                        sum += tourReservationRepository.GetSumGuestNumber(tr.Id);
+                        sum += tourReservationService.GetSumGuestNumber(tr.Id);
                     }
                 }
                 if (sum > sumMax)
@@ -392,21 +283,6 @@ namespace InitialProject.Repository
             return tourGuidence;
         }
 
-        public bool CreateReservation(string username, TourGuidence tourGuidence, List<Boolean> arrivals, int numberOfGuests, int voucherId, int Id)
-        {
-            try
-            {
-                TourReservation reservation = new TourReservation(username,tourGuidence.Id, arrivals, numberOfGuests, false,voucherId,Id);
-                tourReservations.Add(reservation);
-                tourReservationSerializer.ToCSV(FilePathReservatedTours,tourReservations);
-                UpdateTourGuidenceFreeSlot(tourGuidence,numberOfGuests);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
 
         public string GetGuide(int tourGuidenceId)
         {
