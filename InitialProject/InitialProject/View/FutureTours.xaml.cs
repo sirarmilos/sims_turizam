@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,12 +32,15 @@ namespace InitialProject.View
 
         private readonly VoucherRepository voucherRepository;
 
+        private readonly VoucherService voucherService;
+
         public FutureTours()
         {
             InitializeComponent();
             DataContext = this;
             tourGuidenceRepository = new TourGuidenceRepository();
             voucherRepository = new VoucherRepository();
+            voucherService = new VoucherService();
             tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceRepository.GetAllFutureTours());
         }
 
@@ -54,7 +58,7 @@ namespace InitialProject.View
             {
                 tourGuidenceRepository.UpdateCancelField(selectedGuidence.Id);
                 MessageBox.Show("Tour successfully cancelled!");
-                voucherRepository.CreateForCancelledTourGuidence(selectedGuidence.Id);
+                voucherService.CreateForCancelledTourGuidence(selectedGuidence.Id);
                 FutureTours window = new FutureTours();
                 this.Close();
                 window.Show();

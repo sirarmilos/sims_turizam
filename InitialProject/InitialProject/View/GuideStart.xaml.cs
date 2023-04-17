@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,6 +38,8 @@ namespace InitialProject.View
         private readonly TourGuidenceRepository tourGuidenceRepository;
 
         private readonly TourRepository tourRepository;
+
+        private readonly VoucherService voucherService;
 
         private string guide;
 
@@ -134,7 +137,7 @@ namespace InitialProject.View
 
         private void DisplayStatistics(int id)
         {
-            voucherPercentage = new ObservableCollection<double>(tourRepository.GetVoucherPercentage(id));
+            voucherPercentage = new ObservableCollection<double>(voucherService.GetVoucherPercentage(id));
             ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(id));
             OnPropertyChanged(nameof(WithVoucher));
             OnPropertyChanged(nameof(WithoutVoucher));

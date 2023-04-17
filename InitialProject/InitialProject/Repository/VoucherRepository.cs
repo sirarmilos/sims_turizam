@@ -14,15 +14,10 @@ namespace InitialProject.Repository
     {
         private const string FilePathVoucher = "../../../Resources/Data/vouchers.csv";
 
-        private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
-
         private readonly Serializer<Voucher> voucherSerializer;
-
-        private readonly Serializer<TourReservation> tourReservationSerializer;
 
         private List<Voucher> vouchers;
 
-        private List<TourReservation> tourReservations;
 
 
         public VoucherRepository()
@@ -31,24 +26,6 @@ namespace InitialProject.Repository
             voucherSerializer = new Serializer<Voucher>();
             vouchers = voucherSerializer.FromCSV(FilePathVoucher);
 
-            tourReservationSerializer = new Serializer<TourReservation>();
-            tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
-        }
-
-        public void CreateForCancelledTourGuidence(int guidenceId)
-        {
-            UserRepository userRepository = new UserRepository();
-
-            foreach(TourReservation reservation in tourReservations)
-            {
-                if(reservation.tourGuidenceId == guidenceId)
-                {
-                    User guest = userRepository.GetByUsername(reservation.userId);
-                    Voucher v = new Voucher(NextId(), guest, VoucherType.TOURCANCELATION, DateTime.Now.AddYears(1), false);
-                    vouchers.Add(v); 
-                }
-            }
-            voucherSerializer.ToCSV(FilePathVoucher, vouchers);
         }
 
         public int NextId()
@@ -59,6 +36,16 @@ namespace InitialProject.Repository
                 return 1;
             }
             return vouchers.Max(c => c.Id) + 1;
+        }
+
+        public void Save(List<Voucher> vouchers)
+        {
+            voucherSerializer.ToCSV(FilePathVoucher,vouchers);
+        }
+
+        public List<Voucher> GetAll()
+        {
+            return vouchers;
         }
     }
 }

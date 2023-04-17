@@ -28,6 +28,7 @@ namespace InitialProject.View
 
         private readonly TourGuidanceService tourGuidanceService = new TourGuidanceService();
         private readonly TourReservationService tourReservationService = new TourReservationService();
+        private readonly TourService tourService = new TourService();
 
         private readonly string username;
         public ShowGuest2Notifications(string username)
@@ -49,7 +50,7 @@ namespace InitialProject.View
 
             foreach(int tourReservationId in tourReservationIds)
             {
-                TourDisplayDTO tourDisplayDTO = tourRepository.GetTourForDisplay(tourReservationId);
+                TourDisplayDTO tourDisplayDTO = tourService.GetTourForDisplay(tourReservationId);
 
                 DataGrid dataGrid = new DataGrid();
                 List<TourDisplayDTO> tourDisplayDTOs = new List<TourDisplayDTO>();
