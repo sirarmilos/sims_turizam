@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
@@ -8,18 +9,15 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    class UserRepository
+    public class UserRepository : IUserRepository
     {
         private const string FilePathUser = "../../../Resources/Data/users.csv";
 
         private readonly Serializer<User> userSerializer;
 
-        private List<User> users;
-
         public UserRepository()
         {
             userSerializer = new Serializer<User>();
-            users = userSerializer.FromCSV(FilePathUser);
         }
 
         public List<User> FindAll()
@@ -44,71 +42,36 @@ namespace InitialProject.Repository
             return FindAll().Find(x => x.Username.Equals(ownerName) == true).SuperType;
         }
 
-        public string LoginUser(string username, string password)
+        public bool IsUserExist(string username)
         {
-            User user = new User();
-            if (IsUserExist(username) == false)
-            {
-                return "Greska";
-            }
-
-            user = IsPasswordCorect(username, password);
-
-            if (user == null)
-            {
-                return "Greska";
-            }
-            else
-            {
-                return user.Type;
-            }
+            return FindAll().Exists(x => x.Username.Equals(username) == true);
         }
 
-        private bool IsUserExist(string username)
+        public bool IsPasswordCorrect(string username, string password)
         {
-            foreach (User temporaryUser in users)
-            {
-                if (temporaryUser.Username.Equals(username) == true)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return FindAll().Exists(x => x.Username.Equals(username) == true && x.Password.Equals(password) == true);
         }
 
-        private User IsPasswordCorect(string username, string password)
+        public string FindTypeByUsername(string username)
         {
-            foreach (User temporaryUser in users)
-            {
-                if (temporaryUser.Username.Equals(username) == true)
-                {
-                    if (temporaryUser.Password.Equals(password) == true)
-                    {
-                        return temporaryUser;
-                    }
-
-                    return null;
-                }
-            }
-
-            return null;
+            return FindAll().Find(x => x.Username.Equals(username) == true).Type;
         }
 
         public User GetByUsername(string username)
         {
             User user = new User();
+
+            List<User> users = FindAll();
+
             foreach (User temporaryUser in users)
             {
                 if (temporaryUser.Username.Equals(username))
                 {
-                   user = temporaryUser;
+                    user = temporaryUser;
                 }
             }
 
             return user;
         }
-
-
     }
 }

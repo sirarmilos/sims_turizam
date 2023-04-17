@@ -23,5 +23,7 @@ namespace InitialProject.IRepository
         bool IsPasswordCorrect(string username, string password);
 
         string FindTypeByUsername(string username);
+
+        User GetByUsername(string username);
     }
 }
