@@ -36,7 +36,5 @@ namespace InitialProject.View
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
-
-
     }
 }
