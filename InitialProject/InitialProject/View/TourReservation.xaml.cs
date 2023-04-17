@@ -41,6 +41,8 @@ namespace InitialProject.View
 
         private TourReservationService tourReservationService = new TourReservationService();
 
+        private TourService tourService = new TourService();
+
         private readonly string username;
 
         private string TourId { get; set; }
@@ -149,7 +151,7 @@ namespace InitialProject.View
                 else if(tourGuidence.FreeSlots == 0)
                 {
                     MessageBox.Show("Za datu turu nema vise mesta. Predlozene ture u istom gradu:");
-                    listTours.ItemsSource = tourRepository.SearchAndShow(tourGuidence.Tour.Location.City, tourGuidence.Tour.Location.Country, 0, Model.Language.ALL, 0);
+                    listTours.ItemsSource = tourService.SearchAndShow(tourGuidence.Tour.Location.City, tourGuidence.Tour.Location.Country, 0, Model.Language.ALL, 0);
                 }
 
             }

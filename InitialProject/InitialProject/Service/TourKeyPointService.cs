@@ -26,7 +26,11 @@ namespace InitialProject.Service
             }
 
             return keyPoints;
+        }
 
+        public List<TourKeyPoint> GetAll()
+        {
+            return tourKeyPointRepository.GetAll();
         }
     }
 }

@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics.Metrics;
 using System.Globalization;
+using InitialProject.Service;
 
 namespace InitialProject.View
 {
@@ -32,6 +33,8 @@ namespace InitialProject.View
     {
 
         private readonly TourRepository tourRepository;
+
+        private readonly TourService tourService = new TourService();
 
         private readonly string username;
 
@@ -108,7 +111,7 @@ namespace InitialProject.View
             tourRepository = new TourRepository();
 
             tourDisplayDTOs = new List<TourDisplayDTO>();
-            tourDisplayDTOs = tourRepository.GetToursForDisplay();
+            tourDisplayDTOs = tourService.GetToursForDisplay();
             this.username = username;
         }
 
@@ -130,7 +133,7 @@ namespace InitialProject.View
 
         private void SearchAndShow(object sender, RoutedEventArgs e)
         {
-            tourDisplayDTOs = tourRepository.SearchAndShow(City,Country,Duration,Languagee,MaxGuests);
+            tourDisplayDTOs = tourService.SearchAndShow(City,Country,Duration,Languagee,MaxGuests);
             listTours.ItemsSource = tourDisplayDTOs;
         }
 

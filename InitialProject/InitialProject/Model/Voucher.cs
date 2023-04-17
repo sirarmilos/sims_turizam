@@ -40,7 +40,7 @@ namespace InitialProject.Model
         public void FromCSV(string[] values)
         {
             Id = Convert.ToInt32(values[0]);
-            user = userRepository.GetByUsername(values[1]);
+            user = userRepository.FindByUsername(values[1]);
             voucherType = Enum.Parse<VoucherType>(values[2]);
             expirationDate = Convert.ToDateTime(values[3]);
             IsUsed = Convert.ToBoolean(values[4]);

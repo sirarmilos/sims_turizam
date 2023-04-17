@@ -35,6 +35,11 @@ namespace InitialProject.Service
             return tourGuidence;
         }
 
+        public List<TourGuidence> GetAll()
+        {
+            return tourGuidenceRepository.GetAll();
+        }
+
 
         public List<int> NotifyGuestOfTourStarting(string username)
         {
