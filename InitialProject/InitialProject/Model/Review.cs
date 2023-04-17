@@ -63,8 +63,8 @@ namespace InitialProject.Model
                 imageToString += image;
                 imageToString += ", ";
             }
-
-            imageToString = imageToString.Substring(0, imageToString.Length - 2);
+            if (imageToString != "")    
+                imageToString = imageToString.Substring(0, imageToString.Length - 2);
 
             string[] csvValues = { Reservation.ReservationId.ToString(), Cleanliness.ToString(), Staff.ToString(), Comfort.ToString(), ValueForMoney.ToString(), Comment.ToString(), imageToString.ToString() };
             return csvValues;
