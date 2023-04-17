@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,14 +24,10 @@ namespace InitialProject.View
     /// </summary>
     public partial class LoginForm : Window
     {
-        public User User { get; set; }
-
-        private readonly UserRepository userRepository;
+        private readonly UserService userService;
 
         private string username;
         private string password;
-        private string type;
-        private string superType;
 
         public string Username
         {
@@ -52,24 +49,6 @@ namespace InitialProject.View
             }
         }
 
-        public string Type
-        {
-            get { return type; }
-            set
-            {
-                type = value;
-            }
-        }
-
-        public string SuperType
-        {
-            get { return superType; }
-            set
-            {
-                superType = value;
-            }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -80,45 +59,55 @@ namespace InitialProject.View
         public LoginForm()
         {
             InitializeComponent();
+
             DataContext = this;
-            userRepository = new UserRepository();
+
+            userService = new UserService();
         }
 
-        private void Log_In(object sender, RoutedEventArgs e)
+        private void Login(object sender, RoutedEventArgs e)
         {
-            string temporaryType = null;
-            temporaryType = userRepository.LoginUser(Username, Password);
-
-            if(temporaryType.Equals("Greska") == true)
+            if(userService.IsUsernameExist(Username) == false)
             {
-                MessageBox.Show("Ne mozete se logovati.");
+                tbUsername.Text = string.Empty;
+                tbPassword.Text = string.Empty;
+                MessageBox.Show("Username you entered does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if(userService.IsPasswordCorrect(Username, Password) == false)
+            {
+                tbPassword.Text = string.Empty;
+                MessageBox.Show("Password you entered is incorrect.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                if(temporaryType.Equals("owner") == true)
+                string type = userService.FindTypeByUsername(Username);
+
+                if (type.Equals("owner") == true)
                 {
                     OwnerStart window = new OwnerStart(Username);
                     window.Show();
                     Close();
                 }
-                if (temporaryType.Equals("guest1") == true)
+                if (type.Equals("guest1") == true)
                 {
                     Guest1Start window = new Guest1Start(Username);
                     window.Show();
                     Close();
                 }
-                if (temporaryType.Equals("guide") == true)
+                if (type.Equals("guide") == true)
                 {
                     GuideStart window = new GuideStart(Username);
                     window.Show();
                     Close();
                 }
-                if (temporaryType.Equals("guest2") == true)
+                if (type.Equals("guest2") == true)
                 {
                     Guest2Start window = new Guest2Start(Username);
                     window.Show();
                     Close();
                 }
+
+                MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

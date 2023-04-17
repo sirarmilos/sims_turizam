@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InitialProject.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,15 +11,23 @@ namespace InitialProject.Dto
     {
         public DateTime Date;
         public string GuideUsername;
-        public List<Boolean> KeyPointActive;
+        public List<TourKeyPoint> TourKeyPoints;
 
 
-        public TourAttendanceDTO() { }
-        public TourAttendanceDTO(DateTime date, string guideUsername, List<bool> keyPointActive)
+        public TourAttendanceDTO() 
+        {
+            this.Date = DateTime.Now;
+            GuideUsername = string.Empty;
+            TourKeyPoints = new List<TourKeyPoint>();
+        }
+       
+        public TourAttendanceDTO(DateTime date, string guideUsername, List<TourKeyPoint> tourKeyPoints)
         {
             Date = date;
             GuideUsername = guideUsername;
-            KeyPointActive = keyPointActive;
+            TourKeyPoints = tourKeyPoints;
         }
+
+
     }
 }

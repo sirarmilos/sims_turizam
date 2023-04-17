@@ -10,7 +10,10 @@ namespace InitialProject.DTO
     public class ShowReservationDTO 
     {
         public int ReservationId { get; set; }
-        public string AccommodationName { get; set; }
+
+        //public string Guest1 { get; set; }
+
+        public Accommodation Accommodation { get; set; }
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
@@ -22,10 +25,18 @@ namespace InitialProject.DTO
 
         }
 
-        public ShowReservationDTO(int reservationId, string accommodationName, DateTime startDate, DateTime endDate, int guestsNumber)
+        public ShowReservationDTO(Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
+        {
+            Accommodation = accommodation;
+            StartDate = startDate;
+            EndDate = endDate;
+            GuestsNumber = guestsNumber;
+        }
+
+        public ShowReservationDTO(int reservationId, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
         {
             ReservationId = reservationId;
-            AccommodationName = accommodationName;
+            Accommodation = accommodation;
             StartDate = startDate;
             EndDate = endDate;
             GuestsNumber = guestsNumber;
@@ -33,11 +44,23 @@ namespace InitialProject.DTO
 
         public ShowReservationDTO(Reservation reservation)
         {
-            ReservationId = reservation.ReservationId; // todo: razmisli da li ti treba zaista id
-            AccommodationName = reservation.Accommodation.AccommodationName;
+            ReservationId = reservation.ReservationId; 
+            Accommodation = reservation.Accommodation;
             StartDate = reservation.StartDate;
             EndDate = reservation.EndDate;
             GuestsNumber = reservation.GuestsNumber;
+        }
+
+        public Reservation TransformToOrigin() // todo: ne znam da l treba ovde
+        {
+            Reservation reservation = new Reservation();
+            reservation.ReservationId = ReservationId;
+            reservation.Accommodation = Accommodation;
+            reservation.StartDate = StartDate;
+            reservation.EndDate = EndDate;
+            reservation.GuestsNumber = GuestsNumber;
+
+            return reservation;
         }
 
     }

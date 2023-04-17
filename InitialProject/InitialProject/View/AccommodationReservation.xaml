@@ -24,11 +24,16 @@
         </Grid.RowDefinitions>
 
 
-        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
             <Menu DockPanel.Dock ="Top">
+                <MenuItem Header="Home" Click="GoToGuest1Start"/>
                 <MenuItem Header="Create Review" Click="GoToCreateReview"/>
                 <MenuItem Header="Search and Show Accommodations" Click="GoToSearchAndShowAccommodations"/>
+                <MenuItem Header="My reservations" Click="GoToShowReservations"/>
+                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
+
+                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
             </Menu>
         </DockPanel>
 

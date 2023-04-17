@@ -42,7 +42,7 @@ namespace InitialProject.Model
             KeyPointName = values[1];
 
             LocationRepository locationRepository = new();
-            Location location = locationRepository.GetById(Convert.ToInt32(values[2]));
+            Location location = locationRepository.FindById(Convert.ToInt32(values[2]));
             Location = location;
 
             TourGuidenceRepository tourGuidenceRepository = new();

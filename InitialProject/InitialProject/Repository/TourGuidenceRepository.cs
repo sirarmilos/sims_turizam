@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.Dto;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,16 @@ namespace InitialProject.Repository
 
         private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
 
+        
         private readonly Serializer<TourGuidence> tourGuidenceSerializer;
 
         private readonly Serializer<TourReservation> tourReservationSerializer;
 
+
         private List<TourGuidence> tourGuidences;
 
         private List<TourReservation> tourReservations;
+
 
         public TourGuidenceRepository()
         {
@@ -31,6 +35,7 @@ namespace InitialProject.Repository
 
             tourReservationSerializer = new Serializer<TourReservation>();
             tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
+
         }
 
         public TourGuidence Save(DateTime startTime)
@@ -421,9 +426,30 @@ namespace InitialProject.Repository
 
         }
         
+        public TourAttendanceDTO GetTourAttendanceDTO(int tourReservationId)
+        {
+            TourAttendanceDTO dto = new TourAttendanceDTO();
+
+            TourReservationRepository tourReservationRepository = new TourReservationRepository();
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();   
+
+            TourReservation tourReservation = tourReservationRepository.GetById(tourReservationId);
+            TourGuidence tourGuidence = GetById(tourReservation.tourGuidenceId);
 
 
+            foreach(TourKeyPoint tourKeyPoint in tourKeyPointRepository.GetAll())
+            {
+                if(tourKeyPoint.TourGuidence.Id==tourGuidence.Id)
+                {
+                    dto.TourKeyPoints.Add(tourKeyPoint);
+                }
+            }
 
+            dto.Date = tourGuidence.StartTime;
+            dto.GuideUsername = tourGuidence.Tour.GuideUsername;
+
+            return dto;
+        }
 
     }
 }

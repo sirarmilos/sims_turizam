@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -155,7 +156,7 @@ namespace InitialProject.View
             }
         }
 
-        public RateGuests(string owner)
+        public RateGuests(string owner, string ownerHeader)
         {
             InitializeComponent();
 
@@ -165,47 +166,15 @@ namespace InitialProject.View
 
             rateGuestsService = new RateGuestsService(Owner);
 
+            usernameAndSuperOwner.Header = ownerHeader;
+
             RateGuestsDTOs = new List<RateGuestsDTO>();
 
             RateGuestsDTOs = rateGuestsService.FindAllGuestsToRate();
 
-            if (RateGuestsDTOs.Count == 0)
-            {
-                MessageBox.Show("All guests are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
-            }
-            else
-            {
-                MessageBox.Show("There are " + RateGuestsDTOs.Count + " guests left for you to rate.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            rateGuestsNotifications.Header = "Number of unrated guests: " + RateGuestsDTOs.Count; // rateGuestsService.FindNumberOfUnratedGuests(Owner);
 
             SetDefaultValue();
-        }
-
-        private void SaveRateGuest(object sender, RoutedEventArgs e)
-        {
-            SaveNewRateGuestDTO saveNewRateGuestDTO = new SaveNewRateGuestDTO(SelectedGuest.ReservationId, Cleanliness, FollowRules, Behavior, TypePayment, Communicativeness, Comment);
-
-            rateGuestsService.SaveNewRateGuest(saveNewRateGuestDTO);
-
-            RateGuestsDTOs.Remove(SelectedGuest);
-            dgRateGuests.Items.Refresh();
-
-            SetDefaultValue();
-
-            MessageBox.Show("You have successfully rated a guest", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            if (RateGuestsDTOs.Count == 0)
-            {
-                MessageBox.Show("All guests are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
-            }
-        }
-
-        private void CancelRate(object sender, RoutedEventArgs e)
-        {
-            SetDefaultValue();
-            dgRateGuests.SelectedItem = null;
         }
 
         private void SetDefaultValue()
@@ -215,9 +184,29 @@ namespace InitialProject.View
             sliderFollowRules.Value = 3;
             sliderBehavior.Value = 3;
             sliderCommunicativeness.Value = 3;
-            Comment = "";
-            tbComment.Text = "";
+            Comment = string.Empty;
+            tbComment.Text = string.Empty;
             buttonRate.IsEnabled = false;
+        }
+
+        private void SaveRateGuest(object sender, RoutedEventArgs e)
+        {
+            rateGuestsService.SaveNewRateGuest(new SaveNewRateGuestDTO(SelectedGuest.ReservationId, Cleanliness, FollowRules, Behavior, TypePayment, Communicativeness, Comment));
+
+            RateGuestsDTOs.Remove(SelectedGuest);
+            dgRateGuests.Items.Refresh();
+
+            SetDefaultValue();
+
+            rateGuestsNotifications.Header = "Number of unrated guests: " + RateGuestsDTOs.Count;
+
+            MessageBox.Show("You have successfully rated a guest.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void CancelRate(object sender, RoutedEventArgs e)
+        {
+            SetDefaultValue();
+            dgRateGuests.SelectedItem = null;
         }
 
         private void RateButtonEnable(object sender, SelectionChangedEventArgs e)
@@ -269,35 +258,33 @@ namespace InitialProject.View
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
         {
             AddNewAccommodation window = new AddNewAccommodation(Owner);
-            window.Show();
+            window.ShowDialog();
         }
 
         private void GoToRateGuests(object sender, RoutedEventArgs e)
         {
-            RateGuests window = new RateGuests(Owner);
-            if (window.dgRateGuests.Items.Count > 0)
-            {
-                window.Show();
-            }
-        }
-
-        private void GoToLogout(object sender, RoutedEventArgs e)
-        {
-            LoginForm window = new LoginForm();
+            RateGuests window = new RateGuests(Owner, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
         {
-            ShowGuestReviews window = new ShowGuestReviews(Owner);
+            ShowGuestReviews window = new ShowGuestReviews(Owner, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
         private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner);
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(Owner, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
             window.Show();
             Close();
         }

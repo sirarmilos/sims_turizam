@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
@@ -11,7 +12,7 @@ using System.Xml.Linq;
 
 namespace InitialProject.Repository
 {
-    public class ReservationReschedulingRequestRepository
+    public class ReservationReschedulingRequestRepository : IReservationReschedulingRequestRepository
     {
         private ReservationRepository reservationRepository;
 
@@ -24,7 +25,6 @@ namespace InitialProject.Repository
         public ReservationReschedulingRequestRepository()
         {
             reservationReschedulingRequestSerializer = new Serializer<ReservationReschedulingRequest>();
-            reservationReschedulingRequests = reservationReschedulingRequestSerializer.FromCSV(FilePathRescheduledReservations);
         }
 
         public List<ReservationReschedulingRequest> FindAll()
@@ -72,6 +72,62 @@ namespace InitialProject.Repository
         {
             List<ReservationReschedulingRequest> allReservationReschedulingRequests = FindAll();
             allReservationReschedulingRequests.Remove(allReservationReschedulingRequests.Find(x => x.Reservation.ReservationId == reservationId));
+            Save(allReservationReschedulingRequests);
+        }
+
+
+
+
+
+        public void Create(Reservation reservation, DateTime newStartDate, DateTime newEndDate, string status, string comment) // todo: izmestiti u servis? ili srediti sa sirarovim funkcijama kao dole
+        {
+            ReservationReschedulingRequest requestAlreadyExists = FindRequestByReservationId(reservation.ReservationId, reservation.GuestUsername);
+            List<ReservationReschedulingRequest> allReservationReschedulingRequests;
+
+            if (requestAlreadyExists != null)
+            {
+                requestAlreadyExists.NewStartDate = newStartDate; 
+                requestAlreadyExists.NewEndDate = newEndDate;
+
+                RemoveRequestByReservationId(reservation.ReservationId);
+
+                allReservationReschedulingRequests = FindAll();
+                allReservationReschedulingRequests.Add(requestAlreadyExists);
+                Save(allReservationReschedulingRequests);
+
+                return;
+            }
+            
+            allReservationReschedulingRequests = FindAll();
+            allReservationReschedulingRequests.Add(
+                new ReservationReschedulingRequest(NextId(), reservation, newStartDate, newEndDate, status, comment, false));
+            Save(allReservationReschedulingRequests);
+        }
+
+        public int NextId()
+        {
+            if (FindAll().Count < 1)
+            {
+                return 1;
+            }
+
+            return FindAll().Max(x => x.Id) + 1;
+        }
+
+        public List<ReservationReschedulingRequest> FindAllByGuest1Username(string guest1Username)
+        {
+            return FindAll().ToList().FindAll(x => x.Reservation.GuestUsername.Equals(guest1Username) == true);
+        }
+
+        public ReservationReschedulingRequest FindRequestByReservationId(int reservationId, string guest1Username)
+        {
+            return FindAllByGuest1Username(guest1Username).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+        }
+
+        public void UpdateViewedRequestsByGuest1(string guest1Username) 
+        {
+            List<ReservationReschedulingRequest> allReservationReschedulingRequests = FindAll();
+            allReservationReschedulingRequests.Where(x => x.Reservation.GuestUsername.Equals(guest1Username) ).SetValue(x => x.ViewedByGuest = true);
             Save(allReservationReschedulingRequests);
         }
     }

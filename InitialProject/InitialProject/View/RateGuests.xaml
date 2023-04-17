@@ -28,7 +28,11 @@
                 <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
                 <MenuItem Header="Show guest reviews" Click="GoToShowGuestReviews"/>
                 <MenuItem Header="Manage booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
+                <MenuItem x:Name="usernameAndSuperOwner" IsEnabled="False"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
+                <MenuItem x:Name="notifications" Header="Notifications">
+                    <MenuItem x:Name="rateGuestsNotifications"/>
+                </MenuItem>
             </Menu>
         </DockPanel>
 

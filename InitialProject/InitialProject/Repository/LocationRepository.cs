@@ -1,4 +1,5 @@
 ﻿using InitialProject.Dto;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    internal class LocationRepository
+    public class LocationRepository : ILocationRepository
     {
         private const string FilePathLocation = "../../../Resources/Data/location.csv";
 
@@ -42,13 +43,13 @@ namespace InitialProject.Repository
 
         public Location Save(LocationDto locationDto)
         {
-            Location location = new(NextIdLocation(), locationDto.Country, locationDto.City, locationDto.Address, locationDto.Latitude, locationDto.Longitude);
+            Location location = new(NextId(), locationDto.Country, locationDto.City, locationDto.Address, locationDto.Latitude, locationDto.Longitude);
             locations.Add(location);
             locationSerializer.ToCSV(FilePathLocation, locations);
             return location;
         }
 
-        public int NextIdLocation() //
+        public int NextId()
         {
             if (FindAll().Count < 1)
             {
@@ -61,18 +62,5 @@ namespace InitialProject.Repository
         {
             return FindAll().ToList().Find(x => x.Id == locationId);
         }
-
-        public Location GetById(int id)
-        {
-            foreach(Location location in  locations)
-            {
-                if(location.Id == id)
-                    return location;
-            }
-            return null;
-
-        }
-
-
     }
 }
