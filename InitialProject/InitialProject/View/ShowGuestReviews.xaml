@@ -24,10 +24,10 @@
                 <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
                 <MenuItem Header="Show guest reviews" Click="GoToShowGuestReviews"/>
                 <MenuItem Header="Manage booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
-                <MenuItem x:Name="usernameAndSuperOwner" IsEnabled="False"/>
+                <MenuItem IsEnabled="False" Header="{Binding UsernameAndSuperOwner}"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
                 <MenuItem x:Name="notifications" Header="Notifications">
-                    <MenuItem x:Name="rateGuestsNotifications"/>
+                    <MenuItem x:Name="rateGuestsNotifications" Header="{Binding RateGuestsNotifications}"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
