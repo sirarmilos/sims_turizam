@@ -24,5 +24,14 @@ namespace InitialProject.IRepository
         void UpdateRequestToSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, string status, string comment);
 
         void RemoveRequestByReservationId(int reservationId);
+
+
+
+
+        public ReservationReschedulingRequest FindRequestByReservationId(int reservationId, string guest1Username);
+
+        public void Create(Reservation reservation, DateTime newStartDate, DateTime newEndDate, string status, string comment);
+
+        public void UpdateViewedRequestsByGuest1(string guest1Username);
     }
 }

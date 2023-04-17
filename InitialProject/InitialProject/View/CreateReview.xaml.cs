@@ -16,6 +16,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.IO;
 using System.Net.Mime;
 using System.Net;
+using System.Reflection;
 
 namespace InitialProject.View
 {
@@ -194,7 +195,7 @@ namespace InitialProject.View
             if (CreateReviewDTOs.Count == 0)
             {
                 MessageBox.Show("All accommodations are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                Close();
+                GoToGuest1Start(sender, e);
             }
         }
 
@@ -366,7 +367,6 @@ namespace InitialProject.View
             window.Show();
             Close();
         }
-
 
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
