@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="My Reservations" Height="600" Width="1110">
 
+ 
     <Grid Margin="0,0,0,-6">
 
         <Grid.RowDefinitions>
@@ -26,9 +27,9 @@
                 <MenuItem Header="Create Review" Command="{Binding GoToCreateReviewCommand}"/>
                 <MenuItem Header="My requests" Command="{Binding GoToGuest1RequestsCommand}"/>
                 <MenuItem Header="Logout" Command="{Binding GoToLogoutCommand}"/>
-                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Command="{Binding CheckNotificationCommand}" Visibility="Collapsed">
-                    <MenuItem  Background="Green" Header="{Binding NotificationEnable}" Command="{Binding GoToGuest1RequestsCommand}" Visibility="Collapsed"/>
-                </MenuItem>
+                
+                <!-- <MenuItem  Background="Green" Header="You have notification!" Command="{Binding GoToGuest1Requests}" Visibility="{Binding ShowNotification, UpdateSourceTrigger=PropertyChanged}" />-->
+                
             </Menu>
         </DockPanel>
 
@@ -83,3 +84,6 @@
         </DataGrid>
     </Grid>
 </Window>
+    
+
+

@@ -10,6 +10,9 @@ using System.Windows.Input;
 using System.Windows;
 using Prism.Commands;
 using GalaSoft.MvvmLight.Command;
+using System.Collections.ObjectModel;
+using System.Windows.Documents;
+using System.Windows.Controls;
 
 namespace InitialProject.ViewModel
 {
@@ -21,6 +24,7 @@ namespace InitialProject.ViewModel
         private DateTime endDate;
         private int guestsNumber;
         private string guest1;
+        
 
         public int GuestsNumber
         {
@@ -67,41 +71,30 @@ namespace InitialProject.ViewModel
             }
         }
 
-        public List<ShowReservationDTO> ShowReservationDTOs
+        public ObservableCollection<ShowReservationDTO> ShowReservationDTOs
         {
             get;
             set;
         }
 
-        private bool notification;
-        public bool Notification
-        {
-            get { return notification; }
-            set
-            {
-                notification = value;
-            }
-        }
+        //private bool notification;
+        //public bool Notification
+        //{
+        //    get { return notification; }
+        //    set
+        //    {
+        //        notification = value;
+        //    }
+        //}
 
-        public string NotificationEnable
-        {
-            get;
-            set;
-        }
 
-        private void CheckNotification()
-        {
-            if (Notification)
-            {
-                NotificationEnable = "You have notification!";
-                // NotificationMenuItem.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                NotificationEnable = "";
-                // NotificationMenuItem.Visibility = Visibility.Collapsed;
-            }
-        }
+
+        //public string NotificationEnable
+        //{
+        //    get;
+        //    set;
+        //}
+
 
         public ICommand CancelCommand { get; set; }
 
@@ -117,7 +110,22 @@ namespace InitialProject.ViewModel
 
         public DelegateCommand GoToLogoutCommand { get; }
 
-        public DelegateCommand CheckNotificationCommand { get; }
+        //public DelegateCommand CheckNotificationCommand { get; }
+
+
+        //private void CheckNotification()
+        //{
+        //    if (Notification)
+        //    {
+        //        //NotificationEnable = "You have notification!";
+        //        NotificationMenuItem.Visibility = Visibility.Visible;
+        //    }
+        //    else
+        //    {
+        //        //NotificationEnable = "";
+        //        NotificationMenuItem.Visibility = Visibility.Collapsed;
+        //    }
+        //}
 
         public ShowReservationsViewModel(string username)
         {
@@ -130,11 +138,11 @@ namespace InitialProject.ViewModel
             Guest1 = username;
 
             reservationService = new ReservationService(Guest1);
-            Notification = reservationService.Guest1HasNotification();
-            // CheckNotification();
-            CheckNotificationCommand = new DelegateCommand(CheckNotification);
+            //ShowNotification = reservationService.Guest1HasNotification();
+            //CheckNotification();
+            //CheckNotificationCommand = new DelegateCommand(CheckNotification);
 
-            ShowReservationDTOs = reservationService.FindAll(Guest1);
+            ShowReservationDTOs = new ObservableCollection<ShowReservationDTO>(reservationService.FindAll(Guest1));
             CancelCommand = new RelayCommand<ShowReservationDTO>(Cancel);
             RescheduleCommand = new RelayCommand<ShowReservationDTO>(Reschedule);
         }
@@ -158,7 +166,6 @@ namespace InitialProject.ViewModel
             }
 
             ShowReservationDTOs.Remove(showReservationDTO);
-            // dgShowReservations.Items.Refresh();
         }
 
         private void Reschedule(ShowReservationDTO showReservationDTO)
@@ -172,31 +179,36 @@ namespace InitialProject.ViewModel
 
             CreateReservationReschedulingRequest window = new CreateReservationReschedulingRequest(showReservationDTO, Guest1);
             window.Show();
-            // Close();
+            Close();
         }
 
         private void GoToGuest1Start()
         {
             Guest1Start window = new Guest1Start(Guest1);
             window.Show();
+            Close();
         }
 
         private void GoToSearchAndShowAccommodations()
         {
             SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
             window.Show();
+            Close();
         }
+
 
         private void GoToCreateReview()
         {
             CreateReview window = new CreateReview(Guest1);
             window.Show();
+            Close();
         }
 
         private void GoToGuest1Requests()
         {
             Guest1Requests window = new Guest1Requests(Guest1);
             window.Show();
+            Close();
         }
 
 
@@ -204,6 +216,7 @@ namespace InitialProject.ViewModel
         {
             LoginForm window = new LoginForm();
             window.Show();
+            Close();
         }
     }
 }

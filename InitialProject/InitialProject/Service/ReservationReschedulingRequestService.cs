@@ -225,7 +225,6 @@ namespace InitialProject.Service
             reservationReschedulingRequestRepository.RemoveRequestByReservationId(reservationId);   
         }
 
-
         public void UpdateViewedRequestsByGuest1()
         {
             reservationReschedulingRequestRepository.UpdateViewedRequestsByGuest1(Guest1);
@@ -238,7 +237,8 @@ namespace InitialProject.Service
 
         public bool Guest1HasNotification()
         {
-            return reservationReschedulingRequestRepository.FindAll().Any(x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false) && (x.Status.Equals("pending") == false));
+            return reservationReschedulingRequestRepository.FindAll().Any(
+                x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false) && ((x.Status.Equals("rejected") == true) || (x.Status.Equals("accepted") == true)) );
         }
 
     }
