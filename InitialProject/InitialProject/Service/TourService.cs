@@ -20,6 +20,11 @@ namespace InitialProject.Service
             tourRepository = new TourRepository();
         }
 
+        public List<Tour> FindAll()
+        {
+            return tourRepository.FindAll();
+        }
+
 
         public List<TourDisplayDTO> GetToursForDisplay()
         {
@@ -28,7 +33,7 @@ namespace InitialProject.Service
             TourKeyPointService tourKeyPointService = new TourKeyPointService();    
 
 
-            foreach (TourGuidence tourGuidence in tourGuidanceService.GetAll())
+            foreach (TourGuidence tourGuidence in tourGuidanceService.FindAll())
             {
                 TourDisplayDTO tourDisplayDTO = new TourDisplayDTO();
 
@@ -75,7 +80,7 @@ namespace InitialProject.Service
 
             foreach (Model.TourReservation tourReservation in tourReservationService.GetAll())
             {
-                foreach (TourGuidence tourGuidence in tourGuidanceService.GetAll())
+                foreach (TourGuidence tourGuidence in tourGuidanceService.FindAll())
                 {
                     if (tourGuidence.Id == tourReservation.tourGuidenceId && tourReservationId == tourReservation.Id)
                     {

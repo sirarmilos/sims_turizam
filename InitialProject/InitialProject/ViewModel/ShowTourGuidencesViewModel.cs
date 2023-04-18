@@ -21,9 +21,10 @@ namespace InitialProject.ViewModel
 {
     public class ShowTourGuidencesViewModel
     {
-        public ObservableCollection<TourGuidence> tourGuidences { get; set; }
 
         private readonly TourGuidenceService tourGuidenceService;
+
+        public ObservableCollection<TourGuidence> tourGuidences { get; set; }
 
         public TourGuidence selectedGuidence { get; set; }
 
@@ -32,7 +33,7 @@ namespace InitialProject.ViewModel
         public ShowTourGuidencesViewModel()
         {
             tourGuidenceService = new TourGuidenceService();
-            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceService.GetAllForToday());
+            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceService.FindAllForToday());
             DetailsTourGuidenceCommand = new RelayCommand<TourGuidence>(DetailsTourGuidence);
         }
 

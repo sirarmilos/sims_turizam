@@ -44,7 +44,7 @@ namespace InitialProject.Service
             TourGuidenceService tourGuidanceService = new TourGuidenceService();
             TourReservationService tourReservationService = new TourReservationService();
 
-            List<TourGuidence> tourGuidences = tourGuidanceService.GetAll();
+            List<TourGuidence> tourGuidences = tourGuidanceService.FindAll();
 
             double withVoucher = 0, count = 0;
 
@@ -65,8 +65,12 @@ namespace InitialProject.Service
                     }
                 }
             }
-            retVal[0] = Math.Round((withVoucher / count) * 100, 2);
-            retVal[1] = Math.Round((1 - (withVoucher / count)) * 100, 2);
+            if (count != 0)
+            {
+                retVal[0] = Math.Round((withVoucher / count) * 100, 2);
+                retVal[1] = Math.Round((1 - (withVoucher / count)) * 100, 2);
+            }
+            
             return retVal;
         }
     }

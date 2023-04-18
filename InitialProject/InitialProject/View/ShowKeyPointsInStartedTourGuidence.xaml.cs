@@ -53,19 +53,34 @@ namespace InitialProject.View
 
         private void SaveCheckedKeyPoints(object sender, RoutedEventArgs e)
         {
-            tourKeyPointRepository.UpdateCheckedKeyPoints(tourKeyPoints.ToList());
-            if (tourKeyPoints[tourKeyPoints.Count - 1].Passed == true)
+            if(TourGuidence.Started == true)
             {
-                tourGuidenceService.UpdateFinishedField(TourGuidence.Id);
+                tourKeyPointRepository.UpdateCheckedKeyPoints(tourKeyPoints.ToList());
+                if (tourKeyPoints[tourKeyPoints.Count - 1].Passed == true)
+                {
+                    tourGuidenceService.UpdateFinishedField(TourGuidence.Id);
+                }
+                this.Close();
             }
-            this.Close();
+            else
+            {
+                MessageBox.Show("First start your tour!!!");
+            }
+            
         }
 
         private void MarkPresentGuests(object sender, RoutedEventArgs e)
         {
-
-            ShowGuestOnTourGuidence window = new ShowGuestOnTourGuidence(TourGuidence.Id);
-            window.Show();
+            if(TourGuidence.Started == true)
+            {
+                ShowGuestOnTourGuidence window = new ShowGuestOnTourGuidence(TourGuidence.Id);
+                window.Show();
+            }
+            else
+            {
+                MessageBox.Show("First start your tour!!!");
+            }
+            
 
         }
 

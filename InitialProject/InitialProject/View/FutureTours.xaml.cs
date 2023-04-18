@@ -42,7 +42,7 @@ namespace InitialProject.View
             tourGuidenceRepository = new TourGuidenceRepository();
             voucherRepository = new VoucherRepository();
             tourGuidenceService = new TourGuidenceService();
-            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceService.GetAllFutureTours());
+            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceService.FindAllFutureTours());
             voucherService = new VoucherService();
         }
 

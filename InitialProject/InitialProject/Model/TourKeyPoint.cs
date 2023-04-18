@@ -48,7 +48,7 @@ namespace InitialProject.Model
 
 
             TourGuidenceService tourGuidanceService = new TourGuidenceService();
-            TourGuidence tourGuidence = tourGuidanceService.GetById(Convert.ToInt32(values[3]));
+            TourGuidence tourGuidence = tourGuidanceService.FindById(Convert.ToInt32(values[3]));
             TourGuidence = tourGuidence;
 
             Passed = Convert.ToBoolean(values[4]);

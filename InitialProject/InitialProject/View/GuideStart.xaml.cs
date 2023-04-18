@@ -41,6 +41,8 @@ namespace InitialProject.View
 
         private readonly VoucherService voucherService;
 
+        private readonly TourGuidenceService tourGuidenceService;
+
         private string guide;
 
         public string Guide
@@ -84,11 +86,12 @@ namespace InitialProject.View
             DataContext = this;
             Guide = username;
             voucherService = new VoucherService();
+            tourGuidenceService = new TourGuidenceService();
             tourGuidenceRepository = new TourGuidenceRepository();
             tourRepository = new TourRepository();
-            tour = tourGuidenceRepository.GetMostVisitedAllTime();
-            int year = 2022;
-            tourFiltered = tourGuidenceRepository.GetMostVisitedByYear(year);
+            tour = tourGuidenceService.FindMostVisitedAllTime();
+            int year = 2021;
+            tourFiltered = tourGuidenceService.FindMostVisitedByYear(year);
             //tourAgeStats = tourRepository.GetById(3);
             tourAgeStats = new ObservableCollection<Tour>(tourRepository.FindAll());
             //ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(tourAgeStats.Id));

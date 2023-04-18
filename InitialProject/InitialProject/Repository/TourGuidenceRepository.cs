@@ -30,9 +30,6 @@ namespace InitialProject.Repository
         private List<TourReservation> tourReservations;
 
 
-        private TourReservationService tourReservationService;
-
-
         public TourGuidenceRepository()
         {
             tourGuidenceSerializer = new Serializer<TourGuidence>();
@@ -40,9 +37,6 @@ namespace InitialProject.Repository
 
             tourReservationSerializer = new Serializer<TourReservation>();
             tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
-
-
-            tourReservationService = new TourReservationService();
         }
 
         public void Save(List<TourGuidence> tourGuidences)
@@ -79,113 +73,6 @@ namespace InitialProject.Repository
             tourGuidences.Add(t);
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
         }
-
-        public Tour GetMostVisitedAllTime()
-        {
-            int sum = 0;
-            Tour tourMax = new Tour();
-            TourReservationRepository tourReservationRepository = new();
-            TourRepository tourRepository = new();
-            List<Tour> tours = tourRepository.FindAll();
-            int sumMax = 0;
-            int indicator = 0;
-
-            foreach(Tour t in tours)
-            {
-                foreach (TourGuidence tr in tourGuidences)
-                {
-                    if (tr.Finished == true && t.Id == tr.Tour.Id)
-                    {
-                        sumMax += tourReservationService.GetSumGuestNumber(tr.Id);
-                        if(sumMax != 0)
-                            indicator++;
-                    }
-                }
-                if (indicator != 0)
-                {
-                    tourMax = t;
-                    break;
-                }
-            }
-            if (sumMax == 0)
-                return null;
-
-
-
-
-            foreach (Tour t in tours)
-            {
-                sum = 0;
-                foreach (TourGuidence tr in tourGuidences)
-                {
-                    if (tr.Finished == true && t.Id == tr.Tour.Id)
-                    {
-                        sum += tourReservationService.GetSumGuestNumber(tr.Id);
-                    }
-                }
-                if (sum > sumMax)
-                {
-                    sumMax = sum;
-                    tourMax = t;
-                }
-            }
-            return tourMax;
-        }
-
-        public Tour GetMostVisitedByYear(int year)
-        {
-            int sum = 0;
-            Tour tourMax = new Tour();
-            TourReservationRepository tourReservationRepository = new();
-            TourRepository tourRepository = new();
-            List<Tour> tours = tourRepository.FindAll();
-            int sumMax = 0;
-            int indicator = 0;
-
-            foreach (Tour t in tours)
-            {
-                foreach (TourGuidence tr in tourGuidences)
-                {
-                    if (tr.Finished == true && t.Id == tr.Tour.Id && year == tr.StartTime.Year)
-                    {
-                        sumMax += tourReservationService.GetSumGuestNumber(tr.Id);
-                        if (sumMax != 0)
-                            indicator++;
-                    }
-                }
-                if (indicator != 0)
-                {
-                    tourMax = t;
-                    break;
-                }
-            }
-            if (sumMax == 0)
-                return null;
-
-
-
-
-            foreach (Tour t in tours)
-            {
-                sum = 0;
-                foreach (TourGuidence tr in tourGuidences)
-                {
-                    if (tr.Finished == true && t.Id == tr.Tour.Id && year == tr.StartTime.Year)
-                    {
-                        sum += tourReservationService.GetSumGuestNumber(tr.Id);
-                    }
-                }
-                if (sum > sumMax)
-                {
-                    sumMax = sum;
-                    tourMax = t;
-                }
-            }
-            return tourMax;
-        }
-
-
-
 
         public TourGuidence FindByTourAndDate(Tour tour, DateTime date)
         {
