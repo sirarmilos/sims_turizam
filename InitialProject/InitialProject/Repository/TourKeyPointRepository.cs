@@ -1,4 +1,5 @@
 ﻿using InitialProject.Dto;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    internal class TourKeyPointRepository
+    internal class TourKeyPointRepository : ITourKeyPointRepository
     {
         private const string FilePathTourKeyPoint = "../../../Resources/Data/tourkeypoints.csv";
 
@@ -38,14 +39,14 @@ namespace InitialProject.Repository
             return tourKeyPoints.Max(c => c.Id) + 1;
         }
 
-        public TourKeyPoint GetById(int id) => tourKeyPoints.FirstOrDefault(x => x.Id == id);
+        public TourKeyPoint FindById(int id) => tourKeyPoints.FirstOrDefault(x => x.Id == id);
 
-        public List<TourKeyPoint> GetAll()
+        public List<TourKeyPoint> FindAll()
         {
             return tourKeyPoints;
         }
 
-        internal void SaveToFile(TourKeyPoint tkp)
+        public void SaveToFile(TourKeyPoint tkp)
         {
             tourKeyPoints.Add(tkp);
             Save(tourKeyPoints);
@@ -55,7 +56,7 @@ namespace InitialProject.Repository
         {
             foreach(TourKeyPoint tourKeyPoint in keyPoints)
             {
-                TourKeyPoint kp = GetById(tourKeyPoint.Id);
+                TourKeyPoint kp = FindById(tourKeyPoint.Id);
                 kp.Passed = tourKeyPoint.Passed;
             }
             Save(tourKeyPoints);

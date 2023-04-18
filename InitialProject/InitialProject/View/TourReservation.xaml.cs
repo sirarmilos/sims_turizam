@@ -130,8 +130,8 @@ namespace InitialProject.View
             {
                 TourDisplayDTO tourDisplayDTO = (TourDisplayDTO)listTours.SelectedItems[0];
                 DateTime dateTime = tourDisplayDTO.TourDate;
-                Tour tour = tourRepository.GetByName(tourDisplayDTO.TourName);
-                TourGuidence tourGuidence = tourGuidenceRepository.GetByTourAndDate(tour,dateTime);
+                Tour tour = tourRepository.FindByName(tourDisplayDTO.TourName);
+                TourGuidence tourGuidence = tourGuidenceRepository.FindByTourAndDate(tour,dateTime);
 
                 if(numberOfGuests<=tourGuidence.FreeSlots)
                 {

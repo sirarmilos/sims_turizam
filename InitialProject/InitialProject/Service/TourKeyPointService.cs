@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Service
 {
-    internal class TourKeyPointService
+    public class TourKeyPointService
     {
-        private TourKeyPointRepository tourKeyPointRepository;
+        private readonly ITourKeyPointRepository tourKeyPointRepository;
         public TourKeyPointService()
         {
             tourKeyPointRepository = new TourKeyPointRepository();
@@ -19,7 +20,7 @@ namespace InitialProject.Service
         public List<TourKeyPoint> GetByTourGuidance(int id)
         {
             List<TourKeyPoint> keyPoints = new List<TourKeyPoint>();
-            foreach (TourKeyPoint tkp in tourKeyPointRepository.GetAll())
+            foreach (TourKeyPoint tkp in tourKeyPointRepository.FindAll())
             {
                 if (id == tkp.TourGuidence.Id)
                     keyPoints.Add(tkp);
@@ -30,7 +31,7 @@ namespace InitialProject.Service
 
         public List<TourKeyPoint> GetAll()
         {
-            return tourKeyPointRepository.GetAll();
+            return tourKeyPointRepository.FindAll();
         }
     }
 }

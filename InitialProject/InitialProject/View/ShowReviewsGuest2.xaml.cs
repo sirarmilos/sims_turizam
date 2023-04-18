@@ -43,7 +43,7 @@ namespace InitialProject.View
             DataContext = this;
             Guide = guide;
             rateGuideRepository = new RateGuideRepository();
-            guideRates = new ObservableCollection<Dto.RateGuideDisplayDto>(rateGuideRepository.GetForDisplay(Guide));
+            guideRates = new ObservableCollection<Dto.RateGuideDisplayDto>(rateGuideRepository.FindForDisplay(Guide));
         }
 
         private void DeleteRateLogical(object sender, RoutedEventArgs e)

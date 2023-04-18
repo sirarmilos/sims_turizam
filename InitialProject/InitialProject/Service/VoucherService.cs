@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.IRepository;
 using InitialProject.View;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace InitialProject.Service
 {
     internal class VoucherService
     {
-        private readonly VoucherRepository voucherRepository;
+        private readonly IVoucherRepository voucherRepository;
         public VoucherService() 
         {
             voucherRepository = new VoucherRepository();
@@ -22,7 +23,7 @@ namespace InitialProject.Service
         {
             TourReservationService tourReservationService = new TourReservationService();
             UserRepository userRepository = new UserRepository();
-            List<Voucher> vouchers = voucherRepository.GetAll();
+            List<Voucher> vouchers = voucherRepository.FindAll();
 
             foreach (Model.TourReservation reservation in tourReservationService.GetAll())
             {

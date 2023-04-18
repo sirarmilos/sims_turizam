@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Dto
 {
-    class TourAttendanceDTO
+    public class TourAttendanceDTO
     {
         public DateTime Date;
         public string GuideUsername;

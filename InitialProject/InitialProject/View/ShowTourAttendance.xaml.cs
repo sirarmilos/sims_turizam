@@ -52,10 +52,10 @@ namespace InitialProject.View
 
             foreach (int tourReservationId in tourReservationIds)
             {
-                Model.TourReservation tourReservation = tourReservationRepository.GetById(tourReservationId);
+                Model.TourReservation tourReservation = tourReservationRepository.FindById(tourReservationId);
 
 
-                TourAttendanceDTO tourAttendanceDTO = tourGuidenceRepository.GetTourAttendanceDTO(tourReservationId);
+                TourAttendanceDTO tourAttendanceDTO = tourGuidenceRepository.FindTourAttendanceDTO(tourReservationId);
                
                 DataGrid dataGrid = new DataGrid();
                 dataGrid.Padding = new Thickness(10);
@@ -98,7 +98,7 @@ namespace InitialProject.View
                 buttonFactory.SetValue(Button.ContentProperty, "Rate guide and tour");
                 buttonFactory.SetValue(Button.TagProperty, tourReservation.tourGuidenceId);
 
-                TourGuidence tourGuidence = tourGuidenceRepository.GetById(tourReservation.tourGuidenceId);
+                TourGuidence tourGuidence = tourGuidenceRepository.FindById(tourReservation.tourGuidenceId);
                 if (tourGuidence.Finished == false)
                 {
                     buttonFactory.SetValue(Button.IsEnabledProperty, false);
@@ -132,7 +132,7 @@ namespace InitialProject.View
         private void RateTour(object sender, RoutedEventArgs e)
         {
             int tourGuidenceId = (int)((Button)sender).Tag;
-            string guideUsername = tourGuidenceRepository.GetGuide(tourGuidenceId);
+            string guideUsername = tourGuidenceRepository.FindGuide(tourGuidenceId);
             View.RateGuide window = new View.RateGuide(username,tourGuidenceId,guideUsername);
             window.Show();
         }

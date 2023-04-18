@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InitialProject.IRepository;
 
 namespace InitialProject.Repository
 {
-    internal class TourReservationRepository
+    internal class TourReservationRepository : ITourReservationRepository
     {
         private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
 
@@ -24,12 +25,12 @@ namespace InitialProject.Repository
         }
 
 
-        public List<TourReservation> GetAll()
+        public List<TourReservation> FindAll()
         {
             return tourReservations;
         }
 
-        public TourReservation GetById(int id)
+        public TourReservation FindById(int id)
         {
             TourReservation result = new TourReservation();
             foreach(TourReservation tourReservation in tourReservations)

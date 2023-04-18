@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.View;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Service
 {
-    internal class TourReservationService
+    public class TourReservationService
     {
-        private TourReservationRepository tourReservationRepository;
+        private readonly ITourReservationRepository tourReservationRepository;
 
         public TourReservationService()
         {
@@ -20,12 +21,12 @@ namespace InitialProject.Service
 
         public List<Model.TourReservation> GetAll()
         {
-            return tourReservationRepository.GetAll();
+            return tourReservationRepository.FindAll();
         }
 
         public int UpdateKeyPointArrivals(int guidenceId, string username, int keyPoint)
         {
-            List<Model.TourReservation> tourReservations = tourReservationRepository.GetAll();
+            List<Model.TourReservation> tourReservations = tourReservationRepository.FindAll();
 
             foreach (Model.TourReservation tr in tourReservations)
             {
@@ -53,7 +54,7 @@ namespace InitialProject.Service
         public Model.TourReservation FindByGuestAndGuidence(string userId, int tourGuidenceId)
         {
             Model.TourReservation retVal = new Model.TourReservation();
-            foreach (Model.TourReservation reservation in tourReservationRepository.GetAll())
+            foreach (Model.TourReservation reservation in tourReservationRepository.FindAll())
             {
                 if (reservation.userId == userId && reservation.tourGuidenceId == tourGuidenceId)
                 {
@@ -74,7 +75,7 @@ namespace InitialProject.Service
 
             tourKeyPoints = tourKeyPointService.GetByTourGuidance(guidenceId);
 
-            foreach (Model.TourReservation tr in tourReservationRepository.GetAll())
+            foreach (Model.TourReservation tr in tourReservationRepository.FindAll())
             {
 
                 if (tr.tourGuidenceId == guidenceId)
@@ -94,7 +95,7 @@ namespace InitialProject.Service
         public int GetSumGuestNumber(int guidenceId)
         {
             int sum = 0;
-            foreach (Model.TourReservation tr in tourReservationRepository.GetAll())
+            foreach (Model.TourReservation tr in tourReservationRepository.FindAll())
             {
                 if (tr.tourGuidenceId == guidenceId && tr.Confirmed == true)
                 {
@@ -112,7 +113,7 @@ namespace InitialProject.Service
                 arrivals = SetArrivalsToFalse(tourGuidence.Id);
                 TourGuidenceService tourGuidanceService = new TourGuidenceService();
 
-                List<Model.TourReservation> tourReservations = tourReservationRepository.GetAll();
+                List<Model.TourReservation> tourReservations = tourReservationRepository.FindAll();
                 Model.TourReservation reservation = new Model.TourReservation(username, tourGuidence.Id, arrivals, numberOfGuests, false, voucherId, Id);
                 tourReservations.Add(reservation);
 
@@ -141,8 +142,8 @@ namespace InitialProject.Service
 
         public void ConfirmTourAttendance(string username, int tourReservationId)
         {
-            List<Model.TourReservation> result = tourReservationRepository.GetAll();
-            foreach (Model.TourReservation tourReservation in tourReservationRepository.GetAll())
+            List<Model.TourReservation> result = tourReservationRepository.FindAll();
+            foreach (Model.TourReservation tourReservation in tourReservationRepository.FindAll())
             {
                 if (tourReservation.Id == tourReservationId && tourReservation.userId.Equals(username))
                 {

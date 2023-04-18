@@ -1,4 +1,5 @@
 ﻿using InitialProject.Dto;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.Service;
@@ -15,7 +16,7 @@ using System.Windows;
 
 namespace InitialProject.Repository
 {
-    internal class TourRepository
+    internal class TourRepository : ITourRepository
     {
         private const string FilePathTour = "../../../Resources/Data/tours.csv";
 
@@ -62,12 +63,12 @@ namespace InitialProject.Repository
 
         }
 
-        public List<Tour> Load()
+        public List<Tour> FindAll()
         { 
             return tours;
         }
 
-        public Tour GetByName(string id)
+        public Tour FindByName(string id)
         {
             Tour result = new Tour();
             foreach(Tour tour in tours)
@@ -85,13 +86,13 @@ namespace InitialProject.Repository
 
         public Tour Save(TourDto tourDto)
         {
-            Tour tour = new Tour(NextIdTour(), tourDto.TourName, tourDto.TourLocation, tourDto.Description, tourDto.Languages, tourDto.MaxGuests, tourDto.Duration, tourDto.Images, tourDto.Username);
+            Tour tour = new Tour(NextId(), tourDto.TourName, tourDto.TourLocation, tourDto.Description, tourDto.Languages, tourDto.MaxGuests, tourDto.Duration, tourDto.Images, tourDto.Username);
             tours.Add(tour);
             tourSerializer.ToCSV(FilePathTour, tours);
             return tour;
         }
 
-        public int NextIdTour()
+        public int NextId()
         {
             tours = tourSerializer.FromCSV(FilePathTour);
             if (tours.Count < 1)
@@ -101,7 +102,7 @@ namespace InitialProject.Repository
             return tours.Max(c => c.Id) + 1;
         }
 
-        public int NextIdLocation()
+        /*public int NextIdLocation()
         {
             locations = locationSerializer.FromCSV(FilePathLocation);
             if (locations.Count < 1)
@@ -119,9 +120,9 @@ namespace InitialProject.Repository
                 return 1;
             }
             return tourKeyPoints.Max(c => c.Id) + 1;
-        }
+        }*/
 
-        public Tour GetById(int id) => tours.FirstOrDefault(x => x.Id == id);
+        public Tour FindById(int id) => tours.FirstOrDefault(x => x.Id == id);
 
         public List<int> GetGuestNumber(int tourId)
         {
@@ -129,7 +130,7 @@ namespace InitialProject.Repository
             List<int> count = new List<int>(new int[3]);
             TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
             Guest2Repository guest2Repository = new Guest2Repository();
-            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.FindAll();
             foreach (TourGuidence tourGuidence in tourGuidences)
             {
                 if (tourGuidence.Finished == true && tourId == tourGuidence.Tour.Id)

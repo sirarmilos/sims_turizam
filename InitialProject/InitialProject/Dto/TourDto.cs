@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Dto
 {
-    internal class TourDto
+    public class TourDto
     {
 
         public string TourName { get; set; }

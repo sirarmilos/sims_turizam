@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Model
 {
-    class Voucher : ISerializable
+    public class Voucher : ISerializable
     {
         private readonly UserRepository userRepository = new UserRepository();
 

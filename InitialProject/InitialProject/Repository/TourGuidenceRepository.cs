@@ -1,4 +1,5 @@
 ﻿ using InitialProject.Dto;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.Service;
@@ -12,7 +13,7 @@ using System.Windows.Input;
 
 namespace InitialProject.Repository
 {
-    internal class TourGuidenceRepository
+    internal class TourGuidenceRepository : ITourGuidenceRepository
     {
         private const string FilePathTourGuidence = "../../../Resources/Data/tourguidences.csv";
 
@@ -56,7 +57,7 @@ namespace InitialProject.Repository
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
         }
  
-        public int NextIdTourGuidence()
+        public int NextId()
         {
             if (tourGuidences.Count < 1)
             {
@@ -65,16 +66,16 @@ namespace InitialProject.Repository
             return tourGuidences.Max(c => c.Id) + 1;
         }
 
-        public TourGuidence GetById(int id) => tourGuidences.FirstOrDefault(x => x.Id == id);
+        public TourGuidence FindById(int id) => tourGuidences.FirstOrDefault(x => x.Id == id);
 
-        public List<TourGuidence> GetAll()
+        public List<TourGuidence> FindAll()
         {
             return tourGuidences;
         }
 
         public void SaveToFile(TourGuidence t)
         {
-            t.Id = NextIdTourGuidence();
+            t.Id = NextId();
             tourGuidences.Add(t);
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
         }
@@ -85,7 +86,7 @@ namespace InitialProject.Repository
             Tour tourMax = new Tour();
             TourReservationRepository tourReservationRepository = new();
             TourRepository tourRepository = new();
-            List<Tour> tours = tourRepository.Load();
+            List<Tour> tours = tourRepository.FindAll();
             int sumMax = 0;
             int indicator = 0;
 
@@ -137,7 +138,7 @@ namespace InitialProject.Repository
             Tour tourMax = new Tour();
             TourReservationRepository tourReservationRepository = new();
             TourRepository tourRepository = new();
-            List<Tour> tours = tourRepository.Load();
+            List<Tour> tours = tourRepository.FindAll();
             int sumMax = 0;
             int indicator = 0;
 
@@ -186,7 +187,7 @@ namespace InitialProject.Repository
 
 
 
-        public TourGuidence GetByTourAndDate(Tour tour, DateTime date)
+        public TourGuidence FindByTourAndDate(Tour tour, DateTime date)
         {
             TourGuidence tourGuidence = new TourGuidence();
 
@@ -206,7 +207,7 @@ namespace InitialProject.Repository
         }
 
 
-        public string GetGuide(int tourGuidenceId)
+        public string FindGuide(int tourGuidenceId)
         {
             string guideUsername= "";
 
@@ -224,18 +225,18 @@ namespace InitialProject.Repository
 
         }
         
-        public TourAttendanceDTO GetTourAttendanceDTO(int tourReservationId)
+        public TourAttendanceDTO FindTourAttendanceDTO(int tourReservationId)
         {
             TourAttendanceDTO dto = new TourAttendanceDTO();
 
             TourReservationRepository tourReservationRepository = new TourReservationRepository();
             TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();   
 
-            TourReservation tourReservation = tourReservationRepository.GetById(tourReservationId);
-            TourGuidence tourGuidence = GetById(tourReservation.tourGuidenceId);
+            TourReservation tourReservation = tourReservationRepository.FindById(tourReservationId);
+            TourGuidence tourGuidence = FindById(tourReservation.tourGuidenceId);
 
 
-            foreach(TourKeyPoint tourKeyPoint in tourKeyPointRepository.GetAll())
+            foreach(TourKeyPoint tourKeyPoint in tourKeyPointRepository.FindAll())
             {
                 if(tourKeyPoint.TourGuidence.Id==tourGuidence.Id)
                 {

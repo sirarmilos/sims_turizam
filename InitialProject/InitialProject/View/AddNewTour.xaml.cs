@@ -369,7 +369,7 @@ namespace InitialProject.View
 
             foreach (TourGuidenceDto t in tourGuidenceDtos)
             {
-                TourGuidence tourGuidence = new(tourGuidenceRepository.NextIdTourGuidence(), tour, t.StartTime, false, false, false);
+                TourGuidence tourGuidence = new(tourGuidenceRepository.NextId(), tour, t.StartTime, false, false, false);
                 //t.Tour = tour;
                 //tourGuidenceRepository.Update(t);
                 tourGuidenceRepository.SaveToFile(tourGuidence);

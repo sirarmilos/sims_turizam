@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.View;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Service
 {
-    internal class TourGuidenceService
+    public class TourGuidenceService
     {
-        private readonly TourGuidenceRepository tourGuidenceRepository;
+        private readonly ITourGuidenceRepository tourGuidenceRepository;
 
         public TourGuidenceService()
         {
@@ -20,7 +21,7 @@ namespace InitialProject.Service
 
         public TourGuidence GetById(int id)
         {
-            List<TourGuidence> tourGuidences = tourGuidenceRepository.GetAll();
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.FindAll();
             TourGuidence tourGuidence = new TourGuidence();
 
             foreach(TourGuidence tg in tourGuidences)
@@ -37,7 +38,7 @@ namespace InitialProject.Service
 
         public List<TourGuidence> GetAll()
         {
-            return tourGuidenceRepository.GetAll();
+            return tourGuidenceRepository.FindAll();
         }
 
 
@@ -51,7 +52,7 @@ namespace InitialProject.Service
             {
                 if (tourReservation.userId.Equals(username))
                 {
-                    foreach (TourGuidence tourGuidence in tourGuidenceRepository.GetAll())
+                    foreach (TourGuidence tourGuidence in tourGuidenceRepository.FindAll())
                     {
                         if (tourReservation.tourGuidenceId == tourGuidence.Id)
                         {
@@ -79,7 +80,7 @@ namespace InitialProject.Service
             {
                 if (tourReservation.userId.Equals(username))
                 {
-                    foreach (TourGuidence tourGuidence in tourGuidenceRepository.GetAll())
+                    foreach (TourGuidence tourGuidence in tourGuidenceRepository.FindAll())
                     {
                         if (tourReservation.tourGuidenceId == tourGuidence.Id)
                         {
@@ -98,9 +99,9 @@ namespace InitialProject.Service
         public void UpdateTourGuidenceFreeSlot(TourGuidence reservatedTourGuidence, int numberOfGuests)
         {
 
-            List<TourGuidence> result = tourGuidenceRepository.GetAll();
+            List<TourGuidence> result = tourGuidenceRepository.FindAll();
 
-            foreach (TourGuidence tourGuidence in tourGuidenceRepository.GetAll())
+            foreach (TourGuidence tourGuidence in result)
             {
                 if (tourGuidence.Equals(reservatedTourGuidence))
                 {
@@ -117,7 +118,7 @@ namespace InitialProject.Service
             List<TourGuidence> todaysTour = new();
             DateTime systemDate = DateTime.Today;
 
-            foreach (TourGuidence t in tourGuidenceRepository.GetAll())
+            foreach (TourGuidence t in tourGuidenceRepository.FindAll())
             {
                 if (systemDate == t.StartTime.Date && t.StartTime.TimeOfDay>=DateTime.Now.TimeOfDay && t.Finished == false)
                 {
@@ -131,7 +132,7 @@ namespace InitialProject.Service
         public List<TourGuidence> GetAllFutureTours()
         {
             List<TourGuidence> futureTours = new();
-            futureTours = tourGuidenceRepository.GetAll().Where(item => item.StartTime >= DateTime.Now).ToList();
+            futureTours = tourGuidenceRepository.FindAll().Where(item => item.StartTime >= DateTime.Now).ToList();
             return futureTours;
         }
 
@@ -144,7 +145,7 @@ namespace InitialProject.Service
         public void UpdateStartedField(int guidenceId)
         {
             List<TourGuidence> guidences = new List<TourGuidence>();
-            guidences = tourGuidenceRepository.GetAll();
+            guidences = tourGuidenceRepository.FindAll();
             foreach (TourGuidence guidence in guidences)
             {
                 if (guidence.Id == guidenceId)
@@ -160,7 +161,7 @@ namespace InitialProject.Service
         {
 
             List<TourGuidence> guidences = new List<TourGuidence>();
-            guidences = tourGuidenceRepository.GetAll();
+            guidences = tourGuidenceRepository.FindAll();
             foreach (TourGuidence tg in guidences)
             {
                 if (tg.Id == tourGuidenceId && tg.Finished == false)
@@ -175,7 +176,7 @@ namespace InitialProject.Service
         public void UpdateCancelledField(int guidenceId)
         {
             List<TourGuidence> guidences = new List<TourGuidence>();
-            guidences = tourGuidenceRepository.GetAll();
+            guidences = tourGuidenceRepository.FindAll();
             foreach (TourGuidence guidence in guidences)
             {
                 if (guidence.Id == guidenceId)

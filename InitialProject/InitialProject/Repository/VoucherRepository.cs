@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace InitialProject.Repository
 {
-    internal class VoucherRepository
+    internal class VoucherRepository : IVoucherRepository
     {
         private const string FilePathVoucher = "../../../Resources/Data/vouchers.csv";
 
@@ -43,7 +44,7 @@ namespace InitialProject.Repository
             voucherSerializer.ToCSV(FilePathVoucher,vouchers);
         }
 
-        public List<Voucher> GetAll()
+        public List<Voucher> FindAll()
         {
             return vouchers;
         }

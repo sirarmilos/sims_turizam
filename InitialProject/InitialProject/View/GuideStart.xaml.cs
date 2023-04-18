@@ -90,7 +90,7 @@ namespace InitialProject.View
             int year = 2022;
             tourFiltered = tourGuidenceRepository.GetMostVisitedByYear(year);
             //tourAgeStats = tourRepository.GetById(3);
-            tourAgeStats = new ObservableCollection<Tour>(tourRepository.Load());
+            tourAgeStats = new ObservableCollection<Tour>(tourRepository.FindAll());
             //ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(tourAgeStats.Id));
            // voucherPercentage = new ObservableCollection<double>(/*tourRepository.GetVoucherPercentage(tourAgeStats.Id)*/);
         }

@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.Service;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    internal class RateGuideRepository
+    internal class RateGuideRepository : IRateGuideRepository
     {
         private const string FilePathRateGuide = "../../../Resources/Data/guidereviews.csv";
 
@@ -28,7 +29,7 @@ namespace InitialProject.Repository
             tourReservationService = new TourReservationService();
         }
 
-        public List<Dto.RateGuideDisplayDto> GetForDisplay(string guide)
+        public List<Dto.RateGuideDisplayDto> FindForDisplay(string guide)
         {
 
             List<Dto.RateGuideDisplayDto> retVal = new List<Dto.RateGuideDisplayDto>();

@@ -1,4 +1,5 @@
 ﻿using InitialProject.Dto;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.View;
@@ -12,7 +13,7 @@ namespace InitialProject.Service
 {
     internal class TourService
     {
-        private readonly TourRepository tourRepository;
+        private readonly ITourRepository tourRepository;
 
         public TourService()
         {
