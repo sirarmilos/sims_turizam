@@ -1,5 +1,15 @@
-korisnik1|3|3
-korisnik1|3|2
-korisnik1|2|3
-korisnik1|2|3
-korisnik1|2|1
+Guest21|1|True, False, False, False|3|False|0|1
+Guest22|1|False, False, False, True|4|False|2|2
+Guest21|2|False, False, False, False|5|True|0|3
+Guest21|4|False, False|3|True|0|4
+Guest21|5|False, False|4|False|0|5
+Guest23|4|False, False|5|False|1|6
+Guest23|5|False, False|1|False|0|7
+Guest21|2|False, False, False, False|3|True|0|8
+Guest21|2|False, False, False, False|3|False|0|9
+Guest21|5|False, False|3|True|0|10
+Guest21|2|False, False, False, False|3|False|0|11
+Guest21|3|False, False, False, False|3|False|0|12
+Guest21|2|False, False, False, False|3|False|0|13
+Guest21|2|False, False, False, False|3|False|0|14
+Guest21|5|False, False|4|False|1|15

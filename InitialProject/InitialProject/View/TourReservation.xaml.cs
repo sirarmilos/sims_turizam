@@ -1,11 +1,13 @@
 ﻿using InitialProject.Dto;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,9 +29,21 @@ namespace InitialProject.View
 
     public partial class TourReservation : Window
     {
-        public static ObservableCollection<Tour> Tours { get; set; }
+        public List<TourDisplayDTO> Tours = new List<TourDisplayDTO>();
 
         private readonly TourRepository tourRepository = new TourRepository();
+
+        private readonly TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+
+        private readonly TourReservationRepository tourReservationRepository = new TourReservationRepository();
+
+        private readonly Guest2Repository guest2Repository = new Guest2Repository();
+
+        private TourReservationService tourReservationService = new TourReservationService();
+
+        private TourService tourService = new TourService();
+
+        private readonly string username;
 
         private string TourId { get; set; }
 
@@ -45,9 +59,11 @@ namespace InitialProject.View
             }
         }
 
-        public TourReservation()
+        public TourReservation(string username)
         {
             InitializeComponent();
+            InitializeComboBoxVouchers();
+            this.username = username;
         }
 
 
@@ -57,42 +73,95 @@ namespace InitialProject.View
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public TourReservation(string tourId)
+         
+        public TourReservation(TourDisplayDTO tour,string username)
         {
             InitializeComponent();
-            TourId = tourId;
-            Tours  = new ObservableCollection<Tour>(tourRepository.GetByName(TourId));
+            Tours.Add(tour);
             listTours.ItemsSource = Tours;
+            this.username = username;
+            InitializeComboBoxVouchers();
         }
+
+        public void InitializeComboBoxVouchers()
+        {
+            List<Voucher> vouchers = guest2Repository.GetGuestsVouchers(username);  
+
+            foreach (Voucher voucher in vouchers)
+            {
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = voucher.voucherType.ToString() + "   " + voucher.expirationDate.ToString();
+                item.Tag = voucher.Id.ToString();
+
+                ComboBoxVouchers.Items.Add(item);
+            }
+
+            ComboBoxVouchers.Items.Insert(0, new ComboBoxItem { Content = "Select a voucher...", Tag = "0" });
+            ComboBoxVouchers.SelectedIndex = 0;
+        }
+
 
         private void CreateReservation(object sender, RoutedEventArgs e)
         {
             numberOfGuests = Convert.ToInt32(guestNumber.Text);
 
-            if (listTours.SelectedItems.Count != 1)
-            {
-                MessageBox.Show("Morate da odaberete turu koju zelite da rezervisete!");
-            }
-            else
-            {
-                Tour tour = new Tour();
-                tour = (Tour)listTours.SelectedItems[0];
+            ComboBoxItem selectedItem = ComboBoxVouchers.SelectedItem as ComboBoxItem;
 
-                if (numberOfGuests <= tour.FreeSlots)
+            int voucherId=0;
+
+            if (selectedItem!=null)
+            {
+                string selectedValue = selectedItem.Tag as string;
+
+                if(int.TryParse(selectedValue,out voucherId))
                 {
-                    tourRepository.CreateReservation("korisnik1", tour, numberOfGuests);
-                    MessageBox.Show("Uspesna rezervacija ture!");
-                }
-                else if(tour.FreeSlots > 0)
-                {
-                    MessageBox.Show("Za datu turu nema dovoljno mesta za rezervaciju. Preostalo je " + tour.FreeSlots.ToString() + " mesta.");
                 }
                 else
                 {
-                    MessageBox.Show("Za izabranu turu nema mesta za dati broj osoba. Predlozene ture:");
-                    listTours.ItemsSource = tourRepository.UpdateDataGrid(tour);
+                    voucherId = 0;
                 }
             }
+
+            if (listTours.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("Morate da odaberete turu i datum koje zelite da rezervisete!");
+            }
+            else
+            {
+                TourDisplayDTO tourDisplayDTO = (TourDisplayDTO)listTours.SelectedItems[0];
+                DateTime dateTime = tourDisplayDTO.TourDate;
+                Tour tour = tourRepository.FindByName(tourDisplayDTO.TourName);
+                TourGuidence tourGuidence = tourGuidenceRepository.FindByTourAndDate(tour,dateTime);
+
+                if(numberOfGuests<=tourGuidence.FreeSlots)
+                {
+                    if (tourReservationService.CreateReservation(username, tourGuidence, numberOfGuests, voucherId, tourReservationRepository.NextId()))
+                    {
+                        guest2Repository.UpdateVoucherUsedStatus(voucherId);
+                        MessageBox.Show("Uspesna rezervacija ture!");
+                    }
+                    else
+                        MessageBox.Show("Greska prilikom kreiranja rezervacije!");
+                }
+
+                else if (tourGuidence.FreeSlots > 0)
+                {
+                    MessageBox.Show("Za datu turu nema dovoljno mesta za rezervaciju. Preostalo je " + tourGuidence.FreeSlots.ToString() + " mesta.");
+                }
+                else if(tourGuidence.FreeSlots == 0)
+                {
+                    MessageBox.Show("Za datu turu nema vise mesta. Predlozene ture u istom gradu:");
+                    listTours.ItemsSource = tourService.SearchAndShow(tourGuidence.Tour.Location.City, tourGuidence.Tour.Location.Country, 0, Model.Language.ALL, 0);
+                }
+
+            }
+
         }
+
+        private void listTours_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
     }
 }

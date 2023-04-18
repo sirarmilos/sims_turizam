@@ -9,8 +9,9 @@ namespace InitialProject.Dto
 {
     internal class TourKeyPointDto
     {
-        public string TourKeyPointName { get; set; }
-        public Location Location { get; set; }
+        public string? TourKeyPointName { get; set; }
+        public Location? Location { get; set; }
+
 
         public TourKeyPointDto() { }
 

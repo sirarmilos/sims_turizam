@@ -1,0 +1,59 @@
+﻿<Window x:Class="InitialProject.View.ShowTourGuidences"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="ShowTourGuidences" Height="450" Width="800">
+    <Grid>
+
+        <!--<ContentControl Content="{Binding tourGuidences}">
+            <ContentControl.Resources>
+                <DataTemplate x:Key="DataGridTemplate">
+                    <DataGrid ItemsSource="{Binding tourGuidences}" Height="NaN" Margin="40,64,188,73"  AutoGenerateColumns="False" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tour Name" Binding="{Binding Tour.TourName}"/>
+                            <DataGridTextColumn Header="Date of Start" Binding="{Binding StartTime}"/>
+                            <DataGridTemplateColumn Header="*******">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="PRESS TO START" Click="StartTourGuidence"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DataTemplate>
+                <DataTemplate x:Key="NoDataTemplate">
+                    <TextBlock Text="No data available" />
+                </DataTemplate>
+            </ContentControl.Resources>
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate" Value="{StaticResource DataGridTemplate}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding tourGuidences.Count}" Value="0">
+                            <Setter Property="ContentTemplate" Value="{StaticResource NoDataTemplate}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>-->
+
+        <DataGrid x:Name="dataGrid" ItemsSource="{Binding tourGuidences}" SelectedItem="{Binding selectedGuidence}" CanUserAddRows="False" Height="NaN" Margin="40,64,188,73"  AutoGenerateColumns="False" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tour Name" Binding="{Binding Tour.TourName}"/>
+                <DataGridTextColumn Header="Date of Start" Binding="{Binding StartTime}"/>
+                <DataGridTemplateColumn Header="Action">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="DETAILS" CommandParameter="{Binding}" Command="{Binding DataContext.DetailsTourGuidenceCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>

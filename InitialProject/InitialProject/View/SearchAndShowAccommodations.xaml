@@ -8,15 +8,29 @@
         Title="Search and show accommodations" Height="600" Width="1600">
 
     <Grid Margin="0,0,0,-6">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="299" />
             <RowDefinition Height="291"/>
 
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1100" />
             <ColumnDefinition Width="950"/>
         </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,281">
+            <Menu DockPanel.Dock ="Top">
+                <MenuItem Header="Home" Click="GoToGuest1Start"/>
+                <MenuItem Header="Create Review" Click="GoToCreateReview"/>
+                <MenuItem Header="My reservations" Click="GoToShowReservations"/>
+                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
+                <MenuItem Header="Logout" Click="GoToLogout"/>
+                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
+            </Menu>
+        </DockPanel>
+
         <Button Content="Search"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Height="30" Click="Search"  Margin="102,0,558,0"/>
         <TextBox PreviewTextInput="AllowOnlyDigits" Height="20" Width="300" TextWrapping="Wrap" Text="{Binding MaxGuests,TargetNullValue=''}" Validation.ErrorTemplate="{x:Null}" Margin="102,40,548,231" Grid.Column="1" Grid.Row="1" />
         <TextBox PreviewTextInput="AllowOnlyDigits" Grid.Column="1" Grid.Row="0" Height="20" Width="300" TextWrapping="Wrap" Text="{Binding MinDaysReservation,TargetNullValue=''}" Validation.ErrorTemplate="{x:Null}" Margin="102,258,548,21"/>

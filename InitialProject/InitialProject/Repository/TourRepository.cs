@@ -1,6 +1,8 @@
 ﻿using InitialProject.Dto;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,15 +16,16 @@ using System.Windows;
 
 namespace InitialProject.Repository
 {
-    internal class TourRepository
+    internal class TourRepository : ITourRepository
     {
         private const string FilePathTour = "../../../Resources/Data/tours.csv";
 
         private const string FilePathTourKeyPoints = "../../../Resources/Data/tourkeypoints.csv";
 
-        private const string FilePathLocation = "../../../Resources/Data/location.csv";
+        private const string FilePathLocation = "../../../Resources/Data/locations.csv";
 
         private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
+
 
         private readonly Serializer<Tour> tourSerializer;
        
@@ -32,6 +35,7 @@ namespace InitialProject.Repository
 
         private readonly Serializer<TourReservation> tourReservationSerializer;
 
+
         private List<Tour> tours;
 
         private List<TourKeyPoint> tourKeyPoints;
@@ -40,34 +44,38 @@ namespace InitialProject.Repository
 
         private List<TourReservation> tourReservations;
 
+
+
         public TourRepository()
         {
             tourSerializer = new Serializer<Tour>();
             tours = tourSerializer.FromCSV(FilePathTour);
 
             tourKeyPointsSerializer = new Serializer<TourKeyPoint>();
-            tourKeyPoints = tourKeyPointsSerializer.FromCSV(FilePathTourKeyPoints);
+            //tourKeyPoints = tourKeyPointsSerializer.FromCSV(FilePathTourKeyPoints);
 
             locationSerializer = new Serializer<Location>();
             locations = locationSerializer.FromCSV(FilePathLocation);
 
             tourReservationSerializer = new Serializer<TourReservation>();
             tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
+
+
         }
 
-        public List<Tour> Load()
+        public List<Tour> FindAll()
         { 
             return tours;
         }
 
-        public List<Tour> GetByName(string id)
+        public Tour FindByName(string id)
         {
-            List<Tour> result = new List<Tour>();
+            Tour result = new Tour();
             foreach(Tour tour in tours)
             {
                 if(id.Equals(tour.TourName))
                 {
-                    result.Add(tour);
+                    result = tour;
                     break;
                 }
             }
@@ -75,191 +83,16 @@ namespace InitialProject.Repository
             return result;
         }
 
-        public Tour GetById(int id)
+
+        public Tour Save(TourDto tourDto)
         {
-            foreach (Tour tour in tours)
-            {
-                if (id == tour.Id)
-                {
-                    return tour;
-                }
-            }
-
-            return null;
-        }
-
-        public bool CreateReservation(string username,Tour tour,int numberOfGuests)
-        {
-            try
-            {
-                TourReservation reservatedTour = new TourReservation(username,tour.Id,numberOfGuests);
-                tourReservations.Add(reservatedTour);
-                tourReservationSerializer.ToCSV(FilePathReservatedTours, tourReservations);
-                UpdateTourFreeSlot(tour,numberOfGuests);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public void UpdateTourFreeSlot(Tour reservatedTour,int numberOfGuests)
-        {
-
-            List<Tour> result = tours;
-
-            foreach(Tour tour in tours)
-            {
-                if(tour.Equals(reservatedTour))
-                {
-                    tour.FreeSlots = tour.FreeSlots - numberOfGuests;
-                    tourSerializer.ToCSV(FilePathTour, tours);
-                    break;
-                }
-            }
-
-        }
-
-        public List<Tour> UpdateDataGrid(Tour reservatedTour)
-        {
-            List<Tour> temp = SearchAndShow(reservatedTour.Location.City, reservatedTour.Location.Country, 0, Model.Language.ALL, 0);
-            List<Tour> result = new List<Tour>();
-
-            foreach(Tour tour in temp)
-            {
-                if(!tour.Equals(reservatedTour))
-                {
-                    result.Add(tour);
-                }
-            }
-
-            return result;
-        }
-
-        public List<Tour> SearchAndShow(string city=null,string country=null,int duration=0,Language language = 0,int numberOfGuests=0)
-        {
-            List<Tour> sameCity = new List<Tour>();
-            List<Tour> sameCountry = new List<Tour>();
-            List<Tour> longerDuration = new List<Tour>();
-            List<Tour> sameLanguage = new List<Tour>();
-            List<Tour> moreGuests = new List<Tour>();
-
-
-            if (!string.IsNullOrEmpty(city))
-            {
-                foreach (Tour tour in tours)
-                {
-                    if (tour.Location.City.ToLower().StartsWith(city.ToLower()))
-                    {
-                        sameCity.Add(tour);
-                    }
-                }
-            }
-            else
-            {
-                sameCity = tours;
-            }
-
-            if (!string.IsNullOrEmpty(country))
-            {
-                foreach(Tour tour in tours)
-                {
-                    if(tour.Location.Country.ToLower().StartsWith(country.ToLower()))
-                    {
-                        sameCountry.Add(tour);
-                    }
-                }
-            }
-            else
-            {
-                sameCountry = tours;
-            }
-
-            if (duration >= 0)
-            {
-                foreach (Tour tour in tours)
-                {
-                    if (tour.Duration >= duration)
-                    {
-                        longerDuration.Add(tour);
-                    }
-                }
-            }
-            else
-            {
-                longerDuration = tours;
-            }
-
-            if (language >= 0)
-            {
-                foreach (Tour tour in tours)
-                {
-                    if (tour.Language == language)
-                    {
-                        sameLanguage.Add(tour);
-                    }
-                }
-            }
-            else
-            {
-                sameLanguage = tours;
-            }
-
-
-            if (numberOfGuests >= 0)
-            {
-                foreach(Tour tour in tours)
-                {
-                    if(tour.MaxGuests >= numberOfGuests)
-                    {
-                        moreGuests.Add(tour);
-                    }
-                }
-            }
-            else
-            {
-                moreGuests = tours; 
-            }
-
-
-            List<Tour> result = sameTours(sameCity,sameCountry);
-            result = sameTours(result,longerDuration);
-            result = sameTours(result, sameLanguage);
-            result = sameTours(result,moreGuests);
-
-
-            return result;
-            
-        }
-
-        public List<Tour> sameTours(List<Tour> list1,List<Tour> list2)
-        {
-            List<Tour> result = new List<Tour>();
-
-            foreach (Tour tour1 in list1)
-            {
-                foreach ( Tour tour2 in list2 )
-                {
-                    if(tour1.Equals(tour2))
-                    { 
-                        result.Add(tour1); 
-                    }
-                }
-            }
-
-            return result;
-        }
-
-
-        public void Save(TourDto tourDto)
-        {
-            Tour tour = new Tour(NextIdTour(), tourDto.TourName, tourDto.TourLocation, tourDto.Description, tourDto.Languages, tourDto.MaxGuests, tourDto.TourKeyPoints, tourDto.TourDate, tourDto.Duration, tourDto.Images);
+            Tour tour = new Tour(NextId(), tourDto.TourName, tourDto.TourLocation, tourDto.Description, tourDto.Languages, tourDto.MaxGuests, tourDto.Duration, tourDto.Images, tourDto.Username);
             tours.Add(tour);
             tourSerializer.ToCSV(FilePathTour, tours);
+            return tour;
         }
 
-        public int NextIdTour()
+        public int NextId()
         {
             tours = tourSerializer.FromCSV(FilePathTour);
             if (tours.Count < 1)
@@ -269,7 +102,7 @@ namespace InitialProject.Repository
             return tours.Max(c => c.Id) + 1;
         }
 
-        public int NextIdLocation()
+        /*public int NextIdLocation()
         {
             locations = locationSerializer.FromCSV(FilePathLocation);
             if (locations.Count < 1)
@@ -287,7 +120,46 @@ namespace InitialProject.Repository
                 return 1;
             }
             return tourKeyPoints.Max(c => c.Id) + 1;
+        }*/
+
+        public Tour FindById(int id) => tours.FirstOrDefault(x => x.Id == id);
+
+        public List<int> GetGuestNumber(int tourId)
+        {
+            // type = [(1, <18), (2, 18-50), (3, >50)]
+            List<int> count = new List<int>(new int[3]);
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+            Guest2Repository guest2Repository = new Guest2Repository();
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.FindAll();
+            foreach (TourGuidence tourGuidence in tourGuidences)
+            {
+                if (tourGuidence.Finished == true && tourId == tourGuidence.Tour.Id)
+                {
+                    foreach (TourReservation tourReservation in tourReservations)
+                    {
+                        if (tourReservation.tourGuidenceId == tourGuidence.Id)
+                        {
+                            int age = guest2Repository.GetAge(tourReservation.userId);
+                            switch (age)
+                            {
+                                case <= 18:
+                                    count[0]++;
+                                    break;
+                                case >= 50:
+                                    count[2]++;
+                                    break;
+                                default:
+                                    count[1]++;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            return count;
         }
+
+
 
 
     }

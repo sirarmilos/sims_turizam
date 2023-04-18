@@ -1,33 +1,44 @@
 ﻿using InitialProject.Serializer;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace InitialProject.Model
 {
     public class User : ISerializable
     {
-        public int Id { get; set; }
         public string Username { get; set; }
+
         public string Password { get; set; }
+
+        public string Type { get; set; }
+
+        public string SuperType { get; set; }
 
         public User() { }
 
-        public User(string username, string password)
+        public User(string username, string password, string type, string superType)
         {
             Username = username;
             Password = password;
+            Type = type;
+            SuperType = superType;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Username, Password };
+            string[] csvValues = { Username.ToString(), Password.ToString(), Type.ToString(), SuperType.ToString() };
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
-            Id = Convert.ToInt32(values[0]);
-            Username = values[1];
-            Password = values[2];
+            Username = values[0];
+            Password = values[1];
+            Type = values[2];
+            SuperType = values[3];
         }
     }
 }

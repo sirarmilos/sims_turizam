@@ -6,16 +6,36 @@
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
         Title="AccommodationReservation" Height="768" Width="1276">
+    
     <Grid>
+
+
+
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="600" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+
+
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+
+        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
+            <Menu DockPanel.Dock ="Top">
+                <MenuItem Header="Home" Click="GoToGuest1Start"/>
+                <MenuItem Header="Create Review" Click="GoToCreateReview"/>
+                <MenuItem Header="Search and Show Accommodations" Click="GoToSearchAndShowAccommodations"/>
+                <MenuItem Header="My reservations" Click="GoToShowReservations"/>
+                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
+                <MenuItem Header="Logout" Click="GoToLogout"/>
+
+                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
+            </Menu>
+        </DockPanel>
 
         <DataGrid ItemsSource="{Binding Accommodation.Images, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Width="500" Height="241" Margin="44,385,46,268">
             <DataGrid.Columns>
@@ -75,5 +95,10 @@
         <Label FontSize="15" Grid.Column="0" x:Name="AccommodationLabelMaxGuests" Content="" Margin="44,344,310,509"/>
         <Label Content="Maximal number of guests" FontSize="16" Margin="44,311,283,546" />
 
+        
+        
+        
     </Grid>
+    
+    
 </Window>

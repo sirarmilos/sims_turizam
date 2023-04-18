@@ -15,15 +15,17 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Diagnostics;
 using GalaSoft.MvvmLight.Command;
-
+using InitialProject.Service;
+using InitialProject.DTO;
 
 namespace InitialProject.View
 {
     public partial class SearchAndShowAccommodations : Window
     {
+        AccommodationService accommodationService;
         public Accommodation Accommodation { get; set; }
 
-        private AccommodationRepository accommodationRepository;
+        private AccommodationRepository accommodationRepository; // izbaci
 
         private string accommodationName;
         private string country;
@@ -38,6 +40,17 @@ namespace InitialProject.View
         private bool allTypes;
         private bool home;
         private bool hut;
+        private string guest1;
+        private bool notification;
+
+        public string Guest1
+        {
+            get { return guest1; }
+            set
+            {
+                guest1 = value;
+            }
+        }
 
         public string Image
         {
@@ -193,6 +206,27 @@ namespace InitialProject.View
             }
         }
 
+        public bool Notification
+        {
+            get { return notification; }
+            set
+            {
+                notification = value;
+            }
+        }
+
+        private void CheckNotification()
+        {
+            if (Notification)
+            {
+                NotificationMenuItem.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                NotificationMenuItem.Visibility = Visibility.Collapsed;
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -201,10 +235,17 @@ namespace InitialProject.View
         }
 
 
-        public SearchAndShowAccommodations()
+        public SearchAndShowAccommodations(string username)
         {
             InitializeComponent();
+
+            Guest1 = username;
             DataContext = this;
+
+            accommodationService = new AccommodationService(Guest1);
+            Notification = accommodationService.Guest1HasNotification();
+            CheckNotification();
+
             accommodationRepository = new AccommodationRepository();
             Images = new List<string>();
             SeeAvailabilityCommand = new RelayCommand<Accommodation>(SeeAvailability);
@@ -220,14 +261,61 @@ namespace InitialProject.View
                 return;
             }
 
-            ListAccommodations.ItemsSource = accommodationRepository.FindAll(AccommodationName, Country, City, Type, MaxGuests, MinDaysReservation);
+            SearchAndShowAccommodationDTO searchShowAndAccommodationDTO = 
+                new SearchAndShowAccommodationDTO(AccommodationName, Country, City, Type, MaxGuests, MinDaysReservation);
+            ListAccommodations.ItemsSource =  accommodationService.FindAll(searchShowAndAccommodationDTO);
         }
 
         private void SeeAvailability(Accommodation accommodation)
         {
-            AccommodationReservation window = new AccommodationReservation(accommodation);
+            AccommodationReservation window = new AccommodationReservation(accommodation, Guest1);
             window.Show();
+            Close();
         }
+
+        private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        {
+            Guest1Start window = new Guest1Start(Guest1);
+            window.Show();
+            Close();
+        }
+
+        private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
+            window.Show();
+            Close();
+        }
+
+        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        {
+            CreateReview window = new CreateReview(Guest1);
+            window.Show();
+            Close();
+        }
+
+        private void GoToShowReservations(object sender, RoutedEventArgs e)
+        {
+            ShowReservations window = new ShowReservations(Guest1);
+            window.Show();
+            Close();
+        }
+
+        private void GoToGuest1Requests(object sender, RoutedEventArgs e)
+        {
+            Guest1Requests window = new Guest1Requests(Guest1);
+            window.Show();
+            Close();
+        }
+
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
     }
 
 }

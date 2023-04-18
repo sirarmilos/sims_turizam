@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Dto
 {
-    internal class TourDto
+    public class TourDto
     {
+
         public string TourName { get; set; }
 
         public Location TourLocation { get; set; }
@@ -19,27 +20,24 @@ namespace InitialProject.Dto
 
         public int MaxGuests { get; set; }
 
-        public List<TourKeyPoint> TourKeyPoints { get; set; }
-
-        public List<DateTime> TourDate { get; set; }
-
         public int Duration { get; set; }
 
         public List<string> Images { get; set; }
 
+        public string Username { get; set; }
+
         public TourDto() { }
 
-        public TourDto(string tourName, Location location, string description, Language languages, int maxGuests, List<TourKeyPoint> tourKeyPoints, List<DateTime> tourDate, int duration, List<string> images)
+        public TourDto(string tourName, Location location, string description, Language languages, int maxGuests, int duration, List<string> images, string username)
         {
             TourName = tourName;
             TourLocation = location;
             Description = description;
             Languages = languages;
             MaxGuests = maxGuests;
-            TourKeyPoints = tourKeyPoints;
-            TourDate = tourDate;
             Duration = duration;
             Images = images;
+            Username = username;
         }
     }
 }

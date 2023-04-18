@@ -1,0 +1,46 @@
+﻿<Window x:Class="InitialProject.View.RateGuide"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="RateGuide" Height="450" Width="800">
+    <Grid>
+        <GroupBox x:Name="GuideKnowledge" Header="Guide general knowledge" Margin="33,34,607,268">
+            <StackPanel>
+                <RadioButton Content="1" GroupName="GuideKnowledge" />
+                <RadioButton Content="2" GroupName="GuideKnowledge" />
+                <RadioButton Content="3" GroupName="GuideKnowledge" />
+                <RadioButton Content="4" GroupName="GuideKnowledge" />
+                <RadioButton Content="5" GroupName="GuideKnowledge" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox x:Name="GuideLanguage" Header="Guide language knowledge" Margin="33,203,607,99">
+            <StackPanel>
+                <RadioButton Content="1" GroupName="GuideLanguage" />
+                <RadioButton Content="2" GroupName="GuideLanguage" />
+                <RadioButton Content="3" GroupName="GuideLanguage" />
+                <RadioButton Content="4" GroupName="GuideLanguage" />
+                <RadioButton Content="5" GroupName="GuideLanguage" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox x:Name="TourExperience" Header="General tour experience" Margin="322,34,300,268">
+            <StackPanel>
+                <RadioButton Content="1" GroupName="TourExperience" />
+                <RadioButton Content="2" GroupName="TourExperience" />
+                <RadioButton Content="3" GroupName="TourExperience" />
+                <RadioButton Content="4" GroupName="TourExperience" />
+                <RadioButton Content="5" GroupName="TourExperience" />
+            </StackPanel>
+        </GroupBox>
+        <Button Content="Rate guide" HorizontalAlignment="Left" Margin="254,378,0,0" VerticalAlignment="Top" Height="46" Width="103" Click="RateGuidee"/>
+        <TextBox x:Name="pictureURL" HorizontalAlignment="Center" Margin="0,298,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="164" Height="37" TextChanged="TextBox_TextChanged"/>
+        <Label Content="Add picture" HorizontalAlignment="Left" Margin="318,261,0,0" VerticalAlignment="Top" Height="37"/>
+        <Button Content="Add picture" HorizontalAlignment="Left" Margin="501,307,0,0" VerticalAlignment="Top" Click="AddPictureToList"/>
+        <Label Content="Comment" HorizontalAlignment="Left" Margin="552,34,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tourComment" HorizontalAlignment="Left" Margin="552,63,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="172" Height="103"/>
+    </Grid>
+</Window>

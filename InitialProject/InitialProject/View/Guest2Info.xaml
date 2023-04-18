@@ -1,0 +1,22 @@
+﻿<Window x:Class="InitialProject.View.Guest2Info"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="Guest2Info" Height="450" Width="800">
+    <Grid>
+        <Grid>
+            <TextBox x:Name="usernameBox" HorizontalAlignment="Left" Margin="113,142,0,0" TextWrapping="Wrap" Text="{Binding Username}" VerticalAlignment="Top" Width="135" Height="32"/>
+            <TextBox x:Name="emailBox" HorizontalAlignment="Left" Margin="113,203,0,0" TextWrapping="Wrap" Text="{Binding Email}" VerticalAlignment="Top" Width="135" Height="32"/>
+            <TextBox x:Name="adressBox" HorizontalAlignment="Left" Margin="113,259,0,0" TextWrapping="Wrap" Text="{Binding Address}" VerticalAlignment="Top" Width="135" Height="32"/>
+            <Label Content="Username&#xA;" HorizontalAlignment="Left" Margin="113,108,0,0" VerticalAlignment="Top"/>
+            <Label Content="email&#xA;" HorizontalAlignment="Left" Margin="113,179,0,0" VerticalAlignment="Top"/>
+            <Label Content="Adress&#xA;&#xA;" HorizontalAlignment="Left" Margin="113,235,0,0" VerticalAlignment="Top"/>
+            <DataGrid x:Name="VouchersList" ItemsSource="{Binding VoucherDisplayDTOs, Mode=OneWay}" Margin="304,65,99,18"/>
+
+        </Grid>
+
+    </Grid>
+</Window>

@@ -1,4 +1,5 @@
 ﻿using InitialProject.Dto;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    internal class TourKeyPointRepository
+    internal class TourKeyPointRepository : ITourKeyPointRepository
     {
         private const string FilePathTourKeyPoint = "../../../Resources/Data/tourkeypoints.csv";
 
@@ -17,18 +18,16 @@ namespace InitialProject.Repository
 
         private List<TourKeyPoint> tourKeyPoints;  
         
+
         public TourKeyPointRepository()
         {
             tourKeyPointSerializer = new Serializer<TourKeyPoint>();
             tourKeyPoints = tourKeyPointSerializer.FromCSV(FilePathTourKeyPoint);
         }
 
-        public TourKeyPoint Save(TourKeyPointDto tourKeyPointDto)
+        public void Save(List<TourKeyPoint>  tourKeyPoints)
         {
-            TourKeyPoint tourKeyPoint = new(NextId(), tourKeyPointDto.TourKeyPointName, tourKeyPointDto.Location);
-            tourKeyPoints.Add(tourKeyPoint);
-            tourKeyPointSerializer.ToCSV(FilePathTourKeyPoint, tourKeyPoints);
-            return tourKeyPoint;
+            tourKeyPointSerializer.ToCSV(FilePathTourKeyPoint,tourKeyPoints);
         }
 
         public int NextId()
@@ -40,18 +39,28 @@ namespace InitialProject.Repository
             return tourKeyPoints.Max(c => c.Id) + 1;
         }
 
-        public TourKeyPoint GetById(int id)
+        public TourKeyPoint FindById(int id) => tourKeyPoints.FirstOrDefault(x => x.Id == id);
+
+        public List<TourKeyPoint> FindAll()
         {
-            foreach(TourKeyPoint keyPoint in tourKeyPoints)
-            {
-                if(keyPoint.Id == id)
-                    return keyPoint;
-            }
-            return null;
-
-
+            return tourKeyPoints;
         }
 
+        public void SaveToFile(TourKeyPoint tkp)
+        {
+            tourKeyPoints.Add(tkp);
+            Save(tourKeyPoints);
+        }
 
+        public void UpdateCheckedKeyPoints(List<TourKeyPoint> keyPoints)
+        {
+            foreach(TourKeyPoint tourKeyPoint in keyPoints)
+            {
+                TourKeyPoint kp = FindById(tourKeyPoint.Id);
+                kp.Passed = tourKeyPoint.Passed;
+            }
+            Save(tourKeyPoints);
+
+        }
     }
 }

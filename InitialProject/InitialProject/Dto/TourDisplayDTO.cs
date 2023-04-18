@@ -8,25 +8,38 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Dto
 {
-    class TourDisplayDTO
+    public class TourDisplayDTO
     {
         public string TourName { get; set; }
         public Location Location { get; set; }
         public string Description { get; set; }
         public Language Language { get; set; }
-        public int MaxGuests { get; set; }
-        public string TourKeyPoints { get; set; }
-        public string TourDate { get; set; }
+        public int FreeSlots { get; set; }
+        public List<TourKeyPoint>? TourKeyPoints { get; set; }
+        public DateTime TourDate { get; set; }
         public int Duration { get; set; }
         public List<string> Images { get; set; }
 
         public TourDisplayDTO() { }
 
+        public TourDisplayDTO(string tourName, Location location, string description, Language language, int maxGuests, List<TourKeyPoint> tourKeyPoints, DateTime tourDate, int duration, List<string> images)
+        {
+            TourName = tourName;
+            Location = location;
+            Description = description;
+            Language = language;
+            FreeSlots = maxGuests;
+            TourKeyPoints = tourKeyPoints;
+            TourDate = tourDate;
+            Duration = duration;
+            Images = images;
+        }
+
         public TourDisplayDTO CreateDTO(Tour tour)
         {
             TourDisplayDTO dto = new TourDisplayDTO();
 
-            dto.TourName = tour.TourName;
+           /* dto.TourName = tour.TourName;
             dto.Location = tour.Location;
             dto.Description = tour.Description;
             dto.Language = tour.Language;
@@ -49,7 +62,7 @@ namespace InitialProject.Dto
             dto.TourDate = dto.TourDate.Remove(dto.TourDate.Length-1);
 
             dto.Duration = tour.Duration;
-            dto.Images = tour.Images;
+            dto.Images = tour.Images;*/
 
             return dto;
         }

@@ -18,54 +18,45 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Diagnostics.Metrics;
+using System.Globalization;
+using InitialProject.Service;
 
 namespace InitialProject.View
 {
     /// <summary>
     /// Interaction logic for SearchAndShowTours.xaml
     /// </summary>
+    /// 
+
     public partial class SearchAndShowTours : Window
     {
-        //public static ObservableCollection<Tour> tours { get; set; }
 
         private readonly TourRepository tourRepository;
 
-        private List<Tour> tours { get; set; }
+        private readonly TourService tourService = new TourService();
 
-        public Tour tour { get; set; }
+        private readonly string username;
 
-        private string tourName;
-        private string country;
+        public  List<TourDisplayDTO> tourDisplayDTOs {  get; set; }
+
         private string city;
-        private string description;
+        private string country;
+        private int duration;
         private Language language;
         private int maxGuests;
-        private List<TourKeyPoint> tourKeyPoints;
-        private List<DateTime> dates;
-        private int duration;
-        private string image;
-        private List<string> images;
 
-        public string Image
+
+
+        public string City
         {
-            get { return image; }
-            set 
-            { 
-                image = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public List<string> Images { get; set; }
-
-        public string TourName
-        {
-            get {  return tourName; }
+            get { return city; }
             set
             {
-                tourName = value;
-                OnPropertyChanged();
+                city = value;
+                OnPropertyChanged(nameof(City));
             }
+
         }
 
         public string Country
@@ -79,25 +70,15 @@ namespace InitialProject.View
 
         }
 
-        public string City
+        public int Duration
         {
-            get { return city; }
+            get { return duration; }
             set
             {
-                city = value;
-                OnPropertyChanged(nameof(City));
+                duration = value;
+                OnPropertyChanged(nameof(Duration));
             }
 
-        }
-
-        public string Description
-        {
-            get { return description; }
-            set
-            {
-                description = value;
-                OnPropertyChanged();
-            }
         }
 
         public Language Languagee
@@ -114,47 +95,24 @@ namespace InitialProject.View
         {
             get { return maxGuests; }
             set
-            { 
+            {
                 maxGuests = value;
                 OnPropertyChanged(nameof(MaxGuests));
             }
         }
 
-        public List<TourKeyPoint> TourKeyPoints { get; set; }
 
-        public List<string> TourDate { get; set; }
 
-        public int Duration
-        {
-            get { return duration; }
-            set
-            {
-                duration = value;
-                OnPropertyChanged(nameof(Duration));
-            }
-
-        }
-
-        public SearchAndShowTours()
+        public SearchAndShowTours(string username)
         {
             InitializeComponent();
             Initializecblang();
             DataContext = this;
             tourRepository = new TourRepository();
-            Images = new List<string>();
 
-            tours = tourRepository.SearchAndShow(City, Country, Duration, Languagee, MaxGuests);
-
-            TourDisplayDTO tddto = new TourDisplayDTO();
-            List<TourDisplayDTO> toursDisplay = new List<TourDisplayDTO>();
-            tours = tourRepository.SearchAndShow();
-
-            foreach (Tour tour in tours)
-            {
-                toursDisplay.Add(tddto.CreateDTO(tour));
-            }
-
-            listTours.ItemsSource = toursDisplay;
+            tourDisplayDTOs = new List<TourDisplayDTO>();
+            tourDisplayDTOs = tourService.GetToursForDisplay();
+            this.username = username;
         }
 
 
@@ -173,20 +131,10 @@ namespace InitialProject.View
             cblang.SelectedIndex = 0;
         }
 
-        private void Search(object sender, RoutedEventArgs e)
+        private void SearchAndShow(object sender, RoutedEventArgs e)
         {
-            TourDisplayDTO tddto = new TourDisplayDTO();
-            List<TourDisplayDTO> toursDisplay = new List<TourDisplayDTO>();
-            tours = tourRepository.SearchAndShow(City, Country, Duration, Languagee, MaxGuests);
-
-
-            foreach(Tour tour in tours)
-            {
-                toursDisplay.Add(tddto.CreateDTO(tour));
-            }
-
-            listTours.ItemsSource = toursDisplay;
-     
+            tourDisplayDTOs = tourService.SearchAndShow(City,Country,Duration,Languagee,MaxGuests);
+            listTours.ItemsSource = tourDisplayDTOs;
         }
 
         private void CreateReservation(object sender, RoutedEventArgs e)
@@ -201,7 +149,7 @@ namespace InitialProject.View
                 {
                     TourDisplayDTO tour = new TourDisplayDTO();
                     tour = (TourDisplayDTO)listTours.SelectedItems[0];
-                    TourReservation tourReservation = new TourReservation(tour.TourName);
+                    TourReservation tourReservation = new TourReservation(tour,username);
                     tourReservation.Show();
                 }
             }
@@ -209,4 +157,6 @@ namespace InitialProject.View
             { }
         }
     }
+
+    
 }

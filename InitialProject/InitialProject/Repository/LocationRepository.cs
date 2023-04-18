@@ -1,4 +1,5 @@
 ﻿using InitialProject.Dto;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    internal class LocationRepository
+    public class LocationRepository : ILocationRepository
     {
-        private const string FilePathLocation = "../../../Resources/Data/location.csv";
+        private const string FilePathLocation = "../../../Resources/Data/locations.csv";
 
         private readonly Serializer<Location> locationSerializer;
 
@@ -23,34 +24,43 @@ namespace InitialProject.Repository
             locations = locationSerializer.FromCSV(FilePathLocation);
         }
 
+        public List<Location> FindAll()
+        {
+            return locationSerializer.FromCSV(FilePathLocation);
+        }
+
+        public void Save(List<Location> allLocations)
+        {
+            locationSerializer.ToCSV(FilePathLocation, allLocations);
+        }
+
+        public void Add(Location location)
+        {
+            List<Location> allLocations = FindAll();
+            allLocations.Add(location);
+            Save(allLocations);
+        }
+
         public Location Save(LocationDto locationDto)
         {
-            Location location = new(NextIdLocation(), locationDto.Country, locationDto.City, locationDto.Address, locationDto.Latitude, locationDto.Longitude);
+            Location location = new(NextId(), locationDto.Country, locationDto.City, locationDto.Address, locationDto.Latitude, locationDto.Longitude);
             locations.Add(location);
             locationSerializer.ToCSV(FilePathLocation, locations);
             return location;
         }
 
-        public int NextIdLocation()
+        public int NextId()
         {
-            if (locations.Count < 1)
+            if (FindAll().Count < 1)
             {
                 return 1;
             }
-            return locations.Max(c => c.Id) + 1;
+            return FindAll().Max(c => c.Id) + 1;
         }
 
-        public Location GetById(int id)
+        public Location FindById(int locationId)
         {
-            foreach(Location location in  locations)
-            {
-                if(location.Id == id)
-                    return location;
-            }
-            return null;
-
+            return FindAll().ToList().Find(x => x.Id == locationId);
         }
-
-
     }
 }

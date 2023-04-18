@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.View;
 using System;
@@ -12,11 +13,13 @@ using System.Xml.Linq;
 
 namespace InitialProject.Repository
 {
-    internal class AccommodationRepository
+    public class AccommodationRepository : IAccommodationRepository
     {
-        private const string FilePathAccommodation = "../../../Resources/Data/accommodation.csv";
+        private LocationRepository locationRepository;
 
-        private const string FilePathLocation = "../../../Resources/Data/location.csv";
+        private const string FilePathAccommodation = "../../../Resources/Data/accommodations.csv";
+
+        private const string FilePathLocation = "../../../Resources/Data/locations.csv";
 
         private readonly Serializer<Accommodation> accommodationSerializer;
 
@@ -48,269 +51,84 @@ namespace InitialProject.Repository
             }
         }
 
-        public bool Save(string accommodationName, string country, string city, string address, decimal latitude, decimal longitude, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
+        public List<Accommodation> FindAll()
         {
+            locationRepository = new LocationRepository();
+
             accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
 
-            if(CheckErrorAccommodationName(accommodationName, accommodations) == true)
+            foreach(Accommodation temporaryAccommodation in accommodations.ToList())
             {
-                Location location = new Location(NextIdLocation(), country, city, address, latitude, longitude);
-                Accommodation accommodation = new Accommodation(NextIdAccommodation(), accommodationName, location, type, maxGuests, minDaysReservation, leftCancelationDays, images);
-
-                locations = locationSerializer.FromCSV(FilePathLocation);
-                locations.Add(location);
-                locationSerializer.ToCSV(FilePathLocation, locations);
-
-                accommodations.Add(accommodation);
-                accommodationSerializer.ToCSV(FilePathAccommodation, accommodations);
-
-                MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                return true;
+                temporaryAccommodation.Location = locationRepository.FindById(temporaryAccommodation.Location.Id);
             }
-            else
-            {
-                MessageBox.Show("Accommodation with this name already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+
+            return accommodations;
         }
 
-        private bool CheckErrorAccommodationName(string accommodationName, List<Accommodation> accommodations)
+        public void Save(List<Accommodation> allAccommodations)
         {
-            foreach (Accommodation temporaryAccommodation in accommodations)
-            {
-                if (temporaryAccommodation.AccommodationName.Equals(accommodationName) == true)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            accommodationSerializer.ToCSV(FilePathAccommodation, allAccommodations);
         }
 
-        public int NextIdAccommodation()
+        public void Add(Accommodation accommodation)
         {
-            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-            if(accommodations.Count < 1)
+            List<Accommodation> allAccommodations = FindAll();
+            allAccommodations.Add(accommodation);
+            Save(allAccommodations);
+        }
+
+        public bool IsAccommodationExist(string accommodationName)
+        {
+            return FindAll().Exists(x => x.AccommodationName.Equals(accommodationName) == true);
+        }
+
+        public int NextId()
+        {
+            if (FindAll().Count < 1)
             {
                 return 1;
             }
-            return accommodations.Max(c => c.Id) + 1;
+
+            return FindAll().Max(x => x.Id) + 1;
         }
 
-        public int NextIdLocation()
+        public Accommodation FindById(int accommodationId)
         {
-            locations = locationSerializer.FromCSV(FilePathLocation);
-            if (locations.Count < 1)
-            {
-                return 1;
-            }
-            return locations.Max(c => c.Id) + 1;
+            return FindAll().ToList().Find(x => x.Id == accommodationId);
         }
 
-        public List<Accommodation> FindAll(string accommodationName, string country, string city, string type, int? maxGuests, int? minDaysReservation)
+
+
+
+        // moraju da dele allAccommodations, nez da l u rep ili servisu da ostavim
+        public List<Accommodation> FindAllByAccommodationName(List<Accommodation> allAccommodations, string name) 
         {
-            List<Accommodation> accommodationNameResults, countryResults, cityResults, typeResults, maxGuestsResults, minDaysReservationResults;
-
-            if (!IsNameContained(accommodationName, out accommodationNameResults)) return null;
-            if (!IsCountryContained(country, out countryResults)) return null;
-            if (!IsCityContained(city, out cityResults)) return null;
-            if (!IsTypeContained(type, out typeResults)) return null;
-            if (!IsGuestsNumberContained(maxGuests, out maxGuestsResults)) return null;
-            if (!AreReservationDaysContained(minDaysReservation, out minDaysReservationResults)) return null;
-
-            return accommodationNameResults.Intersect(cityResults).Intersect(countryResults).Intersect(typeResults).Intersect(maxGuestsResults).Intersect(minDaysReservationResults).ToList();
+            return allAccommodations.FindAll(x => x.AccommodationName.ToLower().StartsWith(name.ToLower()) == true);
         }
 
-        private bool AreReservationDaysContained(int? minDaysReservation, out List<Accommodation> minDaysReservationResults)
+        public List<Accommodation> FindAllByCountry(List<Accommodation> allAccommodations, string name)
         {
-            if ((minDaysReservation != null) && (minDaysReservation >= 0))
-            {
-                minDaysReservationResults = FindAllAboveMinReservationDays(minDaysReservation);
-                if (minDaysReservationResults.Count == 0)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                minDaysReservationResults = accommodations;
-            }
-
-            return true;
+            return allAccommodations.FindAll(x => x.Location.Country.ToLower().StartsWith(name.ToLower()) == true);
         }
 
-        private bool IsGuestsNumberContained(int? maxGuests, out List<Accommodation> maxGuestsResults)
+        public List<Accommodation> FindAllByCity(List<Accommodation> allAccommodations, string name)
         {
-            if ((maxGuests != null) && (maxGuests > 0))
-            {
-                maxGuestsResults = FindAllByMaxGuestsNumber(maxGuests);
-                if (maxGuestsResults.Count == 0)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                maxGuestsResults = accommodations;
-            }
-
-            return true;
+            return allAccommodations.FindAll(x => x.Location.City.ToLower().StartsWith(name.ToLower()) == true);
         }
 
-        private bool IsTypeContained(string type, out List<Accommodation> typeResults)
+        public List<Accommodation> FindAllByMaxGuestsNumber(List<Accommodation> allAccommodations, int? quantity)
         {
-            if (!string.IsNullOrWhiteSpace(type))
-            {
-                type = type.Trim();
-                typeResults = FindAllByType(type);
-                if (typeResults.Count == 0)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                typeResults = accommodations;
-            }
-
-            return true;
+            return allAccommodations.FindAll(x => x.MaxGuests >= quantity);
         }
 
-        private bool IsCityContained(string city, out List<Accommodation> cityResults)
+        public List<Accommodation> FindAllByType(List<Accommodation> allAccommodations, string name)
         {
-            if (!string.IsNullOrWhiteSpace(city))
-            {
-                city = city.Trim();
-                cityResults = FindAllByCity(city);
-                if (cityResults.Count == 0)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                cityResults = accommodations;
-            }
-
-            return true;
+            return allAccommodations.FindAll(x => x.Type.ToLower().Equals(name.ToLower()) == true);
         }
 
-        private bool IsCountryContained(string country, out List<Accommodation> countryResults)
+        public List<Accommodation> FindAllAboveMinReservationDays(List<Accommodation> allAccommodations, int? minDaysReservation)
         {
-            if (!string.IsNullOrWhiteSpace(country))
-            {
-                country = country.Trim();
-                countryResults = FindAllByCountry(country);
-                if (countryResults.Count == 0)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                countryResults = accommodations;
-            }
-
-            return true;
+            return allAccommodations.FindAll(x => x.MinDaysReservation <= minDaysReservation);
         }
-
-        private bool IsNameContained(string accommodationName, out List<Accommodation> accommodationNameResults)
-        {
-            if (!string.IsNullOrWhiteSpace(accommodationName))
-            {
-                accommodationName = accommodationName.Trim();
-                accommodationNameResults = FindAllByAccommodation(accommodationName);
-                if (accommodationNameResults.Count == 0)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                accommodationNameResults = accommodations;
-            }
-
-            return true;
-        }
-
-        public List<Accommodation> FindAllByAccommodation(string name)
-        {
-            List<Accommodation> searchResult = new List<Accommodation>();
-
-            foreach (Accommodation accommodation in accommodations)
-            {
-                if (accommodation.AccommodationName.ToLower().StartsWith(name.ToLower()))
-                    searchResult.Add(accommodation);
-            }
-
-            return searchResult;
-        }
-
-        public List<Accommodation> FindAllByCountry(string name)
-        {
-            List<Accommodation> searchResult = new List<Accommodation>();
-
-            foreach (Accommodation accommodation in accommodations)
-            {
-                if (accommodation.Location.Country.ToLower().StartsWith(name.ToLower()))
-                    searchResult.Add(accommodation);
-            }
-
-            return searchResult;
-        }
-
-        public List<Accommodation> FindAllByCity(string name)
-        {
-            List<Accommodation> searchResult = new List<Accommodation>();
-
-            foreach (Accommodation accommodation in accommodations)
-            {
-                if (accommodation.Location.City.ToLower().StartsWith(name.ToLower()))
-                    searchResult.Add(accommodation);
-            }
-
-            return searchResult;
-        }
-
-        public List<Accommodation> FindAllByMaxGuestsNumber(int? quantity)
-        {
-            List<Accommodation> searchResult = new List<Accommodation>();
-
-            foreach (Accommodation accommodation in accommodations)
-            {
-                if (accommodation.MaxGuests >= quantity)
-                    searchResult.Add(accommodation);
-            }
-
-            return searchResult;
-        }
-
-        public List<Accommodation> FindAllByType(string name)
-        {
-            List<Accommodation> searchResult = new List<Accommodation>();
-
-            foreach (Accommodation accommodation in accommodations)
-            {
-                if (accommodation.Type.ToLower().Equals(name.ToLower()))
-                    searchResult.Add(accommodation);
-            }
-
-            return searchResult;
-        }
-
-        public List<Accommodation> FindAllAboveMinReservationDays(int? minDaysReservation)
-        {
-            List<Accommodation> searchResult = new List<Accommodation>();
-
-            foreach (Accommodation accommodation in accommodations)
-            {
-                if (accommodation.MinDaysReservation <= minDaysReservation)
-                    searchResult.Add(accommodation);
-            }
-
-            return searchResult;
-        }
-
-
     }
 }

@@ -1,0 +1,45 @@
+﻿<Window x:Class="InitialProject.View.ShowKeyPointsInStartedTourGuidence"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="ShowKeyPointsInStartedTourGuidence" Height="450" Width="800">
+
+    
+    <Grid>
+
+        <DataGrid x:Name="dataGridKP" ItemsSource="{Binding tourKeyPoints}" CanUserAddRows="False" Height="NaN" Margin="40,64,188,73"  AutoGenerateColumns="False" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Key Point Name" Binding="{Binding KeyPointName}"/>
+                <DataGridCheckBoxColumn Header="SELECT" Binding="{Binding Passed}"/>
+                <DataGridTemplateColumn Header="">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Confirm" HorizontalAlignment="Left" Margin="669,152,0,0" VerticalAlignment="Top" Height="61" Width="82" Click="SaveCheckedKeyPoints"/>
+        <Button Content="Mark Guests" HorizontalAlignment="Left" Margin="669,93,0,0" VerticalAlignment="Top" Height="39" Width="82" Click="MarkPresentGuests"/>
+        <Button x:Name="MyButton" HorizontalAlignment="Left" Margin="635,252,0,0" VerticalAlignment="Top" Click="StartTourGuidence">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="IsEnabled" Value="True" />
+                    <Setter Property="Content" Value="PRESS TO START" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding TourGuidence.Started}" Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                            <Setter Property="Content" Value="STARTED"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Content="FINISH" HorizontalAlignment="Left" Margin="635,298,0,0" VerticalAlignment="Top" Height="20" Width="91" Click="FinishTourGuidence"/>
+
+    </Grid>
+</Window>

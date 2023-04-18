@@ -1,0 +1,51 @@
+﻿<Window x:Class="InitialProject.View.ShowGuestOnTourGuidence"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="ShowGuestOnTourGuidence" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="dataGrid" ItemsSource="{Binding tourReservations}" AutoGenerateColumns="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Guest Name" Binding="{Binding userId}" />
+                <!--<DataGridTemplateColumn Header="Key Point Name">
+                    <DataGridTemplateColumn.CellTemplate >
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding TourKeyPoints}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Label Content="{Binding KeyPointName}"  />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+                <!--<DataGridTemplateColumn Header="Tour Key Point Arrivals">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding TourKeyPointArrival, Mode=TwoWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding Path=Value, Mode=TwoWay}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="CONFIRM" HorizontalAlignment="Left" Margin="690,333,0,0" VerticalAlignment="Top" Click="Save"/>
+        <TextBox HorizontalAlignment="Left" Margin="658,251,0,0" TextWrapping="Wrap" Text="{Binding Guest, Mode=OneWayToSource}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="658,301,0,0" TextWrapping="Wrap" Text="{Binding KeyPointId, Mode=OneWayToSource}" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Guest" HorizontalAlignment="Left" Margin="588,247,0,0" VerticalAlignment="Top"/>
+        <Label Content="Key Point Ordinal number" HorizontalAlignment="Left" Margin="490,297,0,0" VerticalAlignment="Top"/>
+
+
+
+
+    </Grid>
+</Window>
