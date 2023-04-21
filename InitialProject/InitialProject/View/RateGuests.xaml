@@ -38,7 +38,7 @@
 
         <Label x:Name="labelAListOfAllGuestsYouCanRate" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all guests you can rate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,0,0" Width="330" Height="30"/>
 
-        <DataGrid x:Name="dgRateGuests" LoadingRow="LoadingRowForDgRateGuests" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding RateGuestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedGuest, Mode=TwoWay}"  AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RateButtonEnable" Margin="25,25,25,0" Height="200">
+        <DataGrid x:Name="dgRateGuests" LoadingRow="LoadingRowForDgRateGuests" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding RateGuestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedGuest, Mode=TwoWay}"  AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RateEnable" Margin="25,25,25,0" Height="200">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="150"/>
                 <DataGridTextColumn Header="Rate guest deadline" Binding="{Binding RateGuestsDeadline}" Width="*"/>

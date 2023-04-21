@@ -64,7 +64,13 @@ namespace InitialProject.ViewModel
             get;
         }
 
-        public ShowGuestReviewsViewModel(string ownerUsername, string ownerHeader)
+        public ShowGuestReviews Form
+        {
+            get;
+            set;
+        }
+
+        public ShowGuestReviewsViewModel(ShowGuestReviews form, string ownerUsername, string ownerHeader)
         {
             GoToAddNewAccommodationCommand = new DelegateCommand(GoToAddNewAccommodation);
             GoToRateGuestsCommand = new DelegateCommand(GoToRateGuests);
@@ -81,6 +87,8 @@ namespace InitialProject.ViewModel
             ShowGuestReviewsDTOs = reviewService.FindAllReviews();
 
             SetMenu(ownerHeader);
+
+            Form = form;
         }
 
         private void SetMenu(string ownerHeader)
@@ -100,28 +108,32 @@ namespace InitialProject.ViewModel
         {
             RateGuests window = new RateGuests(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
-            Close();
+            Form.Close();
+            // Close();
         }
 
         private void GoToShowGuestReviews()
         {
             ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
-            Close();
+            Form.Close();
+            // Close();
         }
 
         private void GoToShowOwnerManageBookingMoveRequests()
         {
             OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
-            Close();
+            Form.Close();
+            // Close();
         }
 
         private void GoToLogout()
         {
             LoginForm window = new LoginForm();
             window.Show();
-            Close();
+            Form.Close();
+            // Close();
         }
     }
 }

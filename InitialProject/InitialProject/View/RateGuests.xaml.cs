@@ -210,26 +210,16 @@ namespace InitialProject.View
             dgRateGuests.SelectedItem = null;
         }
 
-        private void RateButtonEnable(object sender, SelectionChangedEventArgs e)
+        private void RateEnable(object sender, SelectionChangedEventArgs e)
         {
             if (SelectedGuest == null)
             {
                 buttonRate.IsEnabled = false;
-            }
-            else
-            {
-                buttonRate.IsEnabled = true;
-            }
-        }
-
-        private void RateFieldsEnable(object sender, SelectionChangedEventArgs e)
-        {
-            if (SelectedGuest == null)
-            {
                 groupBoxRateFields.IsEnabled = false;
             }
             else
             {
+                buttonRate.IsEnabled = true;
                 groupBoxRateFields.IsEnabled = true;
             }
         }

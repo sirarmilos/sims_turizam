@@ -29,7 +29,7 @@ namespace InitialProject.View
         public ShowGuestReviews(string owner, string header)
         {
             InitializeComponent();
-            this.DataContext = new ShowGuestReviewsViewModel(owner, header);
+            this.DataContext = new ShowGuestReviewsViewModel(this, owner, header);
         }
 
         void LoadingRowForDgShowGuestReviews(object sender, DataGridRowEventArgs e)
