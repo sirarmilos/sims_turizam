@@ -30,6 +30,8 @@ namespace InitialProject.Model
 
         public List<string> Images { get; set; }
 
+        public bool RecentlyRenovated { get; set; }
+
         public Accommodation() { }
 
         public Accommodation(int id, string name, string ownerUsername, Location location, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
@@ -43,6 +45,20 @@ namespace InitialProject.Model
             MinDaysReservation = minDaysReservation;
             LeftCancelationDays = leftCancelationDays;
             Images = images;
+        }
+
+        public Accommodation(int id, string name, string ownerUsername, Location location, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images, bool recentlyRenovated)
+        {
+            Id = id;
+            AccommodationName = name;
+            OwnerUsername = ownerUsername;
+            Location = location;
+            Type = type;
+            MaxGuests = maxGuests;
+            MinDaysReservation = minDaysReservation;
+            LeftCancelationDays = leftCancelationDays;
+            Images = images;
+            RecentlyRenovated = recentlyRenovated;
         }
 
         public Accommodation(int id, SaveNewAccommodationDTO saveNewAccommodationDTO, Location location)
@@ -70,7 +86,7 @@ namespace InitialProject.Model
 
             imageToString = imageToString.Substring(0, imageToString.Length - 2);
 
-            string[] csvValues = { Id.ToString(), AccommodationName.ToString(), OwnerUsername.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString(), imageToString.ToString() };
+            string[] csvValues = { Id.ToString(), AccommodationName.ToString(), OwnerUsername.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString(), imageToString.ToString(), RecentlyRenovated.ToString() };
             return csvValues;
         }
 
@@ -97,6 +113,8 @@ namespace InitialProject.Model
             Images = images;
 
             // unosi sa zarezima i onda ih ovde odvajam
+
+            RecentlyRenovated = Convert.ToBoolean(values[9]);
         }
 
     }
