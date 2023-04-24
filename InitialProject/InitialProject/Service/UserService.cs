@@ -1,4 +1,5 @@
-﻿using InitialProject.IRepository;
+﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.Serializer;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace InitialProject.Service
 {
@@ -17,6 +19,8 @@ namespace InitialProject.Service
         private RateGuestsService rateGuestsService;
 
         private AccommodationService accommodationService;
+
+        private CanceledReservationService canceledReservationService;
 
         public UserService()
         {
@@ -60,6 +64,36 @@ namespace InitialProject.Service
             accommodationService = new AccommodationService();
 
             accommodationService.CheckRecentlyRenovated();
+        }
+
+        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        {
+            canceledReservationService = new CanceledReservationService();
+
+            List<CancelledReservationsNotificationDTO> unreadCancelledReservations = new List<CancelledReservationsNotificationDTO>();
+
+            unreadCancelledReservations = canceledReservationService.FindOwnerUnreadCancelledReservations(ownerUsername);
+
+            List<string> unreadCancelledReservationsString = new List<string>();
+
+            foreach(CancelledReservationsNotificationDTO temporaryCancelledReservationsNotificationDTO in unreadCancelledReservations.ToList())
+            {
+                unreadCancelledReservationsString.Add(temporaryCancelledReservationsNotificationDTO.AccommodationName + ": " + temporaryCancelledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCancelledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
+            }
+
+            if(unreadCancelledReservationsString.Count == 0)
+            {
+                unreadCancelledReservationsString.Add("There are currently no new booking cancellations.");
+            }
+
+            return unreadCancelledReservationsString;
+        }
+
+        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
+        {
+            canceledReservationService = new CanceledReservationService();
+
+            canceledReservationService.SaveViewed(cancelledReservationsNotificationDTO);
         }
     }
 }
