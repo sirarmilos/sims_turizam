@@ -17,6 +17,8 @@ namespace InitialProject.Repository
     {
         private LocationRepository locationRepository;
 
+        private RenovationRepository renovationRepository;
+
         private const string FilePathAccommodation = "../../../Resources/Data/accommodations.csv";
 
         private const string FilePathLocation = "../../../Resources/Data/locations.csv";
@@ -97,6 +99,11 @@ namespace InitialProject.Repository
             return FindAll().ToList().Find(x => x.Id == accommodationId);
         }
 
+        public Accommodation FindByAccommodationName(string accommodationName)
+        {
+            return FindAll().ToList().Find(x => x.AccommodationName == accommodationName);
+        }
+
 
 
 
@@ -129,6 +136,13 @@ namespace InitialProject.Repository
         public List<Accommodation> FindAllAboveMinReservationDays(List<Accommodation> allAccommodations, int? minDaysReservation)
         {
             return allAccommodations.FindAll(x => x.MinDaysReservation <= minDaysReservation);
+        }
+
+        public List<Renovation> FindAllRenovations()
+        {
+            renovationRepository = new RenovationRepository();
+
+            return renovationRepository.FindAll();
         }
     }
 }

@@ -16,6 +16,8 @@ namespace InitialProject.Service
 
         private RateGuestsService rateGuestsService;
 
+        private AccommodationService accommodationService;
+
         public UserService()
         {
             userRepository = new UserRepository();
@@ -51,6 +53,13 @@ namespace InitialProject.Service
         {
             rateGuestsService = new RateGuestsService(ownerUsername);
             return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
+        }
+
+        public void CheckRecentlyRenovatedAccommodation()
+        {
+            accommodationService = new AccommodationService();
+
+            accommodationService.CheckRecentlyRenovated();
         }
     }
 }

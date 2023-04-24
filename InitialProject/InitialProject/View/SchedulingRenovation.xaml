@@ -1,0 +1,60 @@
+﻿<Window x:Class="InitialProject.View.SchedulingRenovation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        xmlns:cvt="clr-namespace:InitialProject.Converters"
+        mc:Ignorable="d"
+        Title="SchedulingRenovation" Height="750" Width="650"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="90" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="45" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="25" />
+        </Grid.ColumnDefinitions>
+
+        <Label Target="{x:Reference tbAccommodationName}" Grid.Column="1" Grid.Row="1" Content="Accommodation name:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbAccommodationName" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding Path=AccommodationName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="200"/>
+
+        <Label Target="{x:Reference dpStartDate}" Grid.Column="1" Grid.Row="2" Content="Start date:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <DatePicker x:Name="dpStartDate" Grid.Column="2" Grid.Row="2" Height="30" Width="200"/>
+
+        <Label Target="{x:Reference dpEndDate}" Grid.Column="1" Grid.Row="3" Content="End date:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <DatePicker x:Name="dpEndDate" Grid.Column="2" Grid.Row="3" Height="30" Width="200"/>
+
+        <Label Target="{x:Reference tbDuration}"  Grid.Column="1" Grid.Row="4" Content="Duration:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbDuration" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" Text="{Binding Path=Duration, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="200"/>
+
+        <DataGrid x:Name="dgFreeDates" LoadingRow="LoadingRowForDgFreeDates" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" ItemsSource="{Binding AvailableDateSlots, Mode=OneWay}" SelectedItem="{Binding Path=SelectedDateSlot, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RenovateButtonEnable">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Start date" Binding="{Binding StartDate}" Width="*"/>
+                <DataGridTextColumn Header="End date" Binding="{Binding EndDate}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Label Target="{x:Reference tbDescription}" Grid.Column="1" Grid.Row="6" Content="Description of the renovation:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus"/>
+        <TextBox x:Name="tbDescription" Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Description, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="400" Height="50"/>
+
+        <Grid Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="3">
+            <Button x:Name="buttonRenovate" Content="Renovate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Height="40" Margin="15,0,0,0" Click="Renovate"/>
+            <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Top" Width="175" Height="40" Margin="0,0,15,0" Click="Close"/>
+        </Grid>
+        
+        <Button Content="Find dates" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Click="FindAvailableDates"/>
+    </Grid>
+</Window>

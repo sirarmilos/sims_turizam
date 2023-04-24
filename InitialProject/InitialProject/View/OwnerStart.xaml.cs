@@ -96,5 +96,12 @@ namespace InitialProject.View
             window.Show();
             Close();
         }
+
+        private void GoToShowAndCancellationRenovation(object sender, RoutedEventArgs e)
+        {
+            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
     }
 }

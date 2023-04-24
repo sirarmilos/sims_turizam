@@ -198,5 +198,40 @@ namespace InitialProject.Service
             return reservationReschedulingRequestService.Guest1HasNotification(Guest1);
         }
 
+        public Accommodation FindAccommodationByAccommodationName(string accommodationName)
+        {
+            return accommodationRepository.FindByAccommodationName(accommodationName);
+        }
+
+        public void CheckRecentlyRenovated()
+        {
+            List<Accommodation> allAccommodations = accommodationRepository.FindAll();
+
+            List<Renovation> allRenovations = accommodationRepository.FindAllRenovations();
+
+            foreach(Accommodation temporaryAccommodation in allAccommodations.ToList())
+            {
+                List<Renovation> temporaryRenovations = allRenovations.FindAll(x => x.Accommodation.Id == temporaryAccommodation.Id && DateTime.Compare(x.EndDate, DateTime.Now) < 0);
+
+                DateTime dateTimeNew = DateTime.MinValue;
+
+                foreach(Renovation temporaryRenovation in temporaryRenovations.ToList())
+                {
+                    if(DateTime.Compare(temporaryRenovation.EndDate, dateTimeNew) > 0)
+                    {
+                        dateTimeNew = temporaryRenovation.EndDate;
+                    }
+                }
+
+                temporaryAccommodation.RecentlyRenovated = false;
+
+                if(DateTime.Now.Subtract(dateTimeNew).Days < 365)
+                {
+                    temporaryAccommodation.RecentlyRenovated = true;
+                }
+            }
+
+            accommodationRepository.Save(allAccommodations);
+        }
     }
 }

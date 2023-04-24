@@ -145,5 +145,10 @@ namespace InitialProject.Repository
         {
             return FindAll().ToList().FindAll(x => x.GuestUsername.Equals(guest1) == true);
         }
+
+        public List<Reservation> FindReservationsByAccommodationName(string accommodationName)
+        {
+            return FindAll().ToList().FindAll(x => x.Accommodation.AccommodationName.Equals(accommodationName) == true);
+        }
     }
 }
