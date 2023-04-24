@@ -21,6 +21,18 @@
                 <MenuItem Header="Logout" Click="GoToLogout"/>
                 <MenuItem x:Name="notifications" Header="Notifications">
                     <MenuItem x:Name="rateGuestsNotifications"/>
+                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations"/>
+                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <MenuItem Header="{Binding}" Click="ReadCancelledReservationNotification"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ComboBox x:Name="cbCancelledReservationsNotifications" Text="Cancelled reservations">
+
+                    </ComboBox>
+                    
                 </MenuItem>
 
                 <MenuItem Header="Add new accommodation" Click="GoToAddNewAccommodation"/>

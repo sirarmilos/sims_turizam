@@ -1,4 +1,5 @@
-﻿using InitialProject.IRepository;
+﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using System;
@@ -18,9 +19,29 @@ namespace InitialProject.Service
             canceledReservationRepository = new CanceledReservationRepository();
         }
 
-        public void Save(Reservation reservation)
+        public void Save(CanceledReservation canceledReservation)
         {
-            canceledReservationRepository.Save(reservation);
+            canceledReservationRepository.Save(canceledReservation);
+        }
+
+        public List<CancelledReservationsNotificationDTO> FindOwnerUnreadCancelledReservations(string ownerUsername)
+        {
+            List<CanceledReservation> ownerUnreadCancelledReservations = canceledReservationRepository.FindUnreadCancelledReservationsByOwnerUsername(ownerUsername);
+
+            List<CancelledReservationsNotificationDTO> cancelledReservationsNotificationDTOs = new List<CancelledReservationsNotificationDTO>();
+
+            foreach(CanceledReservation temporaryCanceledReservation in ownerUnreadCancelledReservations.ToList())
+            {
+                CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(temporaryCanceledReservation);
+                cancelledReservationsNotificationDTOs.Add(cancelledReservationsNotificationDTO);
+            }
+
+            return cancelledReservationsNotificationDTOs;
+        }
+
+        public void SaveViewed(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
+        {
+            canceledReservationRepository.UpdateViewed(canceledReservationRepository.FindByDTO(cancelledReservationsNotificationDTO));
         }
     }
 }

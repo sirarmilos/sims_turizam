@@ -145,7 +145,9 @@ namespace InitialProject.Service
 
             reservationRepository.RemoveById(reservation.ReservationId);
 
-            canceledReservationService.Save(reservation);
+            CanceledReservation canceledReservation = new CanceledReservation(reservation, false);
+
+            canceledReservationService.Save(canceledReservation);
         }
 
         public bool Guest1HasNotification()

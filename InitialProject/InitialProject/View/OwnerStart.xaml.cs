@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.Service;
 using System;
@@ -33,11 +34,19 @@ namespace InitialProject.View
             set;
         }
 
+        public List<string> UnreadCancelledReservations
+        {
+            get;
+            set;
+        }
+
         public OwnerStart(string username)
         {
             InitializeComponent();
 
             OwnerUsername = username;
+
+            DataContext = this;
 
             userService = new UserService();
 
@@ -49,6 +58,10 @@ namespace InitialProject.View
             usernameAndSuperOwner.Header = OwnerUsername + CheckSuperType();
 
             rateGuestsNotifications.Header = "Number of unrated guests: " + userService.FindNumberOfUnratedGuests(OwnerUsername) + ".";
+
+            UnreadCancelledReservations = new List<string>();
+
+            UnreadCancelledReservations = userService.FindUnreadCancelledReservations(OwnerUsername);
         }
 
         private string CheckSuperType()
@@ -61,6 +74,31 @@ namespace InitialProject.View
             }
 
             return superType;
+        }
+
+        private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
+        {
+            string viewedCancelledReservation = ((MenuItem)sender).Header.ToString();
+
+            if(viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
+            {
+                userService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
+
+                UnreadCancelledReservations = userService.FindUnreadCancelledReservations(OwnerUsername);
+
+                cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
+            }
+        }
+
+        private CancelledReservationsNotificationDTO FindDTO(string viewedCancelledReservation)
+        {
+            string accommodationName = viewedCancelledReservation.Split(":")[0];
+            DateTime reservationStartDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[1]);
+            DateTime reservationEndDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[3]);
+
+            CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(accommodationName, reservationStartDate, reservationEndDate);
+
+            return cancelledReservationsNotificationDTO;
         }
 
         private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
