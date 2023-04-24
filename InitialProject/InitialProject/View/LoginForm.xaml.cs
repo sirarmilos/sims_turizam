@@ -63,6 +63,8 @@ namespace InitialProject.View
             DataContext = this;
 
             userService = new UserService();
+
+            userService.CheckRecentlyRenovatedAccommodation();
         }
 
         private void Login(object sender, RoutedEventArgs e)

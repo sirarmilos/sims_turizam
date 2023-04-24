@@ -305,5 +305,9 @@ namespace InitialProject.Service
             return false;
         }
 
+        public List<Reservation> FindReservationsByAccommodationName(string accommodationName)
+        {
+            return reservationRepository.FindReservationsByAccommodationName(accommodationName);
+        }
     }
 }

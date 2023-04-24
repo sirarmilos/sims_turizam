@@ -12,7 +12,7 @@ namespace InitialProject.Model
     {
         public int RenovationId { get; set; }
 
-        public int AccommodationId { get; set; }
+        public Accommodation Accommodation { get; set; }
 
         public DateTime StartDate { get; set; }
 
@@ -22,10 +22,10 @@ namespace InitialProject.Model
 
         public Renovation() { }
 
-        public Renovation(int renovationId, int accommodationId, DateTime startDate, DateTime endDate, string description)
+        public Renovation(int renovationId, Accommodation accommodation, DateTime startDate, DateTime endDate, string description)
         {
             RenovationId = renovationId;
-            AccommodationId = accommodationId;
+            Accommodation = accommodation;
             StartDate = startDate;
             EndDate = endDate;
             Description = description;
@@ -33,14 +33,14 @@ namespace InitialProject.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { RenovationId.ToString(), AccommodationId.ToString(), StartDate.ToString("dd.MM.yyyy").ToString(), EndDate.ToString("dd.MM.yyyy").ToString(), Description.ToString() };
+            string[] csvValues = { RenovationId.ToString(), Accommodation.Id.ToString(), StartDate.ToString("dd.MM.yyyy").ToString(), EndDate.ToString("dd.MM.yyyy").ToString(), Description.ToString() };
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
             RenovationId = Convert.ToInt32(values[0]);
-            AccommodationId = Convert.ToInt32(values[1]);
+            Accommodation = new Accommodation() { Id = Convert.ToInt32(values[1]) };
 
             string temporaryDate = values[2];
             if (!string.IsNullOrEmpty(temporaryDate))

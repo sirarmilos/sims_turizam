@@ -33,5 +33,9 @@ namespace InitialProject.IRepository
         List<Accommodation> FindAllByType(List<Accommodation> allAccommodations, string name);
 
         List<Accommodation> FindAllAboveMinReservationDays(List<Accommodation> allAccommodations, int? minDaysReservation);
+
+        Accommodation FindByAccommodationName(string accommodationName);
+
+        List<Renovation> FindAllRenovations();
     }
 }
