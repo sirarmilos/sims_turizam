@@ -70,5 +70,10 @@ namespace InitialProject.Repository
             allCanceledReservation.Where(x => x.ReservationId == canceledReservation.ReservationId).SetValue(x => x.ViewedByOwner = true);
             Save(allCanceledReservation);
         }
+
+        public List<CanceledReservation> FindByAccommodationId(int accommodationId)
+        {
+            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+        }
     }
 }

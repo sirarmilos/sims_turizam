@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="Home page" Height="800" Width="1400"
+        Title="Home" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
 
     <Grid>
@@ -50,7 +50,7 @@
             
         </DockPanel>
 
-        <Image Grid.Column="0" Grid.Row="1" Source="../Resources/Images/logo_test.png" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="100"/>
+        <Image Grid.Column="0" Grid.Row="1" Source="../Resources/Images/logo_test.png" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="100" MouseDown="GoToOwnerHomePageLogin"/>
 
         <Label Grid.Column="0" Grid.Row="2" Content="Tourism company" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="30" VerticalAlignment="Bottom" Width="250"/>
 

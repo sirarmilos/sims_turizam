@@ -93,7 +93,7 @@ namespace InitialProject.View
 
         private void GoToAccommodationStart(object sender, RoutedEventArgs e)
         {
-            AccommodationStart window = new AccommodationStart(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            AccommodationStart window = new AccommodationStart(OwnerUsername);
             window.Show();
             Close();
         }

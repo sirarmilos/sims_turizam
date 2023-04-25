@@ -2,7 +2,10 @@
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,11 +20,11 @@ using System.Windows.Shapes;
 namespace InitialProject.View
 {
     /// <summary>
-    /// Interaction logic for ShowAndCancellationRenovation.xaml
+    /// Interaction logic for AccommodationStatistics.xaml
     /// </summary>
-    public partial class ShowAndCancellationRenovation : Window
+    public partial class AccommodationStatistics : Window
     {
-        private readonly RenovationService renovationService;
+        private readonly AccommodationService accommodationService;
 
         public string OwnerUsername
         {
@@ -35,19 +38,19 @@ namespace InitialProject.View
             set;
         }
 
-        public ShowRenovationDTO SelectedRenovation
+        public ShowStatisticsAccommodationDTO ShowStatisticsAccommodationDTO
         {
             get;
             set;
         }
 
-        public List<ShowRenovationDTO> ShowRenovationDTOs
+        public List<int> Years
         {
             get;
             set;
         }
 
-        public ShowAndCancellationRenovation(string ownerUsername, string ownerHeader)
+        public AccommodationStatistics(string ownerUsername, string ownerHeader, ShowStatisticsAccommodationDTO showStatisticsAccommodationDTO)
         {
             InitializeComponent();
 
@@ -55,11 +58,9 @@ namespace InitialProject.View
 
             DataContext = this;
 
-            renovationService = new RenovationService(ownerUsername);
+            accommodationService = new AccommodationService(OwnerUsername);
 
-            ShowRenovationDTOs = new List<ShowRenovationDTO>();
-
-            ShowRenovationDTOs = renovationService.FindAllRenovations(ownerUsername);
+            ShowStatisticsAccommodationDTO = showStatisticsAccommodationDTO;
 
             SetDefaultValue();
 
@@ -70,17 +71,53 @@ namespace InitialProject.View
         {
             usernameAndSuperOwner.Header = ownerHeader;
 
-            rateGuestsNotifications.Header = "Number of unrated guests: " + renovationService.FindNumberOfUnratedGuests(OwnerUsername) + ".";
+            rateGuestsNotifications.Header = "Number of unrated guests: " + accommodationService.FindNumberOfUnratedGuests(OwnerUsername) + ".";
 
             UnreadCancelledReservations = new List<string>();
 
-            UnreadCancelledReservations = renovationService.FindUnreadCancelledReservations(OwnerUsername);
+            UnreadCancelledReservations = accommodationService.FindUnreadCancelledReservations(OwnerUsername);
         }
 
         private void SetDefaultValue()
         {
-            buttonCancelRenovation.IsEnabled = false;
-            SelectedRenovation = null;
+            /*
+            - prikazuje se statistika po godinama prvo
+            - broj rezervacija
+            - broj otkazivanja rezervacija
+            - broj pomeranja rezervacija
+            - broj preporuka za renoviranje
+            */
+
+            /*
+            - reservations.csv
+            - canceledreservations.csv
+            - rescheduledreservations.csv
+            - renovationrecommedations.csv
+            */
+
+            /*
+            - sve to trazim za ovaj smestaj sto je dosao
+            */
+
+            /*
+            - pronaci koje sve godine treba prikazati u combobox-u
+            */
+
+            List<int> yearsReservations = accommodationService.FindAccommodationReservationsYears(ShowStatisticsAccommodationDTO.Id);
+            List<int> yearsCanceledReservations = accommodationService.FindAccommodationCanceledReservationsYears(ShowStatisticsAccommodationDTO.Id); //
+            List<int> yearsRescheduledReservations = accommodationService.FindAccommodationRescheduledReservationsYears(ShowStatisticsAccommodationDTO.Id); //
+            // List<int> yearsRenovationRecommedations = accommodationService.FindAccommodationRenovationRecommedationsYears(ShowStatisticsAccommodationDTO.Id);
+
+            List<int> years = new List<int>();
+
+            Years = yearsReservations.Union(yearsCanceledReservations).Union(yearsRescheduledReservations).ToList();
+
+            Years.Sort();
+
+            foreach(int year in years)
+            {
+                MessageBox.Show(year.ToString());
+            }
         }
 
         private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
@@ -89,9 +126,9 @@ namespace InitialProject.View
 
             if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
             {
-                renovationService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
+                accommodationService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
 
-                UnreadCancelledReservations = renovationService.FindUnreadCancelledReservations(OwnerUsername);
+                UnreadCancelledReservations = accommodationService.FindUnreadCancelledReservations(OwnerUsername);
 
                 cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
             }
@@ -108,35 +145,16 @@ namespace InitialProject.View
             return cancelledReservationsNotificationDTO;
         }
 
-        private void RenovateAccommodation(object sender, RoutedEventArgs e)
+        private void labeltbFocus(object sender, MouseButtonEventArgs e)
         {
-            SchedulingRenovation window = new SchedulingRenovation(OwnerUsername);
-
-            window.ShowDialog();
-        }
-
-        private void CancelRenovation(object sender, RoutedEventArgs e)
-        {
-            ShowRenovationDTOs = renovationService.RemoveRenovation(SelectedRenovation, OwnerUsername);
-
-            dgRenovations.Items.Refresh();
-
-            dgRenovations.ItemsSource = ShowRenovationDTOs;
-        }
-
-        private void CancelRenovationButtonEnable(object sender, SelectionChangedEventArgs e)
-        {
-            if(SelectedRenovation != null && SelectedRenovation.Status.Equals("Can be cancelled") == true)
+            if (e.ClickCount == 1)
             {
-                buttonCancelRenovation.IsEnabled = true;
-            }
-            else
-            {
-                buttonCancelRenovation.IsEnabled = false;
+                var label = (Label)sender;
+                Keyboard.Focus(label.Target);
             }
         }
 
-        private void LoadingRowForDgRenovations(object sender, DataGridRowEventArgs e)
+        void LoadingRowForDgImages(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }

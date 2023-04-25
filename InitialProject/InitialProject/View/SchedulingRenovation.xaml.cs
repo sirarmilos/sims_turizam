@@ -214,6 +214,5 @@ namespace InitialProject.View
                 Keyboard.Focus(label.Target);
             }
         }
-
     }
 }

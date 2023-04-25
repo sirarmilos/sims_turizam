@@ -23,6 +23,8 @@ namespace InitialProject.Service
 
         private readonly ReservationService reservationService;
 
+        private readonly UserService userService;
+
         private string owner;
 
         public string Owner
@@ -44,6 +46,7 @@ namespace InitialProject.Service
             canceledRenovationService = new CanceledRenovationService();
             accommodationService = new AccommodationService();
             reservationService = new ReservationService(Owner);
+            userService = new UserService();
         }
 
         public RenovationService()
@@ -204,6 +207,16 @@ namespace InitialProject.Service
         public List<Renovation> FindAllRenovations()
         {
             return renovationRepository.FindAll();
+        }
+
+        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
+        {
+            userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
+        }
+
+        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        {
+            return userService.FindUnreadCancelledReservations(ownerUsername);
         }
     }
 }

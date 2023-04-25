@@ -294,6 +294,8 @@ namespace InitialProject.View
                 SetDefaultValue();
 
                 MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                Close();
             }
         }
 

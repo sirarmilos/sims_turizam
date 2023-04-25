@@ -132,5 +132,10 @@ namespace InitialProject.Repository
             allReservationReschedulingRequests.Where(x => x.Reservation.GuestUsername.Equals(guest1Username) && ( !x.Status.Equals("pending") && (x.ViewedByGuest == false)) ).SetValue(x => x.ViewedByGuest = true);
             Save(allReservationReschedulingRequests);
         }
+
+        public List<ReservationReschedulingRequest> FindByAccommodationId(int accommodationId)
+        {
+            return FindAll().ToList().FindAll(x => x.Reservation.Accommodation.Id == accommodationId);
+        }
     }
 }

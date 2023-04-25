@@ -5,44 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="Renovate" Height="800" Width="1400"
-        WindowStartupLocation="CenterScreen">
+        Title="Renovate" Height="775" Width="1400"
+        WindowStartupLocation="CenterScreen"> <!-- mozda 825 zbog headera -->
+    
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="55" />
             <RowDefinition Height="400" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="295" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="950" />
+            <ColumnDefinition Width="225" />
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+
             <Menu x:Name="menuOwner" DockPanel.Dock ="Top">
-                <MenuItem Header="Home"/>
-                <MenuItem Header="Accommodation"/>
+
+                <MenuItem Header="Home" Click="GoToOwnerHomePageLogin"/>
+                <MenuItem Header="Accommodation" Click="GoToAccommodationStart"/>
                 <MenuItem Header="Management of booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
                 <MenuItem Header="Renovate" Click="GoToShowAndCancellationRenovation"/>
                 <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
                 <MenuItem Header="Guest reviews" Click="GoToShowGuestReviews"/>
-                <MenuItem Header="Forum"/>
+                <MenuItem Header="Forum" Click="GoToOwnerForum"/>
                 <MenuItem x:Name="usernameAndSuperOwner" IsEnabled="False"/>
-                <MenuItem Header="Logout" Click="GoToLogout"/>
+                <MenuItem Header="Logout" Click="GoToOwnerHomePageNotLogin"/>
                 <MenuItem x:Name="notifications" Header="Notifications">
                     <MenuItem x:Name="rateGuestsNotifications"/>
+                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations"/>
+                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <MenuItem Header="{Binding}" Click="ReadCancelledReservationNotification"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </MenuItem>
 
-                <MenuItem Header="Add new accommodation" Click="GoToAddNewAccommodation"/>
             </Menu>
+
         </DockPanel>
 
-        <Label x:Name="labelAListOfAllYourPreviousAndFutureRenovations" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all your previous and future renovations" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,0,0,0"/>
+        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all your previous and future renovations" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="520"/>
 
-        <DataGrid x:Name="dgRenovations" LoadingRow="LoadingRowForDgRenovations" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding ShowRenovationDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedRenovation, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="CancelRenovationButtonEnable" Margin="10">
+        <DataGrid x:Name="dgRenovations" LoadingRow="LoadingRowForDgRenovations" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding ShowRenovationDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedRenovation, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="CancelRenovationButtonEnable" HorizontalAlignment="Center" Height="400" VerticalAlignment="Bottom" Width="1350">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="*"/>
                 <DataGridTextColumn Header="Start date" Binding="{Binding StartDate}" Width="*"/>
@@ -52,9 +63,9 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button x:Name="buttonRenovateAccommodation" Grid.Column="0" Grid.Row="3" Content="Renovate accommodation" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Click="RenovateAccommodation"/>
-
-        <Button x:Name="buttonCancelRenovation" Grid.Column="2" Grid.Row="3" Content="Cancel renovation" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Click="CancelRenovation"/>
+        <Button x:Name="buttonRenovateAccommodation" Grid.Column="0" Grid.Row="3" Content="Renovate accommodation" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175" Click="RenovateAccommodation"/>
+        <Button x:Name="buttonCancelRenovation" Grid.Column="2" Grid.Row="3" Content="Cancel renovation" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175" Click="CancelRenovation"/>
 
     </Grid>
+    
 </Window>
