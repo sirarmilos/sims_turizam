@@ -4,6 +4,7 @@ using InitialProject.Model;
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,10 @@ namespace InitialProject.Service
         private readonly LocationService locationService;
 
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
+
+        private readonly RateGuestsService rateGuestsService;
+
+        private readonly UserService userService;
 
         private string guest1;
         public string Guest1
@@ -42,6 +47,9 @@ namespace InitialProject.Service
             accommodationRepository = new AccommodationRepository();
             locationService = new LocationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
+            rateGuestsService = new RateGuestsService(username);
+            userService = new UserService();
+
             Guest1 = username;
         }
 
@@ -232,6 +240,40 @@ namespace InitialProject.Service
             }
 
             accommodationRepository.Save(allAccommodations);
+        }
+
+        public int FindNumberOfUnratedGuests(string ownerUsername)
+        {
+            return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
+        }
+
+        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
+        {
+            userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
+        }
+
+        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        {
+            return userService.FindUnreadCancelledReservations(ownerUsername);
+        }
+
+        public ObservableCollection<ShowAccommodationDTO> FindOwnerAccommodations(string ownerUsername)
+        {
+            ObservableCollection<ShowAccommodationDTO> showAccommodationDTOs = new ObservableCollection<ShowAccommodationDTO>();
+
+            List<Accommodation> ownerAccommodations = accommodationRepository.FindByOwnerUsername(ownerUsername);
+
+            foreach(Accommodation temporaryAccommodation in ownerAccommodations.ToList())
+            {
+                showAccommodationDTOs.Add(new ShowAccommodationDTO(temporaryAccommodation));
+            }
+
+            return showAccommodationDTOs;
+        }
+
+        public string FindSuperTypeByOwnerName(string ownerName)
+        {
+            return userService.FindSuperTypeByOwnerName(ownerName);
         }
     }
 }

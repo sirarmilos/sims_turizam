@@ -144,5 +144,10 @@ namespace InitialProject.Repository
 
             return renovationRepository.FindAll();
         }
+
+        public List<Accommodation> FindByOwnerUsername(string ownerUsername)
+        {
+            return FindAll().ToList().FindAll(x => x.OwnerUsername.Equals(ownerUsername) == true);
+        }
     }
 }

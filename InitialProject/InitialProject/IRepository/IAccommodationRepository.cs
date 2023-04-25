@@ -37,5 +37,7 @@ namespace InitialProject.IRepository
         Accommodation FindByAccommodationName(string accommodationName);
 
         List<Renovation> FindAllRenovations();
+
+        List<Accommodation> FindByOwnerUsername(string ownerUsername);
     }
 }

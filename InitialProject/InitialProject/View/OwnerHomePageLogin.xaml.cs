@@ -1,13 +1,8 @@
 ﻿using InitialProject.DTO;
-using InitialProject.Model;
-using InitialProject.Repository;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,9 +17,9 @@ using System.Windows.Shapes;
 namespace InitialProject.View
 {
     /// <summary>
-    /// Interaction logic for OwnerStart.xaml
+    /// Interaction logic for OwnerHomePageLogin.xaml
     /// </summary>
-    public partial class OwnerStart : Window
+    public partial class OwnerHomePageLogin : Window
     {
         private readonly UserService userService;
 
@@ -40,7 +35,7 @@ namespace InitialProject.View
             set;
         }
 
-        public OwnerStart(string username)
+        public OwnerHomePageLogin(string username, string ownerHeader)
         {
             InitializeComponent();
 
@@ -50,12 +45,12 @@ namespace InitialProject.View
 
             userService = new UserService();
 
-            SetMenu();
+            SetMenu(ownerHeader);
         }
 
-        private void SetMenu()
+        private void SetMenu(string ownerHeader)
         {
-            usernameAndSuperOwner.Header = OwnerUsername + CheckSuperType();
+            usernameAndSuperOwner.Header = ownerHeader;
 
             rateGuestsNotifications.Header = "Number of unrated guests: " + userService.FindNumberOfUnratedGuests(OwnerUsername) + ".";
 
@@ -64,23 +59,11 @@ namespace InitialProject.View
             UnreadCancelledReservations = userService.FindUnreadCancelledReservations(OwnerUsername);
         }
 
-        private string CheckSuperType()
-        {
-            string superType = string.Empty;
-
-            if (userService.FindSuperTypeByOwnerName(OwnerUsername).Equals("super") == true)
-            {
-                superType = " (Super owner)";
-            }
-
-            return superType;
-        }
-
         private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
         {
             string viewedCancelledReservation = ((MenuItem)sender).Header.ToString();
 
-            if(viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
+            if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
             {
                 userService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
 
@@ -101,10 +84,32 @@ namespace InitialProject.View
             return cancelledReservationsNotificationDTO;
         }
 
-        private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
+        private void GoToOwnerHomePageLogin(object sender, RoutedEventArgs e)
         {
-            AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
-            window.ShowDialog();
+            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void GoToAccommodationStart(object sender, RoutedEventArgs e)
+        {
+            AccommodationStart window = new AccommodationStart(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
+        {
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void GoToShowAndCancellationRenovation(object sender, RoutedEventArgs e)
+        {
+            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
         }
 
         private void GoToRateGuests(object sender, RoutedEventArgs e)
@@ -121,30 +126,16 @@ namespace InitialProject.View
             Close();
         }
 
-        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
+        private void GoToOwnerForum(object sender, RoutedEventArgs e)
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
-        private void GoToLogout(object sender, RoutedEventArgs e)
+        private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
         {
-            LoginForm window = new LoginForm();
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowAndCancellationRenovation(object sender, RoutedEventArgs e)
-        {
-            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToOwnerHomePageLogin(object sender, RoutedEventArgs e)
-        {
-            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
             window.Show();
             Close();
         }
