@@ -24,5 +24,7 @@ namespace InitialProject.IRepository
         CanceledReservation FindByDTO(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO);
 
         void UpdateViewed(CanceledReservation canceledReservation);
+
+        List<CanceledReservation> FindByAccommodationId(int accommodationId);
     }
 }

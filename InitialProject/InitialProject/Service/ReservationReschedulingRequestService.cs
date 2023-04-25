@@ -22,6 +22,8 @@ namespace InitialProject.Service
 
         private readonly RateGuestsService rateGuestsService;
 
+        private readonly UserService userService;
+
         public List<BusyReservation> BusyReservations
         {
             get;
@@ -63,6 +65,7 @@ namespace InitialProject.Service
             reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
             reservationService = new ReservationService(Owner);
             rateGuestsService = new RateGuestsService(Owner);
+            userService = new UserService();
 
             BusyReservations = new List<BusyReservation>();
         }
@@ -241,5 +244,32 @@ namespace InitialProject.Service
                 x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false) && ((x.Status.Equals("rejected") == true) || (x.Status.Equals("accepted") == true)) );
         }
 
+        public List<int> FindAccommodationRescheduledReservationsYears(int accommodationId)
+        {
+            List<int> yearsRescheduledReservations = new List<int>();
+
+            List<ReservationReschedulingRequest> reservationReschedulingRequests = reservationReschedulingRequestRepository.FindByAccommodationId(accommodationId);
+
+            foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequests in reservationReschedulingRequests.ToList())
+            {
+                int year = temporaryReservationReschedulingRequests.NewStartDate.Year; //
+                if (yearsRescheduledReservations.Exists(x => x == year) == false)
+                {
+                    yearsRescheduledReservations.Add(year);
+                }
+            }
+
+            return yearsRescheduledReservations;
+        }
+
+        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
+        {
+            userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
+        }
+
+        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        {
+            return userService.FindUnreadCancelledReservations(ownerUsername);
+        }
     }
 }

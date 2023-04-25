@@ -37,5 +37,7 @@ namespace InitialProject.IRepository
         ReservationReschedulingRequest FindRequestByReservationId(int reservationId, string guest1Username);
 
         void UpdateViewedRequestsByGuest1(string guest1Username);
+
+        List<ReservationReschedulingRequest> FindByAccommodationId(int accommodationId);
     }
 }

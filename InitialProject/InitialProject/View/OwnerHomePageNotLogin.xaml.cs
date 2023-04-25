@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InitialProject.DTO;
+using InitialProject.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,21 @@ namespace InitialProject.View
         public OwnerHomePageNotLogin()
         {
             InitializeComponent();
+
+            DataContext = this;
+        }
+
+        private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
+        {
+            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
+            window.Show();
+            Close();
+        }
+
+        private void GoToOwnerLogin(object sender, RoutedEventArgs e)
+        {
+            OwnerLogin window = new OwnerLogin();
+            window.ShowDialog();
         }
     }
 }

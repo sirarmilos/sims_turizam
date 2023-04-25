@@ -5,9 +5,62 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="OwnerHomePageNotLogin" Height="800" Width="1400"
+        Title="OwnerHomePageNotLogin" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
+
     <Grid>
-        
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="150" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="280" />
+            <RowDefinition Height="240" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1400" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" Grid.Row="0">
+
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top">
+
+                <MenuItem Header="Home" Click="GoToOwnerHomePageNotLogin"/>
+                <MenuItem Header="Accommodation" IsEnabled="False"/>
+                <MenuItem Header="Management of booking move requests" IsEnabled="False"/>
+                <MenuItem Header="Renovate" IsEnabled="False"/>
+                <MenuItem Header="Rate guests" IsEnabled="False"/>
+                <MenuItem Header="Guest reviews" IsEnabled="False"/>
+                <MenuItem Header="Forum" IsEnabled="False"/>
+                <MenuItem Header="Login" Click="GoToOwnerLogin"/>
+
+            </Menu>
+
+        </DockPanel>
+
+        <Image Grid.Column="0" Grid.Row="1" Source="../Resources/Images/logo_test.png" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="100" MouseDown="GoToOwnerHomePageNotLogin"/>
+
+        <Label Grid.Column="0" Grid.Row="2" Content="Tourism company" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="30" VerticalAlignment="Bottom" Width="250"/>
+
+        <GroupBox Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" Height="225" VerticalAlignment="Bottom" Width="1000">
+
+            <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="170" VerticalAlignment="Center" Width="950">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed erat ex, pretium et feugiat feugiat, dictum at nunc. Sed lectus ex, tincidunt accumsan est vel, mollis imperdiet urna. Curabitur vel arcu lacus. Aenean feugiat mauris erat, ultrices facilisis elit dictum sit amet. Integer nisl orci, hendrerit ac bibendum at, dignissim vel nulla. Ut nec finibus arcu. Vestibulum egestas tincidunt gravida. Nullam sodales auctor orci, eu convallis enim lobortis in. Aenean non lectus mollis, maximus mi in, cursus elit. Donec nec dolor nibh. Phasellus congue eu urna vel lobortis.
+                Fusce iaculis orci non sollicitudin dapibus. Curabitur purus purus, semper sed sodales id, rutrum sed tortor. In tincidunt quis lectus et hendrerit. Morbi vehicula urna nec diam laoreet cursus. Phasellus vestibulum molestie nisi, vitae molestie justo cursus ut. Phasellus molestie, lectus sed hendrerit consequat, lectus leo cursus nisi, eget porttitor nisi nisl vel purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla facilisi. Donec dapibus, libero non finibus tempus, libero libero mollis ligula, vitae porta enim ante sit amet dui. Donec finibus ipsum at pretium lobortis. Proin ultricies turpis non pulvinar malesuada. Praesent volutpat, turpis vitae elementum consequat, leo erat molestie tellus, eu lacinia quam tortor varius mi. Aenean vehicula neque in diam tincidunt euismod. Etiam eu maximus felis. Morbi non ipsum mi.
+                Praesent aliquam erat vitae augue porta, eu pharetra lorem porta. Vivamus mattis dui vitae ipsum sagittis suscipit. Duis eu lectus nulla. Sed libero est, feugiat a sagittis vitae, sagittis ut leo. Morbi in dolor at ligula finibus hendrerit non a tellus. Nullam ornare sollicitudin ultrices. Quisque tellus nulla, porttitor sit amet libero eu, tempor pretium magna. Sed vitae rutrum magna.
+            </TextBlock>
+
+        </GroupBox>
+
+        <GroupBox Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" Height="145" VerticalAlignment="Center" Width="1000">
+
+            <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="95" VerticalAlignment="Center" Width="950">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam placerat orci sit amet nunc vestibulum imperdiet non euismod nisl. Nullam bibendum tristique euismod. Cras porta mauris purus, eu dignissim nisl pulvinar vel. Quisque sit amet est eu neque blandit vestibulum. Suspendisse ac ornare lectus. Phasellus at nibh metus. Praesent luctus vehicula sapien, quis dignissim justo mollis quis. Ut volutpat erat nec elementum mattis. Sed imperdiet ipsum nec purus hendrerit, sit amet pellentesque sapien efficitur. Nam rhoncus ut lacus nec auctor. Nunc quis pulvinar est, et pharetra sem. Integer at enim ac urna viverra porta vel ut sapien. Morbi in interdum ex.
+                Nam eu dictum dui. Curabitur ut massa odio. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus.
+            </TextBlock>
+
+        </GroupBox>
+
     </Grid>
+
 </Window>

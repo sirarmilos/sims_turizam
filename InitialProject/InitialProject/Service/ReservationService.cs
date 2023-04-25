@@ -311,5 +311,23 @@ namespace InitialProject.Service
         {
             return reservationRepository.FindReservationsByAccommodationName(accommodationName);
         }
+
+        public List<int> FindAccommodationReservationsYears(int accommodationId)
+        {
+            List<int> yearsReservations = new List<int>();
+
+            List<Reservation> reservations = reservationRepository.FindByAccommodationId(accommodationId);
+
+            foreach(Reservation temporaryReservation in reservations.ToList())
+            {
+                int year = temporaryReservation.StartDate.Year;
+                if (yearsReservations.Exists(x => x == year) == false)
+                {
+                    yearsReservations.Add(year);
+                }
+            }
+
+            return yearsReservations;
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace InitialProject.Model
 {
     public class RenovationRecommedation : ISerializable
     {
-        public int ReservationId { get; set; }
+        public Reservation Reservation { get; set; }
 
         public string Level { get; set; }
 
@@ -18,22 +18,22 @@ namespace InitialProject.Model
 
         public RenovationRecommedation() { }
 
-        public RenovationRecommedation(int reservationId, string level, string recommendation)
+        public RenovationRecommedation(Reservation reservation, string level, string recommendation)
         {
-            ReservationId = reservationId;
+            Reservation = reservation;
             Level = level;
             Recommendation = recommendation;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ReservationId.ToString(), Level.ToString(), Recommendation.ToString() };
+            string[] csvValues = { Reservation.ReservationId.ToString(), Level.ToString(), Recommendation.ToString() };
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
-            ReservationId = Convert.ToInt32(values[0]);
+            Reservation = new Reservation() { ReservationId = Convert.ToInt32(values[0]) };
             Level = values[1];
             Recommendation = values[2];
         }

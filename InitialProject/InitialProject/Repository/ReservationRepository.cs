@@ -150,5 +150,10 @@ namespace InitialProject.Repository
         {
             return FindAll().ToList().FindAll(x => x.Accommodation.AccommodationName.Equals(accommodationName) == true);
         }
+
+        public List<Reservation> FindByAccommodationId(int accommodationId)
+        {
+            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+        }
     }
 }

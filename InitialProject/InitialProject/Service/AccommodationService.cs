@@ -25,6 +25,12 @@ namespace InitialProject.Service
 
         private readonly UserService userService;
 
+        private readonly ReservationService reservationService;
+
+        private readonly CanceledReservationService cancelReservationService;
+
+        private readonly RenovationRecommedationService renovationRecommedationService;
+
         private string guest1;
         public string Guest1
         {
@@ -49,6 +55,9 @@ namespace InitialProject.Service
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
             rateGuestsService = new RateGuestsService(username);
             userService = new UserService();
+            reservationService = new ReservationService(username);
+            cancelReservationService = new CanceledReservationService();
+            renovationRecommedationService = new RenovationRecommedationService();
 
             Guest1 = username;
         }
@@ -275,5 +284,34 @@ namespace InitialProject.Service
         {
             return userService.FindSuperTypeByOwnerName(ownerName);
         }
+
+        public ShowStatisticsAccommodationDTO FindSelectedAccommodation(int accommodationId)
+        {
+            Accommodation accommodation = accommodationRepository.FindById(accommodationId);
+
+            ShowStatisticsAccommodationDTO showStatisticsAccommodationDTO = new ShowStatisticsAccommodationDTO(accommodation);
+
+            return showStatisticsAccommodationDTO;
+        }
+
+        public List<int> FindAccommodationReservationsYears(int accommodationId)
+        {
+            return reservationService.FindAccommodationReservationsYears(accommodationId);
+        }
+
+        public List<int> FindAccommodationCanceledReservationsYears(int accommodationId)
+        {
+            return cancelReservationService.FindAccommodationCanceledReservationsYears(accommodationId);
+        }
+
+        public List<int> FindAccommodationRescheduledReservationsYears(int accommodationId)
+        {
+            return reservationReschedulingRequestService.FindAccommodationRescheduledReservationsYears(accommodationId);
+        }
+
+        /* public List<int> FindAccommodationRenovationRecommedationsYears(int accommodationId)
+        {
+            return renovationRecommedationService.FindAccommodationRenovationRecommedationsYears(accommodationId);
+        }*/
     }
 }

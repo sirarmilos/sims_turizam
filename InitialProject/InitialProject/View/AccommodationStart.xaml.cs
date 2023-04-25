@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using InitialProject.View;
+using InitialProject.Model;
 
 namespace InitialProject.View
 {
@@ -49,7 +50,7 @@ namespace InitialProject.View
             set;
         }
 
-        public AccommodationStart(string ownerUsername, string ownerHeader)
+        public AccommodationStart(string ownerUsername)
         {
             InitializeComponent();
 
@@ -61,14 +62,14 @@ namespace InitialProject.View
 
             SetDefaultValue();
 
-            SetMenu(ownerHeader);
+            SetMenu();
 
             ShowAccommodationDTOs = accommodationService.FindOwnerAccommodations(OwnerUsername);
 
             dgAccommodations.ItemsSource = ShowAccommodationDTOs;
         }
 
-        private void SetMenu(string ownerHeader)
+        private void SetMenu()
         {
             usernameAndSuperOwner.Header = OwnerUsername + CheckSuperType();
 
@@ -159,7 +160,7 @@ namespace InitialProject.View
 
         private void GoToAccommodationStart(object sender, RoutedEventArgs e)
         {
-            AccommodationStart window = new AccommodationStart(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            AccommodationStart window = new AccommodationStart(OwnerUsername);
             window.Show();
             Close();
         }
@@ -202,6 +203,20 @@ namespace InitialProject.View
         private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
         {
             OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
+            window.Show();
+            Close();
+        }
+
+        private void RenovateAccommodation(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AccommodationStatistics(object sender, RoutedEventArgs e)
+        {
+            ShowStatisticsAccommodationDTO showStatisticsAccommodationDTO = accommodationService.FindSelectedAccommodation(SelectedShowAccommodationDTO.Id);
+
+            InitialProject.View.AccommodationStatistics window = new AccommodationStatistics(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showStatisticsAccommodationDTO);
             window.Show();
             Close();
         }
