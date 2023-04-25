@@ -11,13 +11,15 @@
     <None Remove="Resources\Images\add.png" />
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
+    <None Remove="Resources\Images\logo_test.png" />
     <None Remove="Resources\Images\view.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\Images\add.png">
+    <Resource Include="Resources\Images\add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
+    <Resource Include="Resources\Images\logo_test.png" />
     <Content Include="Resources\Images\delete.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -5,12 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="Owner start" Height="450" Width="800"
+        Title="Owner start" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="150" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="280" />
+            <RowDefinition Height="240" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1400" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" Grid.Row="0">
             <Menu x:Name="menuOwner" DockPanel.Dock ="Top">
-                <MenuItem Header="Home"/>
+                <MenuItem Header="Home" Click="GoToOwnerHomePageLogin"/>
                 <MenuItem Header="Accommodation"/>
                 <MenuItem Header="Management of booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
                 <MenuItem Header="Renovate" Click="GoToShowAndCancellationRenovation"/>
@@ -32,11 +44,12 @@
                     <ComboBox x:Name="cbCancelledReservationsNotifications" Text="Cancelled reservations">
 
                     </ComboBox>
-                    
+
                 </MenuItem>
 
                 <MenuItem Header="Add new accommodation" Click="GoToAddNewAccommodation"/>
             </Menu>
         </DockPanel>
+
     </Grid>
 </Window>
