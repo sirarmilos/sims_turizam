@@ -178,5 +178,15 @@ namespace InitialProject.Service
         {
             return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
         }
+
+        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
+        {
+            userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
+        }
+
+        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        {
+            return userService.FindUnreadCancelledReservations(ownerUsername);
+        }
     }
 }

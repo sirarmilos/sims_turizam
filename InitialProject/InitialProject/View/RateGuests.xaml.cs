@@ -33,6 +33,12 @@ namespace InitialProject.View
             set;
         }
 
+        public List<string> UnreadCancelledReservations
+        {
+            get;
+            set;
+        }
+
         private int cleanliness;
         private int followRules;
         private int behavior;
@@ -175,6 +181,10 @@ namespace InitialProject.View
             usernameAndSuperOwner.Header = ownerHeader;
 
             rateGuestsNotifications.Header = "Number of unrated guests: " + RateGuestsDTOs.Count + ".";
+
+            UnreadCancelledReservations = new List<string>();
+
+            UnreadCancelledReservations = rateGuestsService.FindUnreadCancelledReservations(OwnerUsername);
         }
 
         private void SetDefaultValue()
@@ -188,6 +198,31 @@ namespace InitialProject.View
             tbComment.Text = string.Empty;
             buttonRate.IsEnabled = false;
             groupBoxRateFields.IsEnabled = false;
+        }
+
+        private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
+        {
+            string viewedCancelledReservation = ((MenuItem)sender).Header.ToString();
+
+            if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
+            {
+                rateGuestsService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
+
+                UnreadCancelledReservations = rateGuestsService.FindUnreadCancelledReservations(OwnerUsername);
+
+                cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
+            }
+        }
+
+        private CancelledReservationsNotificationDTO FindDTO(string viewedCancelledReservation)
+        {
+            string accommodationName = viewedCancelledReservation.Split(":")[0];
+            DateTime reservationStartDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[1]);
+            DateTime reservationEndDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[3]);
+
+            CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(accommodationName, reservationStartDate, reservationEndDate);
+
+            return cancelledReservationsNotificationDTO;
         }
 
         private void SaveRateGuest(object sender, RoutedEventArgs e)
@@ -258,10 +293,32 @@ namespace InitialProject.View
             Communicativeness = Convert.ToInt32(sliderCommunicativeness.Value);
         }
 
-        private void GoToAddNewAccommodation(object sender, RoutedEventArgs e)
+        private void GoToOwnerHomePageLogin(object sender, RoutedEventArgs e)
         {
-            AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
-            window.ShowDialog();
+            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void GoToAccommodationStart(object sender, RoutedEventArgs e)
+        {
+            AccommodationStart window = new AccommodationStart(OwnerUsername);
+            window.Show();
+            Close();
+        }
+
+        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
+        {
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void GoToShowAndCancellationRenovation(object sender, RoutedEventArgs e)
+        {
+            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
         }
 
         private void GoToRateGuests(object sender, RoutedEventArgs e)
@@ -278,16 +335,16 @@ namespace InitialProject.View
             Close();
         }
 
-        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
+        private void GoToOwnerForum(object sender, RoutedEventArgs e)
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
             window.Show();
             Close();
         }
 
-        private void GoToLogout(object sender, RoutedEventArgs e)
+        private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
         {
-            LoginForm window = new LoginForm();
+            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
             window.Show();
             Close();
         }

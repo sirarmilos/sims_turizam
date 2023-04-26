@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace InitialProject.ViewModel
 {
@@ -16,6 +17,11 @@ namespace InitialProject.ViewModel
         private readonly ReviewService reviewService;
 
         public string OwnerUsername
+        {
+            get;
+            set;
+        }
+        public List<string> UnreadCancelledReservations
         {
             get;
             set;
@@ -39,7 +45,22 @@ namespace InitialProject.ViewModel
             set;
         }
 
-        public DelegateCommand GoToAddNewAccommodationCommand
+        public DelegateCommand GoToOwnerHomePageLoginCommand
+        {
+            get;
+        }
+
+        public DelegateCommand GoToAccommodationStartCommand
+        {
+            get;
+        }
+
+        public DelegateCommand GoToShowOwnerManageBookingMoveRequestsCommand
+        {
+            get;
+        }
+
+        public DelegateCommand GoToShowAndCancellationRenovationCommand
         {
             get;
         }
@@ -54,12 +75,17 @@ namespace InitialProject.ViewModel
             get;
         }
 
-        public DelegateCommand GoToShowOwnerManageBookingMoveRequestsCommand 
+        public DelegateCommand GoToOwnerForumCommand
         {
             get;
         }
 
-        public DelegateCommand GoToLogoutCommand 
+        public DelegateCommand GoToOwnerHomePageNotLoginCommand
+        {
+            get;
+        }
+
+        public DelegateCommand ReadCancelledReservationNotificationCommand
         {
             get;
         }
@@ -72,11 +98,15 @@ namespace InitialProject.ViewModel
 
         public ShowGuestReviewsViewModel(ShowGuestReviews form, string ownerUsername, string ownerHeader)
         {
-            GoToAddNewAccommodationCommand = new DelegateCommand(GoToAddNewAccommodation);
+            GoToOwnerHomePageLoginCommand = new DelegateCommand(GoToOwnerHomePageLogin);
+            GoToAccommodationStartCommand = new DelegateCommand(GoToAccommodationStart);
+            GoToShowOwnerManageBookingMoveRequestsCommand = new DelegateCommand(GoToShowOwnerManageBookingMoveRequests);
+            GoToShowAndCancellationRenovationCommand = new DelegateCommand(GoToShowAndCancellationRenovation);
             GoToRateGuestsCommand = new DelegateCommand(GoToRateGuests);
             GoToShowGuestReviewsCommand = new DelegateCommand(GoToShowGuestReviews);
-            GoToShowOwnerManageBookingMoveRequestsCommand = new DelegateCommand(GoToShowOwnerManageBookingMoveRequests);
-            GoToLogoutCommand = new DelegateCommand(GoToLogout);
+            GoToOwnerForumCommand = new DelegateCommand(GoToOwnerForum);
+            GoToOwnerHomePageNotLoginCommand = new DelegateCommand(GoToOwnerHomePageNotLogin);
+            ReadCancelledReservationNotificationCommand = new DelegateCommand(ReadCancelledReservationNotification);
 
             OwnerUsername = ownerUsername;
 
@@ -96,12 +126,67 @@ namespace InitialProject.ViewModel
             UsernameAndSuperOwner = ownerHeader;
 
             RateGuestsNotifications = "Number of unrated guests: " + reviewService.FindNumberOfUnratedGuests(OwnerUsername) + ".";
+
+            UnreadCancelledReservations = new List<string>();
+
+            UnreadCancelledReservations = reviewService.FindUnreadCancelledReservations(OwnerUsername);
         }
 
-        public void GoToAddNewAccommodation()
+        private void ReadCancelledReservationNotification(/*object sender, RoutedEventArgs e*/)
         {
-            AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
-            window.ShowDialog();
+            string viewedCancelledReservation = UnreadCancelledReservations[0];// ((MenuItem)sender).Header.ToString();
+
+            if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
+            {
+                reviewService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
+
+                UnreadCancelledReservations = reviewService.FindUnreadCancelledReservations(OwnerUsername);
+
+                // cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
+            }
+        }
+
+        private CancelledReservationsNotificationDTO FindDTO(string viewedCancelledReservation)
+        {
+            string accommodationName = viewedCancelledReservation.Split(":")[0];
+            DateTime reservationStartDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[1]);
+            DateTime reservationEndDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[3]);
+
+            CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(accommodationName, reservationStartDate, reservationEndDate);
+
+            return cancelledReservationsNotificationDTO;
+        }
+
+        private void GoToOwnerHomePageLogin()
+        {
+            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, UsernameAndSuperOwner);
+            window.Show();
+            Form.Close();
+            // Close();
+        }
+
+        private void GoToAccommodationStart()
+        {
+            AccommodationStart window = new AccommodationStart(OwnerUsername);
+            window.Show();
+            Form.Close();
+            // Close();
+        }
+
+        private void GoToShowOwnerManageBookingMoveRequests()
+        {
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, UsernameAndSuperOwner);
+            window.Show();
+            Form.Close();
+            // Close();
+        }
+
+        private void GoToShowAndCancellationRenovation()
+        {
+            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, UsernameAndSuperOwner);
+            window.Show();
+            Form.Close();
+            // Close();
         }
 
         private void GoToRateGuests()
@@ -120,17 +205,17 @@ namespace InitialProject.ViewModel
             // Close();
         }
 
-        private void GoToShowOwnerManageBookingMoveRequests()
+        private void GoToOwnerForum()
         {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, UsernameAndSuperOwner);
+            OwnerForum window = new OwnerForum(OwnerUsername, UsernameAndSuperOwner);
             window.Show();
             Form.Close();
             // Close();
         }
 
-        private void GoToLogout()
+        private void GoToOwnerHomePageNotLogin()
         {
-            LoginForm window = new LoginForm();
+            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
             window.Show();
             Form.Close();
             // Close();
