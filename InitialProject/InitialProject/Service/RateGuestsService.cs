@@ -21,6 +21,8 @@ namespace InitialProject.Service
 
         private readonly ReservationService reservationService;
 
+        private readonly UserService userService;
+
         private string owner;
 
         public string Owner
@@ -37,6 +39,7 @@ namespace InitialProject.Service
             Owner = owner;
             rateGuestRepository = new RateGuestRepository();
             reservationService = new ReservationService(Owner);
+            userService = new UserService();
         }
 
         public List<RateGuestsDTO> FindAllGuestsToRate()
@@ -97,6 +100,16 @@ namespace InitialProject.Service
         public int FindNumberOfUnratedGuests(string ownerUsername)
         {
             return FindAllGuestsToRate().Count;
+        }
+
+        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
+        {
+            userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
+        }
+
+        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        {
+            return userService.FindUnreadCancelledReservations(ownerUsername);
         }
     }
 }

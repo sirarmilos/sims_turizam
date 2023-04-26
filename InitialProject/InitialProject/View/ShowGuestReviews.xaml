@@ -5,37 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="Show guest reviews" Height="450" Width="800"
+        Title="Show guest reviews" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
+    
     <Grid>
+        
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="300" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="425" />
+            <RowDefinition Height="270" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1400" />
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
-            <Menu DockPanel.Dock ="Top">
-                <MenuItem Header="Add new accommodation" Command="{Binding GoToAddNewAccommodationCommand}"/>
+
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top">
+
+                <MenuItem Header="Home" Command="{Binding GoToOwnerHomePageLoginCommand}"/>
+                <MenuItem Header="Accommodation"  Command="{Binding GoToAccommodationStartCommand}"/>
+                <MenuItem Header="Management of booking move requests" Command="{Binding GoToShowOwnerManageBookingMoveRequestsCommand}"/>
+                <MenuItem Header="Renovate" Command="{Binding GoToShowAndCancellationRenovationCommand}"/>
                 <MenuItem Header="Rate guests" Command="{Binding GoToRateGuestsCommand}"/>
-                <MenuItem Header="Show guest reviews" Command="{Binding GoToShowGuestReviewsCommand}"/>
-                <MenuItem Header="Manage booking move requests" Command="{Binding GoToShowOwnerManageBookingMoveRequestsCommand}"/>
-                <MenuItem IsEnabled="False" Header="{Binding UsernameAndSuperOwner}"/>
-                <MenuItem Header="Logout" Command="{Binding GoToLogoutCommand}"/>
+                <MenuItem Header="Guest reviews" Command="{Binding GoToShowGuestReviewsCommand}"/>
+                <MenuItem Header="Forum" Command="{Binding GoToOwnerForumCommand}"/>
+                <MenuItem x:Name="usernameAndSuperOwner" Header="{Binding UsernameAndSuperOwner}" IsEnabled="False"/>
+                <MenuItem Header="Logout" Command="{Binding GoToOwnerHomePageNotLoginCommand}"/>
                 <MenuItem x:Name="notifications" Header="Notifications">
                     <MenuItem x:Name="rateGuestsNotifications" Header="{Binding RateGuestsNotifications}"/>
+                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations"/>
+                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations, Mode=TwoWay}" x:Name="cancelledReservationsNotificationsList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <MenuItem Header="{Binding}" Command="{Binding ReadCancelledReservationNotificationCommand}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </MenuItem>
+
             </Menu>
+
         </DockPanel>
 
-        <Label x:Name="labelAListOfAllGuestReviews" Grid.Column="0" Grid.Row="1" Content="A list of all guest reviews" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,0,0,0"/>
+        <Label x:Name="labelAListOfAllGuestReviews" Grid.Column="0" Grid.Row="1" Content="A list of all guest reviews" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="280"/>
 
-        <DataGrid x:Name="dgShowGuestReviews" LoadingRow="LoadingRowForDgShowGuestReviews" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding ShowGuestReviewsDTOs, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="10">
+        <DataGrid x:Name="dgShowGuestReviews" LoadingRow="LoadingRowForDgShowGuestReviews" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding ShowGuestReviewsDTOs, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" HorizontalAlignment="Center" Height="400" VerticalAlignment="Bottom" Width="1350">
+            
             <DataGrid.Columns>
+                
                 <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="150"/>
                 <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="*"/>
                 <DataGridTextColumn Header="Cleanliness" Binding="{Binding Cleanliness}" Width="*"/>
@@ -43,8 +62,13 @@
                 <DataGridTextColumn Header="Comfort" Binding="{Binding Comfort}" Width="*"/>
                 <DataGridTextColumn Header="Value for money" Binding="{Binding ValueForMoney}" Width="*"/>
                 <DataGridTextColumn Header="Comment" Binding="{Binding Comment}" Width="*"/>
+            
             </DataGrid.Columns>
+            
         </DataGrid>
 
+        <Button x:Name="buttonAcceptRequest" Grid.Column="0" Grid.Row="3" Content="Report on average Guest rate for each accommodation" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="350"/>
+
     </Grid>
+    
 </Window>

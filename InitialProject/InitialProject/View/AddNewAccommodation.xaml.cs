@@ -301,7 +301,7 @@ namespace InitialProject.View
 
         private bool CheckErrorAllFieldsFilled()
         {
-            return string.IsNullOrEmpty(AccommodationName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || !MaxGuests.HasValue || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
+            return string.IsNullOrEmpty(AccommodationName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || !MaxGuests.HasValue; // || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
         }
 
         private bool CheckErrorImagesNumber()
@@ -374,7 +374,7 @@ namespace InitialProject.View
             }
         }
 
-        private void CheckErrorMinDaysReservation(object sender, TextChangedEventArgs e)
+        private void CheckErrorMinDaysReservation(object sender, TextChangedEventArgs e) //
         {
             if (MinDaysReservationCheck.Equals(string.Empty) == false)
             {
@@ -394,7 +394,7 @@ namespace InitialProject.View
             }
         }
 
-        private void CheckErrorLeftCancelationDays(object sender, TextChangedEventArgs e)
+        private void CheckErrorLeftCancelationDays(object sender, TextChangedEventArgs e) //
         {
             if (LeftCancelationDaysCheck.Equals(string.Empty) == false)
             {
