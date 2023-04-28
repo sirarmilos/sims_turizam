@@ -14,7 +14,7 @@ namespace InitialProject.Service
 {
     public class UserService
     {
-        private IUserRepository userRepository;
+        private readonly IUserRepository userRepository;
 
         private RateGuestsService rateGuestsService;
 
