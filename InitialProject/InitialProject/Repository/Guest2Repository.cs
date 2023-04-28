@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.View;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    class Guest2Repository
+    class Guest2Repository : IGuest2Repository
     {
         private const string FilePathGuest2 = "../../../Resources/Data/guest2.csv";
         private const string FilePathVouchers = "../../../Resources/Data/vouchers.csv";

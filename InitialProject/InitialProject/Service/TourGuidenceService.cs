@@ -16,7 +16,7 @@ namespace InitialProject.Service
 
         public TourGuidenceService()
         {
-            tourGuidenceRepository = new TourGuidenceRepository();  
+            tourGuidenceRepository = Injector.Injector.CreateInstance<ITourGuidenceRepository>();  
         }
 
         public TourGuidence GetById(int id)

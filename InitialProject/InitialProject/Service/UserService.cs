@@ -14,7 +14,7 @@ namespace InitialProject.Service
 {
     public class UserService
     {
-        private readonly IUserRepository userRepository;
+        private IUserRepository userRepository;
 
         private RateGuestsService rateGuestsService;
 
@@ -24,7 +24,7 @@ namespace InitialProject.Service
 
         public UserService()
         {
-            userRepository = new UserRepository();
+            userRepository = Injector.Injector.CreateInstance<IUserRepository>();
             // rateGuestsService = new RateGuestsService(Owner);
         }
 

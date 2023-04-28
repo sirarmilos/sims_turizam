@@ -58,7 +58,7 @@ namespace InitialProject.Service
             rateGuestsService = new RateGuestsService(Owner);
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();    
 
-            reviewRepository = new ReviewRepository();
+            reviewRepository = Injector.Injector.CreateInstance<IReviewRepository>();
         }
 
         public List<CreateReviewDTO> FindAllReviewsToRate()

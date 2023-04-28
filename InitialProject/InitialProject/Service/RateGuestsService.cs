@@ -12,6 +12,7 @@ using System.Windows.Interactivity;
 using System.Windows;
 using System.Xml.Linq;
 using InitialProject.IRepository;
+using InitialProject.Injector;
 
 namespace InitialProject.Service
 {
@@ -37,7 +38,7 @@ namespace InitialProject.Service
         public RateGuestsService(string owner)
         {
             Owner = owner;
-            rateGuestRepository = new RateGuestRepository();
+            rateGuestRepository = Injector.Injector.CreateInstance<IRateGuestRepository>();
             reservationService = new ReservationService(Owner);
             userService = new UserService();
         }

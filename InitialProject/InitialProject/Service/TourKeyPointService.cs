@@ -14,7 +14,7 @@ namespace InitialProject.Service
         private readonly ITourKeyPointRepository tourKeyPointRepository;
         public TourKeyPointService()
         {
-            tourKeyPointRepository = new TourKeyPointRepository();
+            tourKeyPointRepository = Injector.Injector.CreateInstance<ITourKeyPointRepository>();
         }
 
         public List<TourKeyPoint> GetByTourGuidance(int id)

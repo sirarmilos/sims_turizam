@@ -16,7 +16,7 @@ namespace InitialProject.Service
         private readonly IVoucherRepository voucherRepository;
         public VoucherService() 
         {
-            voucherRepository = new VoucherRepository();
+            voucherRepository = Injector.Injector.CreateInstance<IVoucherRepository>();
         }
 
         public void CreateForCancelledTourGuidence(int guidenceId)

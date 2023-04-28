@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.Injector;
 using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
@@ -54,7 +55,7 @@ namespace InitialProject.Service
 
         public ReservationReschedulingRequestService()
         {
-            reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
+            reservationReschedulingRequestRepository = Injector.Injector.CreateInstance<IReservationReschedulingRequestRepository>();
 
         }
 
@@ -62,7 +63,7 @@ namespace InitialProject.Service
         {
             Owner = username;
             Guest1 = username;
-            reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
+            reservationReschedulingRequestRepository = Injector.Injector.CreateInstance<IReservationReschedulingRequestRepository>();
             reservationService = new ReservationService(Owner);
             rateGuestsService = new RateGuestsService(Owner);
             userService = new UserService();

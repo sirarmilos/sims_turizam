@@ -1,4 +1,5 @@
-﻿using InitialProject.IRepository;
+﻿using InitialProject.Injector;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using System;
@@ -15,7 +16,7 @@ namespace InitialProject.Service
 
         public RenovationRecommedationService()
         {
-            renovationRecommedationRepository = new RenovationRecommedationRepository();
+            renovationRecommedationRepository = Injector.Injector.CreateInstance<IRenovationRecommedationRepository>();
         }
 
         /*public List<int> FindAccommodationRenovationRecommedationsYears(int accommodationId)

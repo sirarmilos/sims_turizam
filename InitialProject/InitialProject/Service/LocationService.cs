@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.Injector;
 using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
@@ -16,7 +17,7 @@ namespace InitialProject.Service
 
         public LocationService()
         {
-            locationRepository = new LocationRepository();
+            locationRepository = Injector.Injector.CreateInstance<ILocationRepository>();
         }
 
         public Location Save(SaveNewAccommodationDTO saveNewAccommodationDTO)

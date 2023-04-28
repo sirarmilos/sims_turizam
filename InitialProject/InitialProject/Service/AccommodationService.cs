@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.Injector;
 using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
@@ -43,14 +44,14 @@ namespace InitialProject.Service
 
         public AccommodationService()
         {
-            accommodationRepository = new AccommodationRepository();
+            accommodationRepository = Injector.Injector.CreateInstance<IAccommodationRepository>(); // new AccommodationRepository();
             locationService = new LocationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }
 
         public AccommodationService(string username)
         {
-            accommodationRepository = new AccommodationRepository();
+            accommodationRepository = Injector.Injector.CreateInstance<IAccommodationRepository>();
             locationService = new LocationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
             rateGuestsService = new RateGuestsService(username);
