@@ -314,20 +314,66 @@ namespace InitialProject.Service
 
         public List<int> FindAccommodationReservationsYears(int accommodationId)
         {
-            List<int> yearsReservations = new List<int>();
+            List<int> years = new List<int>();
 
-            List<Reservation> reservations = reservationRepository.FindByAccommodationId(accommodationId);
+            List<Reservation> accommodationReservations = reservationRepository.FindByAccommodationId(accommodationId);
 
-            foreach(Reservation temporaryReservation in reservations.ToList())
+            foreach (Reservation temporaryAccommodationReservation in accommodationReservations.ToList())
             {
-                int year = temporaryReservation.StartDate.Year;
-                if (yearsReservations.Exists(x => x == year) == false)
+                for(int year = temporaryAccommodationReservation.StartDate.Year; year <= temporaryAccommodationReservation.EndDate.Year; year++)
                 {
-                    yearsReservations.Add(year);
+                    if(years.Exists(x => x == year) == false)
+                    {
+                        years.Add(year);
+                    }
                 }
             }
 
-            return yearsReservations;
+            years.Sort();
+
+            return years;
+        }
+
+        public int FindAccommodationReservationCountByYear(int accommodationId, int year)
+        {
+            return reservationRepository.FindAccommodationReservationCountByYear(accommodationId, year);
+        }
+
+        public List<int> FindAccommodationReservationCountByMonth(int accommodationId, int year)
+        {
+            List<int> reservationCount = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+            List<Reservation> yearReservations = reservationRepository.FindAccommodationReservationsByYear(accommodationId, year);
+
+            foreach(Reservation temporaryYearReservation in yearReservations.ToList())
+            {
+                if(temporaryYearReservation.StartDate.Year != year)
+                {
+                    temporaryYearReservation.StartDate = new DateTime(year, 1, 1);
+                }
+
+                if(temporaryYearReservation.EndDate.Year != year)
+                {
+                    temporaryYearReservation.EndDate = new DateTime(year, 12, 31);
+                }
+
+                for(int month = temporaryYearReservation.StartDate.Month; month <= temporaryYearReservation.EndDate.Month; month++)
+                {
+                    reservationCount[month - 1]++;
+                }
+            }
+
+            return reservationCount;
+        }
+
+        public List<Reservation> FindByAccommodationId(int accommodationId)
+        {
+            return reservationRepository.FindByAccommodationId(accommodationId);
+        }
+
+        public List<Reservation> FindAccommodationReservationsByYear(int accommodationId, int year)
+        {
+            return reservationRepository.FindAccommodationReservationsByYear(accommodationId, year);
         }
     }
 }

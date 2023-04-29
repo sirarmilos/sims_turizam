@@ -155,5 +155,15 @@ namespace InitialProject.Repository
         {
             return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
         }
+
+        public int FindAccommodationReservationCountByYear(int accommodationId, int year)
+        {
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.StartDate.Year == year || x.EndDate.Year == year).Count;
+        }
+
+        public List<Reservation> FindAccommodationReservationsByYear(int accommodationId, int year)
+        {
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.StartDate.Year == year || x.EndDate.Year == year);
+        }
     }
 }
