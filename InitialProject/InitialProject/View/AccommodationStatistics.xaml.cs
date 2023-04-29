@@ -50,6 +50,30 @@ namespace InitialProject.View
             set;
         }
 
+        /* public List<string> Years
+        {
+            get;
+            set;
+        }*/
+
+        public int SelectedYear
+        {
+            get;
+            set;
+        }
+
+        public List<AccommodationStatisticsDataDTO> AccommodationStatisticsDataDTOs
+        {
+            get;
+            set;
+        }
+
+        public string MostBusyPeriodTime
+        {
+            get;
+            set;
+        }
+
         public AccommodationStatistics(string ownerUsername, string ownerHeader, ShowStatisticsAccommodationDTO showStatisticsAccommodationDTO)
         {
             InitializeComponent();
@@ -80,44 +104,25 @@ namespace InitialProject.View
 
         private void SetDefaultValue()
         {
-            /*
-            - prikazuje se statistika po godinama prvo
-            - broj rezervacija
-            - broj otkazivanja rezervacija
-            - broj pomeranja rezervacija
-            - broj preporuka za renoviranje
-            */
+            SelectedYear = 0;
 
-            /*
-            - reservations.csv
-            - canceledreservations.csv
-            - rescheduledreservations.csv
-            - renovationrecommedations.csv
-            */
+            Years = new List<int>();
 
-            /*
-            - sve to trazim za ovaj smestaj sto je dosao
-            */
+            Years = accommodationService.FindAccommodationYears(ShowStatisticsAccommodationDTO.Id);
 
-            /*
-            - pronaci koje sve godine treba prikazati u combobox-u
-            */
+            // treba da prebacis da Years bude string da bi moglo da ima i "all year" da bi moglo da se vrati i gleda opet za sve godine kada se jednom promeni na jednu konkretnu godinu
+            // ShowMonthsStatistics se nece vise zvati tako jer sada moze da se promeni i na sve godine, i tu ce trebati provera, neki if ako je allyears da radi jedno i ispisuje dole u label-u jedno,
+            // a ako je neka konkretna godina onda u tu labelu se upisuje nesto drugo tj. mesec, a ako su sve godine onda se ispise godina
 
-            List<int> yearsReservations = accommodationService.FindAccommodationReservationsYears(ShowStatisticsAccommodationDTO.Id);
-            List<int> yearsCanceledReservations = accommodationService.FindAccommodationCanceledReservationsYears(ShowStatisticsAccommodationDTO.Id); //
-            List<int> yearsRescheduledReservations = accommodationService.FindAccommodationRescheduledReservationsYears(ShowStatisticsAccommodationDTO.Id); //
-            // List<int> yearsRenovationRecommedations = accommodationService.FindAccommodationRenovationRecommedationsYears(ShowStatisticsAccommodationDTO.Id);
+            // Years = accommodationService.FindAccommodationYears(ShowStatisticsAccommodationDTO.Id);
 
-            List<int> years = new List<int>();
+            AccommodationStatisticsDataDTOs = new List<AccommodationStatisticsDataDTO>();
 
-            Years = yearsReservations.Union(yearsCanceledReservations).Union(yearsRescheduledReservations).ToList();
+            // kada nema nijedna godina, onda treba da se disable combobox i label-e dole levo i da se desno gde treba da budu grafici ispise poruka da nema nicega za taj accommodation umesto grafikona
 
-            Years.Sort();
+            AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationYearStatistics(ShowStatisticsAccommodationDTO.Id, Years);
 
-            foreach(int year in years)
-            {
-                MessageBox.Show(year.ToString());
-            }
+            MostBusyPeriodTime = accommodationService.FindMostBusyYear(ShowStatisticsAccommodationDTO.Id, Years).ToString();
         }
 
         private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
@@ -143,6 +148,15 @@ namespace InitialProject.View
             CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(accommodationName, reservationStartDate, reservationEndDate);
 
             return cancelledReservationsNotificationDTO;
+        }
+
+        private void ShowMonthsStatistics(object sender, SelectionChangedEventArgs e)
+        {
+            AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationMonthStatistics(ShowStatisticsAccommodationDTO.Id, SelectedYear);
+
+            MostBusyPeriodTime = accommodationService.FindMostBusyMonth(ShowStatisticsAccommodationDTO.Id, SelectedYear);
+
+            labelMostBusyPeriodTime.Content = MostBusyPeriodTime; //
         }
 
         private void labeltbFocus(object sender, MouseButtonEventArgs e)

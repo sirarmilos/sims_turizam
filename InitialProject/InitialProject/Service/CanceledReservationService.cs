@@ -44,22 +44,23 @@ namespace InitialProject.Service
             canceledReservationRepository.UpdateViewed(canceledReservationRepository.FindByDTO(cancelledReservationsNotificationDTO));
         }
 
-        public List<int> FindAccommodationCanceledReservationsYears(int accommodationId)
+        public int FindAccommodationCanceledReservationCountByYear(int accommodationId, int year)
         {
-            List<int> yearsCanceledReservations = new List<int>();
+            return canceledReservationRepository.FindAccommodationCanceledReservationCountByYear(accommodationId, year);
+        }
 
-            List<CanceledReservation> canceledReservations = canceledReservationRepository.FindByAccommodationId(accommodationId);
+        public List<int> FindAccommodationCanceledReservationCountByMonth(int accommodationId, int year)
+        {
+            List<int> canceledReservationCount = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-            foreach(CanceledReservation temporaryCanceledReservation in canceledReservations.ToList())
+            List<CanceledReservation> yearCanceledReservations = canceledReservationRepository.FindAccommodationCanceledReservationsByYear(accommodationId, year);
+
+            foreach(CanceledReservation temporaryCanceledReservation in yearCanceledReservations.ToList())
             {
-                int year = temporaryCanceledReservation.StartDate.Year;
-                if (yearsCanceledReservations.Exists(x => x == year) == false)
-                {
-                    yearsCanceledReservations.Add(year);
-                }
+                canceledReservationCount[temporaryCanceledReservation.StartDate.Month - 1]++;
             }
 
-            return yearsCanceledReservations;
+            return canceledReservationCount;
         }
     }
 }

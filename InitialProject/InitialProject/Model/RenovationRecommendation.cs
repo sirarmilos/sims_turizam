@@ -1,14 +1,13 @@
 ﻿using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace InitialProject.Model
 {
-    public class RenovationRecommedation : ISerializable
+    public class RenovationRecommendation : ISerializable
     {
         public Reservation Reservation { get; set; }
 
@@ -16,9 +15,9 @@ namespace InitialProject.Model
 
         public string Recommendation { get; set; }
 
-        public RenovationRecommedation() { }
+        public RenovationRecommendation() { }
 
-        public RenovationRecommedation(Reservation reservation, string level, string recommendation)
+        public RenovationRecommendation(Reservation reservation, string level, string recommendation)
         {
             Reservation = reservation;
             Level = level;
