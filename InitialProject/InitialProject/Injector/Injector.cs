@@ -46,7 +46,7 @@ namespace InitialProject.Injector
                 { typeof(ILocationRepository), new LocationRepository() },
                 { typeof(IRateGuestRepository), new RateGuestRepository() },
                 { typeof(IRateGuideRepository), new RateGuideRepository() },
-                { typeof(IRenovationRecommedationRepository), new RenovationRecommedationRepository() },
+                { typeof(IRenovationRecommendationRepository), new RenovationRecommendationRepository() },
                 { typeof(IRenovationRepository), new RenovationRepository() },
                 { typeof(IReservationRepository), new ReservationRepository() },
                 { typeof(IReservationReschedulingRequestRepository), new ReservationReschedulingRequestRepository() },
