@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Model
 {
-    class RateGuide : ISerializable
+    public class RateGuide : ISerializable
     {
         public string UserId { get; set; }
         public string GuideId { get; set; }

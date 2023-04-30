@@ -1,4 +1,5 @@
-﻿using InitialProject.IRepository;
+﻿using InitialProject.Injector;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using System;
@@ -15,7 +16,8 @@ namespace InitialProject.Service
 
         public CanceledRenovationService()
         {
-            canceledRenovationRepository = new CanceledRenovationRepository();
+            canceledRenovationRepository = Injector.Injector.CreateInstance<ICanceledRenovationRepository>();
+            //canceledRenovationRepository = new CanceledRenovationRepository();
         }
 
         public void AddRenovation(Renovation renovation)

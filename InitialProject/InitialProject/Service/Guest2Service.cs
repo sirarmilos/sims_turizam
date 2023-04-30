@@ -1,4 +1,6 @@
-﻿using InitialProject.Repository;
+﻿using InitialProject.Injector;
+using InitialProject.IRepository;
+using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,12 @@ namespace InitialProject.Service
 {
     internal class Guest2Service
     {
-        private readonly Guest2Repository guest2Repository;
+        private readonly IGuest2Repository guest2Repository;
 
         public Guest2Service()
         {
-            guest2Repository = new Guest2Repository();
+            guest2Repository = Injector.Injector.CreateInstance<IGuest2Repository>();
+            //guest2Repository = new Guest2Repository();
         }
 
 

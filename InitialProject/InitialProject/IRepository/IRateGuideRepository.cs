@@ -9,7 +9,7 @@ namespace InitialProject.IRepository
 {
     public interface IRateGuideRepository
     {
-        List<Dto.RateGuideDisplayDto> FindForDisplay(string guide);
+        List<RateGuide> FindAll();
 
         void UpdateIsDeleted(string user, int id);
     }

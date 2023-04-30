@@ -17,7 +17,8 @@ namespace InitialProject.Service
 
         public TourService()
         {
-            tourRepository = new TourRepository();
+            tourRepository = Injector.Injector.CreateInstance<ITourRepository>();
+            //tourRepository = new TourRepository();
         }
 
 

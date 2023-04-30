@@ -15,7 +15,7 @@ namespace InitialProject.Service
 
         public RenovationRecommendationService()
         {
-            renovationRecommedationRepository = new RenovationRecommendationRepository();
+            renovationRecommedationRepository = Injector.Injector.CreateInstance<IRenovationRecommendationRepository>();
         }
 
         public int FindAccommodationRenovationRecommedationCountByYear(int accommodationId, int year)

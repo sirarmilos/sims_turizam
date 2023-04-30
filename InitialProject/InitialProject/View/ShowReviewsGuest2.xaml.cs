@@ -1,5 +1,6 @@
 ﻿using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,9 +23,9 @@ namespace InitialProject.View
     /// </summary>
     public partial class ShowReviewsGuest2 : Window
     {
-        public static ObservableCollection<Dto.RateGuideDisplayDto> guideRates { get; set; }
+        public ObservableCollection<Dto.RateGuideDisplayDto> guideRates { get; set; }
 
-        private readonly RateGuideRepository rateGuideRepository;
+        private readonly RateGuideService rateGuideService;
 
         private string guide;
 
@@ -42,8 +43,8 @@ namespace InitialProject.View
             InitializeComponent();
             DataContext = this;
             Guide = guide;
-            rateGuideRepository = new RateGuideRepository();
-            guideRates = new ObservableCollection<Dto.RateGuideDisplayDto>(rateGuideRepository.FindForDisplay(Guide));
+            rateGuideService = new RateGuideService();
+            guideRates = new ObservableCollection<Dto.RateGuideDisplayDto>(rateGuideService.FindForDisplay(Guide));
         }
 
         private void DeleteRateLogical(object sender, RoutedEventArgs e)
@@ -52,7 +53,7 @@ namespace InitialProject.View
             Dto.RateGuideDisplayDto selectedRate = (Dto.RateGuideDisplayDto)dataGrid.SelectedItem;
             if(selectedRate != null)
             {
-                rateGuideRepository.UpdateIsDeleted(selectedRate.UserId, selectedRate.tourGuidenceId);
+                rateGuideService.UpdateIsDeleted(selectedRate.UserId, selectedRate.tourGuidenceId);
                 this.Close();
             }
             else

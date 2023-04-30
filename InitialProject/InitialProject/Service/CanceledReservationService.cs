@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.Injector;
 using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
@@ -16,7 +17,8 @@ namespace InitialProject.Service
 
         public CanceledReservationService()
         {
-            canceledReservationRepository = new CanceledReservationRepository();
+            canceledReservationRepository = Injector.Injector.CreateInstance<ICanceledReservationRepository>();
+            //canceledReservationRepository = new CanceledReservationRepository();
         }
 
         public void Save(CanceledReservation canceledReservation)

@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Windows.Interactivity;
 using System.Windows;
 using System.Xml.Linq;
+using InitialProject.Injector;
+using InitialProject.IRepository;
 
 namespace InitialProject.Service
 {
@@ -20,7 +22,7 @@ namespace InitialProject.Service
 
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
-        private ReservationRepository reservationRepository;
+        private IReservationRepository reservationRepository;
 
         private string owner;
 
@@ -46,7 +48,9 @@ namespace InitialProject.Service
 
         public ReservationService()
         {
-            reservationRepository = new ReservationRepository();
+            reservationRepository = Injector.Injector.CreateInstance<IReservationRepository>();
+            //reservationRepository = new ReservationRepository();
+
             canceledReservationService = new CanceledReservationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }
@@ -55,7 +59,9 @@ namespace InitialProject.Service
         {
             Owner = username;
             Guest1 = username;
-            reservationRepository = new ReservationRepository();
+            reservationRepository = Injector.Injector.CreateInstance<IReservationRepository>();
+            //reservationRepository = new ReservationRepository();
+
             canceledReservationService = new CanceledReservationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }

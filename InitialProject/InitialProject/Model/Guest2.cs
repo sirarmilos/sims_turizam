@@ -30,6 +30,7 @@ namespace InitialProject.Model
         public void FromCSV(string[] values)
         {
             User = userRepository.FindByUsername(values[0]);
+            // User = new User() { Username = values[0]};
             Email = values[1];
             Adress = values[2];
             Age = Convert.ToInt32(values[3]);

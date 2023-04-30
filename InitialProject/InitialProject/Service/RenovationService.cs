@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.Injector;
 using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
@@ -40,7 +41,8 @@ namespace InitialProject.Service
         {
             Owner = username;
 
-            renovationRepository = new RenovationRepository();
+            renovationRepository = Injector.Injector.CreateInstance<IRenovationRepository>();
+            //renovationRepository = new RenovationRepository();
 
             rateGuestsService = new RateGuestsService(Owner);
             canceledRenovationService = new CanceledRenovationService();
@@ -51,7 +53,8 @@ namespace InitialProject.Service
 
         public RenovationService()
         {
-            renovationRepository = new RenovationRepository();
+            renovationRepository = Injector.Injector.CreateInstance<IRenovationRepository>();
+            //renovationRepository = new RenovationRepository();
 
             accommodationService = new AccommodationService();
         }
