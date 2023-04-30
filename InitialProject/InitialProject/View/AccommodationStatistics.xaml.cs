@@ -44,19 +44,13 @@ namespace InitialProject.View
             set;
         }
 
-        public List<int> Years
+        public List<string> Years
         {
             get;
             set;
         }
 
-        /* public List<string> Years
-        {
-            get;
-            set;
-        }*/
-
-        public int SelectedYear
+        public string SelectedYear
         {
             get;
             set;
@@ -104,25 +98,28 @@ namespace InitialProject.View
 
         private void SetDefaultValue()
         {
-            SelectedYear = 0;
+            SelectedYear = null;
 
-            Years = new List<int>();
+            Years = new List<string>();
 
             Years = accommodationService.FindAccommodationYears(ShowStatisticsAccommodationDTO.Id);
 
-            // treba da prebacis da Years bude string da bi moglo da ima i "all year" da bi moglo da se vrati i gleda opet za sve godine kada se jednom promeni na jednu konkretnu godinu
-            // ShowMonthsStatistics se nece vise zvati tako jer sada moze da se promeni i na sve godine, i tu ce trebati provera, neki if ako je allyears da radi jedno i ispisuje dole u label-u jedno,
-            // a ako je neka konkretna godina onda u tu labelu se upisuje nesto drugo tj. mesec, a ako su sve godine onda se ispise godina
+            if(Years.Count == 1)
+            {
+                Years.Clear();
+                labelDataNotFound.Visibility = Visibility.Visible;
+                cbSelectYear.IsEnabled = false;
+                MostBusyPeriodTime = "-";
+            }
+            else
+            {
+                labelDataNotFound.Visibility = Visibility.Hidden;
+                AccommodationStatisticsDataDTOs = new List<AccommodationStatisticsDataDTO>();
 
-            // Years = accommodationService.FindAccommodationYears(ShowStatisticsAccommodationDTO.Id);
+                AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationYearStatistics(ShowStatisticsAccommodationDTO.Id, Years);
 
-            AccommodationStatisticsDataDTOs = new List<AccommodationStatisticsDataDTO>();
-
-            // kada nema nijedna godina, onda treba da se disable combobox i label-e dole levo i da se desno gde treba da budu grafici ispise poruka da nema nicega za taj accommodation umesto grafikona
-
-            AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationYearStatistics(ShowStatisticsAccommodationDTO.Id, Years);
-
-            MostBusyPeriodTime = accommodationService.FindMostBusyYear(ShowStatisticsAccommodationDTO.Id, Years).ToString();
+                MostBusyPeriodTime = accommodationService.FindMostBusyYear(ShowStatisticsAccommodationDTO.Id, Years).ToString();
+            }
         }
 
         private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
@@ -150,13 +147,22 @@ namespace InitialProject.View
             return cancelledReservationsNotificationDTO;
         }
 
-        private void ShowMonthsStatistics(object sender, SelectionChangedEventArgs e)
+        private void ShowStatistics(object sender, SelectionChangedEventArgs e)
         {
-            AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationMonthStatistics(ShowStatisticsAccommodationDTO.Id, SelectedYear);
+            if(SelectedYear.Equals("all year") == true)
+            {
+                AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationYearStatistics(ShowStatisticsAccommodationDTO.Id, Years);
 
-            MostBusyPeriodTime = accommodationService.FindMostBusyMonth(ShowStatisticsAccommodationDTO.Id, SelectedYear);
+                MostBusyPeriodTime = accommodationService.FindMostBusyYear(ShowStatisticsAccommodationDTO.Id, Years).ToString();
+                labelMostBusyPeriodTime.Content = MostBusyPeriodTime; //
+            }
+            else
+            {
+                AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationMonthStatistics(ShowStatisticsAccommodationDTO.Id, Convert.ToInt32(SelectedYear));
 
-            labelMostBusyPeriodTime.Content = MostBusyPeriodTime; //
+                MostBusyPeriodTime = accommodationService.FindMostBusyMonth(ShowStatisticsAccommodationDTO.Id, Convert.ToInt32(SelectedYear));
+                labelMostBusyPeriodTime.Content = MostBusyPeriodTime; //
+            }
         }
 
         private void labeltbFocus(object sender, MouseButtonEventArgs e)
