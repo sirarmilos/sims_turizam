@@ -15,6 +15,8 @@ namespace InitialProject.Repository
 {
     internal class TourGuidenceRepository : ITourGuidenceRepository
     {
+        private TourRepository tourRepository;
+
         private const string FilePathTourGuidence = "../../../Resources/Data/tourguidences.csv";
 
         private const string FilePathReservatedTours = "../../../Resources/Data/reservatedtours.csv";
@@ -43,6 +45,20 @@ namespace InitialProject.Repository
 
 
             //tourReservationService = new TourReservationService(); ovde problem pocne da ulazi u beskonacnu petlju
+        }
+
+        public List<TourGuidence> FindAll()
+        {
+            tourRepository = new TourRepository();
+
+            tourGuidences = tourGuidenceSerializer.FromCSV(FilePathTourGuidence);
+
+            foreach (TourGuidence temporaryTourGuidence in tourGuidences.ToList())
+            {
+                temporaryTourGuidence.Tour = tourRepository.FindById(temporaryTourGuidence.Tour.Id);
+            }
+
+            return tourGuidences;
         }
 
         public void Save(List<TourGuidence> tourGuidences)

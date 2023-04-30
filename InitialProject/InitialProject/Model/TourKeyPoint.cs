@@ -42,13 +42,16 @@ namespace InitialProject.Model
             Id = Convert.ToInt32(values[0]);
             KeyPointName = values[1];
 
-            LocationRepository locationRepository = new();
-            Location location = locationRepository.FindById(Convert.ToInt32(values[2]));
-            Location = location;
+            // LocationRepository locationRepository = new();
+            //Location location = locationRepository.FindById(Convert.ToInt32(values[2]));
+            // Location = location;
+            Location = new Location() { Id = Convert.ToInt32(values[2]) };
 
             //TourGuidenceService tourGuidanceService = new TourGuidenceService(); // mozda je i ovde problem
             //TourGuidence tourGuidence = tourGuidanceService.GetById(Convert.ToInt32(values[3]));
             //TourGuidence = tourGuidence;
+
+            TourGuidence = new TourGuidence() { Id = Convert.ToInt32(values[3]) };
 
             Passed = Convert.ToBoolean(values[4]);
         }
