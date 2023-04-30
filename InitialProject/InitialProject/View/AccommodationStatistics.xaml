@@ -81,34 +81,34 @@
 
                 <Label Target="{x:Reference tbAccommodationName}" Grid.Column="0" Grid.Row="0" Content="Accommodation name:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
                 <!-- visina 20 -->
-                <TextBox x:Name="tbAccommodationName" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ShowStatisticsAccommodationDTO.AccommodationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbAccommodationName" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ShowStatisticsAccommodationDTO.AccommodationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <Label Target="{x:Reference tbCountry}" Grid.Column="0" Grid.Row="1" Content="Country:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbCountry" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ShowStatisticsAccommodationDTO.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbCountry" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ShowStatisticsAccommodationDTO.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <Label Target="{x:Reference tbCity}" Grid.Column="0" Grid.Row="2" Content="City:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbCity" Grid.Column="1" Grid.Row="2" Text="{Binding Path=ShowStatisticsAccommodationDTO.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbCity" Grid.Column="1" Grid.Row="2" Text="{Binding Path=ShowStatisticsAccommodationDTO.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <Label Target="{x:Reference tbAddress}" Grid.Column="0" Grid.Row="3" Content="Address:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbAddress" Grid.Column="1" Grid.Row="3" Text="{Binding Path=ShowStatisticsAccommodationDTO.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbAddress" Grid.Column="1" Grid.Row="3" Text="{Binding Path=ShowStatisticsAccommodationDTO.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <Label Target="{x:Reference tbLatitude}" Grid.Column="0" Grid.Row="4" Content="Latitude:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbLatitude" Grid.Column="1" Grid.Row="4" Text="{Binding Path=ShowStatisticsAccommodationDTO.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbLatitude" Grid.Column="1" Grid.Row="4" Text="{Binding Path=ShowStatisticsAccommodationDTO.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <Label Target="{x:Reference tbLongitude}" Grid.Column="0" Grid.Row="5" Content="Longitude:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbLongitude" Grid.Column="1" Grid.Row="5" Text="{Binding Path=ShowStatisticsAccommodationDTO.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbLongitude" Grid.Column="1" Grid.Row="5" Text="{Binding Path=ShowStatisticsAccommodationDTO.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <Label Target="{x:Reference tbType}" Grid.Column="0" Grid.Row="6" Content="Type:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbType" Grid.Column="1" Grid.Row="6" Text="{Binding Path=ShowStatisticsAccommodationDTO.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbType" Grid.Column="1" Grid.Row="6" Text="{Binding Path=ShowStatisticsAccommodationDTO.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <Label Target="{x:Reference tbMaxGuests}" Grid.Column="0" Grid.Row="7" Content="Maximum number of guests:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbMaxGuests" Grid.Column="1" Grid.Row="7" Text="{Binding Path=ShowStatisticsAccommodationDTO.MaxGuests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbMaxGuests" Grid.Column="1" Grid.Row="7" Text="{Binding Path=ShowStatisticsAccommodationDTO.MaxGuests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <Label Target="{x:Reference tbMinDaysReservation}" Grid.Column="0" Grid.Row="8" Content="Minimum number of days for reservations:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbMinDaysReservation" Grid.Column="1" Grid.Row="8" Text="{Binding Path=ShowStatisticsAccommodationDTO.MinDaysReservation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbMinDaysReservation" Grid.Column="1" Grid.Row="8" Text="{Binding Path=ShowStatisticsAccommodationDTO.MinDaysReservation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <Label Target="{x:Reference tbLeftCancelationDays}" Grid.Column="0" Grid.Row="9" Content="Left cancelation days:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbLeftCancelationDays" Grid.Column="1" Grid.Row="9" Text="{Binding Path=ShowStatisticsAccommodationDTO.LeftCancelationDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <TextBox x:Name="tbLeftCancelationDays" Grid.Column="1" Grid.Row="9" Text="{Binding Path=ShowStatisticsAccommodationDTO.LeftCancelationDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200" IsReadOnly="True"/>
 
                 <DataGrid x:Name="dgImages" LoadingRow="LoadingRowForDgImages" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" ItemsSource="{Binding ShowStatisticsAccommodationDTO.Images, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" HorizontalAlignment="Left" Height="105" VerticalAlignment="Bottom" Width="475">
                     <DataGrid.Columns>
@@ -127,11 +127,13 @@
         </GroupBox>
 
         <Label Grid.Column="0" Grid.Row="3" Content="Select a year:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="215"/>
-        <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Years}" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100"/>
+        <ComboBox x:Name="cbSelectYear" Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Years, Mode=TwoWay}" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" SelectedItem="{Binding SelectedYear}" SelectionChanged="ShowStatistics"/>
 
-        <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Content="The most occupied period of this accommodation was:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="450"/>
-        <Label Grid.Column="1" Grid.Row="4" Content="-" HorizontalAlignment="Right" Height="30" VerticalAlignment="Center" Width="200"/>
-        
+        <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Content="The most occupied period of this accommodation was:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="450"/>
+        <Label x:Name="labelMostBusyPeriodTime" Grid.Column="1" Grid.Row="4" Content="{Binding MostBusyPeriodTime, Mode=TwoWay}" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="200"/>
+
+        <Label x:Name="labelDataNotFound" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Content="There is no data found for this accommodation" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
+
         <!-- stavi naslove za grafikone -->
 
         

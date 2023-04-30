@@ -247,24 +247,6 @@ namespace InitialProject.Service
                 x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false) && ((x.Status.Equals("rejected") == true) || (x.Status.Equals("accepted") == true)) );
         }
 
-        public List<int> FindAccommodationRescheduledReservationsYears(int accommodationId)
-        {
-            List<int> yearsRescheduledReservations = new List<int>();
-
-            List<ReservationReschedulingRequest> reservationReschedulingRequests = reservationReschedulingRequestRepository.FindByAccommodationId(accommodationId);
-
-            foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequests in reservationReschedulingRequests.ToList())
-            {
-                int year = temporaryReservationReschedulingRequests.NewStartDate.Year; //
-                if (yearsRescheduledReservations.Exists(x => x == year) == false)
-                {
-                    yearsRescheduledReservations.Add(year);
-                }
-            }
-
-            return yearsRescheduledReservations;
-        }
-
         public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
         {
             userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
@@ -273,6 +255,38 @@ namespace InitialProject.Service
         public List<string> FindUnreadCancelledReservations(string ownerUsername)
         {
             return userService.FindUnreadCancelledReservations(ownerUsername);
+        }
+
+        public int FindAccommodationRescheduledReservationCountByYear(int accommodationId, int year)
+        {
+            return reservationReschedulingRequestRepository.FindAccommodationRescheduledReservationCountByYear(accommodationId, year);
+        }
+
+        public List<int> FindAccommodationRescheduledReservationCountByMonth(int accommodationId, int year)
+        {
+            List<int> rescheduledReservationCount = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            List<ReservationReschedulingRequest> yearRescheduledReservations = reservationReschedulingRequestRepository.FindAccommodationRescheduledReservationsByYear(accommodationId, year);
+
+            foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequest in yearRescheduledReservations.ToList())
+            {
+                if(temporaryReservationReschedulingRequest.NewStartDate.Year != year)
+                {
+                    temporaryReservationReschedulingRequest.NewStartDate = new DateTime(year, 1, 1);
+                }
+
+                if(temporaryReservationReschedulingRequest.NewEndDate.Year != year)
+                {
+                    temporaryReservationReschedulingRequest.NewEndDate = new DateTime(year, 12, 31);
+                }
+
+                for(int month = temporaryReservationReschedulingRequest.NewStartDate.Month; month <= temporaryReservationReschedulingRequest.NewEndDate.Month; month++)
+                {
+                    rescheduledReservationCount[month - 1]++;
+                }
+            }
+
+            return rescheduledReservationCount;
         }
     }
 }

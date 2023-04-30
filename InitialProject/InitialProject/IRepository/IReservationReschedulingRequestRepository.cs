@@ -39,5 +39,9 @@ namespace InitialProject.IRepository
         void UpdateViewedRequestsByGuest1(string guest1Username);
 
         List<ReservationReschedulingRequest> FindByAccommodationId(int accommodationId);
+
+        int FindAccommodationRescheduledReservationCountByYear(int accommodationId, int year);
+
+        List<ReservationReschedulingRequest> FindAccommodationRescheduledReservationsByYear(int accommodationId, int year);
     }
 }

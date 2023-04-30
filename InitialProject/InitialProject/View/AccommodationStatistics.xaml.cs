@@ -44,7 +44,25 @@ namespace InitialProject.View
             set;
         }
 
-        public List<int> Years
+        public List<string> Years
+        {
+            get;
+            set;
+        }
+
+        public string SelectedYear
+        {
+            get;
+            set;
+        }
+
+        public List<AccommodationStatisticsDataDTO> AccommodationStatisticsDataDTOs
+        {
+            get;
+            set;
+        }
+
+        public string MostBusyPeriodTime
         {
             get;
             set;
@@ -80,43 +98,27 @@ namespace InitialProject.View
 
         private void SetDefaultValue()
         {
-            /*
-            - prikazuje se statistika po godinama prvo
-            - broj rezervacija
-            - broj otkazivanja rezervacija
-            - broj pomeranja rezervacija
-            - broj preporuka za renoviranje
-            */
+            SelectedYear = null;
 
-            /*
-            - reservations.csv
-            - canceledreservations.csv
-            - rescheduledreservations.csv
-            - renovationrecommedations.csv
-            */
+            Years = new List<string>();
 
-            /*
-            - sve to trazim za ovaj smestaj sto je dosao
-            */
+            Years = accommodationService.FindAccommodationYears(ShowStatisticsAccommodationDTO.Id);
 
-            /*
-            - pronaci koje sve godine treba prikazati u combobox-u
-            */
-
-            List<int> yearsReservations = accommodationService.FindAccommodationReservationsYears(ShowStatisticsAccommodationDTO.Id);
-            List<int> yearsCanceledReservations = accommodationService.FindAccommodationCanceledReservationsYears(ShowStatisticsAccommodationDTO.Id); //
-            List<int> yearsRescheduledReservations = accommodationService.FindAccommodationRescheduledReservationsYears(ShowStatisticsAccommodationDTO.Id); //
-            // List<int> yearsRenovationRecommedations = accommodationService.FindAccommodationRenovationRecommedationsYears(ShowStatisticsAccommodationDTO.Id);
-
-            List<int> years = new List<int>();
-
-            Years = yearsReservations.Union(yearsCanceledReservations).Union(yearsRescheduledReservations).ToList();
-
-            Years.Sort();
-
-            foreach(int year in years)
+            if(Years.Count == 1)
             {
-                MessageBox.Show(year.ToString());
+                Years.Clear();
+                labelDataNotFound.Visibility = Visibility.Visible;
+                cbSelectYear.IsEnabled = false;
+                MostBusyPeriodTime = "-";
+            }
+            else
+            {
+                labelDataNotFound.Visibility = Visibility.Hidden;
+                AccommodationStatisticsDataDTOs = new List<AccommodationStatisticsDataDTO>();
+
+                AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationYearStatistics(ShowStatisticsAccommodationDTO.Id, Years);
+
+                MostBusyPeriodTime = accommodationService.FindMostBusyYear(ShowStatisticsAccommodationDTO.Id, Years).ToString();
             }
         }
 
@@ -143,6 +145,24 @@ namespace InitialProject.View
             CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(accommodationName, reservationStartDate, reservationEndDate);
 
             return cancelledReservationsNotificationDTO;
+        }
+
+        private void ShowStatistics(object sender, SelectionChangedEventArgs e)
+        {
+            if(SelectedYear.Equals("all year") == true)
+            {
+                AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationYearStatistics(ShowStatisticsAccommodationDTO.Id, Years);
+
+                MostBusyPeriodTime = accommodationService.FindMostBusyYear(ShowStatisticsAccommodationDTO.Id, Years).ToString();
+                labelMostBusyPeriodTime.Content = MostBusyPeriodTime; //
+            }
+            else
+            {
+                AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationMonthStatistics(ShowStatisticsAccommodationDTO.Id, Convert.ToInt32(SelectedYear));
+
+                MostBusyPeriodTime = accommodationService.FindMostBusyMonth(ShowStatisticsAccommodationDTO.Id, Convert.ToInt32(SelectedYear));
+                labelMostBusyPeriodTime.Content = MostBusyPeriodTime; //
+            }
         }
 
         private void labeltbFocus(object sender, MouseButtonEventArgs e)

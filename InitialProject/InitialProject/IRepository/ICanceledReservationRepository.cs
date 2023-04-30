@@ -26,5 +26,9 @@ namespace InitialProject.IRepository
         void UpdateViewed(CanceledReservation canceledReservation);
 
         List<CanceledReservation> FindByAccommodationId(int accommodationId);
+
+        int FindAccommodationCanceledReservationCountByYear(int accommodationId, int year);
+
+        List<CanceledReservation> FindAccommodationCanceledReservationsByYear(int accommodationId, int year);
     }
 }
