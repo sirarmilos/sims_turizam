@@ -67,9 +67,11 @@ namespace InitialProject.Model
 
             TourName = values[1];
 
-            LocationRepository locationRepository = new LocationRepository();
+            /*LocationRepository locationRepository = new LocationRepository();
             Location location = locationRepository.FindById(Convert.ToInt32(values[2]));
-            Location = location;
+            Location = location;*/
+
+            Location = new Location() { Id = Convert.ToInt32(values[2]) };
 
             Description = values[3];
 

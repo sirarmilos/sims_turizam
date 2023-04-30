@@ -45,9 +45,11 @@ namespace InitialProject.Model
         {
             Id = Convert.ToInt32(values[0]);
 
-            TourRepository tourRepository = new();
+            /* TourRepository tourRepository = new();
             Tour tour = tourRepository.FindById(Convert.ToInt32(values[1]));
-            Tour = tour;
+            Tour = tour;*/
+
+            Tour = new Tour() { Id = Convert.ToInt32(values[1]) };
 
             StartTime = Convert.ToDateTime(values[2]);
             Started = Convert.ToBoolean(values[3]);

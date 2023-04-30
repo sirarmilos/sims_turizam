@@ -22,10 +22,6 @@ namespace InitialProject.IRepository
 
         void SaveToFile(TourGuidence t);
 
-        Tour GetMostVisitedAllTime();
-
-        Tour GetMostVisitedByYear(int year);
-
         TourGuidence FindByTourAndDate(Tour tour, DateTime date);
 
         string FindGuide(int tourGuidenceId);

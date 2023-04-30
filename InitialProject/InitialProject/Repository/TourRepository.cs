@@ -18,6 +18,8 @@ namespace InitialProject.Repository
 {
     internal class TourRepository : ITourRepository
     {
+        private LocationRepository locationRepository;
+
         private const string FilePathTour = "../../../Resources/Data/tours.csv";
 
         private const string FilePathTourKeyPoints = "../../../Resources/Data/tourkeypoints.csv";
@@ -63,10 +65,10 @@ namespace InitialProject.Repository
 
         }
 
-        public List<Tour> FindAll()
+        /* public List<Tour> FindAll()
         { 
             return tours;
-        }
+        }*/
 
         public Tour FindByName(string id)
         {
@@ -122,7 +124,26 @@ namespace InitialProject.Repository
             return tourKeyPoints.Max(c => c.Id) + 1;
         }*/
 
-        public Tour FindById(int id) => tours.FirstOrDefault(x => x.Id == id);
+        // public Tour FindById(int id) => tours.FirstOrDefault(x => x.Id == id);
+
+        public List<Tour> FindAll()
+        {
+            locationRepository = new LocationRepository();
+
+            tours = tourSerializer.FromCSV(FilePathTour);
+
+            foreach (Tour temporaryTour in tours.ToList())
+            {
+                temporaryTour.Location = locationRepository.FindById(temporaryTour.Location.Id);
+            }
+
+            return tours;
+        }
+
+        public Tour FindById(int id)
+        {
+            return FindAll().ToList().Find(x => x.Id == id);
+        }
 
         public List<int> GetGuestNumber(int tourId)
         {
