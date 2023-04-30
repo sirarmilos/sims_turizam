@@ -311,12 +311,12 @@ namespace InitialProject.Service
             return showStatisticsAccommodationDTO;
         }
 
-        public List<int> FindAccommodationYears(int accommodationId)
+        /* public List<int> FindAccommodationYears(int accommodationId)
         {
             return reservationService.FindAccommodationReservationsYears(accommodationId);
-        }
+        }*/
 
-        /* public List<string> FindAccommodationYears(int accommodationId)
+        public List<string> FindAccommodationYears(int accommodationId)
         {
             List<string> years = new List<string>();
 
@@ -330,11 +330,13 @@ namespace InitialProject.Service
             }
 
             return years;
-        }*/
+        }
 
-        public List<AccommodationStatisticsDataDTO> FindAccommodationYearStatistics(int accommodationId, List<int> years)
+        public List<AccommodationStatisticsDataDTO> FindAccommodationYearStatistics(int accommodationId, List<string> stringYears)
         {
             List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs = new List<AccommodationStatisticsDataDTO>();
+
+            List<int> years = ConvertYearsToInt(stringYears);
 
             foreach(int year in years.ToList())
             {
@@ -349,11 +351,28 @@ namespace InitialProject.Service
             return accommodationStatisticsDataDTOs;
         }
 
-        public int FindMostBusyYear(int accommodationId, List<int> years)
+        public List<int> ConvertYearsToInt(List<string> stringYears)
+        {
+            List<int> years = new List<int>();
+
+            foreach (string temporaryStringYear in stringYears.ToList())
+            {
+                if (temporaryStringYear.Equals("all year") == false)
+                {
+                    years.Add(Convert.ToInt32(temporaryStringYear));
+                }
+            }
+
+            return years;
+        }
+
+        public int FindMostBusyYear(int accommodationId, List<string> stringYears)
         {
             List<Reservation> accommodationReservations = reservationService.FindByAccommodationId(accommodationId);
 
             Dictionary<int, decimal> busyYears = new Dictionary<int, decimal>();
+
+            List<int> years = ConvertYearsToInt(stringYears);
 
             busyYears = FindBusyYears(accommodationReservations, years);
 
