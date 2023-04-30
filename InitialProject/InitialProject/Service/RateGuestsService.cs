@@ -39,6 +39,7 @@ namespace InitialProject.Service
         {
             Owner = owner;
             rateGuestRepository = Injector.Injector.CreateInstance<IRateGuestRepository>();
+            //rateGuestRepository = new RateGuestRepository();
             reservationService = new ReservationService(Owner);
             userService = new UserService();
         }

@@ -46,10 +46,9 @@ namespace InitialProject.Model
             Location location = locationRepository.FindById(Convert.ToInt32(values[2]));
             Location = location;
 
-
-            TourGuidenceService tourGuidanceService = new TourGuidenceService();
-            TourGuidence tourGuidence = tourGuidanceService.GetById(Convert.ToInt32(values[3]));
-            TourGuidence = tourGuidence;
+            //TourGuidenceService tourGuidanceService = new TourGuidenceService(); // mozda je i ovde problem
+            //TourGuidence tourGuidence = tourGuidanceService.GetById(Convert.ToInt32(values[3]));
+            //TourGuidence = tourGuidence;
 
             Passed = Convert.ToBoolean(values[4]);
         }

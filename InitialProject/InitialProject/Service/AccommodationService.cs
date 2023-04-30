@@ -45,6 +45,7 @@ namespace InitialProject.Service
         public AccommodationService()
         {
             accommodationRepository = Injector.Injector.CreateInstance<IAccommodationRepository>(); // new AccommodationRepository();
+            //accommodationRepository = new AccommodationRepository();
             locationService = new LocationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }
@@ -52,6 +53,7 @@ namespace InitialProject.Service
         public AccommodationService(string username)
         {
             accommodationRepository = Injector.Injector.CreateInstance<IAccommodationRepository>();
+            //accommodationRepository = new AccommodationRepository();
             locationService = new LocationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
             rateGuestsService = new RateGuestsService(username);

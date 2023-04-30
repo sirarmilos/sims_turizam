@@ -26,7 +26,7 @@ namespace InitialProject.Repository
             rateGuideSerializer = new Serializer<RateGuide>();
             rates = rateGuideSerializer.FromCSV(FilePathRateGuide);
 
-            tourReservationService = new TourReservationService();
+            //tourReservationService = new TourReservationService(); // ovde problem pocne da ulazi u beskonacnu petlju
         }
 
         public List<Dto.RateGuideDisplayDto> FindForDisplay(string guide)

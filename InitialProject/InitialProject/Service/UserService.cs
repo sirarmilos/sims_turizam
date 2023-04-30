@@ -25,7 +25,9 @@ namespace InitialProject.Service
         public UserService()
         {
             userRepository = Injector.Injector.CreateInstance<IUserRepository>();
-            // rateGuestsService = new RateGuestsService(Owner);
+            //userRepository = new UserRepository();  
+
+             //rateGuestsService = new RateGuestsService(Owner);
         }
 
         public void Update(string owner, string superType)

@@ -16,6 +16,7 @@ namespace InitialProject.Service
         public Guest2Service()
         {
             guest2Repository = Injector.Injector.CreateInstance<IGuest2Repository>();
+            //guest2Repository = new Guest2Repository();
         }
 
 

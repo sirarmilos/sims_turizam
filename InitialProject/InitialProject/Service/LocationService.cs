@@ -18,6 +18,7 @@ namespace InitialProject.Service
         public LocationService()
         {
             locationRepository = Injector.Injector.CreateInstance<ILocationRepository>();
+            //locationRepository = new LocationRepository();
         }
 
         public Location Save(SaveNewAccommodationDTO saveNewAccommodationDTO)

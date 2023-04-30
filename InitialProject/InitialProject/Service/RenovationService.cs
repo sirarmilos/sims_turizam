@@ -42,6 +42,7 @@ namespace InitialProject.Service
             Owner = username;
 
             renovationRepository = Injector.Injector.CreateInstance<IRenovationRepository>();
+            //renovationRepository = new RenovationRepository();
 
             rateGuestsService = new RateGuestsService(Owner);
             canceledRenovationService = new CanceledRenovationService();
@@ -53,6 +54,7 @@ namespace InitialProject.Service
         public RenovationService()
         {
             renovationRepository = Injector.Injector.CreateInstance<IRenovationRepository>();
+            //renovationRepository = new RenovationRepository();
 
             accommodationService = new AccommodationService();
         }

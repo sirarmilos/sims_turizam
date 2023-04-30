@@ -56,6 +56,7 @@ namespace InitialProject.Service
         public ReservationReschedulingRequestService()
         {
             reservationReschedulingRequestRepository = Injector.Injector.CreateInstance<IReservationReschedulingRequestRepository>();
+            //reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
 
         }
 
@@ -64,6 +65,7 @@ namespace InitialProject.Service
             Owner = username;
             Guest1 = username;
             reservationReschedulingRequestRepository = Injector.Injector.CreateInstance<IReservationReschedulingRequestRepository>();
+            //reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
             reservationService = new ReservationService(Owner);
             rateGuestsService = new RateGuestsService(Owner);
             userService = new UserService();

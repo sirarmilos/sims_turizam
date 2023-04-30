@@ -49,6 +49,8 @@ namespace InitialProject.Service
         public ReservationService()
         {
             reservationRepository = Injector.Injector.CreateInstance<IReservationRepository>();
+            //reservationRepository = new ReservationRepository();
+
             canceledReservationService = new CanceledReservationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }
@@ -58,6 +60,8 @@ namespace InitialProject.Service
             Owner = username;
             Guest1 = username;
             reservationRepository = Injector.Injector.CreateInstance<IReservationRepository>();
+            //reservationRepository = new ReservationRepository();
+
             canceledReservationService = new CanceledReservationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }

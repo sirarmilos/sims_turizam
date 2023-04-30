@@ -18,6 +18,7 @@ namespace InitialProject.Service
         public CanceledReservationService()
         {
             canceledReservationRepository = Injector.Injector.CreateInstance<ICanceledReservationRepository>();
+            //canceledReservationRepository = new CanceledReservationRepository();
         }
 
         public void Save(CanceledReservation canceledReservation)

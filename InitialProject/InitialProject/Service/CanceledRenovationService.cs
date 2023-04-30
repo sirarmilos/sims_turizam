@@ -17,6 +17,7 @@ namespace InitialProject.Service
         public CanceledRenovationService()
         {
             canceledRenovationRepository = Injector.Injector.CreateInstance<ICanceledRenovationRepository>();
+            //canceledRenovationRepository = new CanceledRenovationRepository();
         }
 
         public void AddRenovation(Renovation renovation)

@@ -42,7 +42,7 @@ namespace InitialProject.Repository
             tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
 
 
-            tourReservationService = new TourReservationService();
+            //tourReservationService = new TourReservationService(); ovde problem pocne da ulazi u beskonacnu petlju
         }
 
         public void Save(List<TourGuidence> tourGuidences)

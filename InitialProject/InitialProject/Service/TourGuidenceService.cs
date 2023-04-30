@@ -12,11 +12,12 @@ namespace InitialProject.Service
 {
     public class TourGuidenceService
     {
-        private readonly ITourGuidenceRepository tourGuidenceRepository;
+        private ITourGuidenceRepository tourGuidenceRepository;
 
         public TourGuidenceService()
         {
             tourGuidenceRepository = Injector.Injector.CreateInstance<ITourGuidenceRepository>();  
+            //tourGuidenceRepository = new TourGuidenceRepository();  
         }
 
         public TourGuidence GetById(int id)
