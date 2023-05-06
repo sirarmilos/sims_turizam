@@ -115,6 +115,8 @@
                 <Label Target="{x:Reference tbImage}" Grid.Column="0" Grid.Row="10" Content="Enter the url of the accommodation image:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="250" MouseLeftButtonUp="labeltbFocus"/>
                 <TextBox x:Name="tbImage" Grid.Column="1" Grid.Row="10" Text="{Binding Path=Image, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="160"/> <!-- 170 -->
 
+                <Button x:Name="buttonChooseImage" Grid.Column="2" Grid.Row="10" Content="Choose image" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="50" Click="ChooseImage"/>
+
                 <Button x:Name="buttonAddImage" Grid.Column="3" Grid.Row="10" Grid.RowSpan="2" Content="Add image" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="125" Click="AddImageToList"/>
 
                 <DataGrid x:Name="dgImages" LoadingRow="LoadingRowForDgImages" Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="2" ItemsSource="{Binding Images, Mode=OneWay}" SelectedItem="{Binding Path=SelectedImage, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RemoveImageButtonEnable" HorizontalAlignment="Center" Height="90" VerticalAlignment="Center" Width="200">
