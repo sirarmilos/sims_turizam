@@ -354,6 +354,54 @@ namespace InitialProject.Service
             return accommodationStatisticsDataDTOs;
         }
 
+        public List<int> FindAccommodationReservationCount(List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs)
+        {
+            List<int> reservationCount = new List<int>();
+
+            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            {
+                reservationCount.Add(temporaryAccommodationStatisticsDataDTO.ReservationsCount);
+            }
+
+            return reservationCount;
+        }
+
+        public List<int> FindAccommodationCanceledReservationCount(List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs)
+        {
+            List<int> canceledReservationCount = new List<int>();
+
+            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            {
+                canceledReservationCount.Add(temporaryAccommodationStatisticsDataDTO.CanceledReservationsCount);
+            }
+
+            return canceledReservationCount;
+        }
+
+        public List<int> FindAccommodationRescheduledReservationCount(List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs)
+        {
+            List<int> rescheduledReservationCount = new List<int>();
+
+            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            {
+                rescheduledReservationCount.Add(temporaryAccommodationStatisticsDataDTO.RescheduledReservationCount);
+            }
+
+            return rescheduledReservationCount;
+        }
+
+        public List<int> FindAccommodationRenovationRecommendationsCount(List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs)
+        {
+            List<int> renovationRecommendationsCount = new List<int>();
+
+            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            {
+                renovationRecommendationsCount.Add(temporaryAccommodationStatisticsDataDTO.RenovationRecommedationsCount);
+            }
+
+            return renovationRecommendationsCount;
+        }
+
         public List<int> ConvertYearsToInt(List<string> stringYears)
         {
             List<int> years = new List<int>();
@@ -448,6 +496,54 @@ namespace InitialProject.Service
             }
 
             return accommodationStatisticsDataDTOs;
+        }
+
+        public List<int> FindAccommodationReservationMonthCount(List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs)
+        {
+            List<int> reservationCount = new List<int>();
+
+            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            {
+                reservationCount.Add(temporaryAccommodationStatisticsDataDTO.ReservationsCount);
+            }
+
+            return reservationCount;
+        }
+
+        public List<int> FindAccommodationCanceledReservationMonthCount(List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs)
+        {
+            List<int> canceledReservationCount = new List<int>();
+
+            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            {
+                canceledReservationCount.Add(temporaryAccommodationStatisticsDataDTO.CanceledReservationsCount);
+            }
+
+            return canceledReservationCount;
+        }
+
+        public List<int> FindAccommodationRescheduledReservationMonthCount(List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs)
+        {
+            List<int> rescheduledReservationCount = new List<int>();
+
+            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            {
+                rescheduledReservationCount.Add(temporaryAccommodationStatisticsDataDTO.RescheduledReservationCount);
+            }
+
+            return rescheduledReservationCount;
+        }
+
+        public List<int> FindAccommodationRenovationRecommendationsMonthCount(List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs)
+        {
+            List<int> renovationRecommendationsCount = new List<int>();
+
+            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            {
+                renovationRecommendationsCount.Add(temporaryAccommodationStatisticsDataDTO.RenovationRecommedationsCount);
+            }
+
+            return renovationRecommendationsCount;
         }
 
         public string FindMostBusyMonth(int accommodationId, int year)
