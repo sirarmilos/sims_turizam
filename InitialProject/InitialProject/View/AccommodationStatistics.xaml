@@ -4,6 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
+        
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        
         mc:Ignorable="d"
         Title="Accommodation statistics" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
@@ -134,7 +137,59 @@
 
         <Label x:Name="labelDataNotFound" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Content="There is no data found for this accommodation" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
 
+
+
+        <lvc:CartesianChart x:Name="chartReservation" Series="{Binding SeriesCollectionReservation}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Top" Height="220" Width="250">
+            
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis x:Name="labelXAxisReservation" Labels="{Binding ChartPeriodTime}"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Number of reservations" MinValue="0" MaxValue="10"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            
+        </lvc:CartesianChart>
+
+        <lvc:CartesianChart x:Name="chartCanceledReservation" Series="{Binding SeriesCollectionCanceledReservation}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom" Height="220" Width="250">
+            
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis x:Name="labelXAxisCanceledReservation" Labels="{Binding ChartPeriodTime}"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Canceled reservation count" MinValue="0" MaxValue="10"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            
+        </lvc:CartesianChart>
+
+        <lvc:CartesianChart x:Name="chartRescheduledReservation" Series="{Binding SeriesCollectionRescheduledReservation}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Top" Height="220" Width="250">
+            
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis x:Name="labelXAxisRescheduledReservation" Labels="{Binding ChartPeriodTime}"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Rescheduled reservation count" MinValue="0" MaxValue="10"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            
+        </lvc:CartesianChart>
+
+        <lvc:CartesianChart x:Name="chartRenovationRecommendation" Series="{Binding SeriesCollectionRenovationRecommedation}" Grid.Column="3" Grid.Row="2" VerticalAlignment="Bottom" Height="220" Width="250">
+            
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis x:Name="labelXAxisRenovationRecommendation" Labels="{Binding ChartPeriodTime}"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Renovation recommedation count" MinValue="0" MaxValue="10"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+            
+        </lvc:CartesianChart>
+
         <!-- stavi naslove za grafikone -->
+        <!-- namesti da pisu ispod sve godine i meseci -->
+        <!-- mozda sve na jedan grafikon -->
 
         
 
