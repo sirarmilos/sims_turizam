@@ -443,5 +443,29 @@ namespace InitialProject.View
         {
             Close();
         }
+
+        private void ChooseImage(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+
+            bool? response = openFileDialog.ShowDialog();
+
+            if(response == true)
+            {
+                Image = openFileDialog.FileName;
+
+                if(CheckImageExist() == false)
+                {
+                    Images.Add(Image.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("You have already added this image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+                tbImage.Text = string.Empty;
+                tbImage.Focus();
+            }
+        }
     }
 }
