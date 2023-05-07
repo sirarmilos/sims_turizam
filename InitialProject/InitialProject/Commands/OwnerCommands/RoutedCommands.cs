@@ -17,7 +17,7 @@ namespace InitialProject.Commands.OwnerCommands
             new InputGestureCollection()
             {
                 new KeyGesture(Key.F1),
-                new KeyGesture(Key.H, ModifierKeys.Control) // ovako radi sa control, jedino sa alt pravi problem
+                new KeyGesture(Key.H, ModifierKeys.Alt),
             }
         );
 
@@ -64,6 +64,7 @@ namespace InitialProject.Commands.OwnerCommands
             typeof(RoutedCommands),
             new InputGestureCollection()
             {
+                new KeyGesture(Key.T, ModifierKeys.Control),
                 new KeyGesture(Key.F5),
                 new KeyGesture(Key.T, ModifierKeys.Alt)
             }
@@ -93,10 +94,10 @@ namespace InitialProject.Commands.OwnerCommands
             }
         );
 
-        public static readonly RoutedUICommand OwnerHomePageNotLogin = new RoutedUICommand
+        public static readonly RoutedUICommand Logout = new RoutedUICommand
         (
             "Logout",
-            "OwnerHomePageNotLogin",
+            "Logout",
             typeof(RoutedCommands),
             new InputGestureCollection()
             {
@@ -114,6 +115,85 @@ namespace InitialProject.Commands.OwnerCommands
             {
                 new KeyGesture(Key.F9),
                 new KeyGesture(Key.N, ModifierKeys.Alt)
+            }
+        );
+
+        public static readonly RoutedUICommand ReadCancelledReservationNotification = new RoutedUICommand
+        (
+            "Read cancelled reservation to notification",
+            "ReadCancelledReservationNotification",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.D, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand OwnerHomePageNotLogin = new RoutedUICommand
+        (
+            "Home",
+            "OwnerHomePageNotLogin",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.F1),
+                new KeyGesture(Key.H, ModifierKeys.Alt)
+            }
+        );
+
+        public static readonly RoutedUICommand OwnerLogin = new RoutedUICommand
+        (
+            "Login",
+            "OwnerLogin",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.F8),
+                new KeyGesture(Key.L, ModifierKeys.Alt)
+            }
+        );
+
+        public static readonly RoutedUICommand Login = new RoutedUICommand
+        (
+            "Login",
+            "Login",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.L, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand AddNewAccommodation = new RoutedUICommand
+        (
+            "Add new accommodation",
+            "AddNewAccommodation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.M, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand RenovateAccommodation = new RoutedUICommand
+        (
+            "Renovate accommodation",
+            "RenovateAccommodation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.N, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand AccommodationStatistics = new RoutedUICommand
+        (
+            "Accommodation statistics",
+            "AccommodationStatistics",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.G, ModifierKeys.Control)
             }
         );
     }
