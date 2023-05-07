@@ -30,6 +30,8 @@ namespace InitialProject.View
         private int valueForMoney;
         private string comment;
         private string image;
+        private string recommendationLevel;
+        private string recommendationComment;
 
         public string Guest1
         {
@@ -119,6 +121,24 @@ namespace InitialProject.View
             }
         }
 
+        public string RecommendationLevel
+        {
+            get { return recommendationLevel; }
+            set
+            {
+                recommendationLevel = value;
+            }
+        }
+
+        public string RecommendationComment
+        {
+            get { return recommendationComment; }
+            set
+            {
+                recommendationComment = value;
+            }
+        }
+
         private bool notification;
         public bool Notification
         {
@@ -178,7 +198,16 @@ namespace InitialProject.View
         private void SaveReview(object sender, RoutedEventArgs e)
         {
             SaveNewCreateReviewDTO saveNewCreateReviewDTO = 
-                new SaveNewCreateReviewDTO(SelectedAccommodation.ReservationId, Cleanliness, Staff, Comfort, ValueForMoney, Comment, Images);
+                new SaveNewCreateReviewDTO(
+                    SelectedAccommodation.ReservationId, 
+                    Cleanliness, 
+                    Staff, 
+                    Comfort, 
+                    ValueForMoney, 
+                    Comment, 
+                    Images, 
+                    RecommendationLevel, 
+                    RecommendationComment);
 
             reviewService.SaveNewReview(saveNewCreateReviewDTO);
 
@@ -331,6 +360,11 @@ namespace InitialProject.View
         private void SliderValueForMoneyValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             ValueForMoney = Convert.ToInt32(sliderValueForMoney.Value);
+        }
+
+        private void SliderRenovationRecommendationLevelValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            RecommendationLevel = "Level " + Convert.ToString(sliderRenovationRecommendationLevel.Value);
         }
 
         private void GoToGuest1Start(object sender, RoutedEventArgs e)

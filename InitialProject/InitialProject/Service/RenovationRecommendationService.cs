@@ -1,4 +1,5 @@
-﻿using InitialProject.IRepository;
+﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using System;
@@ -36,5 +37,15 @@ namespace InitialProject.Service
 
             return renovationRecommendationCount;
         }
+
+
+
+
+
+        public void SaveRenovationRecommendation(RenovationRecommendation renovationRecommendation)
+        {
+            renovationRecommedationRepository.Add(renovationRecommendation);
+        }
+
     }
 }
