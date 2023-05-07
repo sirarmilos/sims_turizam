@@ -4,9 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
+        
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+        
         mc:Ignorable="d"
         Title="Home" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerHomePageLogin" CanExecute="OwnerHomePageLogin_CanExecute" Executed="OwnerHomePageLogin_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.AccommodationStart" CanExecute="AccommodationStart_CanExecute" Executed="AccommodationStart_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests" CanExecute="ShowOwnerManageBookingMoveRequests_CanExecute" Executed="ShowOwnerManageBookingMoveRequests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowAndCancellationRenovation" CanExecute="ShowAndCancellationRenovation_CanExecute" Executed="ShowAndCancellationRenovation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RateGuests" CanExecute="RateGuests_CanExecute" Executed="RateGuests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowGuestReviews" CanExecute="ShowGuestReviews_CanExecute" Executed="ShowGuestReviews_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerForum" CanExecute="OwnerForum_CanExecute" Executed="OwnerForum_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerHomePageNotLogin" CanExecute="OwnerHomePageNotLogin_CanExecute" Executed="OwnerHomePageNotLogin_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Notifications" CanExecute="Notifications_CanExecute" Executed="Notifications_Executed"></CommandBinding>
+    </Window.CommandBindings>
 
     <Grid>
 
@@ -24,17 +39,17 @@
         <DockPanel Grid.Column="0" Grid.Row="0">
             
             <Menu x:Name="menuOwner" DockPanel.Dock ="Top">
-                
-                <MenuItem Header="Home" Click="GoToOwnerHomePageLogin"/>
-                <MenuItem Header="Accommodation" Click="GoToAccommodationStart"/>
-                <MenuItem Header="Management of booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
-                <MenuItem Header="Renovate" Click="GoToShowAndCancellationRenovation"/>
-                <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
-                <MenuItem Header="Guest reviews" Click="GoToShowGuestReviews"/>
-                <MenuItem Header="Forum" Click="GoToOwnerForum"/>
+
+                <MenuItem Header="_Home" Click="GoToOwnerHomePageLogin" Command="cmd:RoutedCommands.OwnerHomePageLogin"/>
+                <MenuItem Header="_Accommodation" Click="GoToAccommodationStart" Command="cmd:RoutedCommands.AccommodationStart"/>
+                <MenuItem Header="_Management of booking move requests" Click="GoToShowOwnerManageBookingMoveRequests" Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests"/>
+                <MenuItem Header="Reno_vate" Click="GoToShowAndCancellationRenovation" Command="cmd:RoutedCommands.ShowAndCancellationRenovation"/>
+                <MenuItem Header="Ra_te guests" Click="GoToRateGuests" Command="cmd:RoutedCommands.RateGuests"/>
+                <MenuItem Header="_Guest reviews" Click="GoToShowGuestReviews" Command="cmd:RoutedCommands.ShowGuestReviews"/>
+                <MenuItem Header="_Forum" Click="GoToOwnerForum" Command="cmd:RoutedCommands.OwnerForum"/>
                 <MenuItem x:Name="usernameAndSuperOwner" IsEnabled="False"/>
-                <MenuItem Header="Logout" Click="GoToOwnerHomePageNotLogin"/>
-                <MenuItem x:Name="notifications" Header="Notifications">
+                <MenuItem Header="_Logout" Click="GoToOwnerHomePageNotLogin" Command="cmd:RoutedCommands.OwnerHomePageNotLogin"/>
+                <MenuItem x:Name="notifications" Header="_Notifications" Command="cmd:RoutedCommands.Notifications">
                     <MenuItem x:Name="rateGuestsNotifications"/>
                     <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations"/>
                     <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList">
