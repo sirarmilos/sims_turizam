@@ -14,6 +14,7 @@
                 <MenuItem Header="My reservations" Click="GoToShowReservations"/>
                 <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
+                <MenuItem Header="Owner Reviews" Click="GoToShowOwnerReviews"/>
                 <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
             </Menu>
             <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

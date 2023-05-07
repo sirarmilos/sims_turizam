@@ -1,7 +1,10 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,17 +16,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using InitialProject.Service;
 
 namespace InitialProject.View
 {
 
-    public partial class Guest1Start : Window
+    public partial class ShowOwnerReviews : Window
     {
+        private readonly ReviewService reviewService;
 
-        private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
         private string guest1;
-
 
         public string Guest1
         {
@@ -34,36 +35,32 @@ namespace InitialProject.View
             }
         }
 
-        private bool notification;
-        public bool Notification
+        public List<ShowOwnerReviewsDTO> ShowOwnerReviewsDTOs
         {
-            get { return notification; }
-            set
-            {
-                notification = value;
-            }
+            get;
+            set;
         }
 
-        private void CheckNotification()
-        {
-            if (Notification)
-            {
-                NotificationMenuItem.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                NotificationMenuItem.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        public Guest1Start(string username)
+        public ShowOwnerReviews(string guest1/*, string guestHeader*/)
         {
             InitializeComponent();
-            reservationReschedulingRequestService = new ReservationReschedulingRequestService(username);
-            Guest1 = username;
 
-            Notification = reservationReschedulingRequestService.Guest1HasNotification();
-            CheckNotification();
+            Guest1 = guest1;
+
+            DataContext = this;
+
+            reviewService = new ReviewService(Guest1);
+
+            ShowOwnerReviewsDTOs = new List<ShowOwnerReviewsDTO>();
+
+            ShowOwnerReviewsDTOs = reviewService.FindAllOwnerReviews();
+
+            //usernameAndSuperGuest.Header = guestHeader; ovo ce mi trebati za super guesta
+        }
+
+        void LoadingRowForDgShowOwnerReviews(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
         private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
@@ -91,16 +88,9 @@ namespace InitialProject.View
         {
             Guest1Requests window = new Guest1Requests(Guest1);
             window.Show();
-            Close(); 
-        }
-
-
-        private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
-        {
-            ShowOwnerReviews window = new ShowOwnerReviews(Guest1);
-            window.Show();
             Close();
         }
+
 
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
@@ -108,6 +98,5 @@ namespace InitialProject.View
             window.Show();
             Close();
         }
-
     }
 }

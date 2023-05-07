@@ -123,6 +123,29 @@ namespace InitialProject.Service
         }
 
 
+        public List<ShowOwnerReviewsDTO> FindAllOwnerReviews()
+        {
+            return FindShowOwnerReviewsDTOs(reviewRepository.FindReviewsByGuest1Username(Guest1));
+        }
+
+        public List<ShowOwnerReviewsDTO> FindShowOwnerReviewsDTOs(List<Review> guest1Reviews)
+        {
+            List<ShowOwnerReviewsDTO> showOwnerReviewsDTOs = new List<ShowOwnerReviewsDTO>();
+
+            foreach (Review temporaryReview in guest1Reviews.ToList())
+            {
+                RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(temporaryReview.Reservation.ReservationId);
+
+                if (rateGuest != null)
+                {
+                    ShowOwnerReviewsDTO showOwnerReviewsDTO = new ShowOwnerReviewsDTO(rateGuest);
+                    showOwnerReviewsDTOs.Add(showOwnerReviewsDTO);
+                }
+            }
+
+            return showOwnerReviewsDTOs;
+        }
+
 
 
 

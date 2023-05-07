@@ -62,5 +62,13 @@ namespace InitialProject.Repository
             allRateGuests.Add(rateGuest);
             Save(allRateGuests);
         }
+
+
+
+
+        public RateGuest FindRateGuestByReservation(int reservationId)
+        {
+            return FindAll().ToList().Find(x => x.Reservation.ReservationId == reservationId);
+        }
     }
 }
