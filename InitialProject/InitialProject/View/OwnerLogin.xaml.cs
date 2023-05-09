@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Shell;
 
 namespace InitialProject.View
 {
@@ -54,40 +55,40 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public OwnerLogin()
+        private void Login_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            InitializeComponent();
-
-            DataContext = this;
-
-            userService = new UserService();
-
-            userService.CheckRecentlyRenovatedAccommodation();
+            e.CanExecute = true;
         }
 
-        private void Login(object sender, RoutedEventArgs e)
+        private void Login_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            Password = pbPassword.Password;
+
             if (userService.IsUsernameExist(Username) == false)
             {
                 tbUsername.Text = string.Empty;
-                tbPassword.Text = string.Empty;
+                pbPassword.Password = string.Empty;
+                // tbPassword.Text = string.Empty;
                 MessageBox.Show("Username you entered does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbUsername.Focus();
             }
             else if (userService.IsPasswordCorrect(Username, Password) == false)
             {
-                tbPassword.Text = string.Empty;
+                pbPassword.Password = string.Empty;
+                // tbPassword.Text = string.Empty;
                 MessageBox.Show("Password you entered is incorrect.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbPassword.Focus();
+                pbPassword.Focus();
+                // tbPassword.Focus();
             }
             else
             {
                 string type = userService.FindTypeByUsername(Username);
 
-                if(type.Equals("owner") == false)
+                if (type.Equals("owner") == false)
                 {
                     tbUsername.Text = string.Empty;
-                    tbPassword.Text = string.Empty;
+                    pbPassword.Password = string.Empty;
+                    // tbPassword.Text = string.Empty;
                     MessageBox.Show("User who wants to log in is not the owner.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     tbUsername.Focus();
                 }
@@ -99,6 +100,17 @@ namespace InitialProject.View
                     MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
+        }
+
+        public OwnerLogin()
+        {
+            InitializeComponent();
+
+            DataContext = this;
+
+            userService = new UserService();
+
+            userService.CheckRecentlyRenovatedAccommodation();
         }
 
         private void labeltbFocus(object sender, MouseButtonEventArgs e)
