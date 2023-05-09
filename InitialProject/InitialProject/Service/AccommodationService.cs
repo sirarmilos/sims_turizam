@@ -606,5 +606,19 @@ namespace InitialProject.Service
 
             return busyMonths;
         }
+
+        public List<string> FindOwnerAccommodationNames(string ownerUsername)
+        {
+            List<Accommodation> ownerAccommodations = accommodationRepository.FindByOwnerUsername(ownerUsername);
+
+            List<string> accommodationNames = new List<string>();
+
+            foreach(Accommodation temporaryAccommodation in ownerAccommodations.ToList())
+            {
+                accommodationNames.Add(temporaryAccommodation.AccommodationName);
+            }
+
+            return accommodationNames;
+        }
     }
 }

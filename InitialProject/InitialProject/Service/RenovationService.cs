@@ -126,11 +126,6 @@ namespace InitialProject.Service
             return FindAllRenovations(ownerUsername);
         }
 
-        public bool IsAccommodationNameExist(string accommodationName)
-        {
-            return accommodationService.IsAccommodationNameExist(accommodationName);
-        }
-
         public List<DateSlot> FindAvailableDateSlotsToRenovation(string accommodationName, DateTime startDate, DateTime endDate, int duration)
         {
             List<DateSlot> busyDateSlots = new List<DateSlot>();
@@ -220,6 +215,11 @@ namespace InitialProject.Service
         public List<string> FindUnreadCancelledReservations(string ownerUsername)
         {
             return userService.FindUnreadCancelledReservations(ownerUsername);
+        }
+
+        public List<string> FindOwnerAccommodations(string ownerUsername)
+        {
+            return accommodationService.FindOwnerAccommodationNames(ownerUsername);
         }
     }
 }

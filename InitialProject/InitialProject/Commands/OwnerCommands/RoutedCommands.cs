@@ -232,12 +232,67 @@ namespace InitialProject.Commands.OwnerCommands
 
         public static readonly RoutedUICommand Cancel = new RoutedUICommand
         (
-            "Confirm rejectiont",
-            "ConfirmRejection",
+            "Cancel",
+            "Cancel",
             typeof(RoutedCommands),
             new InputGestureCollection()
             {
                 new KeyGesture(Key.Escape)
+            }
+        );
+
+        public static readonly RoutedUICommand CancelRenovation = new RoutedUICommand
+        (
+            "Cancel renovation",
+            "CancelRenovation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.Q, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand ChooseAccommodationName = new RoutedUICommand
+        (
+            "Choose accommodation name",
+            "ChooseAccommodationName",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.U, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand FindAvailableDates = new RoutedUICommand
+        (
+            "Find available dates",
+            "FindAvailableDates",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.F, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand Rate = new RoutedUICommand
+        (
+            "Rate guest",
+            "Rate",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.R, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand PDFReport = new RoutedUICommand
+        (
+            "Report on average Guest rate for each accommodation",
+            "PDFReport",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.O, ModifierKeys.Control)
             }
         );
     }

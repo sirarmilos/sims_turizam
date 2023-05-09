@@ -108,11 +108,11 @@
 
         </DataGrid>
 
-        <Button x:Name="buttonAcceptRequest" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.AcceptRequest" Margin="50,195,0,0">
+        <Button x:Name="buttonAcceptRequest" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.AcceptRequest" Margin="50,170,0,0">
             <TextBlock TextAlignment="Center">Accept request<LineBreak/>(CTRL + R)</TextBlock>
         </Button>
 
-        <Button x:Name="buttonDeclineRequest" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.DeclineRequest" Margin="0,195,0,0">
+        <Button x:Name="buttonDeclineRequest" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.DeclineRequest" Margin="0,170,0,0">
             <TextBlock TextAlignment="Center">Decline request<LineBreak/>(CTRL + D)</TextBlock>
         </Button>
 

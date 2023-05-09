@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,13 @@ namespace InitialProject.View
             set;
         }
 
-        public string AccommodationName
+        public List<string> AccommodationNames
+        {
+            get;
+            set;
+        }
+
+        public string SelectedAccommodationName
         {
             get;
             set;
@@ -86,6 +93,10 @@ namespace InitialProject.View
 
             renovationService = new RenovationService(OwnerUsername);
 
+            AccommodationNames = new List<string>();
+            AccommodationNames = renovationService.FindOwnerAccommodations(OwnerUsername);
+            cbAccommodationNames.SelectedItem = null;
+
             SetDefaultValue();
         }
 
@@ -97,7 +108,6 @@ namespace InitialProject.View
             buttonRenovate.IsEnabled = false;
             tbDescription.IsEnabled = false;
 
-            tbAccommodationName.Text = string.Empty;
             dpStartDate.SelectedDate = null;
             dpEndDate.SelectedDate = null;
             dgFreeDates.Items.Refresh();
@@ -106,33 +116,52 @@ namespace InitialProject.View
             tbDescription.Text = string.Empty;
         }
 
-        private void Renovate(object sender, RoutedEventArgs e)
+        private void ChooseAccommodationName_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            Renovation renovation = new Renovation(renovationService.FindNextId(), renovationService.FindAccommodationByAccommodationName(AccommodationName), SelectedDateSlot.StartDate, SelectedDateSlot.EndDate, Description);
+            e.CanExecute = true;
+        }
+
+        private void ChooseAccommodationName_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            cbAccommodationNames.IsDropDownOpen = true;
+            cbAccommodationNames.SelectedItem = cbAccommodationNames.Items[0];
+        }
+
+        private void RenovateAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void RenovateAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Renovation renovation = new Renovation(renovationService.FindNextId(), renovationService.FindAccommodationByAccommodationName(SelectedAccommodationName), SelectedDateSlot.StartDate, SelectedDateSlot.EndDate, Description);
             renovationService.AddRenovation(renovation);
 
             SetDefaultValue();
         }
 
-        private void Close(object sender, RoutedEventArgs e)
+        private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Cancel_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Close();
         }
 
-        private void FindAvailableDates(object sender, RoutedEventArgs e)
+        private void FindAvailableDates_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(CheckErrorAllFieldsFilled() == true)
+            e.CanExecute = true;
+        }
+
+        private void FindAvailableDates_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CheckErrorAllFieldsFilled() == true)
             {
                 MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if(renovationService.IsAccommodationNameExist(AccommodationName) == false)
-            {
-                MessageBox.Show("Accommodation with this name not exists.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                tbAccommodationName.Text = string.Empty;
-                tbAccommodationName.Focus();
-            }
-            else if(CheckErrorDate() == true)
+            else if (CheckErrorDate() == true)
             {
                 MessageBox.Show("Start date is greater than end date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
@@ -140,14 +169,14 @@ namespace InitialProject.View
                 dpEndDate.SelectedDate = null;
                 dpStartDate.Focus();
             }
-            else if(CheckFutureDate() == true)
+            else if (CheckFutureDate() == true)
             {
                 MessageBox.Show("The start date must not be earlier than today's date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 dpStartDate.SelectedDate = null;
                 dpStartDate.Focus();
             }
-            else if(CheckErrorDuration() == true)
+            else if (CheckErrorDuration() == true)
             {
                 MessageBox.Show("The duration must not be longer than the distance between the dates.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
@@ -156,7 +185,7 @@ namespace InitialProject.View
             }
             else
             {
-                AvailableDateSlots = renovationService.FindAvailableDateSlotsToRenovation(AccommodationName, StartDate, EndDate, Duration);
+                AvailableDateSlots = renovationService.FindAvailableDateSlotsToRenovation(SelectedAccommodationName, StartDate, EndDate, Duration);
 
                 dgFreeDates.Items.Refresh();
 
@@ -166,7 +195,7 @@ namespace InitialProject.View
 
         private bool CheckErrorAllFieldsFilled()
         {
-            return string.IsNullOrEmpty(AccommodationName) || dpStartDate.SelectedDate == null || dpEndDate.SelectedDate == null || Duration <= 0;
+            return string.IsNullOrEmpty(SelectedAccommodationName) || dpStartDate.SelectedDate == null || dpEndDate.SelectedDate == null || Duration <= 0;
         }
 
         private bool CheckErrorDate()
@@ -213,6 +242,11 @@ namespace InitialProject.View
                 var label = (Label)sender;
                 Keyboard.Focus(label.Target);
             }
+        }
+
+        private void SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetDefaultValue();
         }
     }
 }
