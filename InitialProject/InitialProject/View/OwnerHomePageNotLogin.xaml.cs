@@ -28,14 +28,24 @@ namespace InitialProject.View
             DataContext = this;
         }
 
-        private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
+        private void OwnerHomePageNotLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OwnerHomePageNotLogin_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
             window.Show();
             Close();
         }
 
-        private void GoToOwnerLogin(object sender, RoutedEventArgs e)
+        private void OwnerLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OwnerLogin_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             OwnerLogin window = new OwnerLogin();
             window.ShowDialog();

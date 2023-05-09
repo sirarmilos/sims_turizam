@@ -17,7 +17,7 @@ namespace InitialProject.Commands.OwnerCommands
             new InputGestureCollection()
             {
                 new KeyGesture(Key.F1),
-                new KeyGesture(Key.H, ModifierKeys.Control) // ovako radi sa control, jedino sa alt pravi problem
+                new KeyGesture(Key.H, ModifierKeys.Alt),
             }
         );
 
@@ -64,6 +64,7 @@ namespace InitialProject.Commands.OwnerCommands
             typeof(RoutedCommands),
             new InputGestureCollection()
             {
+                new KeyGesture(Key.T, ModifierKeys.Control),
                 new KeyGesture(Key.F5),
                 new KeyGesture(Key.T, ModifierKeys.Alt)
             }
@@ -93,10 +94,10 @@ namespace InitialProject.Commands.OwnerCommands
             }
         );
 
-        public static readonly RoutedUICommand OwnerHomePageNotLogin = new RoutedUICommand
+        public static readonly RoutedUICommand Logout = new RoutedUICommand
         (
             "Logout",
-            "OwnerHomePageNotLogin",
+            "Logout",
             typeof(RoutedCommands),
             new InputGestureCollection()
             {
@@ -114,6 +115,129 @@ namespace InitialProject.Commands.OwnerCommands
             {
                 new KeyGesture(Key.F9),
                 new KeyGesture(Key.N, ModifierKeys.Alt)
+            }
+        );
+
+        public static readonly RoutedUICommand ReadCancelledReservationNotification = new RoutedUICommand
+        (
+            "Read cancelled reservation to notification",
+            "ReadCancelledReservationNotification",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.A, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand OwnerHomePageNotLogin = new RoutedUICommand
+        (
+            "Home",
+            "OwnerHomePageNotLogin",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.F1),
+                new KeyGesture(Key.H, ModifierKeys.Alt)
+            }
+        );
+
+        public static readonly RoutedUICommand OwnerLogin = new RoutedUICommand
+        (
+            "Login",
+            "OwnerLogin",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.F8),
+                new KeyGesture(Key.L, ModifierKeys.Alt)
+            }
+        );
+
+        public static readonly RoutedUICommand Login = new RoutedUICommand
+        (
+            "Login",
+            "Login",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.L, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand AddNewAccommodation = new RoutedUICommand
+        (
+            "Add new accommodation",
+            "AddNewAccommodation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.M, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand RenovateAccommodation = new RoutedUICommand
+        (
+            "Renovate accommodation",
+            "RenovateAccommodation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.N, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand AccommodationStatistics = new RoutedUICommand
+        (
+            "Accommodation statistics",
+            "AccommodationStatistics",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.G, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand AcceptRequest = new RoutedUICommand
+        (
+            "Accept request",
+            "AcceptRequest",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.R, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand DeclineRequest = new RoutedUICommand
+        (
+            "Decline request",
+            "DeclineRequest",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.D, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand ConfirmRejection = new RoutedUICommand // isto kao i komanda DeclineRequest, mozda da koristim kao jednu komandu
+        (
+            "Confirm rejectiont",
+            "ConfirmRejection",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.J, ModifierKeys.Control) // pazi na ove sa istim komandama D
+            }
+        );
+
+        public static readonly RoutedUICommand Cancel = new RoutedUICommand
+        (
+            "Confirm rejectiont",
+            "ConfirmRejection",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.Escape)
             }
         );
     }

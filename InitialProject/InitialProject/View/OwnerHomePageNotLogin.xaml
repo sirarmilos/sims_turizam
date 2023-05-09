@@ -4,9 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
+
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+        
         mc:Ignorable="d"
-        Title="OwnerHomePageNotLogin" Height="775" Width="1400"
+        Title="Home" Height="798" Width="1400" Icon="../Resources/Images/logo_icon.ico"
         WindowStartupLocation="CenterScreen">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerHomePageNotLogin" CanExecute="OwnerHomePageNotLogin_CanExecute" Executed="OwnerHomePageNotLogin_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerLogin" CanExecute="OwnerLogin_CanExecute" Executed="OwnerLogin_Executed"></CommandBinding>
+    </Window.CommandBindings>
 
     <Grid>
 
@@ -21,28 +29,49 @@
             <ColumnDefinition Width="1400" />
         </Grid.ColumnDefinitions>
 
-        <DockPanel Grid.Column="0" Grid.Row="0">
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
 
-            <Menu x:Name="menuOwner" DockPanel.Dock ="Top">
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch">
 
-                <MenuItem Header="Home" Click="GoToOwnerHomePageNotLogin"/>
-                <MenuItem Header="Accommodation" IsEnabled="False"/>
-                <MenuItem Header="Management of booking move requests" IsEnabled="False"/>
-                <MenuItem Header="Renovate" IsEnabled="False"/>
-                <MenuItem Header="Rate guests" IsEnabled="False"/>
-                <MenuItem Header="Guest reviews" IsEnabled="False"/>
-                <MenuItem Header="Forum" IsEnabled="False"/>
-                <MenuItem Header="Login" Click="GoToOwnerLogin"/>
+                <Menu.ItemsPanel>
+
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="575" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+
+                </Menu.ItemsPanel>
+
+                <MenuItem Grid.Column="0" Header="_Home (F1)" Command="cmd:RoutedCommands.OwnerHomePageNotLogin"/>
+                <MenuItem Grid.Column="1" Header="_Accommodation (F2)" IsEnabled="False"/>
+                <MenuItem Grid.Column="2" Header="_Management of booking move requests (F3)" IsEnabled="False"/>
+                <MenuItem Grid.Column="3" Header="Reno_vate (F4)" IsEnabled="False"/>
+                <MenuItem Grid.Column="4" Header="Ra_te guests (F5)" IsEnabled="False"/>
+                <MenuItem Grid.Column="5" Header="_Guest reviews (F6)" IsEnabled="False"/>
+                <MenuItem Grid.Column="6" Header="_Forum (F7)" IsEnabled="False"/>
+                <MenuItem Grid.Column="7" Header="_Login (F8)" HorizontalAlignment="Right" Command="cmd:RoutedCommands.OwnerLogin"/>
 
             </Menu>
 
         </DockPanel>
 
-        <Image Grid.Column="0" Grid.Row="1" Source="../Resources/Images/logo_test.png" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="100" MouseDown="GoToOwnerHomePageNotLogin"/>
+        <Button Grid.Row="1" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="100" Command="cmd:RoutedCommands.OwnerHomePageNotLogin" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4">
+            <Image Source="../Resources/Images/logo.png" />
+        </Button>
 
-        <Label Grid.Column="0" Grid.Row="2" Content="Tourism company" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="30" VerticalAlignment="Bottom" Width="250"/>
+        <Label Grid.Row="2" Content="Turtle tourism" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="30" VerticalAlignment="Bottom" Width="250"/>
 
-        <GroupBox Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" Height="225" VerticalAlignment="Bottom" Width="1000">
+        <GroupBox Grid.Row="3" HorizontalAlignment="Center" Height="225" VerticalAlignment="Bottom" Width="1000">
 
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="170" VerticalAlignment="Center" Width="950">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed erat ex, pretium et feugiat feugiat, dictum at nunc. Sed lectus ex, tincidunt accumsan est vel, mollis imperdiet urna. Curabitur vel arcu lacus. Aenean feugiat mauris erat, ultrices facilisis elit dictum sit amet. Integer nisl orci, hendrerit ac bibendum at, dignissim vel nulla. Ut nec finibus arcu. Vestibulum egestas tincidunt gravida. Nullam sodales auctor orci, eu convallis enim lobortis in. Aenean non lectus mollis, maximus mi in, cursus elit. Donec nec dolor nibh. Phasellus congue eu urna vel lobortis.
@@ -52,11 +81,11 @@
 
         </GroupBox>
 
-        <GroupBox Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" Height="145" VerticalAlignment="Center" Width="1000">
+        <GroupBox Grid.Row="4" HorizontalAlignment="Center" Height="146" VerticalAlignment="Center" Width="1000">
 
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="95" VerticalAlignment="Center" Width="950">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam placerat orci sit amet nunc vestibulum imperdiet non euismod nisl. Nullam bibendum tristique euismod. Cras porta mauris purus, eu dignissim nisl pulvinar vel. Quisque sit amet est eu neque blandit vestibulum. Suspendisse ac ornare lectus. Phasellus at nibh metus. Praesent luctus vehicula sapien, quis dignissim justo mollis quis. Ut volutpat erat nec elementum mattis. Sed imperdiet ipsum nec purus hendrerit, sit amet pellentesque sapien efficitur. Nam rhoncus ut lacus nec auctor. Nunc quis pulvinar est, et pharetra sem. Integer at enim ac urna viverra porta vel ut sapien. Morbi in interdum ex.
-                Nam eu dictum dui. Curabitur ut massa odio. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus.
+                Nam eu dictum dui. Curabitur ut massa odio. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus.
             </TextBlock>
 
         </GroupBox>

@@ -121,6 +121,113 @@ namespace InitialProject.View
             set;
         }
 
+        private void OwnerHomePageLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OwnerHomePageLogin_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void AccommodationStart_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void AccommodationStart_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            AccommodationStart window = new AccommodationStart(OwnerUsername);
+            window.Show();
+            Close();
+        }
+
+        private void ShowOwnerManageBookingMoveRequests_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ShowOwnerManageBookingMoveRequests_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void ShowAndCancellationRenovation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ShowAndCancellationRenovation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void RateGuests_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void RateGuests_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            RateGuests window = new RateGuests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void ShowGuestReviews_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ShowGuestReviews_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void OwnerForum_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OwnerForum_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void Logout_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Logout_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
+            window.Show();
+            Close();
+        }
+
+        private void Notifications_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Notifications_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            notifications.IsSubmenuOpen = true;
+            rateGuestsNotifications.Focus();
+        }
+
         public OwnerManageBookingMoveRequests(string ownerUsername, string ownerHeader)
         {
             InitializeComponent();
@@ -158,6 +265,25 @@ namespace InitialProject.View
             SelectedBookingMoveRequest = null;
         }
 
+        private void ReadCancelledReservationNotification_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ReadCancelledReservationNotification_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            string viewedCancelledReservation = ((MenuItem)sender).Header.ToString();
+
+            if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
+            {
+                reservationReschedulingRequestService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
+
+                UnreadCancelledReservations = reservationReschedulingRequestService.FindUnreadCancelledReservations(OwnerUsername);
+
+                cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
+            }
+        }
+
         private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
         {
             string viewedCancelledReservation = ((MenuItem)sender).Header.ToString();
@@ -183,7 +309,19 @@ namespace InitialProject.View
             return cancelledReservationsNotificationDTO;
         }
 
-        private void AcceptRequest(object sender, RoutedEventArgs e)
+        private void AcceptRequest_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if(SelectedBookingMoveRequest == null)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void AcceptRequest_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             OwnerBookingMoveRequestsDTOs = reservationReschedulingRequestService.SaveAcceptedRequest(SelectedBookingMoveRequest);
 
@@ -192,7 +330,19 @@ namespace InitialProject.View
             dgBookingMoveRequests.ItemsSource = OwnerBookingMoveRequestsDTOs;
         }
 
-        private void DeclineRequest(object sender, RoutedEventArgs e)
+        private void DeclineRequest_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (SelectedBookingMoveRequest == null)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void DeclineRequest_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             DeclineBookingMoveRequest window = new DeclineBookingMoveRequest(reservationReschedulingRequestService, this);
 
@@ -216,62 +366,6 @@ namespace InitialProject.View
         void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
-
-        private void GoToOwnerHomePageLogin(object sender, RoutedEventArgs e)
-        {
-            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToAccommodationStart(object sender, RoutedEventArgs e)
-        {
-            AccommodationStart window = new AccommodationStart(OwnerUsername);
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
-        {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowAndCancellationRenovation(object sender, RoutedEventArgs e)
-        {
-            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToRateGuests(object sender, RoutedEventArgs e)
-        {
-            RateGuests window = new RateGuests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
-        {
-            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToOwnerForum(object sender, RoutedEventArgs e)
-        {
-            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
-        {
-            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
-            window.Show();
-            Close();
         }
     }
 }

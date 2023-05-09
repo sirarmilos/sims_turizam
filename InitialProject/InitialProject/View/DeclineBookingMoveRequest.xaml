@@ -3,35 +3,47 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+        
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="Decline request" Height="380" Width="550"
+        Title="Decline request" Height="396" Width="578" Icon="../Resources/Images/logo_icon.ico"
         WindowStartupLocation="CenterScreen">
-    
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.ConfirmRejection" CanExecute="ConfirmRejection_CanExecute" Executed="ConfirmRejection_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed"></CommandBinding>
+    </Window.CommandBindings>
+
     <Grid>
 
-        <GroupBox Header="Comment" HorizontalAlignment="Center" Height="290" VerticalAlignment="Center" Width="500">
-            
+        <GroupBox Header="Comment" HorizontalAlignment="Left" Height="304" VerticalAlignment="Top" Width="513" Margin="25,25,25,25">
+
             <Grid>
-                
+
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="190" />
-                    <RowDefinition Height="100" />
+                    <RowDefinition Height="180" />
+                    <RowDefinition Height="124" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="275" />
-                    <ColumnDefinition Width="225" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="tbComment" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="{Binding Path=Comment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Height="155" VerticalAlignment="Center" Width="450"/>
+                <TextBox x:Name="tbComment" Grid.Row="0" TextWrapping="Wrap" Text="{Binding Path=Comment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="155" VerticalAlignment="Top" Width="450" Margin="25,25,0,0"/>
 
-                <Button x:Name="buttonConfirmRejection" Grid.Column="0" Grid.Row="1" Content="Confirm rejection" HorizontalAlignment="Center" Height="50" VerticalAlignment="Top" Width="175" Click="ConfirmRejection"/>
-                <Button x:Name="buttonCancel" Grid.Column="1" Grid.Row="1" Content="Cancel" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Click="Cancel"/>
+                <Button x:Name="buttonConfirmRejection" Grid.Row="1" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.ConfirmRejection" Margin="50,25,0,0">
+                    <TextBlock TextAlignment="Center">Confirm rejection<LineBreak/>(CTRL + J)</TextBlock>
+                </Button>
+
+                <Button x:Name="buttonCancel" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.Cancel" Margin="275,25,0,0">
+                    <TextBlock TextAlignment="Center">Cancel<LineBreak/>(ESC)</TextBlock>
+                </Button>
 
             </Grid>
 
         </GroupBox>
 
     </Grid>
-    
+
 </Window>
