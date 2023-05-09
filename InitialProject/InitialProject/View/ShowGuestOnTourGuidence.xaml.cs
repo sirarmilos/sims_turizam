@@ -27,8 +27,6 @@ namespace InitialProject.View
     {
         public static List<Dto.ReservationDisplayDto> tourReservations { get; set; }
 
-        private readonly TourReservationRepository tourReservationRepository;
-
         private readonly TourReservationService tourReservationService;
 
         private string guest;
@@ -59,7 +57,6 @@ namespace InitialProject.View
         {
             InitializeComponent();
             DataContext = this;
-            tourReservationRepository = new TourReservationRepository();
             tourReservationService = new TourReservationService();
             tourReservations = new List<Dto.ReservationDisplayDto> (tourReservationService.GetAllForOneTourGuidence(guidenceId));
             GuidenceId = guidenceId;

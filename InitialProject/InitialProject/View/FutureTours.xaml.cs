@@ -27,11 +27,6 @@ namespace InitialProject.View
     {
 
         public static ObservableCollection<TourGuidence> tourGuidences { get; set; }
-
-        private readonly TourGuidenceRepository tourGuidenceRepository;
-
-        private readonly VoucherRepository voucherRepository;
-
         private readonly TourGuidenceService tourGuidenceService;
         private readonly VoucherService voucherService;
 
@@ -39,11 +34,10 @@ namespace InitialProject.View
         {
             InitializeComponent();
             DataContext = this;
-            tourGuidenceRepository = new TourGuidenceRepository();
-            voucherRepository = new VoucherRepository();
             tourGuidenceService = new TourGuidenceService();
-            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceService.GetAllFutureTours());
             voucherService = new VoucherService();
+            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceService.FindAllFutureTours());
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

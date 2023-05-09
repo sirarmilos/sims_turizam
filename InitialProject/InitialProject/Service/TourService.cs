@@ -11,14 +11,28 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Service
 {
-    internal class TourService
+    public class TourService
     {
         private readonly ITourRepository tourRepository;
+
+        private readonly TourGuidenceService tourGuidenceService;
+
+        private readonly Guest2Service guest2Service;
+
+        private readonly TourReservationService tourReservationService;
 
         public TourService()
         {
             tourRepository = Injector.Injector.CreateInstance<ITourRepository>();
             //tourRepository = new TourRepository();
+            tourGuidenceService = new TourGuidenceService();
+            guest2Service = new Guest2Service();
+            tourReservationService = new TourReservationService();
+        }
+
+        public List<Tour> FindAll()
+        {
+            return tourRepository.FindAll();
         }
 
 
@@ -29,7 +43,7 @@ namespace InitialProject.Service
             TourKeyPointService tourKeyPointService = new TourKeyPointService();    
 
 
-            foreach (TourGuidence tourGuidence in tourGuidanceService.GetAll())
+            foreach (TourGuidence tourGuidence in tourGuidanceService.FindAll())
             {
                 TourDisplayDTO tourDisplayDTO = new TourDisplayDTO();
 
@@ -42,7 +56,7 @@ namespace InitialProject.Service
 
                 tourDisplayDTO.TourKeyPoints = new List<TourKeyPoint>();
 
-                foreach (TourKeyPoint tourKeyPoint in tourKeyPointService.GetAll())
+                foreach (TourKeyPoint tourKeyPoint in tourKeyPointService.FindAll())
                 {
                     if (tourKeyPoint.TourGuidence.Id == tourGuidence.Id)
                     {
@@ -74,9 +88,9 @@ namespace InitialProject.Service
 
 
 
-            foreach (Model.TourReservation tourReservation in tourReservationService.GetAll())
+            foreach (Model.TourReservation tourReservation in tourReservationService.FindAll())
             {
-                foreach (TourGuidence tourGuidence in tourGuidanceService.GetAll())
+                foreach (TourGuidence tourGuidence in tourGuidanceService.FindAll())
                 {
                     if (tourGuidence.Id == tourReservation.tourGuidenceId && tourReservationId == tourReservation.Id)
                     {
@@ -90,7 +104,7 @@ namespace InitialProject.Service
 
                         tourDisplayDTO.TourKeyPoints = new List<TourKeyPoint>();
 
-                        foreach (TourKeyPoint tourKeyPoint in tourKeyPointService.GetAll())
+                        foreach (TourKeyPoint tourKeyPoint in tourKeyPointService.FindAll())
                         {
                             if (tourKeyPoint.TourGuidence.Id == tourGuidence.Id)
                             {
@@ -258,6 +272,40 @@ namespace InitialProject.Service
             }
 
             return result;
+        }
+
+        
+
+        public List<int> FindGuestNumber(int tourId, string username)
+        {
+            // type = [(1, <18), (2, 18-50), (3, >50)]
+            List<int> count = new List<int>(new int[3]);
+
+            List<TourGuidence> finishedTourGuidence = tourGuidenceService.FindFinishedByGuideUsername(tourId, username);
+
+            foreach (Model.TourReservation tourReservation in tourReservationService.FindAll())
+            {
+                List<TourGuidence> finalList = finishedTourGuidence.FindAll(x => x.Id == tourReservation.tourGuidenceId);
+
+                foreach (TourGuidence tourGuidence in finalList)
+                {
+                    int age = guest2Service.FindAge(tourReservation.userId);
+                    switch (age)
+                    {
+                        case <= 18:
+                            count[0]++;
+                            break;
+                        case >= 50:
+                            count[2]++;
+                            break;
+                        default:
+                            count[1]++;
+                            break;
+                    }
+                }
+            }
+
+            return count;
         }
 
 

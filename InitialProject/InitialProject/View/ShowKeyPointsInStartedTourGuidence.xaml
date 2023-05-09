@@ -23,13 +23,13 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Confirm" HorizontalAlignment="Left" Margin="669,152,0,0" VerticalAlignment="Top" Height="61" Width="82" Click="SaveCheckedKeyPoints"/>
-        <Button Content="Mark Guests" HorizontalAlignment="Left" Margin="669,93,0,0" VerticalAlignment="Top" Height="39" Width="82" Click="MarkPresentGuests"/>
-        <Button x:Name="MyButton" HorizontalAlignment="Left" Margin="635,252,0,0" VerticalAlignment="Top" Click="StartTourGuidence">
+        <Button Content="Confirm" HorizontalAlignment="Left" Margin="669,276,0,0" VerticalAlignment="Top" Height="40" Width="82" Click="SaveCheckedKeyPoints"/>
+        <Button Content="Mark Guests" HorizontalAlignment="Left" Margin="669,351,0,0" VerticalAlignment="Top" Height="25" Width="82" Click="MarkPresentGuests"/>
+        <Button x:Name="MyButton" HorizontalAlignment="Left" Margin="190,376,0,0" VerticalAlignment="Top" Click="StartTourGuidence" Width="91">
             <Button.Style>
                 <Style TargetType="Button">
                     <Setter Property="IsEnabled" Value="True" />
-                    <Setter Property="Content" Value="PRESS TO START" />
+                    <Setter Property="Content" Value="START" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding TourGuidence.Started}" Value="True">
                             <Setter Property="IsEnabled" Value="False" />
@@ -39,7 +39,7 @@
                 </Style>
             </Button.Style>
         </Button>
-        <Button Content="FINISH" HorizontalAlignment="Left" Margin="635,298,0,0" VerticalAlignment="Top" Height="20" Width="91" Click="FinishTourGuidence"/>
+        <Button Content="FINISH" HorizontalAlignment="Left" Margin="400,374,0,0" VerticalAlignment="Top" Height="20" Width="91" Click="FinishTourGuidence"/>
 
     </Grid>
 </Window>

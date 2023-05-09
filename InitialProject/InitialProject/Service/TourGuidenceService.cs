@@ -16,34 +16,24 @@ namespace InitialProject.Service
 
         private readonly TourReservationService tourReservationService;
 
+        private readonly TourService tourService;
+
         public TourGuidenceService()
         {
             tourGuidenceRepository = Injector.Injector.CreateInstance<ITourGuidenceRepository>();
-            tourReservationService = new TourReservationService();  
+            tourReservationService = new TourReservationService();
+            tourService = new TourService();
         }
 
-        public TourGuidence GetById(int id)
-        {
-            List<TourGuidence> tourGuidences = tourGuidenceRepository.FindAll();
-            TourGuidence tourGuidence = new TourGuidence();
-
-            foreach(TourGuidence tg in tourGuidences)
-            {
-                if(tg.Id==id)
-                {
-                    tourGuidence = tg;
-                    break;
-                }
-            }
-
-            return tourGuidence;
-        }
-
-        public List<TourGuidence> GetAll()
+        public List<TourGuidence> FindAll()
         {
             return tourGuidenceRepository.FindAll();
         }
 
+        public List<TourGuidence> FindFinishedByGuideUsername(int tourId, string username)
+        {
+            return tourGuidenceRepository.FindFinishedByGuideUsername(tourId, username);
+        }
 
         public List<int> NotifyGuestOfTourStarting(string username)
         {
@@ -51,7 +41,7 @@ namespace InitialProject.Service
 
             TourReservationService tourReservationService = new TourReservationService();
 
-            foreach (Model.TourReservation tourReservation in tourReservationService.GetAll())
+            foreach (Model.TourReservation tourReservation in tourReservationService.FindAll())
             {
                 if (tourReservation.userId.Equals(username))
                 {
@@ -77,7 +67,7 @@ namespace InitialProject.Service
 
             TourReservationService tourReservationService = new TourReservationService();
 
-            List<Model.TourReservation> tourReservations = tourReservationService.GetAll();
+            List<Model.TourReservation> tourReservations = tourReservationService.FindAll();
             
             foreach (Model.TourReservation tourReservation in tourReservations)
             {
@@ -116,23 +106,12 @@ namespace InitialProject.Service
 
         }
 
-        public List<TourGuidence> GetAllForToday()
+        public List<TourGuidence> FindAllForToday(string guideUsername)
         {
-            List<TourGuidence> todaysTour = new();
-            DateTime systemDate = DateTime.Today;
-
-            foreach (TourGuidence t in tourGuidenceRepository.FindAll())
-            {
-                if (systemDate == t.StartTime.Date && t.StartTime.TimeOfDay>=DateTime.Now.TimeOfDay && t.Finished == false)
-                {
-                    todaysTour.Add(t);
-                }
-
-            }
-            return todaysTour;
+            return tourGuidenceRepository.FindGuideTodayUpcomming(guideUsername);
         }
 
-        public List<TourGuidence> GetAllFutureTours()
+        public List<TourGuidence> FindAllFutureTours()
         {
             List<TourGuidence> futureTours = new();
             futureTours = tourGuidenceRepository.FindAll().Where(item => item.StartTime >= DateTime.Now).ToList();
@@ -201,13 +180,11 @@ namespace InitialProject.Service
             return false;
         }
 
-        public Tour GetMostVisitedAllTime()
+        public Tour FindMostVisitedAllTime()
         {
             int sum = 0;
             Tour tourMax = new Tour();
-            TourReservationRepository tourReservationRepository = new();
-            TourRepository tourRepository = new();
-            List<Tour> tours = tourRepository.FindAll();
+            List<Tour> tours = tourService.FindAll();
             int sumMax = 0;
             int indicator = 0;
 
@@ -255,13 +232,11 @@ namespace InitialProject.Service
             return tourMax;
         }
 
-        public Tour GetMostVisitedByYear(int year)
+        public Tour FindMostVisitedByYear(int year)
         {
             int sum = 0;
             Tour tourMax = new Tour();
-            TourReservationRepository tourReservationRepository = new();
-            TourRepository tourRepository = new();
-            List<Tour> tours = tourRepository.FindAll();
+            List<Tour> tours = tourService.FindAll();
             int sumMax = 0;
             int indicator = 0;
 

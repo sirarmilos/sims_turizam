@@ -14,8 +14,6 @@ namespace InitialProject.IRepository
 
         void Save(List<TourGuidence> tourGuidences);
 
-        void Update(TourGuidence tourGuidence);
-
         int NextId();
 
         TourGuidence FindById(int id);
@@ -27,6 +25,12 @@ namespace InitialProject.IRepository
         string FindGuide(int tourGuidenceId);
 
         TourAttendanceDTO FindTourAttendanceDTO(int tourReservationId);
-        
+
+        List<TourGuidence> FindGuideAll(string username);
+
+        List<TourGuidence> FindFinishedByGuideUsername(int tourId, string username);
+
+        List<TourGuidence> FindGuideTodayUpcomming(string guideUsername);
+
     }
 }

@@ -14,13 +14,16 @@ namespace InitialProject.Service
     {
         private readonly ITourReservationRepository tourReservationRepository;
 
+        private readonly TourKeyPointService tourKeyPointService;
+
         public TourReservationService()
         {
             tourReservationRepository = Injector.Injector.CreateInstance<ITourReservationRepository>();
             //tourReservationRepository = new TourReservationRepository();    
+            tourKeyPointService = new TourKeyPointService();
         }
 
-        public List<Model.TourReservation> GetAll()
+        public List<Model.TourReservation> FindAll()
         {
             return tourReservationRepository.FindAll();
         }
@@ -69,12 +72,8 @@ namespace InitialProject.Service
         public List<Dto.ReservationDisplayDto> GetAllForOneTourGuidence(int guidenceId)
         {
             List<Dto.ReservationDisplayDto> reservations = new List<Dto.ReservationDisplayDto>();
-            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
             List<TourKeyPoint> tourKeyPoints = new List<TourKeyPoint>();
-
-            TourKeyPointService tourKeyPointService = new TourKeyPointService();
-
-            tourKeyPoints = tourKeyPointService.GetByTourGuidance(guidenceId);
+            tourKeyPoints = tourKeyPointService.FindByTourGuidance(guidenceId);
 
             foreach (Model.TourReservation tr in tourReservationRepository.FindAll())
             {
@@ -130,9 +129,8 @@ namespace InitialProject.Service
 
         public List<Boolean> SetArrivalsToFalse(int guidenceId)
         {
-            List<TourKeyPoint> tourKeyPoints = new List<TourKeyPoint>();
-            TourKeyPointService tourKeyPointService = new TourKeyPointService();    
-            tourKeyPoints = tourKeyPointService.GetByTourGuidance(guidenceId);
+            List<TourKeyPoint> tourKeyPoints = new List<TourKeyPoint>();   
+            tourKeyPoints = tourKeyPointService.FindByTourGuidance(guidenceId);
             List<Boolean> retVal = new List<Boolean>();
             foreach (TourKeyPoint kp in tourKeyPoints)
             {

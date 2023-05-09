@@ -21,7 +21,7 @@ namespace InitialProject.Repository
         public RateGuideRepository()
         {
             rateGuideSerializer = new Serializer<RateGuide>();
-            rates = rateGuideSerializer.FromCSV(FilePathRateGuide);
+            //rates = rateGuideSerializer.FromCSV(FilePathRateGuide);
 
         }
 
@@ -32,6 +32,7 @@ namespace InitialProject.Repository
 
         public void UpdateIsDeleted(string user, int id)
         {
+            rates = FindAll();
             foreach(RateGuide rate in rates)
             {
                 if(rate.UserId == user && rate.tourGuidenceId == id)

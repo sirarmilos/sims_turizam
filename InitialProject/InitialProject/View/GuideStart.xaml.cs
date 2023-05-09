@@ -37,7 +37,9 @@ namespace InitialProject.View
 
         private readonly TourGuidenceService tourGuidenceService;
 
-        private readonly TourRepository tourRepository;
+        private readonly TourService tourService;
+
+       // private readonly TourRepository tourRepository;
 
         private readonly VoucherService voucherService;
 
@@ -85,12 +87,12 @@ namespace InitialProject.View
             Guide = username;
             voucherService = new VoucherService();
             tourGuidenceService = new TourGuidenceService();
-            tourRepository = new TourRepository();
-            tour = tourGuidenceService.GetMostVisitedAllTime();
-            int year = 2022;
-            tourFiltered = tourGuidenceService.GetMostVisitedByYear(year);
+            tourService = new TourService();
+            tour = tourGuidenceService.FindMostVisitedAllTime();
+            int year = 2021;
+            tourFiltered = tourGuidenceService.FindMostVisitedByYear(year);
             //tourAgeStats = tourRepository.GetById(3);
-            tourAgeStats = new ObservableCollection<Tour>(tourRepository.FindAll());
+            tourAgeStats = new ObservableCollection<Tour>(tourService.FindAll());
             //ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(tourAgeStats.Id));
            // voucherPercentage = new ObservableCollection<double>(/*tourRepository.GetVoucherPercentage(tourAgeStats.Id)*/);
         }
@@ -110,7 +112,7 @@ namespace InitialProject.View
 
         private void GoToShowTourGuidences(object sender, RoutedEventArgs e)
         {
-            ShowTourGuidences window = new ShowTourGuidences();
+            ShowTourGuidences window = new ShowTourGuidences(Guide);
             window.Show();
         }
 
@@ -139,7 +141,7 @@ namespace InitialProject.View
         private void DisplayStatistics(int id)
         {
             voucherPercentage = new ObservableCollection<double>(voucherService.GetVoucherPercentage(id));
-            ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(id));
+            ageCount = new ObservableCollection<int>(tourService.FindGuestNumber(id, Guide));
             OnPropertyChanged(nameof(WithVoucher));
             OnPropertyChanged(nameof(WithoutVoucher));
             OnPropertyChanged(nameof(Under18));

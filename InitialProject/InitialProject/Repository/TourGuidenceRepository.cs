@@ -13,9 +13,13 @@ using System.Windows.Input;
 
 namespace InitialProject.Repository
 {
-    internal class TourGuidenceRepository : ITourGuidenceRepository
+    public class TourGuidenceRepository : ITourGuidenceRepository
     {
         private TourRepository tourRepository;
+
+        private TourReservationRepository tourReservationRepository;
+        
+        private TourKeyPointRepository tourKeyPointRepository;
 
         private const string FilePathTourGuidence = "../../../Resources/Data/tourguidences.csv";
 
@@ -26,7 +30,7 @@ namespace InitialProject.Repository
         public TourGuidenceRepository()
         {
             tourGuidenceSerializer = new Serializer<TourGuidence>();
-            tourGuidences = tourGuidenceSerializer.FromCSV(FilePathTourGuidence);
+           // tourGuidences = tourGuidenceSerializer.FromCSV(FilePathTourGuidence);
         }
 
         public List<TourGuidence> FindAll()
@@ -43,33 +47,36 @@ namespace InitialProject.Repository
             return tourGuidences;
         }
 
+        public TourGuidence FindById(int id)
+        {
+            return FindAll().ToList().Find(x => x.Id == id);
+        }
+
         public void Save(List<TourGuidence> tourGuidences)
         {
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
         }
 
-        public void Update(TourGuidence tourGuidence)
+       /* public void Update(TourGuidence tourGuidence)
         {
             TourGuidence tG = tourGuidences.FirstOrDefault(x => x.Id == tourGuidence.Id);
             tG = tourGuidence;
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
-        }
+        }*/
  
         public int NextId()
         {
-            if (tourGuidences.Count < 1)
+            if (FindAll().Count < 1)
             {
                 return 1;
             }
-            return tourGuidences.Max(c => c.Id) + 1;
+
+            return FindAll().Max(x => x.Id) + 1;
         }
 
         // public TourGuidence FindById(int id) => tourGuidences.FirstOrDefault(x => x.Id == id);
 
-        public TourGuidence FindById(int id)
-        {
-            return FindAll().ToList().Find(x => x.Id == id);
-        }
+        
 
         /* public List<TourGuidence> FindAll()
         {
@@ -78,6 +85,7 @@ namespace InitialProject.Repository
 
         public void SaveToFile(TourGuidence t)
         {
+            tourGuidences = FindAll();
             t.Id = NextId();
             tourGuidences.Add(t);
             tourGuidenceSerializer.ToCSV(FilePathTourGuidence, tourGuidences);
@@ -85,6 +93,7 @@ namespace InitialProject.Repository
 
         public TourGuidence FindByTourAndDate(Tour tour, DateTime date)
         {
+            tourGuidences = FindAll();
             TourGuidence tourGuidence = new TourGuidence();
 
             foreach(TourGuidence tourG in tourGuidences)
@@ -105,6 +114,7 @@ namespace InitialProject.Repository
 
         public string FindGuide(int tourGuidenceId)
         {
+            tourGuidences = FindAll();
             string guideUsername= "";
 
             foreach(TourGuidence tourGuidence in tourGuidences)
@@ -125,8 +135,8 @@ namespace InitialProject.Repository
         {
             TourAttendanceDTO dto = new TourAttendanceDTO();
 
-            TourReservationRepository tourReservationRepository = new TourReservationRepository();
-            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();   
+            tourReservationRepository = new TourReservationRepository();
+            tourKeyPointRepository = new TourKeyPointRepository();   
 
             TourReservation tourReservation = tourReservationRepository.FindById(tourReservationId);
             TourGuidence tourGuidence = FindById(tourReservation.tourGuidenceId);
@@ -145,6 +155,22 @@ namespace InitialProject.Repository
 
             return dto;
         }
+
+        public List<TourGuidence> FindGuideAll(string username)
+        {
+            return FindAll().ToList().FindAll(x => x.Tour.GuideUsername.Equals(username) == true);
+        }
+
+        public List<TourGuidence> FindFinishedByGuideUsername(int tourId, string username)
+        {
+            return FindGuideAll(username).ToList().FindAll(x => x.Finished == true && x.Tour.Id == tourId);
+        }
+
+        public List<TourGuidence> FindGuideTodayUpcomming(string guideUsername)
+        {
+            return FindGuideAll(guideUsername).ToList().FindAll(x => x.StartTime.Date == DateTime.Today && x.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay && x.Finished == false);
+        }
+
 
     }
 }

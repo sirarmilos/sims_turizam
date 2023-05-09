@@ -10,6 +10,8 @@ namespace InitialProject.IRepository
 {
     public interface IGuest2Repository
     {
+
+        List<Guest2> FindAll();
         int NextIdVoucher();
 
         // Guest2 GetByUsername(string username);
@@ -17,8 +19,6 @@ namespace InitialProject.IRepository
         void UpdateVoucherUsedStatus(int voucherId);
 
         List<Voucher> GetGuestsVouchers(string username);
-
-        int GetAge(string username);
 
         void GuideRating(string userId, string guideId, int tourGuidenceId, int guideKnowledge, int guideLanguage, int tourExperience, string comment, List<string> images);
     }
