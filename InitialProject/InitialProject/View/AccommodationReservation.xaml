@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="AccommodationReservation" Height="768" Width="1276">
-    
+        Title="AccommodationReservation" Height="768" Width="1376">
+
     <Grid>
 
 
 
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="600" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="700" />
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
 
@@ -25,19 +25,20 @@
 
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
-            <Menu DockPanel.Dock ="Top">
+            <Menu DockPanel.Dock ="Top" Width="711">
                 <MenuItem Header="Home" Click="GoToGuest1Start"/>
                 <MenuItem Header="Create Review" Click="GoToCreateReview"/>
                 <MenuItem Header="Search and Show Accommodations" Click="GoToSearchAndShowAccommodations"/>
                 <MenuItem Header="My reservations" Click="GoToShowReservations"/>
                 <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
+                <MenuItem x:Name="usernameAndSuperGuest" IsEnabled="False"/>
 
                 <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
             </Menu>
         </DockPanel>
 
-        <DataGrid ItemsSource="{Binding Accommodation.Images, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Width="500" Height="241" Margin="44,385,46,268">
+        <DataGrid ItemsSource="{Binding Accommodation.Images, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Width="500" Height="241" Margin="84,388,86,270">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Images" Width="472">
                     <DataGridTemplateColumn.CellTemplate>
@@ -50,32 +51,32 @@
         </DataGrid>
 
 
-        <DatePicker Height="30" Width="503" Grid.Column="1" x:Name="StartDatePicker" Margin="138,58,-72,811"/>
-        <Label Content="End date" FontSize="14" Margin="28,96,403,667" Grid.Column="1" />
+        <DatePicker Height="30" Width="503" Grid.Column="2" x:Name="StartDatePicker" Margin="106,58,-94,811"/>
+        <Label Content="End date" FontSize="14" Margin="50,96,381,667" Grid.Column="1" Grid.ColumnSpan="2" />
 
-        <DatePicker Height="30" Width="503" Grid.Column="1" x:Name="EndDatePicker" Margin="138,96,-72,773"/>
-        <Button Content="Search" Click="Search" Margin="425,168,-72,674" Grid.Column="1"/>
+        <DatePicker Height="30" Width="503" Grid.Column="2" x:Name="EndDatePicker" Margin="106,96,-94,773"/>
+        <Button Content="Search" Click="Search" Margin="393,168,-94,674" Grid.Column="2"/>
 
-        <TextBox Height="30" Width="250" PreviewTextInput="AllowOnlyDigits" Text="{Binding CalendarReservationDays, Mode = OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="28,188,289,667" Grid.Column="1"/>
-        <Label Content="Number of reservation days (*)" FontSize="14" Margin="27,164,290,698" Grid.Column="1" />
+        <TextBox Height="30" Width="250" PreviewTextInput="AllowOnlyDigits" Text="{Binding CalendarReservationDays, Mode = OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="51,195,268,674" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label Content="Number of reservation days (*)" FontSize="14" Margin="49,164,268,698" Grid.Column="1" Grid.ColumnSpan="2" />
 
 
-        <StackPanel Margin="28,263,-87,159" Grid.Column="1">
+        <StackPanel Margin="50,263,-109,159" Grid.Column="1" Grid.ColumnSpan="2">
             <Label FontSize="16" Content="Available dates" Height="40" />
             <ListBox x:Name="DateSlotsListBox" Height="Auto" Width="600" Margin="0,30,0,10" />
         </StackPanel>
-        <Label FontSize="10" Grid.Column="1"  x:Name="SuggestedDatesMessage" Foreground="Red" Content="" Margin="28,293,152,583"/>
-        
-        <Label Content="Start date" FontSize="14" Margin="28,58,403,699" Grid.Column="1" />
-        <DatePicker Height="30" Width="503" Grid.Column="1" x:Name="ReservationStartDatePicker" Margin="138,508,-72,361"/>
-        <Label Content="End date" FontSize="14" Margin="28,546,403,218" Grid.Column="1" />
-        <DatePicker Height="30" Width="503" Grid.Column="1" x:Name="ReservationEndDatePicker" Margin="138,549,-72,320"/>
-        <Label Content="Start date" FontSize="14" Margin="28,508,403,250" Grid.Column="1" />
-        <Label Content="Reserve your accommodation stay" FontSize="16" Margin="28,466,289,388" Grid.Column="1" />
-        <Label Content="See availability" FontSize="16" Margin="28,10,403,747" Grid.Column="1" />
-        <Button Content="Reserve" Click="CreateReservation" Margin="425,626,-72,218" Grid.Column="1"/>
-        <TextBox Height="30" Width="250" PreviewTextInput="AllowOnlyDigits" Text="{Binding GuestsNumber, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="29,649,290,220" Grid.Column="1"/>
-        <Label Content="Number of guests (*)" FontSize="14" Margin="28,616,289,246" Grid.Column="1" />
+        <Label FontSize="10" Grid.Column="1"  x:Name="SuggestedDatesMessage" Foreground="Red" Content="" Margin="50,293,130,583" Grid.ColumnSpan="2"/>
+
+        <Label Content="Start date" FontSize="14" Margin="50,58,381,699" Grid.Column="1" Grid.ColumnSpan="2" />
+        <DatePicker Height="30" Width="503" Grid.Column="2" x:Name="ReservationStartDatePicker" Margin="106,508,-94,361"/>
+        <Label Content="End date" FontSize="14" Margin="50,546,381,218" Grid.Column="1" Grid.ColumnSpan="2" />
+        <DatePicker Height="30" Width="503" Grid.Column="2" x:Name="ReservationEndDatePicker" Margin="106,549,-94,320"/>
+        <Label Content="Start date" FontSize="14" Margin="50,508,381,250" Grid.Column="1" Grid.ColumnSpan="2" />
+        <Label Content="Reserve your accommodation stay" FontSize="16" Margin="50,466,267,388" Grid.Column="1" Grid.ColumnSpan="2" />
+        <Label Content="See availability" FontSize="16" Margin="50,10,381,747" Grid.Column="1" Grid.ColumnSpan="2" />
+        <Button Content="Reserve" Click="CreateReservation" Margin="393,626,-94,218" Grid.Column="2"/>
+        <TextBox Height="30" Width="250" PreviewTextInput="AllowOnlyDigits" Text="{Binding GuestsNumber, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="51,649,268,220" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label Content="Number of guests (*)" FontSize="14" Margin="50,616,267,246" Grid.Column="1" Grid.ColumnSpan="2" />
 
 
 
@@ -83,7 +84,7 @@
         <Label Content="Accommodation" FontSize="20" Margin="37,12,395,837" />
         <Label Content="Name" FontSize="16" Margin="44,73,418,788" />
         <Label Content="Location" FontSize="16" Margin="44,132,418,731" />
-        <DataGrid Height="45" Width="400" Margin="44,168,156,674" x:Name="listAccommodations" CanUserAddRows="False" IsReadOnly="True" AutoGenerateColumns="False" >
+        <DataGrid Height="45" Width="400" Margin="79,174,191,680" x:Name="listAccommodations" CanUserAddRows="False" IsReadOnly="True" AutoGenerateColumns="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Width="120" Header="City" Binding="{Binding Location.City }"/>
                 <DataGridTextColumn Width="100" Header="State" Binding="{Binding Location.Country}"/>
@@ -95,10 +96,10 @@
         <Label FontSize="15" Grid.Column="0" x:Name="AccommodationLabelMaxGuests" Content="" Margin="44,344,310,509"/>
         <Label Content="Maximal number of guests" FontSize="16" Margin="44,311,283,546" />
 
-        
-        
-        
+
+
+
     </Grid>
-    
-    
+
+
 </Window>

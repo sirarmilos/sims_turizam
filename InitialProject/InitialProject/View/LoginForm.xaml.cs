@@ -65,6 +65,9 @@ namespace InitialProject.View
             userService = new UserService();
 
             userService.CheckRecentlyRenovatedAccommodation();
+
+            userService.CheckUsersSuperGuestStatus();
+
         }
 
         private void Login(object sender, RoutedEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,5 +53,22 @@ namespace InitialProject.Repository
         {
             return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.Reservation.StartDate.Year == year);
         }
+
+
+
+
+        public void Add(RenovationRecommendation renovationRecommendation)
+        {
+            renovationRecommedations = FindAll();
+            renovationRecommedations.Add(renovationRecommendation);
+            Save(renovationRecommedations);
+        }
+
+
+        public void Save(List<RenovationRecommendation> allRenovationRecommedations)
+        {
+            renovationRecommendationSerializer.ToCSV(FilePathRecommedationRepository, allRenovationRecommedations);
+        }
+
     }
 }
