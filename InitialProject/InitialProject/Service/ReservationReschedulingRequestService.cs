@@ -247,6 +247,13 @@ namespace InitialProject.Service
                 x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false) && ((x.Status.Equals("rejected") == true) || (x.Status.Equals("accepted") == true)) );
         }
 
+        public bool IsSuperGuest(string guest1Username)
+        {
+            return userService.IsSuperGuest(guest1Username);
+        }
+
+
+
         public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
         {
             userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);

@@ -150,6 +150,7 @@ namespace InitialProject.View
             reservationService = new ReservationService(Guest1);
             Notification = reservationService.Guest1HasNotification();
             CheckNotification();
+            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
 
             Accommodation = accommodation;
             Location = accommodation.Location;
@@ -176,6 +177,18 @@ namespace InitialProject.View
             {
                 e.Handled = true;
             }
+        }
+
+        private string CheckSuperType()
+        {
+            string superType = string.Empty;
+
+            if (reservationService.IsSuperGuest(Guest1))
+            {
+                superType = " (Super guest)";
+            }
+
+            return superType;
         }
 
         private void Search(object sender, RoutedEventArgs e)

@@ -113,5 +113,13 @@ namespace InitialProject.Service
         {
             return userService.FindUnreadCancelledReservations(ownerUsername);
         }
+
+
+
+
+        public RateGuest FindRateGuestByReservation(int reservationid)
+        {
+            return rateGuestRepository.FindRateGuestByReservation(reservationid);
+        }
     }
 }

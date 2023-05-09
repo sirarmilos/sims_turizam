@@ -23,6 +23,8 @@ namespace InitialProject.Service
 
         private readonly RateGuestsService rateGuestsService;
 
+        private readonly RenovationRecommendationService renovationRecommendationService;
+
         private readonly IReviewRepository reviewRepository;
 
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
@@ -56,7 +58,8 @@ namespace InitialProject.Service
             userService = new UserService();
             reservationService = new ReservationService();
             rateGuestsService = new RateGuestsService(Owner);
-            reservationReschedulingRequestService = new ReservationReschedulingRequestService();   
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService();
+            renovationRecommendationService = new RenovationRecommendationService();
 
 
             reviewRepository = Injector.Injector.CreateInstance<IReviewRepository>();
@@ -114,6 +117,10 @@ namespace InitialProject.Service
         {
             Review review = new Review(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
 
+            RenovationRecommendation renovationRecommendation = 
+                new RenovationRecommendation(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
+
+            renovationRecommendationService.SaveRenovationRecommendation(renovationRecommendation);
             reviewRepository.Add(review); // mozda Save
         }
 
@@ -122,6 +129,34 @@ namespace InitialProject.Service
             return reservationReschedulingRequestService.Guest1HasNotification(Guest1);
         }
 
+
+        public List<ShowOwnerReviewsDTO> FindAllOwnerReviews()
+        {
+            return FindShowOwnerReviewsDTOs(reviewRepository.FindReviewsByGuest1Username(Guest1));
+        }
+
+        public List<ShowOwnerReviewsDTO> FindShowOwnerReviewsDTOs(List<Review> guest1Reviews)
+        {
+            List<ShowOwnerReviewsDTO> showOwnerReviewsDTOs = new List<ShowOwnerReviewsDTO>();
+
+            foreach (Review temporaryReview in guest1Reviews.ToList())
+            {
+                RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(temporaryReview.Reservation.ReservationId);
+
+                if (rateGuest != null)
+                {
+                    ShowOwnerReviewsDTO showOwnerReviewsDTO = new ShowOwnerReviewsDTO(rateGuest);
+                    showOwnerReviewsDTOs.Add(showOwnerReviewsDTO);
+                }
+            }
+
+            return showOwnerReviewsDTOs;
+        }
+
+        public bool IsSuperGuest(string guest1Username)
+        {
+            return userService.IsSuperGuest(guest1Username);
+        }
 
 
 

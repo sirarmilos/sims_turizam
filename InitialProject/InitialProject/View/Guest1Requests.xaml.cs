@@ -103,8 +103,21 @@ namespace InitialProject.View
 
             reservationReschedulingRequestService.UpdateViewedRequestsByGuest1();
 
+            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
+
         }
 
+        private string CheckSuperType()
+        {
+            string superType = string.Empty;
+
+            if (reservationReschedulingRequestService.IsSuperGuest(Guest1))
+            {
+                superType = " (Super guest)";
+            }
+
+            return superType;
+        }
 
         void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
         {

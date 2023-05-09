@@ -73,5 +73,19 @@ namespace InitialProject.Repository
 
             return user;
         }
+
+
+
+
+        public bool IsSuperGuest(string guest1Username)
+        {
+            return FindAll().Find(x => x.Username.Equals(guest1Username) == true).SuperType.Equals("super");
+        }
+
+        public List<User> FindAllGuests1()
+        {
+            return FindAll().ToList().FindAll(x => x.Type.Equals("guest1") == true);
+        }
+
     }
 }
