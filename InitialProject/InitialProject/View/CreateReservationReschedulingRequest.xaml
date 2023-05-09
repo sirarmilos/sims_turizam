@@ -22,6 +22,7 @@
             <Menu DockPanel.Dock ="Top">
                 <MenuItem Header="Home" Click="GoToGuest1Start"/>
                 <MenuItem Header="Create Review" Click="GoToCreateReview"/>
+                <MenuItem x:Name="usernameAndSuperGuest" IsEnabled="False"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
                 <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
             </Menu>

@@ -64,6 +64,19 @@ namespace InitialProject.View
 
             Notification = reservationReschedulingRequestService.Guest1HasNotification();
             CheckNotification();
+            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
+        }
+
+        private string CheckSuperType()
+        {
+            string superType = string.Empty;
+
+            if (reservationReschedulingRequestService.IsSuperGuest(Guest1))
+            {
+                superType = " (Super guest)";
+            }
+
+            return superType;
         }
 
         private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)

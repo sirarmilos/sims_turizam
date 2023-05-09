@@ -100,6 +100,13 @@ namespace InitialProject.Service
         }
 
 
+
+
+        public bool IsSuperGuest(string guest1Username)
+        {
+            return userService.IsSuperGuest(guest1Username);
+        }
+
         public List<Accommodation> FindAll(SearchAndShowAccommodationDTO searchShowAndAccommodationDTO)
         {
             List<Accommodation> accommodationNameResults, countryResults, cityResults, typeResults, maxGuestsResults, minDaysReservationResults;

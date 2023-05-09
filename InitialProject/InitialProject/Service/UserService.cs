@@ -18,6 +18,8 @@ namespace InitialProject.Service
 
         private RateGuestsService rateGuestsService;
 
+        private SuperGuestService superGuestService;
+
         private AccommodationService accommodationService;
 
         private CanceledReservationService canceledReservationService;
@@ -25,6 +27,7 @@ namespace InitialProject.Service
         public UserService()
         {
             userRepository = Injector.Injector.CreateInstance<IUserRepository>();
+
             //userRepository = new UserRepository();  
 
              //rateGuestsService = new RateGuestsService(Owner);
@@ -96,6 +99,57 @@ namespace InitialProject.Service
             canceledReservationService = new CanceledReservationService();
 
             canceledReservationService.SaveViewed(cancelledReservationsNotificationDTO);
+        }
+
+
+        public void CheckUsersSuperGuestStatus()
+        {
+
+            superGuestService = new SuperGuestService();
+
+            List<SuperGuest> superGuestsWithLatestStatus = superGuestService.FindAllLatestSuperGuests();
+            List<User> allGuests1 = userRepository.FindAllGuests1();
+
+            CheckPotentiallyExpiredSuperGuests(superGuestsWithLatestStatus);
+
+            MakeEligibleUsersSuperGuest(allGuests1);
+
+        }
+
+        private void MakeEligibleUsersSuperGuest(List<User> allGuests1)
+        {
+            foreach (User temporaryUser in allGuests1)
+            {
+                if (!IsSuperGuest(temporaryUser.Username))
+                    superGuestService.CheckIfUserEligibleForSuperGuest(temporaryUser.Username);
+            }
+        }
+
+        private void CheckPotentiallyExpiredSuperGuests(List<SuperGuest> superGuestsWithLatestStatus)
+        {
+            foreach (SuperGuest tempoprarySuperGuest in superGuestsWithLatestStatus)
+            {
+                if (tempoprarySuperGuest.StartDate.AddDays(365) < DateTime.Now)
+                {
+                    MakeUserRegularUser(tempoprarySuperGuest.Guest1Username);
+                }
+            }
+        }
+
+        public void MakeUserRegularUser(string guest1Username)
+        {
+            userRepository.Update(guest1Username, "no_super");
+        }
+
+
+        public bool IsSuperGuest(string guest1Username)
+        {
+            return userRepository.IsSuperGuest(guest1Username);
+        }
+
+        public void MakeUserSuperGuest(string guest1Username)
+        {
+            userRepository.Update(guest1Username, "super");
         }
     }
 }

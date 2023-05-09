@@ -25,8 +25,6 @@ namespace InitialProject.View
         AccommodationService accommodationService;
         public Accommodation Accommodation { get; set; }
 
-        private AccommodationRepository accommodationRepository; // izbaci
-
         private string accommodationName;
         private string country;
         private string city;
@@ -245,10 +243,22 @@ namespace InitialProject.View
             accommodationService = new AccommodationService(Guest1);
             Notification = accommodationService.Guest1HasNotification();
             CheckNotification();
+            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
 
-            accommodationRepository = new AccommodationRepository();
             Images = new List<string>();
             SeeAvailabilityCommand = new RelayCommand<Accommodation>(SeeAvailability);
+        }
+
+        private string CheckSuperType()
+        {
+            string superType = string.Empty;
+
+            if (accommodationService.IsSuperGuest(Guest1))
+            {
+                superType = " (Super guest)";
+            }
+
+            return superType;
         }
 
 

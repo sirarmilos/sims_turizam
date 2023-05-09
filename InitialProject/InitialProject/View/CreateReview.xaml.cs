@@ -177,6 +177,7 @@ namespace InitialProject.View
             reviewService = new ReviewService(Guest1);
             Notification = reviewService.Guest1HasNotification();
             CheckNotification();
+            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
 
             CreateReviewDTOs = new List<CreateReviewDTO>();
 
@@ -193,6 +194,18 @@ namespace InitialProject.View
             }
 
             SetDefaultValue();
+        }
+
+        private string CheckSuperType()
+        {
+            string superType = string.Empty;
+
+            if (reviewService.IsSuperGuest(Guest1))
+            {
+                superType = " (Super guest)";
+            }
+
+            return superType;
         }
 
         private void SaveReview(object sender, RoutedEventArgs e)

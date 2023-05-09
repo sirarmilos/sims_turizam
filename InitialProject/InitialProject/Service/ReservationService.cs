@@ -22,6 +22,10 @@ namespace InitialProject.Service
 
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
+        private UserService userService;
+
+        private SuperGuestService superGuestService;
+
         private IReservationRepository reservationRepository;
 
         private string owner;
@@ -163,6 +167,9 @@ namespace InitialProject.Service
 
         public void Save(ShowReservationDTO showReservationDTO)
         {
+            superGuestService = new SuperGuestService(Guest1);
+            SuperGuest superGuest = superGuestService.FindSuperGuestByGuest1Username();
+
             reservationRepository.Save(
                 Guest1, 
                 showReservationDTO.Accommodation, 
@@ -170,9 +177,42 @@ namespace InitialProject.Service
                 showReservationDTO.EndDate, 
                 showReservationDTO.GuestsNumber
             );
+
+            if (IsSuperGuest(Guest1))
+            {
+                superGuestService.DecreaseOneBonusPoint();
+            }
+
+            if (!IsSuperGuest(Guest1) || 
+                (IsSuperGuest(Guest1) && superGuest.NumberOfBonusPoints == 0))
+            {
+                if (superGuestService.CheckIfUserEligibleForSuperGuest(Guest1))
+                    superGuestService.DecreaseOneBonusPoint();
+            }
+                
         }
 
+        public int FindNumberOfReservationsInPastYear()
+        {
+            List<Reservation> allReservations = reservationRepository.FindGuest1Reservations(Guest1);
+            int numberOfReservations = 0;
 
+            foreach (Reservation reservation in allReservations) 
+            {
+                if (DateTime.Now.Subtract(reservation.StartDate).Days < 365)
+                {
+                    numberOfReservations++;
+                }
+            }
+
+            return numberOfReservations;
+        }
+
+        public bool IsSuperGuest(string guest1Username)
+        {
+            userService = new UserService();
+            return userService.IsSuperGuest(guest1Username);
+        }
 
 
 

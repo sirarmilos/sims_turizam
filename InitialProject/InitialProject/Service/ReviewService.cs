@@ -153,6 +153,11 @@ namespace InitialProject.Service
             return showOwnerReviewsDTOs;
         }
 
+        public bool IsSuperGuest(string guest1Username)
+        {
+            return userService.IsSuperGuest(guest1Username);
+        }
+
 
 
 

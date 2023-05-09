@@ -41,7 +41,7 @@ namespace InitialProject.View
             set;
         }
 
-        public ShowOwnerReviews(string guest1/*, string guestHeader*/)
+        public ShowOwnerReviews(string guest1)
         {
             InitializeComponent();
 
@@ -55,7 +55,19 @@ namespace InitialProject.View
 
             ShowOwnerReviewsDTOs = reviewService.FindAllOwnerReviews();
 
-            //usernameAndSuperGuest.Header = guestHeader; ovo ce mi trebati za super guesta
+            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
+        }
+
+        private string CheckSuperType()
+        {
+            string superType = string.Empty;
+
+            if (reviewService.IsSuperGuest(Guest1))
+            {
+                superType = " (Super guest)";
+            }
+
+            return superType;
         }
 
         void LoadingRowForDgShowOwnerReviews(object sender, DataGridRowEventArgs e)
