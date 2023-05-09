@@ -8,7 +8,7 @@
         xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
         
         mc:Ignorable="d"
-        Title="Accommodations" Height="798" Width="1400" Icon="../Resources/Images/logo_icon.ico"
+        Title="Accommodations" Height="819" Width="1416" Icon="../Resources/Images/logo_icon.ico"
         WindowStartupLocation="CenterScreen">
 
     <Window.CommandBindings>
@@ -33,12 +33,12 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="55" />
             <RowDefinition Height="425" />
-            <RowDefinition Height="270" />
+            <RowDefinition Height="291" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="615" />
             <ColumnDefinition Width="585" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="216" />
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">

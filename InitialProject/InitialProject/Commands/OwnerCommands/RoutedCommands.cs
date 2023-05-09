@@ -125,7 +125,7 @@ namespace InitialProject.Commands.OwnerCommands
             typeof(RoutedCommands),
             new InputGestureCollection()
             {
-                new KeyGesture(Key.D, ModifierKeys.Control)
+                new KeyGesture(Key.A, ModifierKeys.Control)
             }
         );
 
@@ -194,6 +194,50 @@ namespace InitialProject.Commands.OwnerCommands
             new InputGestureCollection()
             {
                 new KeyGesture(Key.G, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand AcceptRequest = new RoutedUICommand
+        (
+            "Accept request",
+            "AcceptRequest",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.R, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand DeclineRequest = new RoutedUICommand
+        (
+            "Decline request",
+            "DeclineRequest",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.D, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand ConfirmRejection = new RoutedUICommand // isto kao i komanda DeclineRequest, mozda da koristim kao jednu komandu
+        (
+            "Confirm rejectiont",
+            "ConfirmRejection",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.J, ModifierKeys.Control) // pazi na ove sa istim komandama D
+            }
+        );
+
+        public static readonly RoutedUICommand Cancel = new RoutedUICommand
+        (
+            "Confirm rejectiont",
+            "ConfirmRejection",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.Escape)
             }
         );
     }

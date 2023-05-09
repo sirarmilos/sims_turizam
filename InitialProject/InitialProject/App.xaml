@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:InitialProject"
              StartupUri="View/LoginForm.xaml">
     <Application.Resources>
-         
+
+        <Style TargetType="DataGridRow">
+
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+
+        </Style>
+
     </Application.Resources>
 </Application>
