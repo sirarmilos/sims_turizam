@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\add-image.png" />
     <None Remove="Resources\Images\add.png" />
+    <None Remove="Resources\Images\choose_image.png" />
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
     <None Remove="Resources\Images\logo.png" />
@@ -23,6 +25,7 @@
     <Resource Include="Resources\Images\add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\choose_image.png" />
     <Resource Include="Resources\Images\logo.png" />
     <Resource Include="Resources\Images\logo_icon.ico" />
     <Resource Include="Resources\Images\logo_test.png" />
