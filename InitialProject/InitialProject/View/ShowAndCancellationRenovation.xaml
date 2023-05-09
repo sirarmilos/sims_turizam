@@ -4,44 +4,83 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
+
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+        
         mc:Ignorable="d"
-        Title="Renovate" Height="775" Width="1400"
-        WindowStartupLocation="CenterScreen"> <!-- mozda 825 zbog headera -->
-    
+        Title="Renovate" Height="819" Width="1416" Icon="../Resources/Images/logo_icon.ico"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerHomePageLogin" CanExecute="OwnerHomePageLogin_CanExecute" Executed="OwnerHomePageLogin_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.AccommodationStart" CanExecute="AccommodationStart_CanExecute" Executed="AccommodationStart_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests" CanExecute="ShowOwnerManageBookingMoveRequests_CanExecute" Executed="ShowOwnerManageBookingMoveRequests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowAndCancellationRenovation" CanExecute="ShowAndCancellationRenovation_CanExecute" Executed="ShowAndCancellationRenovation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RateGuests" CanExecute="RateGuests_CanExecute" Executed="RateGuests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowGuestReviews" CanExecute="ShowGuestReviews_CanExecute" Executed="ShowGuestReviews_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerForum" CanExecute="OwnerForum_CanExecute" Executed="OwnerForum_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Logout" CanExecute="Logout_CanExecute" Executed="Logout_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Notifications" CanExecute="Notifications_CanExecute" Executed="Notifications_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ReadCancelledReservationNotification" CanExecute="ReadCancelledReservationNotification_CanExecute" Executed="ReadCancelledReservationNotification_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RenovateAccommodation" CanExecute="RenovateAccommodation_CanExecute" Executed="RenovateAccommodation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.CancelRenovation" CanExecute="CancelRenovation_CanExecute" Executed="CancelRenovation_Executed"></CommandBinding>
+    </Window.CommandBindings>
+
     <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
             <RowDefinition Height="55" />
-            <RowDefinition Height="400" />
-            <RowDefinition Height="295" />
+            <RowDefinition Height="425" />
+            <RowDefinition Height="291" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="225" />
             <ColumnDefinition Width="950" />
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="241" />
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
 
-            <Menu x:Name="menuOwner" DockPanel.Dock ="Top">
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch">
 
-                <MenuItem Header="Home" Click="GoToOwnerHomePageLogin"/>
-                <MenuItem Header="Accommodation" Click="GoToAccommodationStart"/>
-                <MenuItem Header="Management of booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
-                <MenuItem Header="Renovate" Click="GoToShowAndCancellationRenovation"/>
-                <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
-                <MenuItem Header="Guest reviews" Click="GoToShowGuestReviews"/>
-                <MenuItem Header="Forum" Click="GoToOwnerForum"/>
-                <MenuItem x:Name="usernameAndSuperOwner" IsEnabled="False"/>
-                <MenuItem Header="Logout" Click="GoToOwnerHomePageNotLogin"/>
-                <MenuItem x:Name="notifications" Header="Notifications">
-                    <MenuItem x:Name="rateGuestsNotifications"/>
-                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations"/>
+                <Menu.ItemsPanel>
+
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="395" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+
+                </Menu.ItemsPanel>
+
+                <MenuItem Grid.Column="0" Header="_Home (F1)" Command="cmd:RoutedCommands.OwnerHomePageLogin"/>
+                <MenuItem Grid.Column="1" Header="_Accommodation (F2)" Command="cmd:RoutedCommands.AccommodationStart"/>
+                <MenuItem Grid.Column="2" Header="_Management of booking move requests (F3)" Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests"/>
+                <MenuItem Grid.Column="3" Header="Reno_vate (F4)" Command="cmd:RoutedCommands.ShowAndCancellationRenovation"/>
+                <MenuItem Grid.Column="4" Header="Ra_te guests (F5)" Command="cmd:RoutedCommands.RateGuests"/>
+                <MenuItem Grid.Column="5" Header="_Guest reviews (F6)" Command="cmd:RoutedCommands.ShowGuestReviews"/>
+                <MenuItem Grid.Column="6" Header="_Forum (F7)" Command="cmd:RoutedCommands.OwnerForum"/>
+                <MenuItem Grid.Column="7" x:Name="usernameAndSuperOwner" HorizontalAlignment="Right" IsEnabled="False"/>
+                <MenuItem Grid.Column="8" Header="_Logout (F8)" Command="cmd:RoutedCommands.Logout"/>
+                <MenuItem Grid.Column="9" x:Name="notifications" Header="_Notifications (F9)" Command="cmd:RoutedCommands.Notifications">
+                    <MenuItem x:Name="rateGuestsNotifications" Command="cmd:RoutedCommands.RateGuests"/>
+                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations" IsEnabled="False"/>
                     <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <MenuItem Header="{Binding}" Click="ReadCancelledReservationNotification"/>
+                                <MenuItem Header="{Binding}" Click="ReadCancelledReservationNotification" Command="cmd:RoutedCommands.ReadCancelledReservationNotification"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -51,21 +90,30 @@
 
         </DockPanel>
 
-        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all your previous and future renovations" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="520"/>
+        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all your previous and future renovations" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Margin="25,0,0,0"/>
 
-        <DataGrid x:Name="dgRenovations" LoadingRow="LoadingRowForDgRenovations" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding ShowRenovationDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedRenovation, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="CancelRenovationButtonEnable" HorizontalAlignment="Center" Height="400" VerticalAlignment="Bottom" Width="1350">
+        <DataGrid x:Name="dgRenovations" LoadingRow="LoadingRowForDgRenovations" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding ShowRenovationDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedRenovation, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="CancelRenovationButtonEnable" HorizontalAlignment="Left" Height="400" VerticalAlignment="Bottom" Width="1350" Margin="25,0,0,0">
+
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="*"/>
-                <DataGridTextColumn Header="Start date" Binding="{Binding StartDate}" Width="*"/>
-                <DataGridTextColumn Header="End date" Binding="{Binding EndDate}" Width="*"/>
-                <DataGridTextColumn Header="Renovation request cancel deadline" Binding="{Binding RenovationCancelDeadline}" Width="*"/>
+
+                <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="300"/>
+                <DataGridTextColumn Header="Start date" Binding="{Binding StartDate}" Width="150"/>
+                <DataGridTextColumn Header="End date" Binding="{Binding EndDate}" Width="150"/>
+                <DataGridTextColumn Header="Renovation request cancel deadline" Binding="{Binding RenovationCancelDeadline}" Width="450"/>
                 <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*"/>
+
             </DataGrid.Columns>
+
         </DataGrid>
 
-        <Button x:Name="buttonRenovateAccommodation" Grid.Column="0" Grid.Row="3" Content="Renovate accommodation" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175" Click="RenovateAccommodation"/>
-        <Button x:Name="buttonCancelRenovation" Grid.Column="2" Grid.Row="3" Content="Cancel renovation" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175" Click="CancelRenovation"/>
+        <Button x:Name="buttonRenovateAccommodation" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.RenovateAccommodation" Margin="50,170,0,0">
+            <TextBlock TextAlignment="Center">Renovate accommodation<LineBreak/>(CTRL + N)</TextBlock>
+        </Button>
+
+        <Button x:Name="buttonCancelRenovation" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.CancelRenovation" Margin="0,170,0,0">
+            <TextBlock TextAlignment="Center">Cancel renovation<LineBreak/>(CTRL + Q)</TextBlock>
+        </Button>
 
     </Grid>
-    
+
 </Window>

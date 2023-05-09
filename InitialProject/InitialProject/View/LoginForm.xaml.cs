@@ -56,34 +56,27 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public LoginForm()
+        private void Login_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            InitializeComponent();
-
-            DataContext = this;
-
-            userService = new UserService();
-
-            userService.CheckRecentlyRenovatedAccommodation();
-
-            userService.CheckUsersSuperGuestStatus();
-
+            e.CanExecute = true;
         }
 
-        private void Login(object sender, RoutedEventArgs e)
+        private void Login_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if(userService.IsUsernameExist(Username) == false)
+            Password = pbPassword.Password;
+
+            if (userService.IsUsernameExist(Username) == false)
             {
                 tbUsername.Text = string.Empty;
-                tbPassword.Text = string.Empty;
+                pbPassword.Password = string.Empty;
                 MessageBox.Show("Username you entered does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbUsername.Focus();
             }
-            else if(userService.IsPasswordCorrect(Username, Password) == false)
+            else if (userService.IsPasswordCorrect(Username, Password) == false)
             {
-                tbPassword.Text = string.Empty;
+                pbPassword.Password = string.Empty;
                 MessageBox.Show("Password you entered is incorrect.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbPassword.Focus();
+                pbPassword.Focus();
             }
             else
             {
@@ -116,6 +109,17 @@ namespace InitialProject.View
 
                 MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        public LoginForm()
+        {
+            InitializeComponent();
+
+            DataContext = this;
+
+            userService = new UserService();
+
+            userService.CheckRecentlyRenovatedAccommodation();
         }
 
         private void labeltbFocus(object sender, MouseButtonEventArgs e)

@@ -5,69 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         xmlns:cvt="clr-namespace:InitialProject.Converters"
-        mc:Ignorable="d"
-        Title="Renovate accommodation" Height="750" Width="650"
-        WindowStartupLocation="CenterScreen">
-    
-    <Grid>
         
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+        
+        mc:Ignorable="d"
+        Title="Renovate accommodation" Height="845" Width="678" Icon="../Resources/Images/logo_icon.ico"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.ChooseAccommodationName" CanExecute="ChooseAccommodationName_CanExecute" Executed="ChooseAccommodationName_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.FindAvailableDates" CanExecute="FindAvailableDates_CanExecute" Executed="FindAvailableDates_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RenovateAccommodation" CanExecute="RenovateAccommodation_CanExecute" Executed="RenovateAccommodation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed"></CommandBinding>
+    </Window.CommandBindings>
+
+    <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="595" />
-            <RowDefinition Height="110" />
+            <RowDefinition Height="690" />
+            <RowDefinition Height="130" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="210" />
-            <ColumnDefinition Width="440" />
+            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="453" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Header="" HorizontalAlignment="Center" Height="580" VerticalAlignment="Bottom" Width="600">
+        <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Header="" HorizontalAlignment="Left" Height="665" VerticalAlignment="Top" Width="612" Margin="25,25,25,0">
 
             <Grid>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="220" /> <!-- 205-->
-                    <RowDefinition Height="230" />
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="205" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="205" />
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="195" />
+                    <ColumnDefinition Width="407" />
                 </Grid.ColumnDefinitions>
 
-                <Label Target="{x:Reference tbAccommodationName}" Grid.Column="0" Grid.Row="0" Content="Accommodation name:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="140" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbAccommodationName" Grid.Column="1" Grid.Row="0" Text="{Binding Path=AccommodationName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
+                <Label Target="{x:Reference cbAccommodationNames}" Grid.Column="0" Grid.Row="0" Content="Accommodation name:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="25,25,0,0"/>
+                <ComboBox x:Name="cbAccommodationNames" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AccommodationNames, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" SelectedItem="{Binding SelectedAccommodationName}" SelectionChanged="SelectionChanged" Margin="0,30,0,0" />
 
-                <Label Target="{x:Reference dpStartDate}" Grid.Column="0" Grid.Row="1" Content="Start date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="140" MouseLeftButtonUp="labeltbFocus"/>
-                <DatePicker x:Name="dpStartDate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="200"/>
+                <Label Target="{x:Reference dpStartDate}" Grid.Column="0" Grid.Row="1" Content="Start date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0"/>
+                <DatePicker x:Name="dpStartDate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200"/>
 
-                <Label Target="{x:Reference dpEndDate}" Grid.Column="0" Grid.Row="2" Content="End date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="140" MouseLeftButtonUp="labeltbFocus"/>
-                <DatePicker x:Name="dpEndDate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="200"/>
+                <Label Target="{x:Reference dpEndDate}" Grid.Column="0" Grid.Row="2" Content="End date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0"/>
+                <DatePicker x:Name="dpEndDate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200"/>
 
-                <Label Target="{x:Reference tbDuration}"  Grid.Column="0" Grid.Row="3" Content="Duration:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="140" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbDuration" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Duration, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="200"/>
-                <Button Grid.Column="2" Grid.Row="3" Content="Find dates" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="100" Click="FindAvailableDates"/>
+                <Label Target="{x:Reference tbDuration}"  Grid.Column="0" Grid.Row="3" Content="Duration:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0"/>
+                <TextBox x:Name="tbDuration" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Duration, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200"/>
 
-                <DataGrid x:Name="dgFreeDates" LoadingRow="LoadingRowForDgFreeDates" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" ItemsSource="{Binding AvailableDateSlots, Mode=OneWay}" SelectedItem="{Binding Path=SelectedDateSlot, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RenovateButtonEnable" HorizontalAlignment="Center" Height="175" VerticalAlignment="Bottom" Width="550">
+                <Button Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="100" Command="cmd:RoutedCommands.FindAvailableDates" Margin="100,5,0,0">
+                    <TextBlock TextAlignment="Center">Find dates<LineBreak/>(CTRL + F)</TextBlock>
+                </Button>
+
+                <DataGrid x:Name="dgFreeDates" LoadingRow="LoadingRowForDgFreeDates" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding AvailableDateSlots, Mode=OneWay}" SelectedItem="{Binding Path=SelectedDateSlot, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RenovateButtonEnable" HorizontalAlignment="Left" Height="175" VerticalAlignment="Bottom" Width="550" Margin="25,0,25,0">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Start date" Binding="{Binding StartDate}" Width="*"/>
+                        <DataGridTextColumn Header="Start date" Binding="{Binding StartDate}" Width="275"/>
                         <DataGridTextColumn Header="End date" Binding="{Binding EndDate}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Label Target="{x:Reference tbDescription}" Grid.Column="0" Grid.Row="5" Content="Description of the renovation:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="140" MouseLeftButtonUp="labeltbFocus"/>
-                <TextBox x:Name="tbDescription" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="{Binding Path=Description, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="175" VerticalAlignment="Center" Width="370"/>
+                <Label Target="{x:Reference tbDescription}" Grid.Column="0" Grid.Row="6" Content="Description of the renovation:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,30,0,0"/>
+                <TextBox x:Name="tbDescription" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Text="{Binding Path=Description, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="175" VerticalAlignment="Top" Width="370" Margin="0,30,0,0"/>
 
             </Grid>
 
         </GroupBox>
 
-        <Button x:Name="buttonRenovate" Grid.Column="0" Grid.Row="1" Content="Renovate" HorizontalAlignment="Left" Height="40" VerticalAlignment="Center" Width="175" Click="Renovate"/>
-        <Button x:Name="buttonCancel" Grid.Column="1" Grid.Row="1" Content="Cancel" HorizontalAlignment="Right" Height="40" VerticalAlignment="Center" Width="175" Click="Close"/>
+        <Button x:Name="buttonRenovate" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.RenovateAccommodation" Margin="50,25,0,0">
+            <TextBlock TextAlignment="Center">Renovate<LineBreak/>(CTRL + N)</TextBlock>
+        </Button>
+        <Button x:Name="buttonCancel" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.Cancel" Margin="437,25,0,0">
+            <TextBlock TextAlignment="Center">Cancel<LineBreak/>(ESC)</TextBlock>
+        </Button>
 
     </Grid>
-    
+
 </Window>
