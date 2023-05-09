@@ -15,19 +15,9 @@ namespace InitialProject.Service
     {
         private readonly ITourRepository tourRepository;
 
-        private readonly TourGuidenceService tourGuidenceService;
-
-        private readonly Guest2Service guest2Service;
-
-        private readonly TourReservationService tourReservationService;
-
         public TourService()
         {
             tourRepository = Injector.Injector.CreateInstance<ITourRepository>();
-            //tourRepository = new TourRepository();
-            tourGuidenceService = new TourGuidenceService();
-            guest2Service = new Guest2Service();
-            tourReservationService = new TourReservationService();
         }
 
         public List<Tour> FindAll()
@@ -280,6 +270,12 @@ namespace InitialProject.Service
         {
             // type = [(1, <18), (2, 18-50), (3, >50)]
             List<int> count = new List<int>(new int[3]);
+
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+
+            TourReservationService tourReservationService = new TourReservationService();
+
+            Guest2Service guest2Service = new Guest2Service();
 
             List<TourGuidence> finishedTourGuidence = tourGuidenceService.FindFinishedByGuideUsername(tourId, username);
 

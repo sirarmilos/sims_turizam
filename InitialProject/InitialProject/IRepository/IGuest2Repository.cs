@@ -14,7 +14,7 @@ namespace InitialProject.IRepository
         List<Guest2> FindAll();
         int NextIdVoucher();
 
-        // Guest2 GetByUsername(string username);
+        Guest2 GetByUsername(string username);
 
         void UpdateVoucherUsedStatus(int voucherId);
 

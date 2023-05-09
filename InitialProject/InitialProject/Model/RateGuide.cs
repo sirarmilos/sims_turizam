@@ -46,7 +46,7 @@ namespace InitialProject.Model
                 imageToString += ",";
             }
 
-            if (Images.Count>=2)
+            if (Images.Count>=1)
             {
                 imageToString = imageToString.Substring(0, imageToString.Length - 2);
             }
