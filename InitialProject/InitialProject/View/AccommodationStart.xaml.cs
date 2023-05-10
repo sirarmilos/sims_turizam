@@ -142,7 +142,7 @@ namespace InitialProject.View
 
         private void Logout_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
+            LoginForm window = new LoginForm();
             window.Show();
             Close();
         }
