@@ -8,7 +8,7 @@
         xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
         
         mc:Ignorable="d"
-        Title="Home" Height="798" Width="1400" Icon="../Resources/Images/logo_icon.ico"
+        Title="Home" Height="819" Width="1416" Icon="../Resources/Images/logo_icon.ico"
         WindowStartupLocation="CenterScreen">
 
     <Window.CommandBindings>
@@ -31,10 +31,11 @@
             <RowDefinition Height="150" />
             <RowDefinition Height="80" />
             <RowDefinition Height="280" />
-            <RowDefinition Height="240" /> <!-- 247 -->
+            <RowDefinition Height="263" />
+            <!-- 247 -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1400" />
+            <ColumnDefinition Width="1416" />
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Row="0">
@@ -53,7 +54,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="395" />
+                                <ColumnDefinition Width="414" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
@@ -91,13 +92,13 @@
             <Image Source="../Resources/Images/logo.png" />
         </Button>-->
 
-        <Button Grid.Row="1" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="100" Command="cmd:RoutedCommands.OwnerHomePageLogin" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4">
+        <Button Grid.Row="1" HorizontalAlignment="Left" Height="95" VerticalAlignment="Bottom" Width="95" Command="cmd:RoutedCommands.OwnerHomePageLogin" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Margin="650,0,0,0">
             <Image Source="../Resources/Images/logo.png" />
         </Button>
 
-        <Label Grid.Row="2" Content="Turtle tourism" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="30" VerticalAlignment="Bottom" Width="250"/>
+        <Label Grid.Row="2" Content="Turtle tourism" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Margin="657,0,0,0"/>
 
-        <GroupBox Grid.Row="3" HorizontalAlignment="Center" Height="225" VerticalAlignment="Bottom" Width="1000">
+        <GroupBox Grid.Row="3" HorizontalAlignment="Left" Height="225" VerticalAlignment="Bottom" Width="1000" Margin="200,0,0,0">
 
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="170" VerticalAlignment="Center" Width="950">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed erat ex, pretium et feugiat feugiat, dictum at nunc. Sed lectus ex, tincidunt accumsan est vel, mollis imperdiet urna. Curabitur vel arcu lacus. Aenean feugiat mauris erat, ultrices facilisis elit dictum sit amet. Integer nisl orci, hendrerit ac bibendum at, dignissim vel nulla. Ut nec finibus arcu. Vestibulum egestas tincidunt gravida. Nullam sodales auctor orci, eu convallis enim lobortis in. Aenean non lectus mollis, maximus mi in, cursus elit. Donec nec dolor nibh. Phasellus congue eu urna vel lobortis.
@@ -107,7 +108,7 @@
 
         </GroupBox>
 
-        <GroupBox Grid.Row="4" HorizontalAlignment="Center" Height="146" VerticalAlignment="Center" Width="1000">
+        <GroupBox Grid.Row="4" HorizontalAlignment="Left" Height="146" VerticalAlignment="Top" Width="1000" Margin="200,55,0,0">
 
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="95" VerticalAlignment="Center" Width="950">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam placerat orci sit amet nunc vestibulum imperdiet non euismod nisl. Nullam bibendum tristique euismod. Cras porta mauris purus, eu dignissim nisl pulvinar vel. Quisque sit amet est eu neque blandit vestibulum. Suspendisse ac ornare lectus. Phasellus at nibh metus. Praesent luctus vehicula sapien, quis dignissim justo mollis quis. Ut volutpat erat nec elementum mattis. Sed imperdiet ipsum nec purus hendrerit, sit amet pellentesque sapien efficitur. Nam rhoncus ut lacus nec auctor. Nunc quis pulvinar est, et pharetra sem. Integer at enim ac urna viverra porta vel ut sapien. Morbi in interdum ex.

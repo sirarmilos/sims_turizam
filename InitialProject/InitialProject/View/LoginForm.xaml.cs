@@ -120,6 +120,10 @@ namespace InitialProject.View
             userService = new UserService();
 
             userService.CheckRecentlyRenovatedAccommodation();
+
+            userService.CheckUsersSuperGuestStatus();
+
+            tbUsername.Focus();
         }
 
         private void labeltbFocus(object sender, MouseButtonEventArgs e)

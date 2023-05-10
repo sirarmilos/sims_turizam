@@ -129,7 +129,14 @@ namespace InitialProject.View
 
         private void RenovateAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            if(SelectedDateSlot != null)
+            {
+                e.CanExecute = true;
+            }
+            else
+            {
+                e.CanExecute = false;
+            }
         }
 
         private void RenovateAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)

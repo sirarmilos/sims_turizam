@@ -215,7 +215,7 @@ namespace InitialProject.ViewModel
 
         private void GoToOwnerHomePageNotLogin()
         {
-            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
+            LoginForm window = new LoginForm();
             window.Show();
             Form.Close();
             // Close();

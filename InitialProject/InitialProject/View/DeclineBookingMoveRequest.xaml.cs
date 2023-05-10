@@ -42,6 +42,8 @@ namespace InitialProject.View
             reservationReschedulingRequestService = service;
 
             ownerManageBookingMoveRequestsForm = form;
+
+            tbComment.Focus();
         }
 
         private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
