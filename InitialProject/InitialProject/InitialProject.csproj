@@ -15,8 +15,6 @@
     <None Remove="Resources\Images\edit.png" />
     <None Remove="Resources\Images\logo.png" />
     <None Remove="Resources\Images\logo_icon.ico" />
-    <None Remove="Resources\Images\logo_test.png" />
-    <None Remove="Resources\Images\logo_test_1.ico" />
     <None Remove="Resources\Images\turtle_tourism_logo_2.png" />
     <None Remove="Resources\Images\view.png" />
   </ItemGroup>
@@ -28,8 +26,6 @@
     <Resource Include="Resources\Images\choose_image.png" />
     <Resource Include="Resources\Images\logo.png" />
     <Resource Include="Resources\Images\logo_icon.ico" />
-    <Resource Include="Resources\Images\logo_test.png" />
-    <Resource Include="Resources\Images\logo_test_1.ico" />
     <Content Include="Resources\Images\delete.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

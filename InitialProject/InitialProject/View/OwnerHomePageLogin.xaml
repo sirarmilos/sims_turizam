@@ -40,7 +40,7 @@
 
         <DockPanel Grid.Row="0">
 
-            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch">
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch" FontSize="13">
 
                 <Menu.ItemsPanel>
 
@@ -54,7 +54,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="414" />
+                                <ColumnDefinition Width="340" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
@@ -92,27 +92,27 @@
             <Image Source="../Resources/Images/logo.png" />
         </Button>-->
 
-        <Button Grid.Row="1" HorizontalAlignment="Left" Height="95" VerticalAlignment="Bottom" Width="95" Command="cmd:RoutedCommands.OwnerHomePageLogin" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Margin="650,0,0,0">
-            <Image Source="../Resources/Images/logo.png" />
+        <Button Grid.Row="1" HorizontalAlignment="Left" Height="95" VerticalAlignment="Bottom" Width="150" Command="cmd:RoutedCommands.OwnerHomePageLogin" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Margin="625,0,0,0">
+            <Image Source="../Resources/Images/logo.png" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Width="150" Height="95"/>
         </Button>
 
-        <Label Grid.Row="2" Content="Turtle tourism" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Margin="657,0,0,0"/>
+        <Label Grid.Row="2" Content="Turtle tourism" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="620,0,0,0" FontSize="24"/>
 
-        <GroupBox Grid.Row="3" HorizontalAlignment="Left" Height="225" VerticalAlignment="Bottom" Width="1000" Margin="200,0,0,0">
+        <GroupBox Grid.Row="3" HorizontalAlignment="Left" Height="225" VerticalAlignment="Bottom" Width="1000" Margin="200,0,0,0" FontSize="13">
 
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="170" VerticalAlignment="Center" Width="950">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed erat ex, pretium et feugiat feugiat, dictum at nunc. Sed lectus ex, tincidunt accumsan est vel, mollis imperdiet urna. Curabitur vel arcu lacus. Aenean feugiat mauris erat, ultrices facilisis elit dictum sit amet. Integer nisl orci, hendrerit ac bibendum at, dignissim vel nulla. Ut nec finibus arcu. Vestibulum egestas tincidunt gravida. Nullam sodales auctor orci, eu convallis enim lobortis in. Aenean non lectus mollis, maximus mi in, cursus elit. Donec nec dolor nibh. Phasellus congue eu urna vel lobortis.
                 Fusce iaculis orci non sollicitudin dapibus. Curabitur purus purus, semper sed sodales id, rutrum sed tortor. In tincidunt quis lectus et hendrerit. Morbi vehicula urna nec diam laoreet cursus. Phasellus vestibulum molestie nisi, vitae molestie justo cursus ut. Phasellus molestie, lectus sed hendrerit consequat, lectus leo cursus nisi, eget porttitor nisi nisl vel purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla facilisi. Donec dapibus, libero non finibus tempus, libero libero mollis ligula, vitae porta enim ante sit amet dui. Donec finibus ipsum at pretium lobortis. Proin ultricies turpis non pulvinar malesuada. Praesent volutpat, turpis vitae elementum consequat, leo erat molestie tellus, eu lacinia quam tortor varius mi. Aenean vehicula neque in diam tincidunt euismod. Etiam eu maximus felis. Morbi non ipsum mi.
-                Praesent aliquam erat vitae augue porta, eu pharetra lorem porta. Vivamus mattis dui vitae ipsum sagittis suscipit. Duis eu lectus nulla. Sed libero est, feugiat a sagittis vitae, sagittis ut leo. Morbi in dolor at ligula finibus hendrerit non a tellus. Nullam ornare sollicitudin ultrices. Quisque tellus nulla, porttitor sit amet libero eu, tempor pretium magna. Sed vitae rutrum magna.
+                Praesent aliquam erat vitae augue porta, eu pharetra lorem porta. Vivamus mattis dui vitae ipsum sagittis suscipit. Duis eu lectus nulla. Sed libero est, feugiat a sagittis vitae, sagittis ut leo. Morbi in dolor at ligula finibus hendrerit.
             </TextBlock>
 
         </GroupBox>
 
-        <GroupBox Grid.Row="4" HorizontalAlignment="Left" Height="146" VerticalAlignment="Top" Width="1000" Margin="200,55,0,0">
+        <GroupBox Grid.Row="4" HorizontalAlignment="Left" Height="146" VerticalAlignment="Top" Width="1000" Margin="200,55,0,0" FontSize="13">
 
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="95" VerticalAlignment="Center" Width="950">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam placerat orci sit amet nunc vestibulum imperdiet non euismod nisl. Nullam bibendum tristique euismod. Cras porta mauris purus, eu dignissim nisl pulvinar vel. Quisque sit amet est eu neque blandit vestibulum. Suspendisse ac ornare lectus. Phasellus at nibh metus. Praesent luctus vehicula sapien, quis dignissim justo mollis quis. Ut volutpat erat nec elementum mattis. Sed imperdiet ipsum nec purus hendrerit, sit amet pellentesque sapien efficitur. Nam rhoncus ut lacus nec auctor. Nunc quis pulvinar est, et pharetra sem. Integer at enim ac urna viverra porta vel ut sapien. Morbi in interdum ex.
-                Nam eu dictum dui. Curabitur ut massa odio. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus.
+                Nam eu dictum dui. Curabitur ut massa odio. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio, morbi a metus scelerisque.
             </TextBlock>
 
         </GroupBox>

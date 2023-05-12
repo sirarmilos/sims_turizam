@@ -237,7 +237,8 @@ namespace InitialProject.View
 
         private void PDFReport_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            OwnerPDFReportForm window = new OwnerPDFReportForm(OwnerUsername);
+            window.ShowDialog();
         }
 
         void LoadingRowForDgShowGuestReviews(object sender, DataGridRowEventArgs e)

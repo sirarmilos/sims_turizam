@@ -627,5 +627,10 @@ namespace InitialProject.Service
 
             return accommodationNames;
         }
+
+        public List<Accommodation> FindOwnerAccommodationsToPDFReport(string ownerUsername)
+        {
+            return accommodationRepository.FindByOwnerUsername(ownerUsername);
+        }
     }
 }

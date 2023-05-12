@@ -5,9 +5,11 @@
              StartupUri="View/LoginForm.xaml">
     <Application.Resources>
 
-        <Style TargetType="DataGridRow">
+        <Style TargetType="DataGrid">
 
-            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="CanUserResizeColumns" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
 
         </Style>
 
