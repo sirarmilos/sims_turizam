@@ -15,12 +15,6 @@ namespace InitialProject.Repository
 {
     public class TourGuidenceRepository : ITourGuidenceRepository
     {
-        private TourRepository tourRepository;
-
-        private TourReservationRepository tourReservationRepository;
-        
-        private TourKeyPointRepository tourKeyPointRepository;
-
         private const string FilePathTourGuidence = "../../../Resources/Data/tourguidences.csv";
 
         private readonly Serializer<TourGuidence> tourGuidenceSerializer;
@@ -35,7 +29,7 @@ namespace InitialProject.Repository
 
         public List<TourGuidence> FindAll()
         {
-            tourRepository = new TourRepository();
+            TourRepository tourRepository = new TourRepository();
 
             tourGuidences = tourGuidenceSerializer.FromCSV(FilePathTourGuidence);
 
@@ -135,8 +129,8 @@ namespace InitialProject.Repository
         {
             TourAttendanceDTO dto = new TourAttendanceDTO();
 
-            tourReservationRepository = new TourReservationRepository();
-            tourKeyPointRepository = new TourKeyPointRepository();   
+            TourReservationRepository tourReservationRepository = new TourReservationRepository();
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();   
 
             TourReservation tourReservation = tourReservationRepository.FindById(tourReservationId);
             TourGuidence tourGuidence = FindById(tourReservation.tourGuidenceId);

@@ -29,6 +29,8 @@ namespace InitialProject.View
 
         private readonly TourReservationService tourReservationService;
 
+        private readonly TourGuidenceService tourGuidenceService;
+
         private string guest;
 
         public string Guest
@@ -58,12 +60,18 @@ namespace InitialProject.View
             InitializeComponent();
             DataContext = this;
             tourReservationService = new TourReservationService();
+            tourGuidenceService = new TourGuidenceService();
             tourReservations = new List<Dto.ReservationDisplayDto> (tourReservationService.GetAllForOneTourGuidence(guidenceId));
             GuidenceId = guidenceId;
         }
 
         private void Save(object sender, RoutedEventArgs e)
         {
+            if (!tourGuidenceService.CheckIfTourGuidenceReachedTourKeyPoint(GuidenceId, Convert.ToInt32(KeyPointId)))
+            {
+                MessageBox.Show("Tour Guidence has not reached that key point or that key point does not exist!");
+                return;
+            }
             int br = tourReservationService.UpdateKeyPointArrivals(GuidenceId, Guest, Convert.ToInt32(KeyPointId));
             if (br == 1)
             {

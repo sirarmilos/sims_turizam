@@ -1,0 +1,28 @@
+﻿<Window x:Class="InitialProject.View.ShowKeyPoints"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="ShowKeyPoints" Height="450" Width="800">
+    <Grid>
+
+            <DataGrid x:Name="dataGridKP" ItemsSource="{Binding tourKeyPoints}" CanUserAddRows="False" Height="NaN" Margin="40,64,188,73"  AutoGenerateColumns="False" >
+                <DataGrid.Columns>
+                <DataGridTextColumn Header="Key Point Name" Binding="{Binding KeyPointName}"/>
+                <DataGridTextColumn Header="Key Point Name" Binding="{Binding Location.Country}"/>
+                <DataGridTextColumn Header="Key Point Name" Binding="{Binding Location.City}"/>
+                <DataGridTextColumn Header="Key Point Name" Binding="{Binding Location.Address}"/>
+                <DataGridTemplateColumn Header="View Guests">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Button"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        <TextBlock HorizontalAlignment="Left" Margin="220,21,0,0" TextWrapping="Wrap" Text="Key Points in Tour" VerticalAlignment="Top" Width="319"/>
+    </Grid>
+</Window>

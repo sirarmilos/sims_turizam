@@ -284,5 +284,30 @@ namespace InitialProject.Service
             return tourMax;
         }
 
+        public bool CheckIfTourGuidenceReachedTourKeyPoint(int tourGuidenceId, int ordinalNumberKeyPoint)
+        {
+            TourKeyPointService tourKeyPointService = new TourKeyPointService();
+            List<TourKeyPoint> tourKeyPoints = tourKeyPointService.FindAll();
+            List<TourKeyPoint> tkp = tourKeyPoints.FindAll(x => x.TourGuidence.Id == tourGuidenceId);
+            if(ordinalNumberKeyPoint > tkp.Count)
+            {
+                return false;
+            }
+            if (tkp[ordinalNumberKeyPoint-1].Passed == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public TourGuidence FindById(int tourGuidenceId)
+        {
+            return tourGuidenceRepository.FindById(tourGuidenceId);
+        }
+
     }
 }

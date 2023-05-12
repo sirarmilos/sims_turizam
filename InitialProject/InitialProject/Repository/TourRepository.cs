@@ -18,7 +18,7 @@ namespace InitialProject.Repository
 {
     public class TourRepository : ITourRepository
     {
-        private LocationRepository locationRepository;
+        //private LocationRepository locationRepository;
 
         private const string FilePathTour = "../../../Resources/Data/tours.csv";
 
@@ -67,7 +67,7 @@ namespace InitialProject.Repository
 
         public List<Tour> FindAll()
         {
-            locationRepository = new LocationRepository();
+            LocationRepository locationRepository = new LocationRepository();
 
             tours = tourSerializer.FromCSV(FilePathTour);
 

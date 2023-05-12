@@ -154,5 +154,12 @@ namespace InitialProject.View
             ShowReviewsGuest2 window = new ShowReviewsGuest2(Guide);
             window.Show();
         }
+
+        private void ShowKeyPoints(object sender, RoutedEventArgs e)
+        {
+            TourGuidence tourGuidence = tourGuidenceService.FindById(1);
+            ShowKeyPoints window = new ShowKeyPoints(tourGuidence);
+            window.Show();
+        }
     }
 }

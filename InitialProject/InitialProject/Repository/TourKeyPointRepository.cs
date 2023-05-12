@@ -12,9 +12,9 @@ namespace InitialProject.Repository
 {
     internal class TourKeyPointRepository : ITourKeyPointRepository
     {
-        private LocationRepository locationRepository; 
+        //private LocationRepository locationRepository; 
 
-        private TourGuidenceRepository tourGuidenceRepository;
+       // private TourGuidenceRepository tourGuidenceRepository;
 
         private const string FilePathTourKeyPoint = "../../../Resources/Data/tourkeypoints.csv";
 
@@ -31,9 +31,9 @@ namespace InitialProject.Repository
 
         public List<TourKeyPoint> FindAll()
         {
-            locationRepository = new LocationRepository();
+            LocationRepository locationRepository = new LocationRepository();
 
-            tourGuidenceRepository = new TourGuidenceRepository();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
 
             tourKeyPoints = tourKeyPointSerializer.FromCSV(FilePathTourKeyPoint);
 
@@ -77,12 +77,26 @@ namespace InitialProject.Repository
 
         public void UpdateCheckedKeyPoints(List<TourKeyPoint> keyPoints)
         {
-            foreach(TourKeyPoint tourKeyPoint in keyPoints)
+            tourKeyPoints = FindAll();
+            foreach(TourKeyPoint tkp in tourKeyPoints)
+            {
+                foreach(TourKeyPoint keyPoint in keyPoints)
+                {
+                    if(keyPoint.Id == tkp.Id)
+                    {
+                        tkp.Passed = keyPoint.Passed;
+                        break;
+                    }
+                }
+            }
+            Save(tourKeyPoints);
+            /*foreach(TourKeyPoint tourKeyPoint in keyPoints)
             {
                 TourKeyPoint kp = FindById(tourKeyPoint.Id);
                 kp.Passed = tourKeyPoint.Passed;
             }
-            Save(tourKeyPoints); // proveriti
+            Save(tourKeyPoints); // proveriti*/
+
 
         }
     }
