@@ -146,7 +146,7 @@ namespace InitialProject.Service
             return result;
         }
 
-        private static List<TourDisplayDTO> CheckFreeSlots(int numberOfGuests, List<TourDisplayDTO> moreGuests, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckFreeSlots(int numberOfGuests, List<TourDisplayDTO> moreGuests, List<TourDisplayDTO> displayedTours)
         {
             if (numberOfGuests >= 0)
             {
@@ -166,9 +166,9 @@ namespace InitialProject.Service
             return moreGuests;
         }
 
-        private static List<TourDisplayDTO> CheckSameLanguage(Language language, List<TourDisplayDTO> sameLanguage, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckSameLanguage(Language language, List<TourDisplayDTO> sameLanguage, List<TourDisplayDTO> displayedTours)
         {
-            if (language >= 0)
+            if (language > 0)
             {
                 foreach (TourDisplayDTO tour in displayedTours)
                 {
@@ -186,7 +186,7 @@ namespace InitialProject.Service
             return sameLanguage;
         }
 
-        private static List<TourDisplayDTO> CheckLongerDuration(int duration, List<TourDisplayDTO> longerDuration, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckLongerDuration(int duration, List<TourDisplayDTO> longerDuration, List<TourDisplayDTO> displayedTours)
         {
             if (duration >= 0)
             {
@@ -206,7 +206,7 @@ namespace InitialProject.Service
             return longerDuration;
         }
 
-        private static List<TourDisplayDTO> CheckSameCity(string city, List<TourDisplayDTO> sameCity, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckSameCity(string city, List<TourDisplayDTO> sameCity, List<TourDisplayDTO> displayedTours)
         {
             if (!string.IsNullOrEmpty(city))
             {
@@ -226,7 +226,7 @@ namespace InitialProject.Service
             return sameCity;
         }
 
-        private static List<TourDisplayDTO> CheckSameCountry(string country, List<TourDisplayDTO> sameCountry, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckSameCountry(string country, List<TourDisplayDTO> sameCountry, List<TourDisplayDTO> displayedTours)
         {
             if (!string.IsNullOrEmpty(country))
             {

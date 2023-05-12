@@ -1,0 +1,40 @@
+﻿<Window x:Class="InitialProject.View.Guest2MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="Guest2MainWindow" Height="1080" Width="1920"
+        WindowState="Maximized">
+        <Window.Resources>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="White"/>
+                <Style.Triggers>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="Blue"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Window.Resources>
+    <Grid>
+        <Frame NavigationUIVisibility="Hidden" x:Name="page" Margin="211,317,215,60"/>
+        <Button Content="Notifications" HorizontalAlignment="Left" Margin="1174,108
+                ,0,0" VerticalAlignment="Top" FontSize="14" Width="100" Height="71.1" FontWeight="Bold"/>
+        <Image HorizontalAlignment="Left" Height="142" Margin="211,62,0,0" VerticalAlignment="Top" Width="136" Source="/Resources/Images/logo.jpg"/>
+        <Button Content="Profile" HorizontalAlignment="Left" Margin="1314,108,0,0" VerticalAlignment="Top" Height="72" Width="211" FontSize="20" FontWeight="Bold"/>
+        <Button Content="SRB / ENG" HorizontalAlignment="Left" Margin="1584,101,0,0" VerticalAlignment="Top" Height="34" Width="109" FontSize="14" FontWeight="Bold"/>
+        <Button Content="LIGHT / DARK" HorizontalAlignment="Left" Margin="1573,161,0,0" VerticalAlignment="Top" Height="37" Width="132" FontSize="14" FontWeight="Bold"/>
+        <Label Content="Lagnuage" HorizontalAlignment="Left" Margin="1597,68,0,0" VerticalAlignment="Top" FontSize="17"/>
+        <Label Content="Theme&#xD;&#xA;" HorizontalAlignment="Left" Margin="1608,135,0,0" VerticalAlignment="Top" FontSize="17" Height="44"/>
+
+        <Button x:Name="ToursButton" Content="Tours" HorizontalAlignment="Left" Margin="211,211,0,0" VerticalAlignment="Top" Height="91" Width="128" FontSize="20" Click="ToursButtonClick"/>
+        <Button Content="Tour attendance" HorizontalAlignment="Left" Margin="339,211,0,0" VerticalAlignment="Top" Height="91" Width="179" FontSize="20"/>
+        <Button Content="Tour request creation" HorizontalAlignment="Left" Margin="518,211,0,0" VerticalAlignment="Top" Height="91" Width="221" FontSize="20"/>
+        <Button Content="Requested tours display" HorizontalAlignment="Left" Margin="739,211,0,0" VerticalAlignment="Top" Height="91" Width="261" FontSize="20"/>
+        <Button Content="Tour request statistics" HorizontalAlignment="Left" Margin="1000,211,0,0" VerticalAlignment="Top" Height="91" Width="261" FontSize="20"/>
+        <Button Content="Complex tour request" HorizontalAlignment="Left" Margin="1261,211,0,0" VerticalAlignment="Top" Height="91" Width="227" FontSize="20"/>
+        <Button Content="Complex tour display" HorizontalAlignment="Left" Margin="1488,211,0,0" VerticalAlignment="Top" Height="91" Width="217" FontSize="20"/>
+
+    </Grid>
+</Window>
