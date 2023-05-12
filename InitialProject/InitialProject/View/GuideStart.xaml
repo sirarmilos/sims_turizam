@@ -15,6 +15,7 @@
                 <MenuItem Header="Show tours for guide" Click="GoToShowTourGuidences" />
                 <MenuItem Header="Future Tours" Click="GoToFutureTours" />
                 <MenuItem Header="Show Reviews" Click ="GoToShowReviews"/>
+                <MenuItem Header="SearchAndShowTourRequests" Click ="GoToSearchAndShowTourRequests"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
             </Menu>
             <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

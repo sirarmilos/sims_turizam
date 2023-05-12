@@ -161,5 +161,11 @@ namespace InitialProject.View
             ShowKeyPoints window = new ShowKeyPoints(tourGuidence);
             window.Show();
         }
+
+        private void GoToSearchAndShowTourRequests(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests();
+            window.Show();
+        }
     }
 }

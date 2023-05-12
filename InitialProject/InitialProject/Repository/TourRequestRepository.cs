@@ -54,5 +54,20 @@ namespace InitialProject.Repository
         {
             tourRequestSerializer.ToCSV(FilePathTourRequests, requests);
         }
+
+        public List<TourRequest> FindAllByCountry(List<TourRequest> allTourRequests, string name)
+        {
+            return allTourRequests.FindAll(x => x.Location.Country.ToLower().StartsWith(name.ToLower()) == true);
+        }
+
+        public List<TourRequest> FindAllByCity(List<TourRequest> allTourRequests, string name)
+        {
+            return allTourRequests.FindAll(x => x.Location.City.ToLower().StartsWith(name.ToLower()) == true);
+        }
+
+        public List<TourRequest> FindAllByGuestsNumber(List<TourRequest> allTourRequests, int? quantity)
+        {
+            return allTourRequests.FindAll(x => x.GuestNumber == quantity);
+        }
     }
 }

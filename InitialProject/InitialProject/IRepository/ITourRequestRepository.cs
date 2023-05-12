@@ -14,5 +14,11 @@ namespace InitialProject.IRepository
         TourRequest FindById(int id);
 
         void Save(List<TourRequest> requests);
+
+        List<TourRequest> FindAllByCountry(List<TourRequest> allTourRequests, string name);
+
+        List<TourRequest> FindAllByCity(List<TourRequest> allTourRequests, string name);
+
+        List<TourRequest> FindAllByGuestsNumber(List<TourRequest> allTourRequests, int? quantity);
     }
 }

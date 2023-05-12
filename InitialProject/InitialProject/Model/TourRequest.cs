@@ -65,7 +65,7 @@ namespace InitialProject.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), User.Username, Location.Id.ToString(), Description, Language.ToString(), GuestNumber.ToString(), StartDate.Date.ToString(), EndDate.Date.ToString(), CreationDate.Date.ToString(), "pending" };
+            string[] csvValues = { Id.ToString(), User.Username, Location.Id.ToString(), Description, Language.ToString(), GuestNumber.ToString(), StartDate.Date.ToString(), EndDate.Date.ToString(), CreationDate.Date.ToString(), Status };
             return csvValues;
         }
     }
