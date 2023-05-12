@@ -11,6 +11,32 @@
         Title="Management of booking move requests" Height="819" Width="1416" Icon="../Resources/Images/logo_icon.ico"
         WindowStartupLocation="CenterScreen">
 
+    <Window.Resources>
+
+        <Style x:Key="VerticalContentAlignmentCenter" TargetType="{x:Type DataGridCell}">
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+
+                        <Grid Background="{TemplateBinding Background}">
+
+                            <ContentPresenter VerticalAlignment="Center" Margin="2,0,0,0"/>
+
+                        </Grid>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
+
     <Window.CommandBindings>
         <CommandBinding Command="cmd:RoutedCommands.OwnerHomePageLogin" CanExecute="OwnerHomePageLogin_CanExecute" Executed="OwnerHomePageLogin_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.AccommodationStart" CanExecute="AccommodationStart_CanExecute" Executed="AccommodationStart_Executed"></CommandBinding>
@@ -42,7 +68,7 @@
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
 
-            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch">
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch" FontSize="13">
 
                 <Menu.ItemsPanel>
 
@@ -56,7 +82,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="414" />
+                                <ColumnDefinition Width="340" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
@@ -90,18 +116,18 @@
 
         </DockPanel>
 
-        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all booking move requests" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Margin="25,0,0,0"/>
+        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all booking move requests" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,0,0,0" FontSize="24"/>
 
-        <DataGrid x:Name="dgBookingMoveRequests" LoadingRow="LoadingRowForDgBookingMoveRequests" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding OwnerBookingMoveRequestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedBookingMoveRequest, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="AcceptRequestButtonEnable" HorizontalAlignment="Left" Height="400" VerticalAlignment="Bottom" Width="1350" Margin="25,0,0,0">
+        <DataGrid x:Name="dgBookingMoveRequests" LoadingRow="LoadingRowForDgBookingMoveRequests" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding OwnerBookingMoveRequestsDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedBookingMoveRequest, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="AcceptRequestButtonEnable" HorizontalAlignment="Left" Height="400" VerticalAlignment="Bottom" Width="1350" Margin="25,0,0,0" CellStyle="{StaticResource VerticalContentAlignmentCenter}" RowHeight="30" FontSize="13">
 
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="200"/>
                 <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="300"/>
-                <DataGridTextColumn Header="Old date start" Binding="{Binding OldStartDate}" Width="150"/>
-                <DataGridTextColumn Header="Old date end" Binding="{Binding OldEndDate}" Width="150"/>
-                <DataGridTextColumn Header="New date start" Binding="{Binding NewStartDate}" Width="150"/>
-                <DataGridTextColumn Header="New date end" Binding="{Binding NewEndDate}" Width="150"/>
+                <DataGridTextColumn Header="Old date start" Binding="{Binding OldStartDate, StringFormat=d, ConverterCulture=en-GB}" Width="150"/>
+                <DataGridTextColumn Header="Old date end" Binding="{Binding OldEndDate, StringFormat=d, ConverterCulture=en-GB}" Width="150"/>
+                <DataGridTextColumn Header="New date start" Binding="{Binding NewStartDate, StringFormat=d, ConverterCulture=en-GB}" Width="150"/>
+                <DataGridTextColumn Header="New date end" Binding="{Binding NewEndDate, StringFormat=d, ConverterCulture=en-GB}" Width="150"/>
                 <DataGridTextColumn Header="New date available" Binding="{Binding NewDateAvailable}" Width="*"/>
 
             </DataGrid.Columns>
@@ -109,11 +135,11 @@
         </DataGrid>
 
         <Button x:Name="buttonAcceptRequest" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.AcceptRequest" Margin="50,170,0,0">
-            <TextBlock TextAlignment="Center">Accept request<LineBreak/>(CTRL + R)</TextBlock>
+            <TextBlock TextAlignment="Center" FontSize="14">Accept request<LineBreak/>(CTRL + R)</TextBlock>
         </Button>
 
         <Button x:Name="buttonDeclineRequest" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.DeclineRequest" Margin="0,170,0,0">
-            <TextBlock TextAlignment="Center">Decline request<LineBreak/>(CTRL + D)</TextBlock>
+            <TextBlock TextAlignment="Center" FontSize="14">Decline request<LineBreak/>(CTRL + D)</TextBlock>
         </Button>
 
     </Grid>

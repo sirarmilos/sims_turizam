@@ -12,6 +12,32 @@
         Title="Renovate accommodation" Height="845" Width="678" Icon="../Resources/Images/logo_icon.ico"
         WindowStartupLocation="CenterScreen">
 
+    <Window.Resources>
+
+        <Style x:Key="VerticalContentAlignmentCenter" TargetType="{x:Type DataGridCell}">
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+
+                        <Grid Background="{TemplateBinding Background}">
+
+                            <ContentPresenter VerticalAlignment="Center" Margin="2,0,0,0"/>
+
+                        </Grid>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
+
     <Window.CommandBindings>
         <CommandBinding Command="cmd:RoutedCommands.ChooseAccommodationName" CanExecute="ChooseAccommodationName_CanExecute" Executed="ChooseAccommodationName_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.FindAvailableDates" CanExecute="FindAvailableDates_CanExecute" Executed="FindAvailableDates_Executed"></CommandBinding>
@@ -30,7 +56,7 @@
             <ColumnDefinition Width="453" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Header="" HorizontalAlignment="Left" Height="665" VerticalAlignment="Top" Width="612" Margin="25,25,25,0">
+        <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Header="Renovate accommodation" HorizontalAlignment="Left" Height="665" VerticalAlignment="Top" Width="612" Margin="25,25,25,0" FontSize="16">
 
             <Grid>
 
@@ -48,42 +74,42 @@
                     <ColumnDefinition Width="407" />
                 </Grid.ColumnDefinitions>
 
-                <Label Target="{x:Reference cbAccommodationNames}" Grid.Column="0" Grid.Row="0" Content="Accommodation name:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="25,25,0,0"/>
-                <ComboBox x:Name="cbAccommodationNames" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AccommodationNames, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" SelectedItem="{Binding SelectedAccommodationName}" SelectionChanged="SelectionChanged" Margin="0,30,0,0" />
+                <Label Target="{x:Reference cbAccommodationNames}" Grid.Column="0" Grid.Row="0" Content="Accommodation name:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="25,25,0,0" FontSize="13"/>
+                <ComboBox x:Name="cbAccommodationNames" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AccommodationNames, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" SelectedItem="{Binding SelectedAccommodationName}" SelectionChanged="SelectionChanged" Margin="0,30,0,0" FontSize="13"/>
 
-                <Label Target="{x:Reference dpStartDate}" Grid.Column="0" Grid.Row="1" Content="Start date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0"/>
-                <DatePicker x:Name="dpStartDate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200"/>
+                <Label Target="{x:Reference dpStartDate}" Grid.Column="0" Grid.Row="1" Content="Start date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" FontSize="13"/>
+                <DatePicker x:Name="dpStartDate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200" FontSize="13"/>
 
-                <Label Target="{x:Reference dpEndDate}" Grid.Column="0" Grid.Row="2" Content="End date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0"/>
-                <DatePicker x:Name="dpEndDate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200"/>
+                <Label Target="{x:Reference dpEndDate}" Grid.Column="0" Grid.Row="2" Content="End date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" FontSize="13"/>
+                <DatePicker x:Name="dpEndDate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200" FontSize="13"/>
 
-                <Label Target="{x:Reference tbDuration}"  Grid.Column="0" Grid.Row="3" Content="Duration:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0"/>
-                <TextBox x:Name="tbDuration" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Duration, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200"/>
+                <Label Target="{x:Reference tbDuration}"  Grid.Column="0" Grid.Row="3" Content="Duration:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" FontSize="13"/>
+                <TextBox x:Name="tbDuration" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Duration, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" FontSize="13"/>
 
-                <Button Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="100" Command="cmd:RoutedCommands.FindAvailableDates" Margin="100,5,0,0">
+                <Button Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="100" Command="cmd:RoutedCommands.FindAvailableDates" Margin="100,5,0,0" FontSize="14">
                     <TextBlock TextAlignment="Center">Find dates<LineBreak/>(CTRL + F)</TextBlock>
                 </Button>
 
-                <DataGrid x:Name="dgFreeDates" LoadingRow="LoadingRowForDgFreeDates" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding AvailableDateSlots, Mode=OneWay}" SelectedItem="{Binding Path=SelectedDateSlot, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RenovateButtonEnable" HorizontalAlignment="Left" Height="175" VerticalAlignment="Bottom" Width="550" Margin="25,0,25,0">
+                <DataGrid x:Name="dgFreeDates" LoadingRow="LoadingRowForDgFreeDates" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding AvailableDateSlots, Mode=OneWay}" SelectedItem="{Binding Path=SelectedDateSlot, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RenovateButtonEnable" HorizontalAlignment="Left" Height="175" VerticalAlignment="Bottom" Width="550" Margin="25,0,25,0" CellStyle="{StaticResource VerticalContentAlignmentCenter}" RowHeight="30" FontSize="13">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Start date" Binding="{Binding StartDate}" Width="275"/>
-                        <DataGridTextColumn Header="End date" Binding="{Binding EndDate}" Width="*"/>
+                        <DataGridTextColumn Header="Start date" Binding="{Binding StartDate, StringFormat=d, ConverterCulture=en-GB}" Width="275"/>
+                        <DataGridTextColumn Header="End date" Binding="{Binding EndDate, StringFormat=d, ConverterCulture=en-GB}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Label Target="{x:Reference tbDescription}" Grid.Column="0" Grid.Row="6" Content="Description of the renovation:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,30,0,0"/>
-                <TextBox x:Name="tbDescription" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Text="{Binding Path=Description, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="175" VerticalAlignment="Top" Width="370" Margin="0,30,0,0"/>
+                <Label Target="{x:Reference tbDescription}" Grid.Column="0" Grid.Row="6" Content="Description of the renovation:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,30,0,0" FontSize="13"/>
+                <TextBox x:Name="tbDescription" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Text="{Binding Path=Description, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="175" VerticalAlignment="Top" Width="370" Margin="0,30,0,0" FontSize="13"/>
 
             </Grid>
 
         </GroupBox>
 
-        <Button x:Name="buttonRenovate" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.RenovateAccommodation" Margin="50,25,0,0">
-            <TextBlock TextAlignment="Center">Renovate<LineBreak/>(CTRL + N)</TextBlock>
+        <Button x:Name="buttonRenovate" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.RenovateAccommodation" Margin="50,25,0,0">
+            <TextBlock TextAlignment="Center" FontSize="14">Renovate<LineBreak/>(CTRL + N)</TextBlock>
         </Button>
         
-        <Button x:Name="buttonCancel" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.Cancel" Margin="437,25,0,0">
-            <TextBlock TextAlignment="Center">Cancel<LineBreak/>(ESC)</TextBlock>
+        <Button x:Name="buttonCancel" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.Cancel" Margin="437,25,0,0">
+            <TextBlock TextAlignment="Center" FontSize="14">Cancel<LineBreak/>(ESC)</TextBlock>
         </Button>
 
     </Grid>

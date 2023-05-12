@@ -295,5 +295,27 @@ namespace InitialProject.Commands.OwnerCommands
                 new KeyGesture(Key.O, ModifierKeys.Control)
             }
         );
+
+        public static readonly RoutedUICommand PDF = new RoutedUICommand
+        (
+            "PDF",
+            "PDF",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.P, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand BackFromPDFReport = new RoutedUICommand
+        (
+            "Back",
+            "BackFromPDFReport",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.B, ModifierKeys.Control)
+            }
+        );
     }
 }
