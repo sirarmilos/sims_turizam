@@ -20,5 +20,7 @@ namespace InitialProject.IRepository
         List<TourRequest> FindAllByCity(List<TourRequest> allTourRequests, string name);
 
         List<TourRequest> FindAllByGuestsNumber(List<TourRequest> allTourRequests, int? quantity);
+
+        List<TourRequest> FindAllByLanguage(List<TourRequest> allTourRequests, string? language);
     }
 }

@@ -69,5 +69,11 @@ namespace InitialProject.Repository
         {
             return allTourRequests.FindAll(x => x.GuestNumber == quantity);
         }
+
+        public List<TourRequest> FindAllByLanguage(List<TourRequest> allTourRequests, string language)
+        {
+            Enum.TryParse(language, out Language languageEnum);
+            return allTourRequests.FindAll(x => x.Language.ToString().ToLower().StartsWith(language.ToLower()));
+        }
     }
 }

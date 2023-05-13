@@ -31,7 +31,7 @@ namespace InitialProject.View
         private string country;
         private string city;
         private int? guestNumber;
-        private string language;
+        private string jezik;
 
         public string Country
         {
@@ -64,22 +64,22 @@ namespace InitialProject.View
             }
         }
 
-        public string Language
+        public string Jezik
         {
-            get { return language; }
+            get { return jezik; }
             set
             {
-                language = value;
-                OnPropertyChanged(nameof(Language));
+                jezik = value;
+                OnPropertyChanged(nameof(Jezik));
             }
         }
-
 
         public SearchAndShowTourRequests()
         {
             InitializeComponent();
             DataContext = this;
             tourRequestService = new TourRequestService();
+            //Jezik = null;
         }
 
 
@@ -92,9 +92,17 @@ namespace InitialProject.View
                 return;
             }
             SearchAndShowTourRequestDTO searchShowTourRequestDTO =
-                new SearchAndShowTourRequestDTO(Country, City, GuestNumber/*, (Model.Language)Enum.Parse(typeof(Language), Language, ignoreCase : true)*/);
+                new SearchAndShowTourRequestDTO(Country, City, GuestNumber, Jezik);
             List<TourRequest> tourRequests = tourRequestService.FindAll(searchShowTourRequestDTO);
-            ListTourRequests.ItemsSource = tourRequests.FindAll(x => x.Status.Equals("pending"));
+            if(tourRequests == null)
+            {
+                ListTourRequests.ItemsSource = null;
+            }
+            else
+            {
+                ListTourRequests.ItemsSource = tourRequests.FindAll(x => x.Status.Equals("pending"));
+            }
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
