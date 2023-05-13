@@ -78,15 +78,27 @@
                 <ComboBox x:Name="cbAccommodationNames" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding AccommodationNames, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" SelectedItem="{Binding SelectedAccommodationName}" SelectionChanged="SelectionChanged" Margin="0,30,0,0" FontSize="13"/>
 
                 <Label Target="{x:Reference dpStartDate}" Grid.Column="0" Grid.Row="1" Content="Start date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" FontSize="13"/>
-                <DatePicker x:Name="dpStartDate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200" FontSize="13"/>
+                <DatePicker x:Name="dpStartDate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200" FontSize="13">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="IsReadOnly" Value="True"/>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
 
                 <Label Target="{x:Reference dpEndDate}" Grid.Column="0" Grid.Row="2" Content="End date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" FontSize="13"/>
-                <DatePicker x:Name="dpEndDate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200" FontSize="13"/>
+                <DatePicker x:Name="dpEndDate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200" FontSize="13">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="IsReadOnly" Value="True"/>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
 
                 <Label Target="{x:Reference tbDuration}"  Grid.Column="0" Grid.Row="3" Content="Duration:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" FontSize="13"/>
                 <TextBox x:Name="tbDuration" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Duration, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" FontSize="13"/>
 
-                <Button Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="100" Command="cmd:RoutedCommands.FindAvailableDates" Margin="100,5,0,0" FontSize="14">
+                <Button Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="100" Command="cmd:RoutedCommands.FindAvailableDates" Margin="100,5,0,0" FontSize="13">
                     <TextBlock TextAlignment="Center">Find dates<LineBreak/>(CTRL + F)</TextBlock>
                 </Button>
 

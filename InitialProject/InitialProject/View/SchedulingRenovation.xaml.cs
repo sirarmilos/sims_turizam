@@ -5,10 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Metrics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -96,6 +98,9 @@ namespace InitialProject.View
             AccommodationNames = new List<string>();
             AccommodationNames = renovationService.FindOwnerAccommodations(OwnerUsername);
             cbAccommodationNames.SelectedItem = null;
+            SelectedAccommodationName = null;
+
+            cbAccommodationNames.Focus();
 
             SetDefaultValue();
         }
@@ -107,6 +112,7 @@ namespace InitialProject.View
 
             buttonRenovate.IsEnabled = false;
             tbDescription.IsEnabled = false;
+            dgFreeDates.IsEnabled = false;
 
             dpStartDate.SelectedDate = null;
             dpEndDate.SelectedDate = null;
@@ -144,7 +150,7 @@ namespace InitialProject.View
             Renovation renovation = new Renovation(renovationService.FindNextId(), renovationService.FindAccommodationByAccommodationName(SelectedAccommodationName), SelectedDateSlot.StartDate, SelectedDateSlot.EndDate, Description);
             renovationService.AddRenovation(renovation);
 
-            SetDefaultValue();
+            Close();
         }
 
         private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -195,8 +201,8 @@ namespace InitialProject.View
                 AvailableDateSlots = renovationService.FindAvailableDateSlotsToRenovation(SelectedAccommodationName, StartDate, EndDate, Duration);
 
                 dgFreeDates.Items.Refresh();
-
                 dgFreeDates.ItemsSource = AvailableDateSlots;
+                dgFreeDates.IsEnabled = true;
             }
         }
 
@@ -253,7 +259,10 @@ namespace InitialProject.View
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SetDefaultValue();
+            if(dgFreeDates.IsEnabled == true)
+            {
+                SetDefaultValue();
+            }
         }
     }
 }
