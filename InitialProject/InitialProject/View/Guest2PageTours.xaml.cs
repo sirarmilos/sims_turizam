@@ -1,4 +1,5 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.Dto;
+using InitialProject.Model;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace InitialProject.View
     public partial class Guest2PageTours : Page
     {
         private readonly TourService tourService = new TourService();
+
+        private string Username { get; set; }
 
 
         private string city;
@@ -93,14 +96,24 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public Guest2PageTours(string Username)
+        {
+            InitializeComponent();
+            InitializeCbLang();
+            DataContext = this;
+
+            this.Username = Username;
+
+            listTours.ItemsSource = tourService.GetToursForDisplay();
+
+            createReservationButton.IsEnabled = false;
+        }
+
         public Guest2PageTours()
         {
             InitializeComponent();
             InitializeCbLang();
             DataContext = this;
-            listTours.ItemsSource = tourService.GetToursForDisplay();
-
-            createReservationButton.IsEnabled = false;
         }
 
         public void InitializeCbLang()
@@ -121,7 +134,11 @@ namespace InitialProject.View
 
         private void CreateReservation(object sender, RoutedEventArgs e)
         {
+            Guest2TourReservation tourReservation = new Guest2TourReservation(Username, (TourDisplayDTO)listTours.SelectedItems[0]);
+            page.Navigate(tourReservation);
 
+            //Guest2TourReservationUserControl guest2TourReservationUserControl = new Guest2TourReservationUserControl(Username, (TourDisplayDTO)listTours.SelectedItems[0]);
+            //page.Content = guest2TourReservationUserControl;
         }
 
         private void SearchTours(object sender, RoutedEventArgs e)

@@ -6,9 +6,10 @@
       xmlns:local="clr-namespace:InitialProject.View"
       mc:Ignorable="d" 
       d:DesignHeight="630" d:DesignWidth="1494"
-      Title="Guest2PageTours">
+      Title="Guest2PageTours"
+      >
 
-    <Grid Background="White" Margin="0,0,0,-9">
+    <Grid Background="White" Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="103*"/>
             <ColumnDefinition Width="146*"/>
@@ -16,21 +17,6 @@
         <GroupBox Header="Search" Height="600
                   " Width="318" Margin="10,10,290,26" FontSize="20">
             <Grid Height="555">
-                <Label Content="Country" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontSize="17"/>
-                <Label Content="City " HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top" FontSize="17"/>
-                <Label Content="Tour duration&#xD;&#xA;" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="36" FontSize="17">
-                    <Label.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform AngleX="0.586"/>
-                            <RotateTransform/>
-                            <TranslateTransform X="0.323"/>
-                        </TransformGroup>
-                    </Label.RenderTransform>
-                </Label>
-                <Label Content="Language" HorizontalAlignment="Left" Margin="10,278,0,0" VerticalAlignment="Top" FontSize="17"/>
-                <Label Content="Available number of free slots" HorizontalAlignment="Left" Margin="10,384,0,0" VerticalAlignment="Top" FontSize="17"/>
-                <Button Content="Search" HorizontalAlignment="Center" Margin="0,471,0,0" VerticalAlignment="Top" Height="59" Width="140" Click="SearchTours"/>
 
             </Grid>
         </GroupBox>
@@ -60,6 +46,23 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Label Content="Country" HorizontalAlignment="Left" Margin="25,47,0,0" VerticalAlignment="Top" FontSize="17"/>
+        <Label Content="City " HorizontalAlignment="Left" Margin="25,135,0,0" VerticalAlignment="Top" FontSize="17"/>
+        <Label Content="Tour duration&#xD;&#xA;" HorizontalAlignment="Left" Margin="25,222,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="36" FontSize="17">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="0.586"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="0.323"/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label Content="Language" HorizontalAlignment="Left" Margin="25,327,0,0" VerticalAlignment="Top" FontSize="17"/>
+        <Label Content="Available number of free slots" HorizontalAlignment="Left" Margin="25,433,0,0" VerticalAlignment="Top" FontSize="17"/>
+        <Button Content="Search"  Margin="99,520,0,0" VerticalAlignment="Top" Height="59" Width="140" Click="SearchTours" HorizontalAlignment="Left"/>
+
         <Label Content="Select tour from following list to reservate&#xD;&#xA;" HorizontalAlignment="Left" Margin="64,29,0,0" VerticalAlignment="Top" FontSize="24" Grid.Column="1"/>
         <Button x:Name="createReservationButton" Content="Create a reservation!" HorizontalAlignment="Left" Margin="137,558,0,0" VerticalAlignment="Top" Width="308" Height="42" FontSize="16" Grid.Column="1" Click="CreateReservation"/>
         <TextBox Text="{Binding Path=Country, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="31,76,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="278" FontSize="17"/>
@@ -67,6 +70,7 @@
         <TextBox Text="{Binding Path=Duration, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="31,251,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="278" FontSize="17"/>
         <ComboBox x:Name="cbLanguage" SelectedItem="{Binding Languagee}"  HorizontalAlignment="Left" Margin="31,356,0,0" VerticalAlignment="Top" Width="278" FontSize="17"/>
         <TextBox Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="30,462,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="278" FontSize="17"/>
+        <Frame NavigationUIVisibility="Hidden" x:Name="page" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Page>
