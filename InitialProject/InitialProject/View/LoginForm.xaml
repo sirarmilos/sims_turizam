@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
+        xmlns:validationrules="clr-namespace:InitialProject.ValidationRules"
         
         xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
         
@@ -29,9 +30,11 @@
 
         <Label Target="{x:Reference tbUsername}" Grid.Column="0" Grid.Row="0" Content="Username:" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="160,0,0,0" FontSize="16"/>
         <TextBox x:Name="tbUsername" Grid.Column="1" Grid.Row="0" Text="{Binding Path=Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="250" Margin="0,70,0,0" FontSize="13"/>
+        <Label x:Name="labelErrorUsername" Grid.Column="1" Grid.Row="0" Content="Username does not exist" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="250,0,0,0" FontSize="13" Foreground="Red"/>
 
         <Label Target="{x:Reference pbPassword}" Grid.Column="0" Grid.Row="1" Content="Password:" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="160,0,0,0" FontSize="16"/>
         <PasswordBox x:Name="pbPassword" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="250" Margin="0,45,0,0" FontSize="13"/>
+        <Label x:Name="labelErrorPassword" Grid.Column="1" Grid.Row="1" Content="Password is incorrect" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="250,0,0,0" FontSize="13" Foreground="Red"/>
 
         <Button x:Name="buttonLogin" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="50" VerticalAlignment="Top" Width="100" Command="cmd:RoutedCommands.Login" Margin="0,50,0,65">
             <TextBlock TextAlignment="Center" FontSize="14">Login<LineBreak/>(CTRL + L)</TextBlock>
