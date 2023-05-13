@@ -33,7 +33,7 @@
                 <TextBox x:Name="tbComment" Grid.Row="0" TextWrapping="Wrap" Text="{Binding Path=Comment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="155" VerticalAlignment="Top" Width="450" Margin="25,25,0,0" FontSize="13"/>
 
                 <Button x:Name="buttonConfirmRejection" Grid.Row="1" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.ConfirmRejection" Margin="50,25,0,0">
-                    <TextBlock TextAlignment="Center" FontSize="14">Confirm rejection<LineBreak/>(CTRL + J)</TextBlock>
+                    <TextBlock TextAlignment="Center" FontSize="14">Confirm rejection<LineBreak/>(CTRL + D)</TextBlock>
                 </Button>
 
                 <Button x:Name="buttonCancel" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.Cancel" Margin="275,25,0,0">

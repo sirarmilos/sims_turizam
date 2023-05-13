@@ -39,7 +39,6 @@
     </Window.Resources>
 
     <Window.CommandBindings>
-        <CommandBinding Command="cmd:RoutedCommands.ChooseAccommodationName" CanExecute="ChooseAccommodationName_CanExecute" Executed="ChooseAccommodationName_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.FindAvailableDates" CanExecute="FindAvailableDates_CanExecute" Executed="FindAvailableDates_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.RenovateAccommodation" CanExecute="RenovateAccommodation_CanExecute" Executed="RenovateAccommodation_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed"></CommandBinding>
@@ -87,13 +86,14 @@
                 </DatePicker>
 
                 <Label Target="{x:Reference dpEndDate}" Grid.Column="0" Grid.Row="2" Content="End date:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" FontSize="13"/>
-                <DatePicker x:Name="dpEndDate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200" FontSize="13">
+                <DatePicker x:Name="dpEndDate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="200" FontSize="13" SelectedDateChanged="dpEndDate_SelectedDateChanged">
                     <DatePicker.Resources>
                         <Style TargetType="DatePickerTextBox">
                             <Setter Property="IsReadOnly" Value="True"/>
                         </Style>
                     </DatePicker.Resources>
                 </DatePicker>
+                <Label x:Name="labelErrorEndDate" Grid.Column="1" Grid.Row="2" Content="Start date is greater than end date" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="200,0,0,5" FontSize="12" Foreground="Red"/>
 
                 <Label Target="{x:Reference tbDuration}"  Grid.Column="0" Grid.Row="3" Content="Duration:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" FontSize="13"/>
                 <TextBox x:Name="tbDuration" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Duration, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" FontSize="13"/>

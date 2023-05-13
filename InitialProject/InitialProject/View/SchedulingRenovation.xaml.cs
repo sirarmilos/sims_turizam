@@ -95,14 +95,21 @@ namespace InitialProject.View
 
             renovationService = new RenovationService(OwnerUsername);
 
+            SetComboBox();
+
+            SetDefaultValue();
+
+            labelErrorEndDate.Visibility = Visibility.Hidden;
+        }
+
+        public void SetComboBox()
+        {
             AccommodationNames = new List<string>();
             AccommodationNames = renovationService.FindOwnerAccommodations(OwnerUsername);
             cbAccommodationNames.SelectedItem = null;
             SelectedAccommodationName = null;
 
             cbAccommodationNames.Focus();
-
-            SetDefaultValue();
         }
 
         private void SetDefaultValue()
@@ -114,23 +121,15 @@ namespace InitialProject.View
             tbDescription.IsEnabled = false;
             dgFreeDates.IsEnabled = false;
 
-            dpStartDate.SelectedDate = null;
+            dpStartDate.SelectedDate = DateTime.Now.AddDays(1);
             dpEndDate.SelectedDate = null;
             dgFreeDates.Items.Refresh();
             dgFreeDates.ItemsSource = AvailableDateSlots;
             tbDuration.Text = string.Empty;
             tbDescription.Text = string.Empty;
-        }
 
-        private void ChooseAccommodationName_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void ChooseAccommodationName_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            cbAccommodationNames.IsDropDownOpen = true;
-            cbAccommodationNames.SelectedItem = cbAccommodationNames.Items[0];
+            dpStartDate.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Now));
+            dpEndDate.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Now));
         }
 
         private void RenovateAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -174,29 +173,18 @@ namespace InitialProject.View
             {
                 MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (CheckErrorDate() == true)
+            else if(labelErrorEndDate.Visibility == Visibility.Visible)
             {
-                MessageBox.Show("Start date is greater than end date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                dpStartDate.SelectedDate = null;
-                dpEndDate.SelectedDate = null;
-                dpStartDate.Focus();
+                MessageBox.Show("You must change dates", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (CheckFutureDate() == true)
-            {
-                MessageBox.Show("The start date must not be earlier than today's date.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                dpStartDate.SelectedDate = null;
-                dpStartDate.Focus();
-            }
-            else if (CheckErrorDuration() == true)
+            else if(CheckErrorDuration() == true)
             {
                 MessageBox.Show("The duration must not be longer than the distance between the dates.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 tbDuration.Text = string.Empty;
                 tbDuration.Focus();
             }
-            else
+            else if(labelErrorEndDate.Visibility == Visibility.Hidden)
             {
                 AvailableDateSlots = renovationService.FindAvailableDateSlotsToRenovation(SelectedAccommodationName, StartDate, EndDate, Duration);
 
@@ -262,6 +250,19 @@ namespace InitialProject.View
             if(dgFreeDates.IsEnabled == true)
             {
                 SetDefaultValue();
+            }
+        }
+
+        private void dpEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(CheckErrorDate() == true)
+            {
+                labelErrorEndDate.Visibility = Visibility.Visible;
+                dpEndDate.Focus();
+            }
+            else
+            {
+                labelErrorEndDate.Visibility = Visibility.Hidden;
             }
         }
     }
