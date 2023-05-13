@@ -24,11 +24,11 @@ namespace InitialProject.View
     public partial class ShowKeyPointsInStartedTourGuidence : Window
     {
 
-        private readonly TourGuidenceService tourGuidenceService;
+        //private readonly TourGuidenceService tourGuidenceService;
 
-        private readonly TourKeyPointService tourKeyPointService;
+        //private readonly TourKeyPointService tourKeyPointService;
 
-        private readonly TourKeyPointRepository tourKeyPointRepository;
+        //private readonly TourKeyPointRepository tourKeyPointRepository;
         public static ObservableCollection<TourKeyPoint> tourKeyPoints { get; set; }
 
         public TourGuidence TourGuidence { get; set; }
@@ -52,9 +52,9 @@ namespace InitialProject.View
         {
             InitializeComponent();
             DataContext = this;
-            tourKeyPointRepository = new TourKeyPointRepository();
-            tourKeyPointService = new TourKeyPointService();
-            tourGuidenceService = new TourGuidenceService();
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
+            TourKeyPointService tourKeyPointService = new TourKeyPointService();
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
             tourKeyPoints = new ObservableCollection<TourKeyPoint>(tourKeyPointService.FindByTourGuidance(guidence.Id));
             tourKeyPoints[0].Passed = true;
             TourGuidence = guidence;
@@ -64,7 +64,9 @@ namespace InitialProject.View
 
         private void SaveCheckedKeyPoints(object sender, RoutedEventArgs e)
         {
-            if(TourGuidence.Started == true)
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+            if (TourGuidence.Started == true)
             {
                 tourKeyPointRepository.UpdateCheckedKeyPoints(tourKeyPoints.ToList());
                 if (tourKeyPoints[tourKeyPoints.Count - 1].Passed == true)
@@ -96,6 +98,7 @@ namespace InitialProject.View
 
         private void StartTourGuidence(object sender, RoutedEventArgs e)
         {
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
             if (tourGuidenceService.CheckGuidencesForStart(TourGuidences))
             {
                 MessageBox.Show("You already started another tour!");
@@ -118,7 +121,8 @@ namespace InitialProject.View
 
         private void FinishTourGuidence(object sender, RoutedEventArgs e)
         {
-            if(TourGuidence.Started == false)
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+            if (TourGuidence.Started == false)
             {
                 MessageBox.Show("Start your tour first!!");
             }
