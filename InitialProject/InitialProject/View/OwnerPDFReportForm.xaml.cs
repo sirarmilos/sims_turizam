@@ -1,7 +1,9 @@
 ﻿using InitialProject.DTO;
 using InitialProject.Service;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -78,23 +80,24 @@ namespace InitialProject.View
 
         private void PDF_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            try
-            {
-                buttonPDF.Visibility = Visibility.Hidden;
-                buttonBack.Visibility = Visibility.Hidden;
-                this.Height = 639;
+            buttonPDF.Visibility = Visibility.Hidden;
+            buttonBack.Visibility = Visibility.Hidden;
+            this.Height = 639;
 
-                this.IsEnabled = false;
-                PrintDialog printDialog = new PrintDialog();
-                if (printDialog.ShowDialog() == true)
-                {
-                    printDialog.PrintVisual(this, "pdf");
-                }
-            }
-            finally
+            // this.IsEnabled = false;
+
+            PrintDialog printDialog = new PrintDialog();
+            if(printDialog.ShowDialog() == true)
             {
-                Close();
+                printDialog.PrintVisual(this, "pdf");
             }
+
+            buttonPDF.Visibility = Visibility.Visible;
+            buttonBack.Visibility = Visibility.Visible;
+            this.Height = 740;
+
+            OwnerPDFReportView window = new OwnerPDFReportView();
+            window.ShowDialog();
         }
 
         private void BackFromPDFReport_CanExecute(object sender, CanExecuteRoutedEventArgs e)

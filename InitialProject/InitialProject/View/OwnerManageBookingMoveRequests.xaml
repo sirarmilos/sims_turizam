@@ -122,8 +122,8 @@
 
             <DataGrid.Columns>
 
-                <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="200"/>
                 <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="300"/>
+                <DataGridTextColumn Header="Guest username" Binding="{Binding GuestUsername}" Width="200"/>
                 <DataGridTextColumn Header="Old date start" Binding="{Binding OldStartDate, StringFormat=d, ConverterCulture=en-GB}" Width="150"/>
                 <DataGridTextColumn Header="Old date end" Binding="{Binding OldEndDate, StringFormat=d, ConverterCulture=en-GB}" Width="150"/>
                 <DataGridTextColumn Header="New date start" Binding="{Binding NewStartDate, StringFormat=d, ConverterCulture=en-GB}" Width="150"/>
