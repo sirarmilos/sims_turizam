@@ -13,6 +13,7 @@
     <None Remove="Resources\Images\edit.png" />
     <None Remove="Resources\Images\logo_test.png" />
     <None Remove="Resources\Images\view.png" />
+	<None Remove="Resources\Images\profileIcon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,9 @@
     <Content Include="Resources\Images\view.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+	<Resource Include="Resources\Images\profileIcon.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Resource>
   </ItemGroup>
 
   <ItemGroup>

@@ -167,5 +167,11 @@ namespace InitialProject.View
             SearchAndShowTourRequests window = new SearchAndShowTourRequests();
             window.Show();
         }
+
+        private void GoToMostPopularTour(object sender, RoutedEventArgs e)
+        {
+            ShowMostPopularTour window = new ShowMostPopularTour();
+            window.Show();
+        }
     }
 }
