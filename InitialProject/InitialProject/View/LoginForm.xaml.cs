@@ -26,6 +26,7 @@ namespace InitialProject.View
     public partial class LoginForm : Window
     {
         private readonly UserService userService;
+        private readonly TourGuidenceService tourGuidenceService;
 
         private string username;
         private string password;
@@ -101,18 +102,31 @@ namespace InitialProject.View
                 }
                 if (type.Equals("guide") == true)
                 {
-                    GuideStart window = new GuideStart(Username);
-                    window.Show();
-                    Close();
+                    TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+                    if (tg != null)
+                    {
+                        GuideStart2 window = new GuideStart2(Username, tg);
+                        window.Show();
+                        Close();
+                    }
+                    else
+                    {
+                        GuideStart1 window = new GuideStart1(Username);
+                        window.Show();
+                        Close();
+                    }
+                    
                 }
                 if (type.Equals("guest2") == true)
                 {
-                    Guest2Start window = new Guest2Start(Username);
+                    //Guest2Start window = new Guest2Start(Username);
+
+                    Guest2MainWindow window = new Guest2MainWindow(Username);
                     window.Show();
                     Close();
                 }
 
-                MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -123,6 +137,8 @@ namespace InitialProject.View
             DataContext = this;
 
             userService = new UserService();
+
+            tourGuidenceService = new TourGuidenceService();
 
             userService.CheckRecentlyRenovatedAccommodation();
 

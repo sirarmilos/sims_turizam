@@ -1,0 +1,50 @@
+﻿<Window x:Class="InitialProject.View.TourImages"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="Tour Images" Height="775" Width="1400"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Menu column -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content column -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Menu -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0">
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <StackPanel>
+                    <MenuItem Header="Home Page" Margin="0,25,0,0"/>
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Profile" Margin="0,5,0,0"/>
+                    <MenuItem Header="Future Tours" Margin="0,5,0,0"/>
+                    <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
+                </StackPanel>
+                <Grid>
+                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
+
+
+        <!-- Main content -->
+        <Grid Grid.Column="1">
+            <Button Content="BACK" HorizontalAlignment="Left" Margin="98,655,0,0" VerticalAlignment="Top" Height="38" Width="97" Click="GoToPreviousWindow"/>
+            <!--<Image Source="https://www.google.rs/url?sa=i&url=https%3A%2F%2Fwww.trolleytours.com%2F&psig=AOvVaw14BD9b1QHJypaKrt2InEYB&ust=1684169541936000&source=images&cd=vfe&ved=0CA4QjRxqFwoTCLjsqs2i9f4CFQAAAAAdAAAAABAD" Width="300" Height="200" Margin="50" />
+            <Image Source="https://example.com/image1.jpg" Width="300" Height="200" Margin="400,50,50,0" />
+            <Image Source="https://example.com/image1.jpg" Height="200" Margin="50,300,50,0" />
+            <Image Source="https://example.com/image1.jpg" Width="300" Height="200" Margin="400,300,50,0" />-->
+        </Grid>
+
+
+
+    </Grid>
+</Window>

@@ -1,4 +1,5 @@
-﻿using InitialProject.DTO;
+﻿using InitialProject.Dto;
+using InitialProject.DTO;
 using InitialProject.Injector;
 using InitialProject.IRepository;
 using InitialProject.Model;
@@ -28,6 +29,11 @@ namespace InitialProject.Service
             locationRepository.Add(location);
 
             return location;
+        }
+
+        public Location Save(LocationDto locationDto)
+        {
+            return locationRepository.Save(locationDto);
         }
     }
 }

@@ -32,7 +32,6 @@ namespace InitialProject.View
     public partial class SearchAndShowTours : Window
     {
 
-        private readonly TourRepository tourRepository;
 
         private readonly TourService tourService = new TourService();
 
@@ -108,7 +107,6 @@ namespace InitialProject.View
             InitializeComponent();
             Initializecblang();
             DataContext = this;
-            tourRepository = new TourRepository();
 
             tourDisplayDTOs = new List<TourDisplayDTO>();
             tourDisplayDTOs = tourService.GetToursForDisplay();

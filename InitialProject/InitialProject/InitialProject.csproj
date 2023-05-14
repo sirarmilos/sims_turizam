@@ -17,6 +17,11 @@
     <None Remove="Resources\Images\logo_icon.ico" />
     <None Remove="Resources\Images\turtle_tourism_logo_2.png" />
     <None Remove="Resources\Images\view.png" />
+	<None Remove="Resources\Images\profileIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Themes\DarkTheme.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +40,9 @@
     <Content Include="Resources\Images\view.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+	<Resource Include="Resources\Images\profileIcon.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +51,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Themes\DarkTheme.xaml" />
   </ItemGroup>
 
 </Project>

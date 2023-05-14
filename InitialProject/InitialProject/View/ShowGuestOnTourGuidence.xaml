@@ -9,7 +9,7 @@
     <Grid>
         <DataGrid x:Name="dataGrid" ItemsSource="{Binding tourReservations}" AutoGenerateColumns="False" CanUserAddRows="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Guest Name" Binding="{Binding userId}" />
+                <DataGridTextColumn Header="List of Guests that booked a tour" Binding="{Binding userId}" />
                 <!--<DataGridTemplateColumn Header="Key Point Name">
                     <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>

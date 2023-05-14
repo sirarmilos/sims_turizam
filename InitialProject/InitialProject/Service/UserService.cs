@@ -27,6 +27,7 @@ namespace InitialProject.Service
         public UserService()
         {
             userRepository = Injector.Injector.CreateInstance<IUserRepository>();
+            canceledReservationService = new CanceledReservationService();
 
             //userRepository = new UserRepository();  
 
@@ -71,7 +72,7 @@ namespace InitialProject.Service
             accommodationService.CheckRecentlyRenovated();
         }
 
-        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        public List<CancelledReservationsNotificationDTO> FindUnreadCancelledReservations(string ownerUsername)
         {
             canceledReservationService = new CanceledReservationService();
 
@@ -79,26 +80,7 @@ namespace InitialProject.Service
 
             unreadCancelledReservations = canceledReservationService.FindOwnerUnreadCancelledReservations(ownerUsername);
 
-            List<string> unreadCancelledReservationsString = new List<string>();
-
-            foreach(CancelledReservationsNotificationDTO temporaryCancelledReservationsNotificationDTO in unreadCancelledReservations.ToList())
-            {
-                unreadCancelledReservationsString.Add(temporaryCancelledReservationsNotificationDTO.AccommodationName + ": " + temporaryCancelledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCancelledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
-            }
-
-            if(unreadCancelledReservationsString.Count == 0)
-            {
-                unreadCancelledReservationsString.Add("There are currently no new booking cancellations.");
-            }
-
-            return unreadCancelledReservationsString;
-        }
-
-        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
-        {
-            canceledReservationService = new CanceledReservationService();
-
-            canceledReservationService.SaveViewed(cancelledReservationsNotificationDTO);
+            return unreadCancelledReservations;
         }
 
 
@@ -151,5 +133,17 @@ namespace InitialProject.Service
         {
             userRepository.Update(guest1Username, "super");
         }
+
+        public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
+        {
+            canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
+        }
+
+        public User FindByUsername(string username)
+        {
+            return userRepository.FindByUsername(username);
+        }
+
+
     }
 }

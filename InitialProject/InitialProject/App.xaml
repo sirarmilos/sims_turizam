@@ -1,25 +1,32 @@
-﻿<Application x:Class="InitialProject.App"
+<Application x:Class="InitialProject.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:InitialProject"
              StartupUri="View/LoginForm.xaml">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/LightTheme.xaml"/>
+                <ResourceDictionary Source="/Languages/StringEn.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <Style TargetType="DataGrid">
+            <Style TargetType="DataGrid">
 
-            <Setter Property="CanUserResizeColumns" Value="False"/>
-            <Setter Property="CanUserSortColumns" Value="False"/>
-            <Setter Property="CanUserReorderColumns" Value="False"/>
+                <Setter Property="CanUserResizeColumns" Value="False"/>
+                <Setter Property="CanUserSortColumns" Value="False"/>
+                <Setter Property="CanUserReorderColumns" Value="False"/>
 
-        </Style>
+            </Style>
 
-        <Style TargetType="{x:Type DataGridRow}">
-            <Style.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Gray" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White" />
-            </Style.Resources>
-        </Style>
+            <Style TargetType="{x:Type DataGridRow}">
+                <Style.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Gray" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White" />
+                </Style.Resources>
+            </Style>
+        </ResourceDictionary>
 
+       
     </Application.Resources>
 </Application>

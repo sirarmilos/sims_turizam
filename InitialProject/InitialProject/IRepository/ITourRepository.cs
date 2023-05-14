@@ -21,7 +21,5 @@ namespace InitialProject.IRepository
 
         int NextId();
 
-        List<int> GetGuestNumber(int tourId);
-
     }
 }

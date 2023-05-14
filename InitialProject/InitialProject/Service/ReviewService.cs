@@ -32,6 +32,8 @@ namespace InitialProject.Service
 
         private readonly AccommodationService accommodationService;
 
+        private readonly CanceledReservationService canceledReservationService;
+
         private string owner;
         private string guest1;
 
@@ -64,6 +66,7 @@ namespace InitialProject.Service
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
             renovationRecommendationService = new RenovationRecommendationService();
             accommodationService = new AccommodationService();
+            canceledReservationService = new CanceledReservationService();
 
 
             reviewRepository = Injector.Injector.CreateInstance<IReviewRepository>();
@@ -220,12 +223,7 @@ namespace InitialProject.Service
             return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
         }
 
-        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
-        {
-            userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
-        }
-
-        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        public List<CancelledReservationsNotificationDTO> FindUnreadCancelledReservations(string ownerUsername)
         {
             return userService.FindUnreadCancelledReservations(ownerUsername);
         }
@@ -326,6 +324,11 @@ namespace InitialProject.Service
         public string FindSuperTypeByOwnerName(string username)
         {
             return userService.FindSuperTypeByOwnerName(username);
+        }
+
+        public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
+        {
+            canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
         }
     }
 }

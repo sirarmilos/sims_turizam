@@ -47,7 +47,6 @@
         <CommandBinding Command="cmd:RoutedCommands.OwnerForum" CanExecute="OwnerForum_CanExecute" Executed="OwnerForum_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.Logout" CanExecute="Logout_CanExecute" Executed="Logout_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.Notifications" CanExecute="Notifications_CanExecute" Executed="Notifications_Executed"></CommandBinding>
-        <CommandBinding Command="cmd:RoutedCommands.ReadCancelledReservationNotification" CanExecute="ReadCancelledReservationNotification_CanExecute" Executed="ReadCancelledReservationNotification_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.PDFReport" CanExecute="PDFReport_CanExecute" Executed="PDFReport_Executed"></CommandBinding>
     </Window.CommandBindings>
 
@@ -100,13 +99,7 @@
                 <MenuItem Grid.Column="9" x:Name="notifications" Header="_Notifications (F9)" Command="cmd:RoutedCommands.Notifications">
                     <MenuItem x:Name="rateGuestsNotifications" Command="cmd:RoutedCommands.RateGuests"/>
                     <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations" IsEnabled="False"/>
-                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <MenuItem Header="{Binding}" Click="ReadCancelledReservationNotification" Command="cmd:RoutedCommands.ReadCancelledReservationNotification"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList"/>
                 </MenuItem>
 
             </Menu>

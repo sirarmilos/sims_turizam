@@ -18,7 +18,12 @@ namespace InitialProject.Service
             //tourKeyPointRepository = new TourKeyPointRepository();
         }
 
-        public List<TourKeyPoint> GetByTourGuidance(int id)
+        public List<TourKeyPoint> FindAll()
+        {
+            return tourKeyPointRepository.FindAll();
+        }
+
+        public List<TourKeyPoint> FindByTourGuidance(int id)
         {
             List<TourKeyPoint> keyPoints = new List<TourKeyPoint>();
             foreach (TourKeyPoint tkp in tourKeyPointRepository.FindAll())
@@ -30,9 +35,6 @@ namespace InitialProject.Service
             return keyPoints;
         }
 
-        public List<TourKeyPoint> GetAll()
-        {
-            return tourKeyPointRepository.FindAll();
-        }
+        
     }
 }

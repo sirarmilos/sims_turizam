@@ -1,0 +1,57 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:system="clr-namespace:System;assembly=netstandard">
+    <system:String x:Key="StrNotifications">Notifications</system:String>
+    <system:String x:Key="StrProfile">Profile</system:String>
+    <system:String x:Key="StrTheme">LIGHT / DARK</system:String>
+    <system:String x:Key="StrTours">Tours</system:String>
+    <system:String x:Key="StrTourAttendance">Tour attendance</system:String>
+    <system:String x:Key="StrTourRequestCreation">Tour request creation</system:String>
+    <system:String x:Key="StrRequestedToursDisplay">Requested tours display</system:String>
+    <system:String x:Key="StrRequestStats">Tour request statistics</system:String>
+    <system:String x:Key="StrComplexTourRequest">Complex tour request</system:String>
+    <system:String x:Key="StrComplexTourDisplay">Complex tour display</system:String>
+
+    <system:String x:Key="StrLanguage">Language</system:String>
+    <system:String x:Key="StrThemeLabel">Theme</system:String>
+
+    <system:String x:Key="StrSearch">Search</system:String>
+    <system:String x:Key="StrCountry">Country</system:String>
+    <system:String x:Key="StrCity">City</system:String>
+    <system:String x:Key="StrTourDuration">Tour duration</system:String>
+    <system:String x:Key="StrMaxGuests">Available number of free slots:</system:String>
+    <system:String x:Key="StrSelectTourToReservate">Select tour from following list to reservate</system:String>
+
+    <system:String x:Key="StrName">Tour name</system:String>
+    <system:String x:Key="StrDescription">Description</system:String>
+    <system:String x:Key="StrFreeSlots">Free slots</system:String>
+    <system:String x:Key="StrDate">Date</system:String>
+
+    <system:String x:Key="StrCreateResButton">Create a reservation!</system:String>
+
+    <system:String x:Key="StrKeyPoints">Key points:</system:String>
+
+    <system:String x:Key="StrGuestsForTours">Guests for tour:</system:String>
+    <system:String x:Key="StrSelectVoucher">Select voucher:</system:String>
+
+    <system:String x:Key="StrCreateReservation">Create reservation</system:String>
+    <system:String x:Key="StrCancelReservation">Cancel reservation</system:String>
+
+    <system:String x:Key="StrName1">Tour name:</system:String>
+    <system:String x:Key="StrCountry1">Country:</system:String>
+    <system:String x:Key="StrCity1">City:</system:String>
+    <system:String x:Key="StrDescription1">Descrption:</system:String>
+    <system:String x:Key="StrLanguage1">Language:</system:String>
+    <system:String x:Key="StrTourDuration1">Duration:</system:String>
+    <system:String x:Key="StrDate1">Date:</system:String>
+    <system:String x:Key="StrKeyPoints1">Key points:</system:String>
+
+    <system:String x:Key="StrTourInfo">Tour info</system:String>
+
+    <system:String x:Key="StrTourRequest">Tour request</system:String>
+    <system:String x:Key="StrFrom">From:</system:String>
+    <system:String x:Key="StrTo">To:</system:String>
+    <system:String x:Key="StrCreateRequest">Create request</system:String>
+
+    <system:String x:Key="StrRateGuide">Rate guide</system:String>
+    
+</ResourceDictionary>

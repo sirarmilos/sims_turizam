@@ -26,10 +26,10 @@ namespace InitialProject.View
     /// </summary>
     public partial class ShowTourGuidences : Window
     {
-        public ShowTourGuidences()
+        public ShowTourGuidences(string guideUsername)
         {
             InitializeComponent();
-            this.DataContext = new ShowTourGuidencesViewModel();
+            this.DataContext = new ShowTourGuidencesViewModel(guideUsername);
         }
     }
 }

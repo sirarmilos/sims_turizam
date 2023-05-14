@@ -39,6 +39,8 @@ namespace InitialProject.View
 
         private readonly Guest2Repository guest2Repository = new Guest2Repository();
 
+        private readonly Guest2Service guest2Service = new Guest2Service();
+
         private TourReservationService tourReservationService = new TourReservationService();
 
         private TourService tourService = new TourService();
@@ -85,7 +87,7 @@ namespace InitialProject.View
 
         public void InitializeComboBoxVouchers()
         {
-            List<Voucher> vouchers = guest2Repository.GetGuestsVouchers(username);  
+            List<Voucher> vouchers = guest2Service.GetGuestsVouchers(username);  
 
             foreach (Voucher voucher in vouchers)
             {
@@ -137,7 +139,7 @@ namespace InitialProject.View
                 {
                     if (tourReservationService.CreateReservation(username, tourGuidence, numberOfGuests, voucherId, tourReservationRepository.NextId()))
                     {
-                        guest2Repository.UpdateVoucherUsedStatus(voucherId);
+                        guest2Service.UpdateVoucherUsedStatus(voucherId);
                         MessageBox.Show("Uspesna rezervacija ture!");
                     }
                     else

@@ -118,17 +118,6 @@ namespace InitialProject.Commands.OwnerCommands
             }
         );
 
-        public static readonly RoutedUICommand ReadCancelledReservationNotification = new RoutedUICommand
-        (
-            "Read cancelled reservation to notification",
-            "ReadCancelledReservationNotification",
-            typeof(RoutedCommands),
-            new InputGestureCollection()
-            {
-                new KeyGesture(Key.A, ModifierKeys.Control)
-            }
-        );
-
         public static readonly RoutedUICommand Login = new RoutedUICommand
         (
             "Login",

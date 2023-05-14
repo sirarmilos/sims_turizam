@@ -1,7 +1,9 @@
 ﻿using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,6 +29,8 @@ namespace InitialProject.View
         private readonly int tourGuidenceId;
 
         private readonly Guest2Repository guest2Repository = new Guest2Repository();
+
+        private Guest2Service guest2Service = new Guest2Service();
         public RateGuide(string username,int tourGuidenceId,string guideUsername)
         {
             InitializeComponent();
@@ -79,7 +83,7 @@ namespace InitialProject.View
 
             try 
             {
-                guest2Repository.GuideRating(username,guideUsername,tourGuidenceId,guideGeneralKnowledgeValue,guideGeneralKnowledgeValue,generalTourExperienceValue,tourComment.Text,pictures);
+                guest2Service.GuideRating(username,guideUsername,tourGuidenceId,guideGeneralKnowledgeValue,guideGeneralKnowledgeValue,generalTourExperienceValue,tourComment.Text,pictures);
                 MessageBox.Show("Success!");
             }
             catch
