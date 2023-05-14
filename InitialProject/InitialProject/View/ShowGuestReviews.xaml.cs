@@ -219,8 +219,6 @@ namespace InitialProject.View
         {
             OwnerPDFReportForm window = new OwnerPDFReportForm(OwnerUsername);
             window.ShowDialog();
-
-            MessageBox.Show("You have successfully saved the report in PDF format.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         void LoadingRowForDgShowGuestReviews(object sender, DataGridRowEventArgs e)

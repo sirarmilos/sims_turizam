@@ -96,6 +96,8 @@ namespace InitialProject.View
             this.Height = 740;
             this.Width = 1416;
 
+            MessageBox.Show("You have successfully saved the report in PDF format.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
             Close();
         }
 
