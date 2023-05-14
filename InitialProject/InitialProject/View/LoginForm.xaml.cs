@@ -15,6 +15,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace InitialProject.View
@@ -90,9 +91,10 @@ namespace InitialProject.View
                 }
                 if (type.Equals("guest1") == true)
                 {
-                    Guest1Start window = new Guest1Start(Username);
+                    Guest1MainWindow window = new Guest1MainWindow(Username);
                     window.Show();
                     Close();
+                    return;
                 }
                 if (type.Equals("guide") == true)
                 {

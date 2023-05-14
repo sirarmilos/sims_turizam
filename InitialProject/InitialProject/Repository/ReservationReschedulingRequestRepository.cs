@@ -126,6 +126,11 @@ namespace InitialProject.Repository
             return FindAllByGuest1Username(guest1Username).ToList().Find(x => x.Reservation.ReservationId == reservationId);
         }
 
+        public ReservationReschedulingRequest FindRequestByRequestId(int requestId, string guest1Username)
+        {
+            return FindAllByGuest1Username(guest1Username).ToList().Find(x => x.Id == requestId);
+        }
+
         public void UpdateViewedRequestsByGuest1(string guest1Username) 
         {
             List<ReservationReschedulingRequest> allReservationReschedulingRequests = FindAll();

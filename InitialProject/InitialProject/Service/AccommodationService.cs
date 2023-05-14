@@ -200,6 +200,9 @@ namespace InitialProject.Service
 
         private bool IsTypeContained(List<Accommodation> allAccommodations, string type, out List<Accommodation> typeResults)
         {
+
+            if (type != null  && type.Equals("All Types")) type = "";
+
             if (!string.IsNullOrWhiteSpace(type))
             {
                 type = type.Trim();

@@ -12,10 +12,11 @@ using System.Security.Policy;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace InitialProject.View
 {
-    public partial class AccommodationReservation : Window
+    public partial class AccommodationReservation : Page
     {
         private readonly ReservationService reservationService;
         private Accommodation accommodation;
@@ -142,7 +143,7 @@ namespace InitialProject.View
             }
         }
 
-        public AccommodationReservation(Accommodation accommodation, string username)
+        public AccommodationReservation(Accommodation accommodation, string username, Page page)
         {
             InitializeComponent();
             DataContext = this;
@@ -359,46 +360,49 @@ namespace InitialProject.View
             return false;
         }
 
-        private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
         {
-            Guest1Start window = new Guest1Start(Guest1);
-            window.Show();
-            Close();
-        }
-        private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
-        {
-            SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
         }
 
-        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        //private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        //{
+        //    NavigationService?.Navigate(new Guest1Start(Guest1, this));
+        //}
+
+        private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
         {
-            CreateReview window = new CreateReview(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
         }
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)
         {
-            ShowReservations window = new ShowReservations(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new ShowReservations(Guest1, this));
+        }
+
+        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new CreateReview(Guest1, this));
         }
 
         private void GoToGuest1Requests(object sender, RoutedEventArgs e)
         {
-            Guest1Requests window = new Guest1Requests(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new Guest1Requests(Guest1, this));
         }
 
+        private void GoToShowGuest1Notifications(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new ShowGuest1Notifications(Guest1, this));
+        }
 
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
+            Window currentWindow = Window.GetWindow(this);
+
             LoginForm window = new LoginForm();
             window.Show();
-            Close();
+            currentWindow.Close();
         }
+
     }
 }

@@ -1,9 +1,12 @@
-﻿using InitialProject.DTO;
+﻿using GalaSoft.MvvmLight.Command;
+using InitialProject.DTO;
 using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -15,11 +18,13 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace InitialProject.View
 {
-    public partial class Guest1Requests : Window
+
+    public partial class Guest1Requests : Page, INotifyPropertyChanged
     {
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
         private string accommodationName;
@@ -83,13 +88,32 @@ namespace InitialProject.View
             }
         }
 
-        public List<Guest1RebookingRequestsDTO> Guest1RebookingRequestsDTOs
+
+        private bool notification;
+        public bool Notification
         {
-            get;
-            set;
+            get { return notification; }
+            set
+            {
+                notification = value;
+            }
         }
 
-        public Guest1Requests(string guest1)
+        private void CheckNotification()
+        {
+            if (Notification)
+            {
+                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Visible;
+                NotificationMenuItemImageRegularBell.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Collapsed;
+                NotificationMenuItemImageRegularBell.Visibility = Visibility.Visible;
+            }
+        }
+
+        public Guest1Requests(string guest1, Page page)
         {
             InitializeComponent();
 
@@ -99,12 +123,69 @@ namespace InitialProject.View
 
             reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
 
-            Guest1RebookingRequestsDTOs = reservationReschedulingRequestService.FindAllByGuest1Username();
+            Guest1RebookingRequestsDTOs.ItemsSource = new ObservableCollection<Guest1RebookingRequestsDTO>(reservationReschedulingRequestService.FindAllByGuest1Username());
 
-            reservationReschedulingRequestService.UpdateViewedRequestsByGuest1();
+            Notification = reservationReschedulingRequestService.Guest1HasNotification();
+            CheckNotification();
 
-            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
+            MoreDetailsCommand = new RelayCommand<Guest1RebookingRequestsDTO>(MoreDetails);
 
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
+
+            SetComboBoxes(page);
+        }
+
+
+
+        private string _selectedReview;
+
+        public string SelectedReview
+        {
+            get { return _selectedReview; }
+            set
+            {
+                if (_selectedReview != value)
+                {
+                    _selectedReview = value;
+                    OnPropertyChanged(nameof(SelectedReview));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void ShowAllRequests(object sender, MouseButtonEventArgs e)
+        {
+            Guest1RebookingRequestsDTOs.ItemsSource = new ObservableCollection<Guest1RebookingRequestsDTO>(reservationReschedulingRequestService.FindAllByGuest1Username());
+        }
+
+        public void ShowAllPendingRequests(object sender, MouseButtonEventArgs e)
+        {
+            Guest1RebookingRequestsDTOs.ItemsSource = new ObservableCollection<Guest1RebookingRequestsDTO>(reservationReschedulingRequestService.FindAllPendingByGuest1Username());
+        }
+
+        public void ShowAllRejectedRequests(object sender, MouseButtonEventArgs e)
+        {
+            Guest1RebookingRequestsDTOs.ItemsSource = new ObservableCollection<Guest1RebookingRequestsDTO>(reservationReschedulingRequestService.FindAllRejectedByGuest1Username());
+        }
+
+        public void ShowAllAcceptedRequests(object sender, MouseButtonEventArgs e)
+        {
+            Guest1RebookingRequestsDTOs.ItemsSource = new ObservableCollection<Guest1RebookingRequestsDTO>(reservationReschedulingRequestService.FindAllAcceptedByGuest1Username());
+        }
+
+        public ICommand MoreDetailsCommand { get; set; }
+
+        private void MoreDetails(Guest1RebookingRequestsDTO guest1RebookingRequestsDTO)
+        {
+
+            NavigationService?.Navigate(new Guest1RequestPreview(Guest1, guest1RebookingRequestsDTO, "Guest1Requests", this));
         }
 
         private string CheckSuperType()
@@ -124,43 +205,242 @@ namespace InitialProject.View
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
-        private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        private bool comboBoxClicked = false;
+        private bool itemClicked = false;
+
+        private void CBPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Guest1Start window = new Guest1Start(Guest1);
-            window.Show();
-            Close();
+            comboBoxClicked = true;
         }
 
-        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        private void CBCreateReviewDropDownClosed(object sender, EventArgs e)
         {
-            CreateReview window = new CreateReview(Guest1);
-            window.Show();
-            Close();
+            if (comboBoxClicked && itemClicked)
+            {
+                ComboBox comboBox = (ComboBox)sender;
+                ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+
+                if (selectedItem.Content.ToString() == "Create review")
+                {
+                    GoToCreateReview(sender, null);
+                }
+                else if (selectedItem.Content.ToString() == "Reviews")
+                {
+                    GoToShowOwnerReviews(sender, null);
+                }
+                else if (selectedItem.Content.ToString() == "Requests")
+                {
+                    GoToGuest1Requests(sender, null);
+                }
+            }
+
+            comboBoxClicked = false;
+            itemClicked = false;
         }
 
-        private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
+        private void CBSuperGuestDropDownClosed(object sender, EventArgs e)
         {
-            SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
-            window.Show();
+            if (comboBoxClicked && itemClicked)
+            {
+                ComboBox comboBox = (ComboBox)sender;
+                ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+
+                if (selectedItem.Content.ToString() == "Super-guest")
+                {
+                    GoToSearchAndShowAccommodations(sender, null);
+                }
+                else if (selectedItem.Content.ToString() == "Logout")
+                {
+                    GoToLogout(sender, null);
+                }
+            }
+
+            comboBoxClicked = false;
+            itemClicked = false;
+        }
+
+        private void CBItemPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            itemClicked = true;
         }
 
         private void CreateRequest(object sender, RoutedEventArgs e)
         {
-            GoToShowReservations(sender,e);
+            GoToShowReservations(sender, e);
+        }
+
+        private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
+        }
+
+        //private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        //{
+        //    NavigationService?.Navigate(new Guest1Start(Guest1, this));
+        //}
+
+        private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
         }
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)
         {
-            ShowReservations window = new ShowReservations(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new ShowReservations(Guest1, this));
+        }
+
+        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new CreateReview(Guest1, this));
+        }
+
+        private void GoToGuest1Requests(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1Requests(Guest1, this));
+        }
+
+        private void GoToShowGuest1Notifications(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new ShowGuest1Notifications(Guest1, this));
         }
 
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
+            Window currentWindow = Window.GetWindow(this);
+
             LoginForm window = new LoginForm();
             window.Show();
-            Close();
+            currentWindow.Close();
+        }
+
+        private void SetComboBoxes(Page page)
+        {
+            if (page is SearchAndShowAccommodations searchAndShowPage)
+            {
+                var comboBox = searchAndShowPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = searchAndShowPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is AccommodationReservation accommodationReservationPage)
+            {
+                //var comboBox = accommodationReservationPage.CBCreateReview;
+                //if (comboBox != null)
+                //{
+                //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                //}
+
+                //comboBox = accommodationReservationPage.CBSuperGuest;
+                //if (comboBox != null)
+                //{
+                //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                //}
+            }
+            else if (page is CreateReservationReschedulingRequest createReschedulingRequestPage)
+            {
+                var comboBox = createReschedulingRequestPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = createReschedulingRequestPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is CreateReview createReviewPage)
+            {
+                //var comboBox = createReviewPage.CBCreateReview;
+                //if (comboBox != null)
+                //{
+                //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                //}
+
+                //comboBox = createReviewPage.CBSuperGuest;
+                //if (comboBox != null)
+                //{
+                //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                //}
+            }
+            else if (page is Guest1RequestPreview guest1RequestPreviewPage)
+            {
+                var comboBox = guest1RequestPreviewPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = guest1RequestPreviewPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is Guest1Requests guest1RequestsPage)
+            {
+                var comboBox = guest1RequestsPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = guest1RequestsPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is ShowGuest1Notifications showGuest1NotificationsPage)
+            {
+                var comboBox = showGuest1NotificationsPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = showGuest1NotificationsPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is ShowOwnerReviews showOwnerReviewsPage)
+            {
+                //var comboBox = showOwnerReviewsPage.CBCreateReview;
+                //if (comboBox != null)
+                //{
+                //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                //}
+
+                //comboBox = showOwnerReviewsPage.CBSuperGuest;
+                //if (comboBox != null)
+                //{
+                //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                //}
+            }
+            else if (page is ShowReservations showReservationsPage)
+            {
+                var comboBox = showReservationsPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = showReservationsPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
         }
 
     }

@@ -20,7 +20,7 @@ using InitialProject.DTO;
 
 namespace InitialProject.View
 {
-    public partial class SearchAndShowAccommodations : Window
+    public partial class SearchAndShowAccommodations : Page, INotifyPropertyChanged
     {
         AccommodationService accommodationService;
         public Accommodation Accommodation { get; set; }
@@ -28,18 +28,12 @@ namespace InitialProject.View
         private string accommodationName;
         private string country;
         private string city;
-        private string type;
         private int? maxGuests;
         private int? minDaysReservation;
         private int leftCancelationDays;
         private string image;
         private List<string> images;
-        private bool apartment;
-        private bool allTypes;
-        private bool home;
-        private bool hut;
         private string guest1;
-        private bool notification;
 
         public string Guest1
         {
@@ -72,7 +66,7 @@ namespace InitialProject.View
             set
             {
                 accommodationName = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(AccommodationName));
             }
         }
 
@@ -117,62 +111,8 @@ namespace InitialProject.View
             }
         }
 
-        public bool Apartment
-        {
-            get { return apartment; }
-            set
-            {
-                if (value != apartment)
-                {
-                    apartment = value;
-                    OnPropertyChanged(nameof(apartment));
-                    if (value) Type = "Apartment";
-                }
-            }
-        }
 
-        public bool AllTypes
-        {
-            get { return allTypes; }
-            set
-            {
-                if (value != allTypes)
-                {
-                    allTypes = value;
-                    OnPropertyChanged(nameof(allTypes));
-                    if (value) Type = null;
-                }
-            }
-        }
-
-        public bool Home
-        {
-            get { return home; }
-            set
-            {
-                if (value != home)
-                {
-                    home = value;
-                    OnPropertyChanged(nameof(Home));
-                    if (value) Type = "Home";
-                }
-            }
-        }
-
-        public bool Hut
-        {
-            get { return hut; }
-            set
-            {
-                if (value != hut)
-                {
-                    hut = value;
-                    OnPropertyChanged(nameof(Hut));
-                    if (value) Type = "Hut";
-                }
-            }
-        }
-
+        private string type;
         public string Type
         {
             get { return type; }
@@ -182,9 +122,29 @@ namespace InitialProject.View
                 {
                     type = value;
                     OnPropertyChanged(nameof(Type));
+
+                    if (value == "System.Windows.Controls.ComboBoxItem: All Types")
+                    {
+                        type = "";
+                    }
+                    else if (value == "System.Windows.Controls.ComboBoxItem: Apartment")
+                    {
+                        type = "Apartment";
+                    }
+                    else if (value == "System.Windows.Controls.ComboBoxItem: Home")
+                    {
+                        type = "Home";
+                    }
+                    else if (value == "System.Windows.Controls.ComboBoxItem: Hut")
+                    {
+                        type = "Hut";
+                    }
                 }
             }
         }
+
+
+
 
         public ICommand SeeAvailabilityCommand { get; set; }
 
@@ -204,6 +164,7 @@ namespace InitialProject.View
             }
         }
 
+        private bool notification;
         public bool Notification
         {
             get { return notification; }
@@ -217,11 +178,13 @@ namespace InitialProject.View
         {
             if (Notification)
             {
-                NotificationMenuItem.Visibility = Visibility.Visible;
+                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Visible;
+                NotificationMenuItemImageRegularBell.Visibility = Visibility.Collapsed;
             }
             else
             {
-                NotificationMenuItem.Visibility = Visibility.Collapsed;
+                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Collapsed;
+                NotificationMenuItemImageRegularBell.Visibility = Visibility.Visible;
             }
         }
 
@@ -233,9 +196,15 @@ namespace InitialProject.View
         }
 
 
-        public SearchAndShowAccommodations(string username)
+
+
+        public SearchAndShowAccommodations(string username, Page page)
         {
             InitializeComponent();
+
+            FirstSearchWindow.Visibility = Visibility.Visible;
+
+            SecondSearchWindow.Visibility = Visibility.Collapsed;
 
             Guest1 = username;
             DataContext = this;
@@ -243,10 +212,24 @@ namespace InitialProject.View
             accommodationService = new AccommodationService(Guest1);
             Notification = accommodationService.Guest1HasNotification();
             CheckNotification();
-            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
+            //usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
+
+            ListAccommodations.ItemsSource = null;
 
             Images = new List<string>();
             SeeAvailabilityCommand = new RelayCommand<Accommodation>(SeeAvailability);
+
+            SetComboBoxes(page);
+
+        }
+
+        public ComboBoxItem GetSelectedReview()
+        {
+            var selectedReview = (ComboBoxItem)CBCreateReview.SelectedItem;
+            Debug.WriteLine("Selected Review: " + selectedReview?.Content);
+            return selectedReview;
         }
 
         private string CheckSuperType()
@@ -255,7 +238,7 @@ namespace InitialProject.View
 
             if (accommodationService.IsSuperGuest(Guest1))
             {
-                superType = " (Super guest)";
+                superType = "(Super guest)";
             }
 
             return superType;
@@ -264,66 +247,282 @@ namespace InitialProject.View
 
         private void Search(object sender, RoutedEventArgs e)
         {
+            FirstSearchWindow.Visibility = Visibility.Collapsed;
+
+            SecondSearchWindow.Visibility = Visibility.Visible;
+
             if ((MaxGuests != null) && (MaxGuests == 0))
             {
-                MessageBox.Show("You can't use zero as number of guests.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                SuggestedDatesMessage.Text = "You can't use zero as number of guests.";
+                ListAccommodations.Visibility = Visibility.Collapsed;
+                SuggestedDatesMessage.Visibility = Visibility.Visible;
                 ListAccommodations.ItemsSource = null;
+
                 return;
             }
 
-            SearchAndShowAccommodationDTO searchShowAndAccommodationDTO = 
+            SearchAndShowAccommodationDTO searchShowAndAccommodationDTO =
                 new SearchAndShowAccommodationDTO(AccommodationName, Country, City, Type, MaxGuests, MinDaysReservation);
-            ListAccommodations.ItemsSource =  accommodationService.FindAll(searchShowAndAccommodationDTO);
+
+            List<Accommodation> searchResults = accommodationService.FindAll(searchShowAndAccommodationDTO);
+
+            if (searchResults == null)
+            {
+                ListAccommodations.ItemsSource = null;
+                SuggestedDatesMessage.Text = "No accommodation satisfies your requirements.";
+                ListAccommodations.Visibility = Visibility.Collapsed;
+                SuggestedDatesMessage.Visibility = Visibility.Visible;
+
+                return;
+            }
+
+            ListAccommodations.ItemsSource = new ObservableCollection<Accommodation>(searchResults);
+
+            ListAccommodations.Visibility = Visibility.Visible;
+            SuggestedDatesMessage.Visibility = Visibility.Collapsed;
+        }
+
+        private bool comboBoxClicked = false;
+        private bool itemClicked = false;
+
+        private void CBPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            comboBoxClicked = true;
+        }
+
+
+        public string SelectedCreateReviewCBItem { get; set;} // za azurnu verziju comboboxova
+        private void CBCreateReviewDropDownClosed(object sender, EventArgs e)
+        {
+            if (comboBoxClicked && itemClicked)
+            {
+                ComboBox comboBox = (ComboBox)sender;
+                ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+
+                if (selectedItem.Content.ToString() == "Create review")
+                {
+                    SelectedCreateReviewCBItem = selectedItem.Content.ToString();
+                    GoToCreateReview(sender, null);
+                }
+                else if (selectedItem.Content.ToString() == "Reviews")
+                {
+                    SelectedCreateReviewCBItem = selectedItem.Content.ToString();
+                    GoToShowOwnerReviews(sender, null);
+                }
+                else if (selectedItem.Content.ToString() == "Requests")
+                {
+                    SelectedCreateReviewCBItem = selectedItem.Content.ToString();
+                    GoToGuest1Requests(sender, null);
+                }
+            }
+
+            comboBoxClicked = false;
+            itemClicked = false;
+        }
+
+        private void CBSuperGuestDropDownClosed(object sender, EventArgs e)
+        {
+            if (comboBoxClicked && itemClicked)
+            {
+                ComboBox comboBox = (ComboBox)sender;
+                ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+
+                if (selectedItem.Content.ToString() == "Super-guest")
+                {
+                    GoToSearchAndShowAccommodations(sender, null);
+                }
+                else if (selectedItem.Content.ToString() == "Logout")
+                {
+                    GoToLogout(sender, null);
+                }
+            }
+
+            comboBoxClicked = false;
+            itemClicked = false;
+        }
+
+        private void CBItemPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            itemClicked = true;
         }
 
         private void SeeAvailability(Accommodation accommodation)
         {
-            AccommodationReservation window = new AccommodationReservation(accommodation, Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new AccommodationReservation(accommodation, Guest1, this));
         }
 
-        private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
         {
-            Guest1Start window = new Guest1Start(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
         }
+
+        //private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        //{
+        //    NavigationService?.Navigate(new Guest1Start(Guest1, this));
+        //}
 
         private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
         {
-            SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
-            window.Show();
-            Close();
-        }
-
-        private void GoToCreateReview(object sender, RoutedEventArgs e)
-        {
-            CreateReview window = new CreateReview(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
         }
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)
         {
-            ShowReservations window = new ShowReservations(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new ShowReservations(Guest1, this));
+        }
+
+        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new CreateReview(Guest1, this));
         }
 
         private void GoToGuest1Requests(object sender, RoutedEventArgs e)
         {
-            Guest1Requests window = new Guest1Requests(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new Guest1Requests(Guest1, this));
         }
 
+        private void GoToShowGuest1Notifications(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new ShowGuest1Notifications(Guest1, this));
+        }
 
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
+            Window currentWindow = Window.GetWindow(this);
+
             LoginForm window = new LoginForm();
             window.Show();
-            Close();
+            currentWindow.Close();
+        }
+
+        private void SetComboBoxes(Page page)
+        {
+            if (page is SearchAndShowAccommodations searchAndShowPage)
+            {
+                var comboBox = searchAndShowPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = searchAndShowPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is AccommodationReservation accommodationReservationPage)
+            {
+                //var comboBox = accommodationReservationPage.CBCreateReview;
+                //if (comboBox != null)
+                //{
+                //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                //}
+
+                //comboBox = accommodationReservationPage.CBSuperGuest;
+                //if (comboBox != null)
+                //{
+                //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                //}
+            }
+            else if (page is CreateReservationReschedulingRequest createReschedulingRequestPage)
+            {
+                var comboBox = createReschedulingRequestPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = createReschedulingRequestPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is CreateReview createReviewPage)
+            {
+                //var comboBox = createReviewPage.CBCreateReview;
+                //if (comboBox != null)
+                //{
+                //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                //}
+
+                //comboBox = createReviewPage.CBSuperGuest;
+                //if (comboBox != null)
+                //{
+                //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                //}
+            }
+            else if (page is Guest1RequestPreview guest1RequestPreviewPage)
+            {
+                var comboBox = guest1RequestPreviewPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = guest1RequestPreviewPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is Guest1Requests guest1RequestsPage)
+            {
+                var comboBox = guest1RequestsPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = guest1RequestsPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is ShowGuest1Notifications showGuest1NotificationsPage)
+            {
+                var comboBox = showGuest1NotificationsPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = showGuest1NotificationsPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is ShowOwnerReviews showOwnerReviewsPage)
+            {
+                //var comboBox = showOwnerReviewsPage.CBCreateReview;
+                //if (comboBox != null)
+                //{
+                //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                //}
+
+                //comboBox = showOwnerReviewsPage.CBSuperGuest;
+                //if (comboBox != null)
+                //{
+                //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                //}
+            }
+            else if (page is ShowReservations showReservationsPage)
+            {
+                var comboBox = showReservationsPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = showReservationsPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
         }
 
     }

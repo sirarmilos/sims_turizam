@@ -1,12 +1,14 @@
-﻿<Window x:Class="InitialProject.View.AccommodationReservation"
+﻿<Page x:Class="InitialProject.View.AccommodationReservation"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="AccommodationReservation" Height="768" Width="1376">
+      Background="White"
+        Title="AccommodationReservation" Width="838" Height="684">
 
+    
     <Grid>
 
 
@@ -25,17 +27,17 @@
 
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
-            <Menu DockPanel.Dock ="Top" Width="711">
-                <MenuItem Header="Home" Click="GoToGuest1Start"/>
+            <Menu DockPanel.Dock ="Top" Width="696">
                 <MenuItem Header="Create Review" Click="GoToCreateReview"/>
                 <MenuItem Header="Search and Show Accommodations" Click="GoToSearchAndShowAccommodations"/>
                 <MenuItem Header="My reservations" Click="GoToShowReservations"/>
-                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
                 <MenuItem x:Name="usernameAndSuperGuest" IsEnabled="False"/>
 
                 <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
             </Menu>
+            
+            
         </DockPanel>
 
         <DataGrid ItemsSource="{Binding Accommodation.Images, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Width="500" Height="241" Margin="84,388,86,270">
@@ -102,4 +104,4 @@
     </Grid>
 
 
-</Window>
+</Page>

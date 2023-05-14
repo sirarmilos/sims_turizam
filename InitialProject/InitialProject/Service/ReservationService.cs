@@ -112,7 +112,16 @@ namespace InitialProject.Service
 
             List<Reservation> guest1Reservations = FindGuest1Reservations(Guest1);
 
-            return GetShowReservationsDTO(guest1Reservations);
+            var showReservationDTOs = GetShowReservationsDTO(guest1Reservations);
+
+            SortByStartTimeDescending(showReservationDTOs);
+
+            return showReservationDTOs;
+        }
+
+        public void SortByStartTimeDescending(List<ShowReservationDTO> showReservationDTOs)
+        {
+            showReservationDTOs.Sort((x, y) => DateTime.Compare(y.StartDate, x.StartDate));
         }
 
         public List<Reservation> FindGuest1Reservations(string username)

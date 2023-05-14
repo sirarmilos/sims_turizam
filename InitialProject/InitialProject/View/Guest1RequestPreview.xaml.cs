@@ -3,31 +3,31 @@ using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.Service;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml.Linq;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace InitialProject.View
 {
-    public partial class CreateReservationReschedulingRequest : Page, INotifyPropertyChanged
+    public partial class Guest1RequestPreview : Page
     {
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
-        private ShowReservationDTO showReservationDTO;
-        private DateTime startDate;
-        private DateTime endDate;
+        private string accommodationName;
         private DateTime oldStartDate;
-        private DateTime oldendDate;
+        private DateTime oldEndDate;
+        private DateTime newStartDate;
+        private DateTime newEndDate;
         private string guest1;
 
         public string Guest1
@@ -39,55 +39,57 @@ namespace InitialProject.View
             }
         }
 
-        public ShowReservationDTO ShowReservationDTO
+        public string AccommodationName
         {
-            get { return showReservationDTO; }
+            get { return accommodationName; }
             set
             {
-                showReservationDTO = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set
-            {
-                startDate = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public DateTime EndDate
-        {
-            get { return endDate; }
-            set
-            {
-                endDate = value;
-                OnPropertyChanged();
+                accommodationName = value;
             }
         }
 
         public DateTime OldStartDate
         {
-            get { return startDate; }
+            get { return oldStartDate; }
             set
             {
-                startDate = value;
-                OnPropertyChanged();
+                oldStartDate = value;
             }
         }
 
-        public DateTime OldEndDate
+        public DateTime OldEndtDate
         {
-            get { return endDate; }
+            get { return oldEndDate; }
             set
             {
-                endDate = value;
-                OnPropertyChanged();
+                oldEndDate = value;
             }
         }
+
+        public DateTime NewStartDate
+        {
+            get { return newStartDate; }
+            set
+            {
+                newStartDate = value;
+            }
+        }
+
+        public DateTime NewEndDate
+        {
+            get { return newEndDate; }
+            set
+            {
+                newEndDate = value;
+            }
+        }
+
+        public Guest1RebookingRequestsDTO Guest1RebookingRequestsDTO
+        {
+            get;
+            set;
+        }
+
 
         public string Caller { get; set; }
 
@@ -115,46 +117,38 @@ namespace InitialProject.View
             }
         }
 
-
-        public CreateReservationReschedulingRequest(ShowReservationDTO showReservationDTO, string username, string callingWindow, Page page)
+        public Guest1RequestPreview(string guest1, Guest1RebookingRequestsDTO guest1RebookingRequestsDTO, string callingWindow, Page page)
         {
             InitializeComponent();
+
+            Guest1 = guest1;
+
             DataContext = this;
-            Guest1 = username;
+
             Caller = callingWindow;
 
-            StackPanel1.Visibility = Visibility.Visible;
-            StackPanel2.Visibility = Visibility.Collapsed;
-
-            ShowReservationDTO = showReservationDTO;    
             reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
+
+            //Guest1RebookingRequestsDTOs = reservationReschedulingRequestService.FindAllByGuest1Username();
+            Guest1RebookingRequestsDTO = guest1RebookingRequestsDTO;
+
             Notification = reservationReschedulingRequestService.Guest1HasNotification();
             CheckNotification();
 
+
             usernameAndSuperGuest.Text = $"{Guest1}";
             superGuest.Text = $"{CheckSuperType()}";
-
-            AccommodationNameLabel.Content = showReservationDTO.Accommodation.AccommodationName.ToString();
-            OldStartDate = showReservationDTO.StartDate;
-            OldEndDate = showReservationDTO.EndDate;
 
             SetComboBoxes(page);
 
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public void ReturnBackToCaller(object sender, RoutedEventArgs e)
         {
-            if (Caller.Equals("ShowReservations"))
-                GoToShowReservations(sender, e);
-            else
+            if (Caller.Equals("Guest1Requests"))
                 GoToGuest1Requests(sender, e);
+            else
+                GoToShowGuest1Notifications(sender,e);
         }
 
         private string CheckSuperType()
@@ -163,97 +157,15 @@ namespace InitialProject.View
 
             if (reservationReschedulingRequestService.IsSuperGuest(Guest1))
             {
-                superType = "(Super guest)";
+                superType = " (Super guest)";
             }
 
             return superType;
         }
 
-        private Brush _labelColor;
-        public Brush LabelColor
+        void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
         {
-            get { return _labelColor; }
-            set
-            {
-                _labelColor = value;
-                OnPropertyChanged(nameof(LabelColor));
-            }
-        }
-
-        private void Create(object sender, RoutedEventArgs e)
-        {
-            SuggestedDatesMessage.Text = "";
-
-            if (StartDatePicker.SelectedDate != null && EndDatePicker.SelectedDate != null) // nez da l ove validacije u neki servis da se urade?
-            {
-                if (!IsSearchInputValid()) return;
-
-                CreateReservationReschedulingRequestDTO request = 
-                    new CreateReservationReschedulingRequestDTO(showReservationDTO, StartDate, EndDate);
-
-                reservationReschedulingRequestService.CreateRequest(request);
-
-                //SuggestedDatesMessage.Text = "The request has been successfully created!";
-                SuccesfullyCreatedMessage.Content = "The request has been successfully created!";
-                //LabelColor = Brushes.Green;
-
-                StackPanel1.Visibility = Visibility.Collapsed;
-                StackPanel2.Visibility = Visibility.Visible;
-
-                //MessageBox.Show(
-                //    $"The request has been successfully created!");
-            }
-            else
-            {
-                SuggestedDatesMessage.Text = "No dates are selected.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"No dates are selected.");
-                return;
-            }
-        }
-
-        private bool IsSearchInputValid()
-        {
-            StartDate = StartDatePicker.SelectedDate.Value;
-            EndDate = EndDatePicker.SelectedDate.Value;
-
-            int newReservationDays = EndDate.Subtract(StartDate).Days;
-
-            if (newReservationDays < ShowReservationDTO.Accommodation.MinDaysReservation)
-            {
-
-                SuggestedDatesMessage.Text = $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show(
-                //    $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.");
-                return false;
-            }
-
-            if (StartDate > EndDate)
-            {
-                SuggestedDatesMessage.Text = "Start date is greater than end date. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"Start date is greater than end date. Try again.");
-                return false;
-            }
-
-            if ((StartDate == ShowReservationDTO.StartDate) & (EndDate == ShowReservationDTO.EndDate))
-            {
-                SuggestedDatesMessage.Text = "Choose different dates. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"Choose different dates. Try again.");
-                return false;
-            }
-
-            if (StartDate < DateTime.Now)
-            {
-                SuggestedDatesMessage.Text = "The start date is in the past. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"The start date is in the past. Try again.");
-                return false;
-            }
-
-            return true;
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
         private bool comboBoxClicked = false;
@@ -313,6 +225,11 @@ namespace InitialProject.View
         private void CBItemPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             itemClicked = true;
+        }
+
+        private void CreateRequest(object sender, RoutedEventArgs e)
+        {
+            GoToShowReservations(sender, e);
         }
 
         private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
@@ -488,5 +405,7 @@ namespace InitialProject.View
                 }
             }
         }
+
+
     }
 }

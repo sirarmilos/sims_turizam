@@ -1,34 +1,51 @@
 ﻿using InitialProject.DTO;
-using InitialProject.Model;
-using InitialProject.Repository;
 using InitialProject.Service;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml.Linq;
-using System.Windows.Media;
-using System.Windows.Navigation;
+using System.Windows;
+using GalaSoft.MvvmLight.Command;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using InitialProject.Model;
 
 namespace InitialProject.View
 {
-    public partial class CreateReservationReschedulingRequest : Page, INotifyPropertyChanged
+    public partial class ShowGuest1Notifications : Page
     {
-        private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
-        private ShowReservationDTO showReservationDTO;
+        private ReservationReschedulingRequestService reservationReschedulingRequestService;
+        private string accommodationName;
         private DateTime startDate;
         private DateTime endDate;
-        private DateTime oldStartDate;
-        private DateTime oldendDate;
+        private int guestsNumber;
         private string guest1;
+
+
+        public int GuestsNumber
+        {
+            get { return guestsNumber; }
+            set
+            {
+                guestsNumber = value;
+            }
+        }
+
+        public DateTime StartDate
+        {
+            get { return startDate; }
+            set
+            {
+                startDate = value;
+            }
+        }
+
+        public DateTime EndDate
+        {
+            get { return endDate; }
+            set
+            {
+                endDate = value;
+            }
+        }
 
         public string Guest1
         {
@@ -39,57 +56,55 @@ namespace InitialProject.View
             }
         }
 
-        public ShowReservationDTO ShowReservationDTO
+        public string AccommodationName
         {
-            get { return showReservationDTO; }
+            get { return accommodationName; }
             set
             {
-                showReservationDTO = value;
-                OnPropertyChanged();
+                accommodationName = value;
             }
         }
 
-        public DateTime StartDate
+        public ObservableCollection<Guest1NotificationDTO> Guest1NotificationDTOs
         {
-            get { return startDate; }
-            set
-            {
-                startDate = value;
-                OnPropertyChanged();
-            }
+            get;
+            set;
         }
 
-        public DateTime EndDate
-        {
-            get { return endDate; }
-            set
-            {
-                endDate = value;
-                OnPropertyChanged();
-            }
-        }
+        //private bool notification;
+        //public bool Notification
+        //{
+        //    get { return notification; }
+        //    set
+        //    {
+        //        notification = value;
+        //    }
+        //}
 
-        public DateTime OldStartDate
-        {
-            get { return startDate; }
-            set
-            {
-                startDate = value;
-                OnPropertyChanged();
-            }
-        }
 
-        public DateTime OldEndDate
-        {
-            get { return endDate; }
-            set
-            {
-                endDate = value;
-                OnPropertyChanged();
-            }
-        }
 
-        public string Caller { get; set; }
+        //public string NotificationEnable
+        //{
+        //    get;
+        //    set;
+        //}
+
+
+        public ICommand ReadMoreCommand { get; set; }
+
+        //public ICommand RescheduleCommand { get; set; }
+
+        //public DelegateCommand GoToGuest1StartCommand { get; }
+
+        //public DelegateCommand GoToSearchAndShowAccommodationsCommand { get; }
+
+        //public DelegateCommand GoToCreateReviewCommand { get; }
+
+        //public DelegateCommand GoToGuest1RequestsCommand { get; }
+
+        //public DelegateCommand GoToLogoutCommand { get; }
+
+        //public DelegateCommand CheckNotificationCommand { get; }
 
         private bool notification;
         public bool Notification
@@ -115,46 +130,38 @@ namespace InitialProject.View
             }
         }
 
-
-        public CreateReservationReschedulingRequest(ShowReservationDTO showReservationDTO, string username, string callingWindow, Page page)
+        public ShowGuest1Notifications(string username, Page page)
         {
             InitializeComponent();
             DataContext = this;
             Guest1 = username;
-            Caller = callingWindow;
 
-            StackPanel1.Visibility = Visibility.Visible;
-            StackPanel2.Visibility = Visibility.Collapsed;
-
-            ShowReservationDTO = showReservationDTO;    
             reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
-            Notification = reservationReschedulingRequestService.Guest1HasNotification();
-            CheckNotification();
-
             usernameAndSuperGuest.Text = $"{Guest1}";
             superGuest.Text = $"{CheckSuperType()}";
 
-            AccommodationNameLabel.Content = showReservationDTO.Accommodation.AccommodationName.ToString();
-            OldStartDate = showReservationDTO.StartDate;
-            OldEndDate = showReservationDTO.EndDate;
+            //ShowReservationDTOs = new ObservableCollection<ShowReservationDTO>(reservationService.FindAll(Guest1));
+            //CancelCommand = new RelayCommand<ShowReservationDTO>(Cancel);
+            ReadMoreCommand = new RelayCommand<Guest1NotificationDTO>(ReadMore);
+
+            Guest1NotificationDTOs = new ObservableCollection<Guest1NotificationDTO>(reservationReschedulingRequestService.FindAllNotificationsByGuest1Username());
+
+            reservationReschedulingRequestService.UpdateViewedRequestsByGuest1();
+
+            Notification = reservationReschedulingRequestService.Guest1HasNotification();
+
+            CheckNotification();
 
             SetComboBoxes(page);
 
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void ReadMore(Guest1NotificationDTO guest1NotificationDTO)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+            Guest1RebookingRequestsDTO guest1RebookingRequestsDTO = 
+                reservationReschedulingRequestService.FindRebookingRequestByRequestId(guest1NotificationDTO.RequestId);
 
-        public void ReturnBackToCaller(object sender, RoutedEventArgs e)
-        {
-            if (Caller.Equals("ShowReservations"))
-                GoToShowReservations(sender, e);
-            else
-                GoToGuest1Requests(sender, e);
+            NavigationService?.Navigate(new Guest1RequestPreview(Guest1, guest1RebookingRequestsDTO, "ShowGuest1Notifications", this));
         }
 
         private string CheckSuperType()
@@ -169,92 +176,6 @@ namespace InitialProject.View
             return superType;
         }
 
-        private Brush _labelColor;
-        public Brush LabelColor
-        {
-            get { return _labelColor; }
-            set
-            {
-                _labelColor = value;
-                OnPropertyChanged(nameof(LabelColor));
-            }
-        }
-
-        private void Create(object sender, RoutedEventArgs e)
-        {
-            SuggestedDatesMessage.Text = "";
-
-            if (StartDatePicker.SelectedDate != null && EndDatePicker.SelectedDate != null) // nez da l ove validacije u neki servis da se urade?
-            {
-                if (!IsSearchInputValid()) return;
-
-                CreateReservationReschedulingRequestDTO request = 
-                    new CreateReservationReschedulingRequestDTO(showReservationDTO, StartDate, EndDate);
-
-                reservationReschedulingRequestService.CreateRequest(request);
-
-                //SuggestedDatesMessage.Text = "The request has been successfully created!";
-                SuccesfullyCreatedMessage.Content = "The request has been successfully created!";
-                //LabelColor = Brushes.Green;
-
-                StackPanel1.Visibility = Visibility.Collapsed;
-                StackPanel2.Visibility = Visibility.Visible;
-
-                //MessageBox.Show(
-                //    $"The request has been successfully created!");
-            }
-            else
-            {
-                SuggestedDatesMessage.Text = "No dates are selected.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"No dates are selected.");
-                return;
-            }
-        }
-
-        private bool IsSearchInputValid()
-        {
-            StartDate = StartDatePicker.SelectedDate.Value;
-            EndDate = EndDatePicker.SelectedDate.Value;
-
-            int newReservationDays = EndDate.Subtract(StartDate).Days;
-
-            if (newReservationDays < ShowReservationDTO.Accommodation.MinDaysReservation)
-            {
-
-                SuggestedDatesMessage.Text = $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show(
-                //    $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.");
-                return false;
-            }
-
-            if (StartDate > EndDate)
-            {
-                SuggestedDatesMessage.Text = "Start date is greater than end date. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"Start date is greater than end date. Try again.");
-                return false;
-            }
-
-            if ((StartDate == ShowReservationDTO.StartDate) & (EndDate == ShowReservationDTO.EndDate))
-            {
-                SuggestedDatesMessage.Text = "Choose different dates. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"Choose different dates. Try again.");
-                return false;
-            }
-
-            if (StartDate < DateTime.Now)
-            {
-                SuggestedDatesMessage.Text = "The start date is in the past. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"The start date is in the past. Try again.");
-                return false;
-            }
-
-            return true;
-        }
 
         private bool comboBoxClicked = false;
         private bool itemClicked = false;
