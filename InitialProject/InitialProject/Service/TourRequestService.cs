@@ -128,5 +128,19 @@ namespace InitialProject.Service
             }
             tourRequestRepository.Save(allTourRequests);
         }
+
+        public bool SaveTourRequest(TourRequest tourRequest)
+        {
+            try
+            {
+                tourRequestRepository.Save(tourRequest);
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
     }
 }

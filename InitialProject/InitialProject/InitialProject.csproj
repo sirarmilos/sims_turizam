@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Themes\DarkTheme.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\Images\add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -37,6 +41,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Themes\DarkTheme.xaml" />
   </ItemGroup>
 
 </Project>

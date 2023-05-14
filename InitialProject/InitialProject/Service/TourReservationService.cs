@@ -153,6 +153,10 @@ namespace InitialProject.Service
             }
         }
 
+        public Model.TourReservation FindById(int id)
+        {
+            return tourReservationRepository.FindById(id);
+        }
 
 
     }

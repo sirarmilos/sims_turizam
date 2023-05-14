@@ -97,5 +97,12 @@ namespace InitialProject.Service
 
             canceledReservationService.SaveViewed(cancelledReservationsNotificationDTO);
         }
+
+        public User FindByUsername(string username)
+        {
+            return userRepository.FindByUsername(username);
+        }
+
+
     }
 }

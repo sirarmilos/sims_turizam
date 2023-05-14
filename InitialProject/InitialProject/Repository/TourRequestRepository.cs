@@ -55,6 +55,24 @@ namespace InitialProject.Repository
             tourRequestSerializer.ToCSV(FilePathTourRequests, requests);
         }
 
+        public void Save(TourRequest tourRequest)
+        {
+            requests = FindAll();
+            tourRequest.Id = NextId();
+            requests.Add(tourRequest);
+            Save(requests);
+        }
+
+        public int NextId()
+        {
+            if (FindAll().Count < 1)
+            {
+                return 1;
+            }
+            return FindAll().Max(c => c.Id) + 1;
+        }
+
+
         public List<TourRequest> FindAllByCountry(List<TourRequest> allTourRequests, string name)
         {
             return allTourRequests.FindAll(x => x.Location.Country.ToLower().StartsWith(name.ToLower()) == true);

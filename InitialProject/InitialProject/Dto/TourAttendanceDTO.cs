@@ -9,9 +9,9 @@ namespace InitialProject.Dto
 {
     public class TourAttendanceDTO
     {
-        public DateTime Date;
-        public string GuideUsername;
-        public List<TourKeyPoint> TourKeyPoints;
+        public DateTime Date { get; set; }
+        public string GuideUsername { get; set; }
+        public List<TourKeyPoint> TourKeyPoints { get; set; }
 
 
         public TourAttendanceDTO() 
