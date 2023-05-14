@@ -8,7 +8,7 @@
         xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
         
         mc:Ignorable="d"
-        Title="Home" Height="798" Width="1400" Icon="../Resources/Images/logo_icon.ico"
+        Title="Home" Height="819" Width="1416" Icon="../Resources/Images/logo_icon.ico"
         WindowStartupLocation="CenterScreen">
 
     <Window.CommandBindings>
@@ -31,15 +31,16 @@
             <RowDefinition Height="150" />
             <RowDefinition Height="80" />
             <RowDefinition Height="280" />
-            <RowDefinition Height="240" /> <!-- 247 -->
+            <RowDefinition Height="263" />
+            <!-- 247 -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1400" />
+            <ColumnDefinition Width="1416" />
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Row="0">
 
-            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch">
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch" FontSize="13">
 
                 <Menu.ItemsPanel>
 
@@ -53,7 +54,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="395" />
+                                <ColumnDefinition Width="340" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
@@ -91,27 +92,66 @@
             <Image Source="../Resources/Images/logo.png" />
         </Button>-->
 
-        <Button Grid.Row="1" HorizontalAlignment="Center" Height="100" VerticalAlignment="Bottom" Width="100" Command="cmd:RoutedCommands.OwnerHomePageLogin" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4">
-            <Image Source="../Resources/Images/logo.png" />
+        <Button Grid.Row="1" HorizontalAlignment="Left" Height="95" VerticalAlignment="Bottom" Width="150" Command="cmd:RoutedCommands.OwnerHomePageLogin" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Margin="625,0,0,0">
+            <Image Source="../Resources/Images/logo.png" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Width="150" Height="95"/>
         </Button>
 
-        <Label Grid.Row="2" Content="Turtle tourism" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="30" VerticalAlignment="Bottom" Width="250"/>
+        <Label Grid.Row="2" Content="Turtle tourism" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="595,0,0,0" FontSize="32" FontWeight="SemiBold"/>
 
-        <GroupBox Grid.Row="3" HorizontalAlignment="Center" Height="225" VerticalAlignment="Bottom" Width="1000">
+        <GroupBox Grid.Row="3" Grid.RowSpan="2" HorizontalAlignment="Left" Height="275" VerticalAlignment="Top" Width="750" Margin="325,25,0,0" FontSize="14">
 
-            <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="170" VerticalAlignment="Center" Width="950">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed erat ex, pretium et feugiat feugiat, dictum at nunc. Sed lectus ex, tincidunt accumsan est vel, mollis imperdiet urna. Curabitur vel arcu lacus. Aenean feugiat mauris erat, ultrices facilisis elit dictum sit amet. Integer nisl orci, hendrerit ac bibendum at, dignissim vel nulla. Ut nec finibus arcu. Vestibulum egestas tincidunt gravida. Nullam sodales auctor orci, eu convallis enim lobortis in. Aenean non lectus mollis, maximus mi in, cursus elit. Donec nec dolor nibh. Phasellus congue eu urna vel lobortis.
-                Fusce iaculis orci non sollicitudin dapibus. Curabitur purus purus, semper sed sodales id, rutrum sed tortor. In tincidunt quis lectus et hendrerit. Morbi vehicula urna nec diam laoreet cursus. Phasellus vestibulum molestie nisi, vitae molestie justo cursus ut. Phasellus molestie, lectus sed hendrerit consequat, lectus leo cursus nisi, eget porttitor nisi nisl vel purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla facilisi. Donec dapibus, libero non finibus tempus, libero libero mollis ligula, vitae porta enim ante sit amet dui. Donec finibus ipsum at pretium lobortis. Proin ultricies turpis non pulvinar malesuada. Praesent volutpat, turpis vitae elementum consequat, leo erat molestie tellus, eu lacinia quam tortor varius mi. Aenean vehicula neque in diam tincidunt euismod. Etiam eu maximus felis. Morbi non ipsum mi.
-                Praesent aliquam erat vitae augue porta, eu pharetra lorem porta. Vivamus mattis dui vitae ipsum sagittis suscipit. Duis eu lectus nulla. Sed libero est, feugiat a sagittis vitae, sagittis ut leo. Morbi in dolor at ligula finibus hendrerit non a tellus. Nullam ornare sollicitudin ultrices. Quisque tellus nulla, porttitor sit amet libero eu, tempor pretium magna. Sed vitae rutrum magna.
+            <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="245" VerticalAlignment="Center" Width="700">
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    Turtle tourism is an online booking application created in 2023 for the needs of the SIMS and HCI project. This application offers a wide range of possibilities, options and functionalities related to reservations.
+                </TextBlock>
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0">
+                        The application allows two types of reservations:
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Tour Reservations
+                    </TextBlock>   
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Accommodation Reservations
+                    </TextBlock>                    
+                </TextBlock>
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0">
+                        The application offers 4 types of users:
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Owner
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Guest 1
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Guide
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Guest 2
+                    </TextBlock>
+                </TextBlock>                            
+                
             </TextBlock>
 
         </GroupBox>
 
-        <GroupBox Grid.Row="4" HorizontalAlignment="Center" Height="146" VerticalAlignment="Center" Width="1000">
+        <GroupBox Grid.Row="4" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="750" Margin="325,45,0,0" FontSize="14">
 
-            <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="95" VerticalAlignment="Center" Width="950">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam placerat orci sit amet nunc vestibulum imperdiet non euismod nisl. Nullam bibendum tristique euismod. Cras porta mauris purus, eu dignissim nisl pulvinar vel. Quisque sit amet est eu neque blandit vestibulum. Suspendisse ac ornare lectus. Phasellus at nibh metus. Praesent luctus vehicula sapien, quis dignissim justo mollis quis. Ut volutpat erat nec elementum mattis. Sed imperdiet ipsum nec purus hendrerit, sit amet pellentesque sapien efficitur. Nam rhoncus ut lacus nec auctor. Nunc quis pulvinar est, et pharetra sem. Integer at enim ac urna viverra porta vel ut sapien. Morbi in interdum ex.
-                Nam eu dictum dui. Curabitur ut massa odio. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus. Phasellus non fringilla diam. Vivamus ac mollis sem, quis placerat odio. Morbi a metus scelerisque, finibus libero sed, feugiat lacus.
+            <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="131" VerticalAlignment="Center" Width="700">
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    The owner can create accommodations that he wants to offer to the market through our application, schedule the renovation of his accommodation or share his opinion with other owners and guests through the forum. In addition to these options, there are many more options that allow the Owner to work easily, quickly and efficiently in this application, who has everything he needs to present his product to the market.
+                </TextBlock>
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" FontWeight="SemiBold" FontStyle="Italic">
+                    Enjoy like turtle!
+                </TextBlock>
+                
             </TextBlock>
 
         </GroupBox>

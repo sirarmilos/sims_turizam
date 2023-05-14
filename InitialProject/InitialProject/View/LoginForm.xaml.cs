@@ -66,17 +66,20 @@ namespace InitialProject.View
         {
             Password = pbPassword.Password;
 
+            labelErrorUsername.Visibility = Visibility.Hidden;
+            labelErrorPassword.Visibility = Visibility.Hidden;
+
             if (userService.IsUsernameExist(Username) == false)
             {
-                tbUsername.Text = string.Empty;
-                pbPassword.Password = string.Empty;
-                MessageBox.Show("Username you entered does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                /*tbUsername.Text = string.Empty;
+                pbPassword.Password = string.Empty;*/
+                labelErrorUsername.Visibility = Visibility.Visible;
                 tbUsername.Focus();
             }
             else if (userService.IsPasswordCorrect(Username, Password) == false)
             {
-                pbPassword.Password = string.Empty;
-                MessageBox.Show("Password you entered is incorrect.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                // pbPassword.Password = string.Empty;
+                labelErrorPassword.Visibility = Visibility.Visible;
                 pbPassword.Focus();
             }
             else
@@ -122,6 +125,13 @@ namespace InitialProject.View
             userService = new UserService();
 
             userService.CheckRecentlyRenovatedAccommodation();
+
+            userService.CheckUsersSuperGuestStatus();
+
+            tbUsername.Focus();
+
+            labelErrorUsername.Visibility = Visibility.Hidden;
+            labelErrorPassword.Visibility = Visibility.Hidden;
         }
 
         private void labeltbFocus(object sender, MouseButtonEventArgs e)

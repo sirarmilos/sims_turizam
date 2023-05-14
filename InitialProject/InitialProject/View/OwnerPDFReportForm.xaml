@@ -1,0 +1,84 @@
+﻿<Window x:Class="InitialProject.View.OwnerPDFReportForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+        
+        mc:Ignorable="d"
+        Title="PDF report" Height="740" Width="1416" Icon="../Resources/Images/logo_icon.ico"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.PDF" CanExecute="PDF_CanExecute" Executed="PDF_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.BackFromPDFReport" CanExecute="BackFromPDFReport_CanExecute" Executed="BackFromPDFReport_Executed"></CommandBinding>
+    </Window.CommandBindings>
+
+    <Grid>
+
+        <Image Source="../Resources/Images/logo.png" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" HorizontalAlignment="left" Height="100" VerticalAlignment="Top" Width="150" Margin="25,25,0,0"/>
+
+        <Label Content="Report date:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1215,25,0,0" FontSize="13"/>
+        <Label x:Name="labelReportDate" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1300,25,0,0" FontSize="13"/>
+        <Label Content="Report time:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1215,50,0,0" FontSize="13"/>
+        <Label x:Name="labelReportTime" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1300,50,0,0" FontSize="13"/>
+
+        <Label Content="Report on average Guest rate for each accommodation" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,150,0,0" FontSize="24"/>
+
+        <Label Content="Owner username:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,200,0,0" FontSize="13"/>
+        <Label x:Name="labelOwnerUsername" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,200,0,0" FontSize="13"/>
+
+        <Label Content="Type of owner:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,225,0,0" FontSize="13"/>
+        <Label x:Name="labelOwnerType" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,225,0,0" FontSize="13"/>
+
+        <Label Content="Number of accommodations:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,250,0,0" FontSize="13"/>
+        <Label x:Name="labelNumberOfAccommodations" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,250,0,0" FontSize="13"/>
+
+        <Label Content="List of average guest rates" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,295,0,0" FontSize="16"/>
+
+        <ListView x:Name="lvShowGuestReviews" ItemsSource="{Binding OwnerPDFReportDTOs}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="200" Width="1350" Margin="25,350,0,0" FontSize="13" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+            <ListView.Resources>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                </Style>
+            </ListView.Resources>
+
+            <ListView.View>
+
+                <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Employee Information">
+
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=AccommodationName}" Header="Accommodation name" Width="250"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Country}" Header="Country" Width="150" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=City}" Header="City" Width="150" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Address}" Header="Address" Width="150" />
+
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=AverageCleanliness}" Header="Cleanliness" Width="100" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=AverageStaff}" Header="Staff" Width="100" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=AverageComfort}" Header="Comfort" Width="100" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=AverageValueForMoney}" Header="Value for money" Width="100" />
+
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=AverageAll}" Header="Average all" Width="100" />
+
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=NumberOfReviews}" Header="Number of reviews" Width="150"/>
+
+                </GridView>
+
+            </ListView.View>
+        </ListView>
+
+        <Button x:Name="buttonPDF" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.PDF" Margin="50,600,0,0">
+            <TextBlock TextAlignment="Center" FontSize="14">PDF<LineBreak/>(CTRL + P)</TextBlock>
+        </Button>
+
+        <Button x:Name="buttonBack" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.BackFromPDFReport" Margin="1175,600,0,0">
+            <TextBlock TextAlignment="Center" FontSize="14">Back<LineBreak/>(CTRL + B)</TextBlock>
+        </Button>
+
+    </Grid>
+
+</Window>

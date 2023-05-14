@@ -402,7 +402,7 @@ namespace InitialProject.View
 
         private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
         {
-            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
+            LoginForm window = new LoginForm();
             window.Show();
             Close();
         }

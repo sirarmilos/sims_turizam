@@ -129,30 +129,6 @@ namespace InitialProject.Commands.OwnerCommands
             }
         );
 
-        public static readonly RoutedUICommand OwnerHomePageNotLogin = new RoutedUICommand
-        (
-            "Home",
-            "OwnerHomePageNotLogin",
-            typeof(RoutedCommands),
-            new InputGestureCollection()
-            {
-                new KeyGesture(Key.F1),
-                new KeyGesture(Key.H, ModifierKeys.Alt)
-            }
-        );
-
-        public static readonly RoutedUICommand OwnerLogin = new RoutedUICommand
-        (
-            "Login",
-            "OwnerLogin",
-            typeof(RoutedCommands),
-            new InputGestureCollection()
-            {
-                new KeyGesture(Key.F8),
-                new KeyGesture(Key.L, ModifierKeys.Alt)
-            }
-        );
-
         public static readonly RoutedUICommand Login = new RoutedUICommand
         (
             "Login",
@@ -226,9 +202,11 @@ namespace InitialProject.Commands.OwnerCommands
             typeof(RoutedCommands),
             new InputGestureCollection()
             {
-                new KeyGesture(Key.J, ModifierKeys.Control) // pazi na ove sa istim komandama D
+                new KeyGesture(Key.D, ModifierKeys.Control) // J
             }
         );
+
+        // public static readonly RoutedUICommand ConfirmRejection = DeclineRequest;
 
         public static readonly RoutedUICommand Cancel = new RoutedUICommand
         (
@@ -249,17 +227,6 @@ namespace InitialProject.Commands.OwnerCommands
             new InputGestureCollection()
             {
                 new KeyGesture(Key.Q, ModifierKeys.Control)
-            }
-        );
-
-        public static readonly RoutedUICommand ChooseAccommodationName = new RoutedUICommand
-        (
-            "Choose accommodation name",
-            "ChooseAccommodationName",
-            typeof(RoutedCommands),
-            new InputGestureCollection()
-            {
-                new KeyGesture(Key.U, ModifierKeys.Control)
             }
         );
 
@@ -293,6 +260,28 @@ namespace InitialProject.Commands.OwnerCommands
             new InputGestureCollection()
             {
                 new KeyGesture(Key.O, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand PDF = new RoutedUICommand
+        (
+            "PDF",
+            "PDF",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.P, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand BackFromPDFReport = new RoutedUICommand
+        (
+            "Back",
+            "BackFromPDFReport",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.B, ModifierKeys.Control)
             }
         );
     }

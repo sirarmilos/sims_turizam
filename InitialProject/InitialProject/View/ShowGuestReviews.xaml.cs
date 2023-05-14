@@ -142,7 +142,7 @@ namespace InitialProject.View
 
         private void Logout_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
+            LoginForm window = new LoginForm();
             window.Show();
             Close();
         }
@@ -237,7 +237,8 @@ namespace InitialProject.View
 
         private void PDFReport_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            OwnerPDFReportForm window = new OwnerPDFReportForm(OwnerUsername);
+            window.ShowDialog();
         }
 
         void LoadingRowForDgShowGuestReviews(object sender, DataGridRowEventArgs e)
