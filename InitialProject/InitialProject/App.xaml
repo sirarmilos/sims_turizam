@@ -9,23 +9,24 @@
                 <ResourceDictionary Source="/Themes/LightTheme.xaml"/>
                 <ResourceDictionary Source="/Languages/StringEn.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="DataGrid">
+
+                <Setter Property="CanUserResizeColumns" Value="False"/>
+                <Setter Property="CanUserSortColumns" Value="False"/>
+                <Setter Property="CanUserReorderColumns" Value="False"/>
+
+            </Style>
+
+            <Style TargetType="{x:Type DataGridRow}">
+                <Style.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Gray" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White" />
+                </Style.Resources>
+            </Style>
         </ResourceDictionary>
 
-        <Style TargetType="DataGrid">
-
-            <Setter Property="CanUserResizeColumns" Value="False"/>
-            <Setter Property="CanUserSortColumns" Value="False"/>
-            <Setter Property="CanUserReorderColumns" Value="False"/>
-
-        </Style>
-
-        <Style TargetType="{x:Type DataGridRow}">
-            <Style.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Gray" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White" />
-            </Style.Resources>
-        </Style>
-
+       
     </Application.Resources>
 </Application>
