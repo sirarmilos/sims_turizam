@@ -27,6 +27,12 @@ namespace InitialProject.ViewModel
             set;
         }
 
+        public List<CancelledReservationsNotificationDTO> UnreadCancelledReservationsToDelete
+        {
+            get;
+            set;
+        }
+
         public string UsernameAndSuperOwner
         {
             get;
@@ -106,7 +112,7 @@ namespace InitialProject.ViewModel
             GoToShowGuestReviewsCommand = new DelegateCommand(GoToShowGuestReviews);
             GoToOwnerForumCommand = new DelegateCommand(GoToOwnerForum);
             GoToOwnerHomePageNotLoginCommand = new DelegateCommand(GoToOwnerHomePageNotLogin);
-            ReadCancelledReservationNotificationCommand = new DelegateCommand(ReadCancelledReservationNotification);
+            // ReadCancelledReservationNotificationCommand = new DelegateCommand(ReadCancelledReservationNotification);
 
             OwnerUsername = ownerUsername;
 
@@ -129,32 +135,12 @@ namespace InitialProject.ViewModel
 
             UnreadCancelledReservations = new List<string>();
 
-            UnreadCancelledReservations = reviewService.FindUnreadCancelledReservations(OwnerUsername);
-        }
+            UnreadCancelledReservationsToDelete = reviewService.FindUnreadCancelledReservations(OwnerUsername);
 
-        private void ReadCancelledReservationNotification(/*object sender, RoutedEventArgs e*/)
-        {
-            string viewedCancelledReservation = UnreadCancelledReservations[0];// ((MenuItem)sender).Header.ToString();
-
-            if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
+            foreach (CancelledReservationsNotificationDTO temporaryCanceledReservationsNotificationDTO in UnreadCancelledReservationsToDelete.ToList())
             {
-                reviewService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
-
-                UnreadCancelledReservations = reviewService.FindUnreadCancelledReservations(OwnerUsername);
-
-                // cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
+                UnreadCancelledReservations.Add(temporaryCanceledReservationsNotificationDTO.AccommodationName + ": " + temporaryCanceledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCanceledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
             }
-        }
-
-        private CancelledReservationsNotificationDTO FindDTO(string viewedCancelledReservation)
-        {
-            string accommodationName = viewedCancelledReservation.Split(":")[0];
-            DateTime reservationStartDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[1]);
-            DateTime reservationEndDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[3]);
-
-            CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(accommodationName, reservationStartDate, reservationEndDate);
-
-            return cancelledReservationsNotificationDTO;
         }
 
         private void GoToOwnerHomePageLogin()
@@ -215,6 +201,11 @@ namespace InitialProject.ViewModel
 
         private void GoToOwnerHomePageNotLogin()
         {
+            if (GlobalOwnerClass.NotificationRead == true)
+            {
+                reviewService.MarkAsReadNotificationsCancelledReservations(UnreadCancelledReservationsToDelete);
+            }
+
             LoginForm window = new LoginForm();
             window.Show();
             Form.Close();

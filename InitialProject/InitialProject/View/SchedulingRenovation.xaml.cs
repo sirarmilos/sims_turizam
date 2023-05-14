@@ -85,6 +85,12 @@ namespace InitialProject.View
             set;
         }
 
+        public string DurationCheck
+        {
+            get;
+            set;
+        }
+
         public SchedulingRenovation(string ownerUsername)
         {
             InitializeComponent();
@@ -99,7 +105,9 @@ namespace InitialProject.View
 
             SetDefaultValue();
 
-            labelErrorEndDate.Visibility = Visibility.Hidden;
+            labelErrorDate.Visibility = Visibility.Hidden;
+            textBlockErrorDuration0.Visibility = Visibility.Hidden;
+            textBlockErrorDuration1.Visibility = Visibility.Hidden;
         }
 
         public void SetComboBox()
@@ -122,7 +130,7 @@ namespace InitialProject.View
             dgFreeDates.IsEnabled = false;
 
             dpStartDate.SelectedDate = DateTime.Now.AddDays(1);
-            dpEndDate.SelectedDate = null;
+            dpEndDate.SelectedDate = DateTime.Now.AddDays(2);
             dgFreeDates.Items.Refresh();
             dgFreeDates.ItemsSource = AvailableDateSlots;
             tbDuration.Text = string.Empty;
@@ -169,22 +177,16 @@ namespace InitialProject.View
 
         private void FindAvailableDates_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (CheckErrorAllFieldsFilled() == true)
+            if(CheckErrorDuration() == true && labelErrorDate.Visibility == Visibility.Hidden)
+            {
+                textBlockErrorDuration1.Visibility = Visibility.Visible;
+                tbDuration.Focus();
+            }
+            if(CheckErrorAllFieldsFilled() == true)
             {
                 MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if(labelErrorEndDate.Visibility == Visibility.Visible)
-            {
-                MessageBox.Show("You must change dates", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if(CheckErrorDuration() == true)
-            {
-                MessageBox.Show("The duration must not be longer than the distance between the dates.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                tbDuration.Text = string.Empty;
-                tbDuration.Focus();
-            }
-            else if(labelErrorEndDate.Visibility == Visibility.Hidden)
+            else if(labelErrorDate.Visibility == Visibility.Hidden && textBlockErrorDuration0.Visibility == Visibility.Hidden && textBlockErrorDuration1.Visibility == Visibility.Hidden)
             {
                 AvailableDateSlots = renovationService.FindAvailableDateSlotsToRenovation(SelectedAccommodationName, StartDate, EndDate, Duration);
 
@@ -196,20 +198,20 @@ namespace InitialProject.View
 
         private bool CheckErrorAllFieldsFilled()
         {
-            return string.IsNullOrEmpty(SelectedAccommodationName) || dpStartDate.SelectedDate == null || dpEndDate.SelectedDate == null || Duration <= 0;
+            return string.IsNullOrEmpty(SelectedAccommodationName) || dpStartDate.SelectedDate == null || dpEndDate.SelectedDate == null || string.IsNullOrEmpty(tbDuration.Text);
         }
 
         private bool CheckErrorDate()
         {
+            if(dpStartDate.SelectedDate == null || dpEndDate.SelectedDate == null)
+            {
+                return true;
+            }
+
             StartDate = dpStartDate.SelectedDate.Value;
             EndDate = dpEndDate.SelectedDate.Value;
 
             return DateTime.Compare(StartDate, EndDate) >= 0;
-        }
-
-        private bool CheckFutureDate()
-        {
-            return DateTime.Compare(StartDate, DateTime.Now) <= 0;
         }
 
         private bool CheckErrorDuration()
@@ -228,6 +230,29 @@ namespace InitialProject.View
             {
                 buttonRenovate.IsEnabled = false;
                 tbDescription.IsEnabled = false;
+            }
+        }
+
+        private void CheckErrorDuration(object sender, TextChangedEventArgs e) //
+        {
+            textBlockErrorDuration1.Visibility = Visibility.Hidden;
+
+            if (Duration.Equals(string.Empty) == false)
+            {
+                int checkOut;
+
+                bool check = int.TryParse(DurationCheck, out checkOut);
+
+                if (check == false || checkOut <= 0)
+                {
+                    textBlockErrorDuration0.Visibility = Visibility.Visible;
+                    tbDuration.Focus();
+                }
+                else
+                {
+                    textBlockErrorDuration0.Visibility = Visibility.Hidden;
+                    Duration = Convert.ToInt32(DurationCheck.ToString());
+                }
             }
         }
 
@@ -257,12 +282,25 @@ namespace InitialProject.View
         {
             if(CheckErrorDate() == true)
             {
-                labelErrorEndDate.Visibility = Visibility.Visible;
+                labelErrorDate.Visibility = Visibility.Visible;
                 dpEndDate.Focus();
             }
             else
             {
-                labelErrorEndDate.Visibility = Visibility.Hidden;
+                labelErrorDate.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void dpStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CheckErrorDate() == true)
+            {
+                labelErrorDate.Visibility = Visibility.Visible;
+                dpStartDate.Focus();
+            }
+            else
+            {
+                labelErrorDate.Visibility = Visibility.Hidden;
             }
         }
     }
