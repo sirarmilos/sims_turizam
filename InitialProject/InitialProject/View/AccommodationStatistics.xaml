@@ -43,13 +43,7 @@
                 <MenuItem x:Name="notifications" Header="Notifications">
                     <MenuItem x:Name="rateGuestsNotifications"/>
                     <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations"/>
-                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <MenuItem Header="{Binding}" Click="ReadCancelledReservationNotification"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList"/>
                 </MenuItem>
 
             </Menu>

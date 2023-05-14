@@ -1,6 +1,4 @@
-﻿using InitialProject.DTO;
-using InitialProject.Service;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,28 +15,33 @@ using System.Windows.Shapes;
 namespace InitialProject.View
 {
     /// <summary>
-    /// Interaction logic for OwnerHomePageNotLogin.xaml
+    /// Interaction logic for TourImages.xaml
     /// </summary>
-    public partial class OwnerHomePageNotLogin : Window
+    public partial class TourImages : Window
     {
-        public OwnerHomePageNotLogin()
+        public TourImages()
         {
             InitializeComponent();
-
             DataContext = this;
+
         }
 
-        private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
+        private void GoToLogout(object sender, RoutedEventArgs e)
         {
-            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
+            LoginForm window = new LoginForm();
             window.Show();
             Close();
         }
 
-        private void GoToOwnerLogin(object sender, RoutedEventArgs e)
+        private void GoToMostPopularTour(object sender, RoutedEventArgs e)
         {
-            OwnerLogin window = new OwnerLogin();
-            window.ShowDialog();
+            ShowMostPopularTour window = new ShowMostPopularTour();
+            window.Show();
+        }
+
+        private void GoToPreviousWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

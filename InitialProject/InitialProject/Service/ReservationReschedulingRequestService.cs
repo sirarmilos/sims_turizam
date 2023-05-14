@@ -25,6 +25,8 @@ namespace InitialProject.Service
 
         private readonly UserService userService;
 
+        private readonly CanceledReservationService canceledReservationService;
+
         public List<BusyReservation> BusyReservations
         {
             get;
@@ -69,6 +71,7 @@ namespace InitialProject.Service
             reservationService = new ReservationService(Owner);
             rateGuestsService = new RateGuestsService(Owner);
             userService = new UserService();
+            canceledReservationService = new CanceledReservationService();
 
             BusyReservations = new List<BusyReservation>();
         }
@@ -247,12 +250,15 @@ namespace InitialProject.Service
                 x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false) && ((x.Status.Equals("rejected") == true) || (x.Status.Equals("accepted") == true)) );
         }
 
-        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
+        public bool IsSuperGuest(string guest1Username)
         {
-            userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
+            return userService.IsSuperGuest(guest1Username);
         }
 
-        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+
+
+
+        public List<CancelledReservationsNotificationDTO> FindUnreadCancelledReservations(string ownerUsername)
         {
             return userService.FindUnreadCancelledReservations(ownerUsername);
         }
@@ -287,6 +293,11 @@ namespace InitialProject.Service
             }
 
             return rescheduledReservationCount;
+        }
+
+        public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
+        {
+            canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
         }
     }
 }

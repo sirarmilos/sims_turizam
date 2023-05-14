@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Model
 {
-    public class BonusPoints : ISerializable
+    public class SuperGuest : ISerializable
     {
         public string Guest1Username { get; set; }
 
@@ -16,9 +16,9 @@ namespace InitialProject.Model
 
         public int NumberOfBonusPoints { get; set; }
 
-        public BonusPoints() { }
+        public SuperGuest() { }
 
-        public BonusPoints(string guest1Username, DateTime startDate, int numberOfBonusPoints)
+        public SuperGuest(string guest1Username, DateTime startDate, int numberOfBonusPoints)
         {
             Guest1Username = guest1Username;
             StartDate = startDate;

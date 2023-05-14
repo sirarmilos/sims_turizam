@@ -314,6 +314,19 @@ namespace InitialProject.Service
         {
             return tourGuidenceRepository.FindTourAttendanceDTO(id);
         }
+        
+        public TourGuidence CheckIfStartedAndNotFinished()
+        {
+            List<TourGuidence> guidences = tourGuidenceRepository.FindAll();
+            foreach(TourGuidence tg in  guidences)
+            {
+                if(tg.Started == true && tg.Finished == false)
+                {
+                    return tg;
+                }
+            }
+            return null;
+        }
 
     }
 

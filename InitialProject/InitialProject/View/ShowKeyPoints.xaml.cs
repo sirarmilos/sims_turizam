@@ -3,6 +3,7 @@ using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO.Packaging;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -25,12 +26,71 @@ namespace InitialProject.View
     {
         public static ObservableCollection<TourKeyPoint> tourKeyPoints { get; set; }
 
+        public string TitleText
+        {
+            get;
+            set;
+        }
+
+        public ObservableCollection<string> GuestsList
+        {
+            get;
+            set;
+        }
         public ShowKeyPoints(TourGuidence tourGuidence)
         {
             InitializeComponent();
             DataContext = this;
             TourKeyPointService tourKeyPointService = new TourKeyPointService();
             tourKeyPoints = new ObservableCollection<TourKeyPoint>(tourKeyPointService.FindByTourGuidance(tourGuidence.Id));
+            TitleText = "Tour Key Points for " + tourGuidence.Tour.TourName;
+            
+            GuestsList = new ObservableCollection<string>();
+            GuestsList.Add("Guest21");
+            GuestsList.Add("Guest23");
+            GuestsList.Add("Guest22");
+            GuestsDataGrid.ItemsSource = null;
+            GuestsDataGrid.Visibility = Visibility.Hidden;
+            Label1.Visibility = Visibility.Hidden;
+
         }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
+        private void GoToMostPopularTour(object sender, RoutedEventArgs e)
+        {
+            ShowMostPopularTour window = new ShowMostPopularTour();
+            window.Show();
+        }
+
+        private void GoToPreviousWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void ViewGuestsDataGrid(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            TourKeyPoint selectedItem = (TourKeyPoint)clickedButton.DataContext;
+            if(selectedItem == dataGridKP.Items[0])
+            {
+                Label1.Visibility = Visibility.Hidden;
+                GuestsDataGrid.ItemsSource = GuestsList;
+                GuestsDataGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                GuestsDataGrid.Visibility = Visibility.Hidden;
+                Label1.Visibility = Visibility.Visible;
+            }
+            
+        }
+
+        
     }
 }

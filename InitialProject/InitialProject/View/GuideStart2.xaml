@@ -1,0 +1,79 @@
+﻿<Window x:Class="InitialProject.View.GuideStart2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="Home Page" Height="775" Width="1400"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Menu column -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content column -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Menu -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0">
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <StackPanel>
+                    <MenuItem Header="Home Page" Margin="0,25,0,0"/>
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Profile" Margin="0,5,0,0"/>
+                    <MenuItem Header="Future Tours" Margin="0,5,0,0"/>
+                    <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
+                </StackPanel>
+                <Grid>
+                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+
+        <!-- Main content -->
+        <Grid Grid.Column="1">
+            <TextBlock Text="{Binding WelcomeText}" Margin="50,40,10,0" FontSize="20" FontWeight="Bold" />
+
+            <Border BorderBrush="Black" BorderThickness="1" Margin="150,150,150,183">
+                <Grid Margin="0,26,-123,25" Height="300">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Currently Started Tour:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Margin="365,0,0,0"/>
+                    <TextBlock Text="Name: " HorizontalAlignment="Left" Grid.Row="2" Margin="194,65,0,-55" FontSize="16"/>
+                    <TextBlock Text="Time and Date of Start: " HorizontalAlignment="Left" Margin="194,156,0,-146" Grid.Row="2" FontSize="16"/>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="520,66,194,-57" Grid.Row="2" Width="200">
+                        <TextBlock Text="{Binding TourGuidence.Tour.TourName}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" TextAlignment="Center"/>
+                    </Border>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="520,159,194,-151" Grid.Row="2" Width="200">
+                        <TextBlock Text="{Binding TourGuidence.StartTime}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" TextAlignment="Center"/>
+                    </Border>
+
+
+                </Grid>
+
+            </Border>
+            <!-- Button: More Info (Bottom-Left) -->
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="207,502,0,0">
+                <Button Content="More Info" FontSize="15" Click="MoreInfo"/>
+            </Border>
+
+            <!-- Button: Mark Reached Key Points (Bottom-Right) -->
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,216,215">
+                <Button Content="Mark Reached Key Points" FontSize="15"/>
+            </Border>
+
+        </Grid>
+
+
+
+    </Grid>
+</Window>

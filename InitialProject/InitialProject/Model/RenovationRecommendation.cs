@@ -1,4 +1,5 @@
-﻿using InitialProject.Serializer;
+﻿using InitialProject.DTO;
+using InitialProject.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,13 @@ namespace InitialProject.Model
             Reservation = reservation;
             Level = level;
             Recommendation = recommendation;
+        }
+
+        public RenovationRecommendation(Reservation reservation, SaveNewCreateReviewDTO saveNewCreateReviewDTO)
+        {
+            Reservation = reservation;
+            Level = saveNewCreateReviewDTO.RecommendationLevel;
+            Recommendation = saveNewCreateReviewDTO.RecommendationComment;
         }
 
         public string[] ToCSV()

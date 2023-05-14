@@ -98,6 +98,7 @@ namespace InitialProject.View
             reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
             Notification = reservationReschedulingRequestService.Guest1HasNotification();
             CheckNotification();
+            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
 
             AccommodationNameLabel.Content = showReservationDTO.Accommodation.AccommodationName.ToString();
             OldStartDateLabel.Content = showReservationDTO.StartDate.ToString("dd.MM.yyyy.");
@@ -109,6 +110,18 @@ namespace InitialProject.View
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private string CheckSuperType()
+        {
+            string superType = string.Empty;
+
+            if (reservationReschedulingRequestService.IsSuperGuest(Guest1))
+            {
+                superType = " (Super guest)";
+            }
+
+            return superType;
         }
 
         private void Create(object sender, RoutedEventArgs e)
