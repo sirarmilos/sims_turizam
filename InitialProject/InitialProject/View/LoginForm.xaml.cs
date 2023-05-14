@@ -100,7 +100,7 @@ namespace InitialProject.View
                 }
                 if (type.Equals("guide") == true)
                 {
-                    TourGuidence tg = tourGuidenceService.ChechIfStartedAndNotFinished();
+                    TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
                     if (tg != null)
                     {
                         GuideStart2 window = new GuideStart2(Username, tg);
