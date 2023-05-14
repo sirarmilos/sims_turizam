@@ -26,6 +26,8 @@ namespace InitialProject.Service
 
         private readonly UserService userService;
 
+        private readonly CanceledReservationService canceledReservationService;
+
         private string owner;
 
         public string Owner
@@ -49,6 +51,7 @@ namespace InitialProject.Service
             accommodationService = new AccommodationService();
             reservationService = new ReservationService(Owner);
             userService = new UserService();
+            canceledReservationService = new CanceledReservationService();
         }
 
         public RenovationService()
@@ -57,6 +60,7 @@ namespace InitialProject.Service
             //renovationRepository = new RenovationRepository();
 
             accommodationService = new AccommodationService();
+            canceledReservationService = new CanceledReservationService();
         }
 
         public List<ShowRenovationDTO> FindAllRenovations(string ownerUsername)
@@ -124,11 +128,6 @@ namespace InitialProject.Service
             canceledRenovationService.AddRenovation(temporaryRenovation);
 
             return FindAllRenovations(ownerUsername);
-        }
-
-        public bool IsAccommodationNameExist(string accommodationName)
-        {
-            return accommodationService.IsAccommodationNameExist(accommodationName);
         }
 
         public List<DateSlot> FindAvailableDateSlotsToRenovation(string accommodationName, DateTime startDate, DateTime endDate, int duration)
@@ -212,14 +211,19 @@ namespace InitialProject.Service
             return renovationRepository.FindAll();
         }
 
-        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
-        {
-            userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
-        }
-
-        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        public List<CancelledReservationsNotificationDTO> FindUnreadCancelledReservations(string ownerUsername)
         {
             return userService.FindUnreadCancelledReservations(ownerUsername);
+        }
+
+        public List<string> FindOwnerAccommodations(string ownerUsername)
+        {
+            return accommodationService.FindOwnerAccommodationNames(ownerUsername);
+        }
+
+        public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
+        {
+            canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
         }
     }
 }

@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using InitialProject.View;
 using InitialProject.Model;
+using System.Windows.Shell;
 
 namespace InitialProject.View
 {
@@ -38,6 +39,12 @@ namespace InitialProject.View
             set;
         }
 
+        public List<CancelledReservationsNotificationDTO> UnreadCancelledReservationsToDelete
+        {
+            get;
+            set;
+        }
+
         public ObservableCollection<ShowAccommodationDTO> ShowAccommodationDTOs
         {
             get;
@@ -48,6 +55,119 @@ namespace InitialProject.View
         {
             get;
             set;
+        }
+
+        private void OwnerHomePageLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OwnerHomePageLogin_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void AccommodationStart_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void AccommodationStart_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            AccommodationStart window = new AccommodationStart(OwnerUsername);
+            window.Show();
+            Close();
+        }
+
+        private void ShowOwnerManageBookingMoveRequests_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ShowOwnerManageBookingMoveRequests_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void ShowAndCancellationRenovation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ShowAndCancellationRenovation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void RateGuests_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void RateGuests_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            RateGuests window = new RateGuests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void ShowGuestReviews_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ShowGuestReviews_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void OwnerForum_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OwnerForum_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void Logout_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Logout_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (GlobalOwnerClass.NotificationRead == true)
+            {
+                accommodationService.MarkAsReadNotificationsCancelledReservations(UnreadCancelledReservationsToDelete);
+            }
+
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
+        private void Notifications_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Notifications_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            GlobalOwnerClass.NotificationRead = true;
+            notifications.IsSubmenuOpen = true;
+            rateGuestsNotifications.Focus();
         }
 
         public AccommodationStart(string ownerUsername)
@@ -77,7 +197,19 @@ namespace InitialProject.View
 
             UnreadCancelledReservations = new List<string>();
 
-            UnreadCancelledReservations = accommodationService.FindUnreadCancelledReservations(OwnerUsername);
+            UnreadCancelledReservationsToDelete = accommodationService.FindUnreadCancelledReservations(OwnerUsername);
+
+            if(UnreadCancelledReservationsToDelete.Count == 0)
+            {
+                UnreadCancelledReservations.Add("There are no new canceled reservations");
+            }
+            else
+            {
+                foreach(CancelledReservationsNotificationDTO temporaryCanceledReservationsNotificationDTO in UnreadCancelledReservationsToDelete.ToList())
+                {
+                    UnreadCancelledReservations.Add(temporaryCanceledReservationsNotificationDTO.AccommodationName + ": " + temporaryCanceledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCanceledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
+                }
+            }
         }
 
         private void SetDefaultValue()
@@ -101,32 +233,12 @@ namespace InitialProject.View
             return superType;
         }
 
-        private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
+        private void AddNewAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            string viewedCancelledReservation = ((MenuItem)sender).Header.ToString();
-
-            if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
-            {
-                accommodationService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
-
-                UnreadCancelledReservations = accommodationService.FindUnreadCancelledReservations(OwnerUsername);
-
-                cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
-            }
+            e.CanExecute = true;
         }
 
-        private CancelledReservationsNotificationDTO FindDTO(string viewedCancelledReservation)
-        {
-            string accommodationName = viewedCancelledReservation.Split(":")[0];
-            DateTime reservationStartDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[1]);
-            DateTime reservationEndDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[3]);
-
-            CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(accommodationName, reservationStartDate, reservationEndDate);
-
-            return cancelledReservationsNotificationDTO;
-        }
-
-        private void AddNewAccommodation(object sender, RoutedEventArgs e)
+        private void AddNewAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             InitialProject.View.AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
             window.ShowDialog();
@@ -151,68 +263,36 @@ namespace InitialProject.View
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
-        private void GoToOwnerHomePageLogin(object sender, RoutedEventArgs e)
+        private void RenovateAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
+            if (SelectedShowAccommodationDTO == null)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
         }
 
-        private void GoToAccommodationStart(object sender, RoutedEventArgs e)
-        {
-            AccommodationStart window = new AccommodationStart(OwnerUsername);
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
-        {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowAndCancellationRenovation(object sender, RoutedEventArgs e)
-        {
-            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToRateGuests(object sender, RoutedEventArgs e)
-        {
-            RateGuests window = new RateGuests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
-        {
-            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToOwnerForum(object sender, RoutedEventArgs e)
-        {
-            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
-        {
-            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
-            window.Show();
-            Close();
-        }
-
-        private void RenovateAccommodation(object sender, RoutedEventArgs e)
+        private void RenovateAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
 
         }
 
-        private void AccommodationStatistics(object sender, RoutedEventArgs e)
+        private void AccommodationStatistics_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if(SelectedShowAccommodationDTO == null)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void AccommodationStatistics_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ShowStatisticsAccommodationDTO showStatisticsAccommodationDTO = accommodationService.FindSelectedAccommodation(SelectedShowAccommodationDTO.Id);
 

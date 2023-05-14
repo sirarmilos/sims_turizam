@@ -9,6 +9,8 @@ namespace InitialProject.DTO
 {
     public class CancelledReservationsNotificationDTO
     {
+        public int ReservationId { get; set; }
+
         public string AccommodationName { get; set; }
 
         public DateTime ReservationStartDate { get; set; }
@@ -20,15 +22,9 @@ namespace InitialProject.DTO
 
         }
 
-        public CancelledReservationsNotificationDTO(string accommodationName, DateTime reservationStartDate, DateTime reservationEndDate)
-        {
-            AccommodationName = accommodationName;
-            ReservationStartDate = reservationStartDate;
-            ReservationEndDate = reservationEndDate;
-        }
-
         public CancelledReservationsNotificationDTO(CanceledReservation canceledReservation)
         {
+            ReservationId = canceledReservation.ReservationId;
             AccommodationName = canceledReservation.Accommodation.AccommodationName;
             ReservationStartDate = canceledReservation.StartDate;
             ReservationEndDate = canceledReservation.EndDate;

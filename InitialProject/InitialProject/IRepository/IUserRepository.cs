@@ -26,5 +26,9 @@ namespace InitialProject.IRepository
 
         User FindByUsername(string username);
 
+        bool IsSuperGuest(string guest1Username);
+
+        List<User> FindAllGuests1();
+
     }
 }

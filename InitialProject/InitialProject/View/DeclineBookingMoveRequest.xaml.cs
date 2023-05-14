@@ -42,16 +42,28 @@ namespace InitialProject.View
             reservationReschedulingRequestService = service;
 
             ownerManageBookingMoveRequestsForm = form;
+
+            tbComment.Focus();
         }
 
-        private void Cancel(object sender, RoutedEventArgs e)
+        private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Cancel_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ownerManageBookingMoveRequestsForm.dgBookingMoveRequests.ItemsSource = reservationReschedulingRequestService.FindPendingRequests();
 
             Close();
         }
 
-        private void ConfirmRejection(object sender, RoutedEventArgs e)
+        private void ConfirmRejection_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+             e.CanExecute = true;
+        }
+
+        private void ConfirmRejection_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             reservationReschedulingRequestService.SaveRejectedRequest(ownerManageBookingMoveRequestsForm.SelectedBookingMoveRequest, Comment);
 

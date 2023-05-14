@@ -17,5 +17,13 @@ namespace InitialProject.IRepository
         int FindAccommodationRenovationRecommedationCountByYear(int accommodationId, int year);
 
         List<RenovationRecommendation> FindAccommodationRenovationRecommedationsByYear(int accommodationId, int year);
+
+
+
+
+        void Add(RenovationRecommendation renovationRecommendation);
+
+        void Save(List<RenovationRecommendation> allRenovationRecommedations);
+
     }
 }

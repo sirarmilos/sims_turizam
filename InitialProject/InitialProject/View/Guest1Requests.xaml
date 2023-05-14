@@ -26,6 +26,7 @@
                 <MenuItem Header="Search and show accommodations" Click="GoToSearchAndShowAccommodations"/>
                 <MenuItem Header="My reservations" Click="GoToShowReservations"/>
                 <MenuItem Header="Create review" Click="GoToCreateReview"/>
+                <MenuItem x:Name="usernameAndSuperGuest" IsEnabled="False"/>
                 <MenuItem Header="Logout" Click="GoToLogout"/>
             </Menu>
         </DockPanel>

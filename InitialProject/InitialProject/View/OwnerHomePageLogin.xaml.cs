@@ -1,5 +1,6 @@
 ﻿using InitialProject.DTO;
 using InitialProject.Service;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Shell;
 
 namespace InitialProject.View
 {
@@ -30,6 +32,12 @@ namespace InitialProject.View
         }
 
         public List<string> UnreadCancelledReservations
+        {
+            get;
+            set;
+        }
+
+        public List<CancelledReservationsNotificationDTO> UnreadCancelledReservationsToDelete
         {
             get;
             set;
@@ -124,14 +132,19 @@ namespace InitialProject.View
             Close();
         }
 
-        private void OwnerHomePageNotLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void Logout_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
-        private void OwnerHomePageNotLogin_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void Logout_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
+            if (GlobalOwnerClass.NotificationRead == true)
+            {
+                userService.MarkAsReadNotificationsCancelledReservations(UnreadCancelledReservationsToDelete);
+            }
+
+            LoginForm window = new LoginForm();
             window.Show();
             Close();
         }
@@ -143,7 +156,9 @@ namespace InitialProject.View
 
         private void Notifications_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("a");
+            GlobalOwnerClass.NotificationRead = true;
+            notifications.IsSubmenuOpen = true;
+            rateGuestsNotifications.Focus();
         }
 
         public OwnerHomePageLogin(string username, string ownerHeader)
@@ -157,6 +172,10 @@ namespace InitialProject.View
             userService = new UserService();
 
             SetMenu(ownerHeader);
+
+            /* double title_height = (new WindowChrome()).CaptionHeight;
+
+            MessageBox.Show(title_height.ToString());*/
         }
 
         private void SetMenu(string ownerHeader)
@@ -167,88 +186,19 @@ namespace InitialProject.View
 
             UnreadCancelledReservations = new List<string>();
 
-            UnreadCancelledReservations = userService.FindUnreadCancelledReservations(OwnerUsername);
-        }
+            UnreadCancelledReservationsToDelete = userService.FindUnreadCancelledReservations(OwnerUsername);
 
-        private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
-        {
-            string viewedCancelledReservation = ((MenuItem)sender).Header.ToString();
-
-            if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
+            if(UnreadCancelledReservationsToDelete.Count == 0)
             {
-                userService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
-
-                UnreadCancelledReservations = userService.FindUnreadCancelledReservations(OwnerUsername);
-
-                cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
+                UnreadCancelledReservations.Add("There are no new canceled reservations");
             }
-        }
-
-        private CancelledReservationsNotificationDTO FindDTO(string viewedCancelledReservation)
-        {
-            string accommodationName = viewedCancelledReservation.Split(":")[0];
-            DateTime reservationStartDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[1]);
-            DateTime reservationEndDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[3]);
-
-            CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(accommodationName, reservationStartDate, reservationEndDate);
-
-            return cancelledReservationsNotificationDTO;
-        }
-
-        private void GoToOwnerHomePageLogin(object sender, RoutedEventArgs e)
-        {
-            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToAccommodationStart(object sender, RoutedEventArgs e)
-        {
-            AccommodationStart window = new AccommodationStart(OwnerUsername);
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
-        {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowAndCancellationRenovation(object sender, RoutedEventArgs e)
-        {
-            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToRateGuests(object sender, RoutedEventArgs e)
-        {
-            RateGuests window = new RateGuests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
-        {
-            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToOwnerForum(object sender, RoutedEventArgs e)
-        {
-            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
-        {
-            OwnerHomePageNotLogin window = new OwnerHomePageNotLogin();
-            window.Show();
-            Close();
+            else
+            {
+                foreach(CancelledReservationsNotificationDTO temporaryCanceledReservationsNotificationDTO in UnreadCancelledReservationsToDelete.ToList())
+                {
+                    UnreadCancelledReservations.Add(temporaryCanceledReservationsNotificationDTO.AccommodationName + ": " + temporaryCanceledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCanceledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
+                }
+            }
         }
     }
 }

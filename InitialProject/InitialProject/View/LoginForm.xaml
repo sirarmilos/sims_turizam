@@ -4,36 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
+        xmlns:validationrules="clr-namespace:InitialProject.ValidationRules"
+        
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+        
         mc:Ignorable="d"
-        Title="Login" Height="360" Width="700"
+        Title="Login" Height="368" Width="676" Icon="../Resources/Images/logo_icon.ico"
         WindowStartupLocation="CenterScreen">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.Login" CanExecute="Login_CanExecute" Executed="Login_Executed"></CommandBinding>
+    </Window.CommandBindings>
+
     <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="85" />
-            <RowDefinition Height="35" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="35" />
-            <RowDefinition Height="50" />
-            <RowDefinition Height="50" />
-            <RowDefinition Height="65" />
+            <RowDefinition Height="95" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="203" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="160" />
-            <ColumnDefinition Width="120" />
-            <ColumnDefinition Width="10" />
             <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="160" />
+            <ColumnDefinition Width="410" />
         </Grid.ColumnDefinitions>
 
-        <Label Target="{x:Reference tbUsername}" x:Name="labelUsername" Grid.Column="1" Grid.Row="1" Content="Username:" HorizontalAlignment="Left" Width="120" MouseLeftButtonUp="labeltbFocus"/>
-        <TextBox x:Name="tbUsername" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding Path=Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
+        <Label Target="{x:Reference tbUsername}" Grid.Column="0" Grid.Row="0" Content="Username:" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="160,0,0,0" FontSize="16"/>
+        <TextBox x:Name="tbUsername" Grid.Column="1" Grid.Row="0" Text="{Binding Path=Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="250" Margin="0,70,0,0" FontSize="13"/>
+        <Label x:Name="labelErrorUsername" Grid.Column="1" Grid.Row="0" Content="Username does not exist" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="250,0,0,0" FontSize="13" Foreground="Red"/>
 
-        <Label Target="{x:Reference tbPassword}" x:Name="labelPassword" Grid.Column="1" Grid.Row="3" Content="Password:" HorizontalAlignment="Left" Width="120" MouseLeftButtonUp="labeltbFocus"/>
-        <TextBox x:Name="tbPassword" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" Text="{Binding Path=Password, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
+        <Label Target="{x:Reference pbPassword}" Grid.Column="0" Grid.Row="1" Content="Password:" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="160,0,0,0" FontSize="16"/>
+        <PasswordBox x:Name="pbPassword" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="250" Margin="0,45,0,0" FontSize="13"/>
+        <Label x:Name="labelErrorPassword" Grid.Column="1" Grid.Row="1" Content="Password is incorrect" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="250,0,0,0" FontSize="13" Foreground="Red"/>
 
-        <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5">
-            <Button x:Name="buttonLogin" Content="Login" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Login" Width="150" Height="50"/>
-        </Grid>
-        
+        <Button x:Name="buttonLogin" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="50" VerticalAlignment="Top" Width="100" Command="cmd:RoutedCommands.Login" Margin="0,50,0,65">
+            <TextBlock TextAlignment="Center" FontSize="14">Login<LineBreak/>(CTRL + L)</TextBlock>
+        </Button>
+
     </Grid>
+
 </Window>

@@ -51,6 +51,7 @@ namespace InitialProject.Injector
                 { typeof(IReservationRepository), new ReservationRepository() },
                 { typeof(IReservationReschedulingRequestRepository), new ReservationReschedulingRequestRepository() },
                 { typeof(IReviewRepository), new ReviewRepository() },
+                { typeof(ISuperGuestRepository), new SuperGuestRepository() },
                 { typeof(ITourGuidenceRepository), new TourGuidenceRepository() },
                 { typeof(ITourKeyPointRepository), new TourKeyPointRepository() },
                 { typeof(ITourRepository), new TourRepository() },

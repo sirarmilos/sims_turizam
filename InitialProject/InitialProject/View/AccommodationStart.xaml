@@ -4,9 +4,53 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
+        
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+        
         mc:Ignorable="d"
-        Title="Accommodations" Height="775" Width="1400"
+        Title="Accommodations" Height="819" Width="1416" Icon="../Resources/Images/logo_icon.ico"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+
+        <Style x:Key="VerticalContentAlignmentCenter" TargetType="{x:Type DataGridCell}">
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+
+                        <Grid Background="{TemplateBinding Background}">
+
+                            <ContentPresenter VerticalAlignment="Center" Margin="2,0,0,0"/>
+
+                        </Grid>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerHomePageLogin" CanExecute="OwnerHomePageLogin_CanExecute" Executed="OwnerHomePageLogin_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.AccommodationStart" CanExecute="AccommodationStart_CanExecute" Executed="AccommodationStart_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests" CanExecute="ShowOwnerManageBookingMoveRequests_CanExecute" Executed="ShowOwnerManageBookingMoveRequests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowAndCancellationRenovation" CanExecute="ShowAndCancellationRenovation_CanExecute" Executed="ShowAndCancellationRenovation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RateGuests" CanExecute="RateGuests_CanExecute" Executed="RateGuests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowGuestReviews" CanExecute="ShowGuestReviews_CanExecute" Executed="ShowGuestReviews_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerForum" CanExecute="OwnerForum_CanExecute" Executed="OwnerForum_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Logout" CanExecute="Logout_CanExecute" Executed="Logout_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Notifications" CanExecute="Notifications_CanExecute" Executed="Notifications_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.AddNewAccommodation" CanExecute="AddNewAccommodation_CanExecute" Executed="AddNewAccommodation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RenovateAccommodation" CanExecute="RenovateAccommodation_CanExecute" Executed="RenovateAccommodation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.AccommodationStatistics" CanExecute="AccommodationStatistics_CanExecute" Executed="AccommodationStatistics_Executed"></CommandBinding>
+    </Window.CommandBindings>
 
     <Grid>
 
@@ -14,74 +58,97 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="55" />
             <RowDefinition Height="425" />
-            <RowDefinition Height="270" />
+            <RowDefinition Height="291" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="615" />
             <ColumnDefinition Width="585" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="216" />
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
 
-            <Menu x:Name="menuOwner" DockPanel.Dock ="Top">
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch" FontSize="13">
 
-                <MenuItem Header="Home" Click="GoToOwnerHomePageLogin"/>
-                <MenuItem Header="Accommodation" Click="GoToAccommodationStart"/>
-                <MenuItem Header="Management of booking move requests" Click="GoToShowOwnerManageBookingMoveRequests"/>
-                <MenuItem Header="Renovate" Click="GoToShowAndCancellationRenovation"/>
-                <MenuItem Header="Rate guests" Click="GoToRateGuests"/>
-                <MenuItem Header="Guest reviews" Click="GoToShowGuestReviews"/>
-                <MenuItem Header="Forum" Click="GoToOwnerForum"/>
-                <MenuItem x:Name="usernameAndSuperOwner" IsEnabled="False"/>
-                <MenuItem Header="Logout" Click="GoToOwnerHomePageNotLogin"/>
-                <MenuItem x:Name="notifications" Header="Notifications">
-                    <MenuItem x:Name="rateGuestsNotifications"/>
-                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations"/>
-                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <MenuItem Header="{Binding}" Click="ReadCancelledReservationNotification"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                <Menu.ItemsPanel>
+
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="340" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+
+                </Menu.ItemsPanel>
+
+                <MenuItem Grid.Column="0" Header="_Home (F1)" Command="cmd:RoutedCommands.OwnerHomePageLogin"/>
+                <MenuItem Grid.Column="1" Header="_Accommodation (F2)" Command="cmd:RoutedCommands.AccommodationStart"/>
+                <MenuItem Grid.Column="2" Header="_Management of booking move requests (F3)" Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests"/>
+                <MenuItem Grid.Column="3" Header="Reno_vate (F4)" Command="cmd:RoutedCommands.ShowAndCancellationRenovation"/>
+                <MenuItem Grid.Column="4" Header="Ra_te guests (F5)" Command="cmd:RoutedCommands.RateGuests"/>
+                <MenuItem Grid.Column="5" Header="_Guest reviews (F6)" Command="cmd:RoutedCommands.ShowGuestReviews"/>
+                <MenuItem Grid.Column="6" Header="_Forum (F7)" Command="cmd:RoutedCommands.OwnerForum"/>
+                <MenuItem Grid.Column="7" x:Name="usernameAndSuperOwner" HorizontalAlignment="Right" IsEnabled="False"/>
+                <MenuItem Grid.Column="8" Header="_Logout (F8)" Command="cmd:RoutedCommands.Logout"/>
+                <MenuItem Grid.Column="9" x:Name="notifications" Header="_Notifications (F9)" Command="cmd:RoutedCommands.Notifications">
+                    <MenuItem x:Name="rateGuestsNotifications" Command="cmd:RoutedCommands.RateGuests"/>
+                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations" IsEnabled="False"/>
+                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList"/>
                 </MenuItem>
 
             </Menu>
 
         </DockPanel>
 
-        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all your accommodations" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="360"/>
+        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="A list of all your accommodations" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,0,0,0" FontSize="24"/>
 
-        <DataGrid x:Name="dgAccommodations" LoadingRow="LoadingRowForDgAccommodations" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding ShowAccommodationDTOs, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedShowAccommodationDTO, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="ButtonsEnable" HorizontalAlignment="Left" Height="400" VerticalAlignment="Bottom" Width="1150">
-            
+        <DataGrid x:Name="dgAccommodations" LoadingRow="LoadingRowForDgAccommodations" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding ShowAccommodationDTOs, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedShowAccommodationDTO, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="ButtonsEnable" HorizontalAlignment="Left" Height="400" VerticalAlignment="Bottom" Width="1150" Margin="25,0,0,0" CellStyle="{StaticResource VerticalContentAlignmentCenter}" RowHeight="60" FontSize="13">
+
             <DataGrid.Columns>
-                
-                <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="*"/>
-                <DataGridTextColumn Header="Country" Binding="{Binding Country}" Width="*"/>
-                <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
-                <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="*"/>
-                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
+
+                <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="300"/>
+                <DataGridTextColumn Header="Country" Binding="{Binding Country}" Width="200"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}" Width="200"/>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="200"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="100"/>
                 <DataGridTemplateColumn Header="Main image" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding MainImage}" Height="45"/>
+                            <Image Source="{Binding MainImage}" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Height="50" Width="100"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
             </DataGrid.Columns>
-            
+
         </DataGrid>
 
-        <Button x:Name="buttonAddNew" Grid.Column="2" Grid.Row="2" Content="Add new" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Click="AddNewAccommodation"/>
-        <Button x:Name="buttonRenovate" Grid.Column="2" Grid.Row="2" Content="Renovate" HorizontalAlignment="Left" Height="50" VerticalAlignment="Center" Width="175" Click="RenovateAccommodation"/>
-        <Button x:Name="buttonStatistics" Grid.Column="2" Grid.Row="2" Content="Statistics" HorizontalAlignment="Left" Height="50" VerticalAlignment="Bottom" Width="175" Click="AccommodationStatistics"/>
+        <Button x:Name="buttonAddNew" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.AddNewAccommodation" Margin="0,125,0,0">
+            <TextBlock TextAlignment="Center" FontSize="14">Add new<LineBreak/>(CTRL + M)</TextBlock>
+        </Button>
 
-        <GroupBox Grid.Column="0" Grid.Row="3" Header="Top location" HorizontalAlignment="Left" Height="200" VerticalAlignment="Center" Width="560">
-            
+        <Button x:Name="buttonRenovate" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Height="50" VerticalAlignment="Center" Width="175" Command="cmd:RoutedCommands.RenovateAccommodation" Margin="0,25,0,0">
+            <TextBlock TextAlignment="Center" FontSize="14">Renovate<LineBreak/>(CTRL + N)</TextBlock>
+        </Button>
+
+        <Button x:Name="buttonStatistics" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Height="50" VerticalAlignment="Bottom" Width="175" Command="cmd:RoutedCommands.AccommodationStatistics" Margin="0,0,0,100">
+            <TextBlock TextAlignment="Center" FontSize="14">Statistics<LineBreak/>(CTRL + G)</TextBlock>
+        </Button>
+
+        <GroupBox Grid.Column="0" Grid.Row="3" Header="Top location" HorizontalAlignment="Left" Height="206" VerticalAlignment="Top" Width="560" Margin="25,50,0,0" FontSize="16">
+
             <Grid>
-                
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60" />
                     <RowDefinition Height="50" />
@@ -92,16 +159,19 @@
                     <ColumnDefinition Width="275" />
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" Content="The most popular location is: " HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="215"/>
-                <Label Grid.Column="1" Grid.Row="0" Content="-" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="200"/>
-                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Tip - Add new accommodation at this location" HorizontalAlignment="Center" Height="30" VerticalAlignment="Bottom" Width="430"/>
-                <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Content="Add" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175"/>
-                
+                <Label Grid.Column="0" Grid.Row="0" Content="The most popular location is: " HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="55,0,0,5" FontSize="13"/>
+                <Label Grid.Column="1" Grid.Row="0" Content="-" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Margin="0,0,75,5" FontSize="13"/>
+                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Tip - Add new accommodation at this location" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" FontSize="13"/>
+
+                <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175">
+                    <TextBlock TextAlignment="Center" FontSize="14">Add<LineBreak/>(CTRL + K)</TextBlock>
+                </Button>
+
             </Grid>
 
         </GroupBox>
 
-        <GroupBox Grid.Column="1" Grid.Row="3" Header="Worst location" HorizontalAlignment="Left" Height="200" VerticalAlignment="Center" Width="560">
+        <GroupBox Grid.Column="1" Grid.Row="3" Header="Worst location" HorizontalAlignment="Left" Height="206" VerticalAlignment="Top" Width="560" Margin="0,50,0,0" FontSize="16">
 
             <Grid>
 
@@ -115,10 +185,12 @@
                     <ColumnDefinition Width="275" />
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" Content="Locations that are not so popular: " HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="215"/>
-                <Label Grid.Column="1" Grid.Row="0" Content="-" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="200"/>
-                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Tip - Close all your accommodations at this location" HorizontalAlignment="Center" Height="30" VerticalAlignment="Bottom" Width="430"/>
-                <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Content="Close all" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175"/>
+                <Label Grid.Column="0" Grid.Row="0" Content="Locations that are not so popular: " HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="55,0,0,5" FontSize="13"/>
+                <Label Grid.Column="1" Grid.Row="0" Content="-" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Margin="0,0,75,5" FontSize="13"/>
+                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Tip - Close all your accommodations at this location" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" FontSize="13"/>
+                <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175">
+                    <TextBlock TextAlignment="Center" FontSize="14">Close all<LineBreak/>(CTRL + D)</TextBlock>
+                </Button>
 
             </Grid>
 
