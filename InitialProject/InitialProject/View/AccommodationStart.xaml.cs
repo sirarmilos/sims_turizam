@@ -39,6 +39,12 @@ namespace InitialProject.View
             set;
         }
 
+        public List<CancelledReservationsNotificationDTO> UnreadCancelledReservationsToDelete
+        {
+            get;
+            set;
+        }
+
         public ObservableCollection<ShowAccommodationDTO> ShowAccommodationDTOs
         {
             get;
@@ -142,6 +148,11 @@ namespace InitialProject.View
 
         private void Logout_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            if (GlobalOwnerClass.NotificationRead == true)
+            {
+                accommodationService.MarkAsReadNotificationsCancelledReservations(UnreadCancelledReservationsToDelete);
+            }
+
             LoginForm window = new LoginForm();
             window.Show();
             Close();
@@ -154,6 +165,7 @@ namespace InitialProject.View
 
         private void Notifications_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            GlobalOwnerClass.NotificationRead = true;
             notifications.IsSubmenuOpen = true;
             rateGuestsNotifications.Focus();
         }
@@ -185,7 +197,19 @@ namespace InitialProject.View
 
             UnreadCancelledReservations = new List<string>();
 
-            UnreadCancelledReservations = accommodationService.FindUnreadCancelledReservations(OwnerUsername);
+            UnreadCancelledReservationsToDelete = accommodationService.FindUnreadCancelledReservations(OwnerUsername);
+
+            if(UnreadCancelledReservationsToDelete.Count == 0)
+            {
+                UnreadCancelledReservations.Add("There are no new canceled reservations");
+            }
+            else
+            {
+                foreach(CancelledReservationsNotificationDTO temporaryCanceledReservationsNotificationDTO in UnreadCancelledReservationsToDelete.ToList())
+                {
+                    UnreadCancelledReservations.Add(temporaryCanceledReservationsNotificationDTO.AccommodationName + ": " + temporaryCanceledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCanceledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
+                }
+            }
         }
 
         private void SetDefaultValue()
@@ -207,50 +231,6 @@ namespace InitialProject.View
             }
 
             return superType;
-        }
-
-        private void ReadCancelledReservationNotification_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void ReadCancelledReservationNotification_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            string viewedCancelledReservation = ((MenuItem)sender).Header.ToString();
-
-            if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
-            {
-                accommodationService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
-
-                UnreadCancelledReservations = accommodationService.FindUnreadCancelledReservations(OwnerUsername);
-
-                cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
-            }
-        }
-
-        private void ReadCancelledReservationNotification(object sender, RoutedEventArgs e)
-        {
-            string viewedCancelledReservation = ((MenuItem)sender).Header.ToString();
-
-            if (viewedCancelledReservation.Equals("There are currently no new booking cancellations.") == false)
-            {
-                accommodationService.SaveViewedCancelledReservation(FindDTO(viewedCancelledReservation));
-
-                UnreadCancelledReservations = accommodationService.FindUnreadCancelledReservations(OwnerUsername);
-
-                cancelledReservationsNotificationsList.DataContext = UnreadCancelledReservations;
-            }
-        }
-
-        private CancelledReservationsNotificationDTO FindDTO(string viewedCancelledReservation)
-        {
-            string accommodationName = viewedCancelledReservation.Split(":")[0];
-            DateTime reservationStartDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[1]);
-            DateTime reservationEndDate = Convert.ToDateTime(viewedCancelledReservation.Split(" ")[3]);
-
-            CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO = new CancelledReservationsNotificationDTO(accommodationName, reservationStartDate, reservationEndDate);
-
-            return cancelledReservationsNotificationDTO;
         }
 
         private void AddNewAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)

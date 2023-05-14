@@ -41,11 +41,6 @@ namespace InitialProject.Service
             return cancelledReservationsNotificationDTOs;
         }
 
-        public void SaveViewed(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
-        {
-            canceledReservationRepository.UpdateViewed(canceledReservationRepository.FindByDTO(cancelledReservationsNotificationDTO));
-        }
-
         public int FindAccommodationCanceledReservationCountByYear(int accommodationId, int year)
         {
             return canceledReservationRepository.FindAccommodationCanceledReservationCountByYear(accommodationId, year);
@@ -63,6 +58,11 @@ namespace InitialProject.Service
             }
 
             return canceledReservationCount;
+        }
+
+        public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
+        {
+            canceledReservationRepository.UpdateViewed(unreadCancelledReservations);
         }
     }
 }

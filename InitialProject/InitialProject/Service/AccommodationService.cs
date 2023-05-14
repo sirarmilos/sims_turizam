@@ -29,7 +29,7 @@ namespace InitialProject.Service
 
         private readonly ReservationService reservationService;
 
-        private readonly CanceledReservationService cancelReservationService;
+        private readonly CanceledReservationService canceledReservationService;
 
         private readonly RenovationRecommendationService renovationRecommendationService;
 
@@ -65,6 +65,7 @@ namespace InitialProject.Service
             //accommodationRepository = new AccommodationRepository();
             locationService = new LocationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
+            canceledReservationService = new CanceledReservationService();
         }
 
         public AccommodationService(string username)
@@ -76,7 +77,7 @@ namespace InitialProject.Service
             rateGuestsService = new RateGuestsService(username);
             userService = new UserService();
             reservationService = new ReservationService(username);
-            cancelReservationService = new CanceledReservationService();
+            canceledReservationService = new CanceledReservationService();
             renovationRecommendationService = new RenovationRecommendationService();
 
             Guest1 = username;
@@ -283,12 +284,7 @@ namespace InitialProject.Service
             return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
         }
 
-        public void SaveViewedCancelledReservation(CancelledReservationsNotificationDTO cancelledReservationsNotificationDTO)
-        {
-            userService.SaveViewedCancelledReservation(cancelledReservationsNotificationDTO);
-        }
-
-        public List<string> FindUnreadCancelledReservations(string ownerUsername)
+        public List<CancelledReservationsNotificationDTO> FindUnreadCancelledReservations(string ownerUsername)
         {
             return userService.FindUnreadCancelledReservations(ownerUsername);
         }
@@ -351,7 +347,7 @@ namespace InitialProject.Service
             foreach(int year in years.ToList())
             {
                 int reservationCount = reservationService.FindAccommodationReservationCountByYear(accommodationId, year);
-                int canceledReservationCount = cancelReservationService.FindAccommodationCanceledReservationCountByYear(accommodationId, year);
+                int canceledReservationCount = canceledReservationService.FindAccommodationCanceledReservationCountByYear(accommodationId, year);
                 int rescheduledReservationCount = reservationReschedulingRequestService.FindAccommodationRescheduledReservationCountByYear(accommodationId, year);
                 int renovationRecommedationCount = renovationRecommendationService.FindAccommodationRenovationRecommedationCountByYear(accommodationId, year);
 
@@ -493,7 +489,7 @@ namespace InitialProject.Service
             List<AccommodationStatisticsDataDTO> accommodationStatisticsDataDTOs = new List<AccommodationStatisticsDataDTO>();
 
             List<int> reservationCount = reservationService.FindAccommodationReservationCountByMonth(accommodationId, year);
-            List<int> canceledReservationCount = cancelReservationService.FindAccommodationCanceledReservationCountByMonth(accommodationId, year);
+            List<int> canceledReservationCount = canceledReservationService.FindAccommodationCanceledReservationCountByMonth(accommodationId, year);
             List<int> rescheduledReservationCount = reservationReschedulingRequestService.FindAccommodationRescheduledReservationCountByMonth(accommodationId, year);
             List<int> renovationRecommedationCount = renovationRecommendationService.FindAccommodationRenovationRecommedationCountByMonth(accommodationId, year);
 
@@ -631,6 +627,11 @@ namespace InitialProject.Service
         public List<Accommodation> FindOwnerAccommodationsToPDFReport(string ownerUsername)
         {
             return accommodationRepository.FindByOwnerUsername(ownerUsername);
+        }
+
+        public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
+        {
+            canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
         }
     }
 }
