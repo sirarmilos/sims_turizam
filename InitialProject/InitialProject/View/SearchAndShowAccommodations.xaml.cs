@@ -223,6 +223,13 @@ namespace InitialProject.View
 
             SetComboBoxes(page);
 
+            if (page is AccommodationReservation accommodationReservationPage)
+            {
+                FirstSearchWindow.Visibility = Visibility.Collapsed;
+
+                SecondSearchWindow.Visibility = Visibility.Visible;
+            }
+
         }
 
         public ComboBoxItem GetSelectedReview()

@@ -91,7 +91,10 @@
                 <!-- margina skroz dole je 20 -->
                 <Label Content="My Reservations" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
 
-                <TextBlock x:Name="ValidationMessage" Grid.Column="1" TextAlignment="Center"  Foreground="{Binding LabelColor}" FontSize="24" FontWeight="Bold" Text="" TextWrapping="Wrap" Width="676" Height="73" HorizontalAlignment="Left" Margin="26,20,0,0" />
+                <Border x:Name="ValidationBorder" Visibility="Collapsed" BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="Auto" Width="684">
+                    <TextBlock x:Name="ValidationMessage" Grid.Column="1" TextAlignment="Center"  Foreground="{Binding LabelColor}" FontSize="24" FontWeight="Bold" Text="" TextWrapping="Wrap" Width="Auto" Height="Auto" HorizontalAlignment="Center" Margin="0,10,0,10" />
+                </Border>
+
 
                 <ItemsControl ItemsSource="{Binding ShowReservationDTOs}">
                     <ItemsControl.ItemTemplate>
@@ -131,6 +134,9 @@
                                                     <DataTrigger Binding="{Binding EndDate, Converter={StaticResource DateTimeToVisibilityConverter}, ConverterParameter=Past}" Value="Collapsed">
                                                         <Setter Property="Visibility" Value="Collapsed" />
                                                     </DataTrigger>
+                                                    <DataTrigger Binding="{Binding StartDate, Converter={StaticResource DateTimeToVisibilityConverter}, ConverterParameter=Past}" Value="Collapsed">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
@@ -142,6 +148,9 @@
                                                 <Setter Property="Visibility" Value="Visible" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding EndDate, Converter={StaticResource DateTimeToVisibilityConverter}, ConverterParameter=Past}" Value="Collapsed">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding StartDate, Converter={StaticResource DateTimeToVisibilityConverter}, ConverterParameter=Past}" Value="Collapsed">
                                                         <Setter Property="Visibility" Value="Collapsed" />
                                                     </DataTrigger>
                                                 </Style.Triggers>

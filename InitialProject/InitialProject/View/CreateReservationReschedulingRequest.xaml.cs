@@ -151,10 +151,11 @@ namespace InitialProject.View
 
         public void ReturnBackToCaller(object sender, RoutedEventArgs e)
         {
-            if (Caller.Equals("ShowReservations"))
-                GoToShowReservations(sender, e);
-            else
-                GoToGuest1Requests(sender, e);
+            //if (Caller.Equals("ShowReservations"))
+            //    GoToShowReservations(sender, e);
+            //else
+            //    GoToGuest1Requests(sender, e);
+            GoToGuest1Requests(sender, e);
         }
 
         private string CheckSuperType()
@@ -219,16 +220,6 @@ namespace InitialProject.View
 
             int newReservationDays = EndDate.Subtract(StartDate).Days;
 
-            if (newReservationDays < ShowReservationDTO.Accommodation.MinDaysReservation)
-            {
-
-                SuggestedDatesMessage.Text = $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show(
-                //    $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.");
-                return false;
-            }
-
             if (StartDate > EndDate)
             {
                 SuggestedDatesMessage.Text = "Start date is greater than end date. Try again.";
@@ -245,11 +236,29 @@ namespace InitialProject.View
                 return false;
             }
 
-            if (StartDate < DateTime.Now)
+            if (StartDate.Date < DateTime.Now.Date)
             {
                 SuggestedDatesMessage.Text = "The start date is in the past. Try again.";
                 LabelColor = Brushes.Red;
                 //MessageBox.Show($"The start date is in the past. Try again.");
+                return false;
+            }
+
+            if (EndDate.Date < DateTime.Now.Date)
+            {
+                SuggestedDatesMessage.Text = "The end date is in the past. Try again.";
+                LabelColor = Brushes.Red;
+                //MessageBox.Show($"The start date is in the past. Try again.");
+                return false;
+            }
+
+            if (newReservationDays < ShowReservationDTO.Accommodation.MinDaysReservation)
+            {
+
+                SuggestedDatesMessage.Text = $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.";
+                LabelColor = Brushes.Red;
+                //MessageBox.Show(
+                //    $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.");
                 return false;
             }
 

@@ -7,7 +7,7 @@
 
 Background="White"
     mc:Ignorable="d"
-        Title="Guest1 manage reservation rescheduling request" Width="838" Height="684">
+        Title="Guest1 manage reservation rescheduling request" d:DesignHeight="684" d:DesignWidth="838">
 
 
 
@@ -80,8 +80,8 @@ Background="White"
             <Label Content="Review your reservation request" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
 
 
-            <Border BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="415" Width="684">
-                <Grid Margin="0,0,0,31">
+            <Border BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="405" Width="684">
+                <Grid Margin="0,0,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" MinHeight="56.243" />
                         <RowDefinition Height="Auto" MinHeight="970.923" />

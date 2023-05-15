@@ -96,7 +96,7 @@
                             <Run  FontWeight="Bold" FontSize="20" Text="{Binding OldEndDate, StringFormat='{}{0:dd.MM.yyyy}'}" />
                         </TextBlock.Inlines>
                     </TextBlock>
-                    <Button Grid.Column="0" Grid.Row="1" FontSize="24" FontWeight="Bold" Width="177" Height="55" Content="Cancel" Click="ReturnBackToCaller" Margin="30,256,123,654"/>
+                    <Button Grid.Column="0" Grid.Row="1" FontSize="24" FontWeight="Bold" Width="177" Height="55" Content="Cancel" Click="GoToShowReservations" Margin="30,256,123,654"/>
 
                     <DatePicker Height="30" Grid.Row="1" Width="200" Grid.Column="1" x:Name="StartDatePicker" Margin="136,79,348,856" FontSize="20" FontWeight="Bold"/>
 

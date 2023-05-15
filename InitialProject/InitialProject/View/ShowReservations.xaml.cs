@@ -234,6 +234,7 @@ namespace InitialProject.View
             {
                 ValidationMessage.Text = "Reservation is not eligible for cancellation. Since the number of left cancelation days is 0.";
                 ValidationMessage.Visibility = Visibility.Visible;
+                ValidationBorder.Visibility = Visibility.Visible;
                 LabelColor = Brushes.Red;
                 //MessageBox.Show("Reservation is not eligible for cancellation. Since the number of left cancelation days is 0.", "Error",
                 //MessageBoxButton.OK, MessageBoxImage.Error);
@@ -244,6 +245,7 @@ namespace InitialProject.View
 
             ValidationMessage.Text = "Reservation has been successfully canceled.";
             ValidationMessage.Visibility = Visibility.Visible;
+            ValidationBorder.Visibility = Visibility.Visible;
             LabelColor = Brushes.Green;
         }
 
