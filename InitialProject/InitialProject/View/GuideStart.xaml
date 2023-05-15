@@ -8,6 +8,15 @@
         Title="Guide Start" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
 
+    <Window.Resources>
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Yellow" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <!-- Add more setters for other properties as needed -->
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -75,6 +84,12 @@
             <Label Content="City:" HorizontalAlignment="Left" Margin="577,113,0,0" VerticalAlignment="Top" Height="26" Width="33"/>
             <Label Content="Language:" HorizontalAlignment="Left" Margin="556,142,0,0" VerticalAlignment="Top" Width="64" Height="26"/>
             <Button Content="Show key points" HorizontalAlignment="Left" Margin="206,637,0,0" VerticalAlignment="Top" Click="ShowKeyPoints" />
+
+            <Button Content="Click Me" HorizontalAlignment="Left" Margin="1080,482,0,0" VerticalAlignment="Top">
+                <Button.ToolTip>
+                    <ToolTip>This is a button. Click it to perform an action.</ToolTip>
+                </Button.ToolTip>
+            </Button>
 
         </Grid>
 

@@ -46,90 +46,92 @@
 
 
         <!-- Main content -->
-        <Grid Grid.Column="1">
-            <TextBlock Text="{Binding TitleText}" Margin="200,40,10,0" FontSize="20" FontWeight="Bold" />
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
+            <Grid Grid.Column="1">
+                <TextBlock Text="{Binding TitleText}" Margin="200,40,10,0" FontSize="20" FontWeight="Bold" />
 
-            <Border BorderBrush="Black" BorderThickness="1" Margin="200,158,200,274" Height="Auto">
-                <DataGrid x:Name="dataGridKP" ItemsSource="{Binding tourKeyPoints}" CanUserAddRows="False"  AutoGenerateColumns="False" VerticalContentAlignment="Stretch" Height="Auto">
+                <Border BorderBrush="Black" BorderThickness="1" Margin="200,158,200,274" Height="Auto">
+                    <DataGrid x:Name="dataGridKP" ItemsSource="{Binding tourKeyPoints}" CanUserAddRows="False"  AutoGenerateColumns="False" VerticalContentAlignment="Stretch" Height="Auto">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Key Point Name" Binding="{Binding KeyPointName}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Location.Address}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Header="View Guests" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Background="AliceBlue" Foreground="Black" Content="VIEW" Click="ViewGuestsDataGrid"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTemplateColumn.HeaderStyle>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+                <DataGrid x:Name="GuestsDataGrid" AutoGenerateColumns="False" IsReadOnly="True" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Height="Auto" Margin="0,0,198,147">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Key Point Name" Binding="{Binding KeyPointName}" Width="*">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.HeaderStyle>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.HeaderStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="*">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.HeaderStyle>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.HeaderStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="*">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.HeaderStyle>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.HeaderStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Address" Binding="{Binding Location.Address}" Width="*">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.HeaderStyle>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.HeaderStyle>
-                        </DataGridTextColumn>
-                        <DataGridTemplateColumn Header="View Guests" Width="*">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="VIEW" Click="ViewGuestsDataGrid"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                            <DataGridTemplateColumn.HeaderStyle>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTemplateColumn.HeaderStyle>
-                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="*" Header="GUESTS" ElementStyle="{StaticResource CenterTextBlockStyle}" HeaderStyle="{StaticResource CenterHeaderStyle}" Binding="{Binding}" />
                     </DataGrid.Columns>
                 </DataGrid>
-            </Border>
-
-            <DataGrid x:Name="GuestsDataGrid" AutoGenerateColumns="False" IsReadOnly="True" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Height="Auto" Margin="0,0,198,147">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Header="GUESTS" ElementStyle="{StaticResource CenterTextBlockStyle}" HeaderStyle="{StaticResource CenterHeaderStyle}" Binding="{Binding}" />
-                </DataGrid.Columns>
-            </DataGrid>
 
 
 
-            <Button Content="BACK" HorizontalAlignment="Left" Margin="202,627,0,0" VerticalAlignment="Top" Height="38" Width="97" Click="GoToPreviousWindow"/>
-            <Label x:Name="Label1" Content="There are no guests for this key point" HorizontalAlignment="Left" Margin="790,585,0,0" VerticalAlignment="Top" Width="226"/>
+                <Button Content="BACK" HorizontalAlignment="Left" Margin="202,627,0,0" VerticalAlignment="Top" Height="38" Width="97" Click="GoToPreviousWindow"/>
+                <Label x:Name="Label1" Content="There are no guests for this key point" HorizontalAlignment="Left" Margin="790,585,0,0" VerticalAlignment="Top" Width="226"/>
 
 
 
-        </Grid>
+            </Grid>
+        </Border>
 
 
 

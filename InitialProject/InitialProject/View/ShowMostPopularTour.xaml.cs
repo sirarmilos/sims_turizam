@@ -48,6 +48,8 @@ namespace InitialProject.View
             Years.Add("2023");
             SelectedYear = null;
             MostPopularTour.ItemsSource = null;
+            MostPopularTour.Visibility = Visibility.Hidden;
+            Label1.Visibility = Visibility.Hidden;
 
         }
 
@@ -62,6 +64,7 @@ namespace InitialProject.View
         {
             ShowMostPopularTour window = new ShowMostPopularTour();
             window.Show();
+            Close();
         }
 
         private void FindMostPopularTour(object sender, RoutedEventArgs e)
@@ -74,6 +77,8 @@ namespace InitialProject.View
             else
                 if (SelectedYear.Equals("ALL TIME"))
             {
+                MostPopularTour.Visibility = Visibility.Visible;
+                Label1.Visibility = Visibility.Hidden;
                 Tour tour = tourGuidenceService.FindMostVisitedAllTime();
                 ObservableCollection<Tour> tours = new ObservableCollection<Tour>();
                 tours.Add(tour);
@@ -86,12 +91,40 @@ namespace InitialProject.View
                 if (tour == null)
                 {
                     MostPopularTour.ItemsSource = null;
+                    MostPopularTour.Visibility = Visibility.Hidden;
+                    Label1.Visibility = Visibility.Visible;
                     return;
                 }
+                MostPopularTour.Visibility = Visibility.Visible;
+                Label1.Visibility = Visibility.Hidden;
                 ObservableCollection<Tour> tours = new ObservableCollection<Tour>();
                 tours.Add(tour);
                 MostPopularTour.ItemsSource = tours;
             }
+        }
+
+        private void GoToHomePage(object sender, RoutedEventArgs e)
+        {
+            TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+            if (tg != null)
+            {
+                GuideStart2 window = new GuideStart2("Guide1", tg);
+                window.Show();
+                Close();
+            }
+            else
+            {
+                GuideStart1 window = new GuideStart1("Guide1");
+                window.Show();
+                Close();
+            }
+        }
+
+        private void GoToAllTourOccurences(object sender, RoutedEventArgs e)
+        {
+            AllTourOccurences window = new AllTourOccurences();
+            window.Show();
+            Close();
         }
     }
 }

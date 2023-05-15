@@ -322,5 +322,12 @@ namespace InitialProject.Service
             return null;
         }
 
+        public List<TourGuidence> FindAllInsideDateRange(DateTime SelectedFromDate, DateTime SelectedToDate)
+        {
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.FindAll();
+            List<TourGuidence> filteredTourGuidences = tourGuidences.Where(tg => tg.StartTime >= SelectedFromDate && tg.StartTime <= SelectedToDate).ToList();
+            return filteredTourGuidences;
+        }
+
     }
 }

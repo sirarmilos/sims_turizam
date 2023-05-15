@@ -20,10 +20,10 @@
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
                 <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                 <StackPanel>
-                    <MenuItem Header="Home Page" Margin="0,25,0,0"/>
-                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
                     <MenuItem Header="Profile" Margin="0,5,0,0"/>
-                    <MenuItem Header="Future Tours" Margin="0,5,0,0"/>
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
                     <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
                     <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
                 </StackPanel>
@@ -35,135 +35,138 @@
 
 
         <!-- Main content -->
-        <Grid Grid.Column="1">
-            <TextBlock Text="Your Most Popular Tour" Margin="50,40,10,0" FontSize="20" FontWeight="Bold" />
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
+            <Grid Grid.Column="1">
+                <TextBlock Text="Your Most Popular Tour" Margin="50,40,10,0" FontSize="20" FontWeight="Bold" />
 
-            <Border BorderBrush="Black" BorderThickness="1" Margin="20,150,10,450" HorizontalAlignment="Stretch">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <Border BorderBrush="Black" BorderThickness="1" Margin="20,150,10,450" HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="Choose Period: " VerticalAlignment="Center" Margin="30" FontSize="15"/>
-                    <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" Margin="10" Width="150" Height="40" ItemsSource="{Binding Years, Mode=TwoWay}" SelectedItem="{Binding SelectedYear}"/>
-                    <Button Grid.Column="2" Content="SEARCH" HorizontalAlignment="Right" Margin="10" Width="120" Height="50" Click="FindMostPopularTour"/>
-                </Grid>
-            </Border>
-            <DataGrid IsReadOnly="True"  x:Name="MostPopularTour" Margin="20,100,20,20" CanUserAddRows="False" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="False" Height="100">
-                <DataGrid.Columns>
-                    
-                <DataGridTextColumn Header="Tour Name" Binding="{Binding TourName}" Width="*">
-                    <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                    </DataGridTextColumn.ElementStyle>
-                    <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Height" Value="75" />
-                            </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                    
-                <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="*" >
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Height" Value="75" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    
-                <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Height" Value="75" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    
-                    <DataGridTextColumn Header="Address" Binding="{Binding Location.Address}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Height" Value="75" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
+                        <TextBlock Grid.Column="0" Text="Choose Period: " VerticalAlignment="Center" Margin="30" FontSize="15"/>
+                        <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" Margin="10" Width="150" Height="40" ItemsSource="{Binding Years, Mode=TwoWay}" SelectedItem="{Binding SelectedYear}"/>
+                        <Button Grid.Column="2" Content="SEARCH" HorizontalAlignment="Right" Margin="10" Width="120" Height="50" Click="FindMostPopularTour"/>
+                    </Grid>
+                </Border>
+                <DataGrid IsReadOnly="True"  x:Name="MostPopularTour" Margin="20,100,20,20" CanUserAddRows="False" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="False" Height="100">
+                    <DataGrid.Columns>
 
-                    <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Height" Value="75" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
+                        <DataGridTextColumn Header="Tour Name" Binding="{Binding TourName}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="75" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
 
+                        <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="*" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="75" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="Language" Binding="{Binding Language}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Height" Value="75" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
+                        <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="75" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Address" Binding="{Binding Location.Address}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="75" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="75" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
 
 
-                    <DataGridTextColumn Header="Maximum Guests" Binding="{Binding MaxGuests}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Height" Value="75" />
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                </DataGrid.Columns>
-             </DataGrid>
+                        <DataGridTextColumn Header="Language" Binding="{Binding Language}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="75" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
 
-        </Grid>
+
+                        <DataGridTextColumn Header="Maximum Guests" Binding="{Binding MaxGuests}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="75" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Label x:Name="Label1" Content="For selected year most popular Tour does not exist!" HorizontalAlignment="Left" Margin="20,369,0,0" VerticalAlignment="Top" Width="347" FontSize="15"/>
+
+            </Grid>
+        </Border>
 
 
 
