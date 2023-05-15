@@ -222,5 +222,18 @@ namespace InitialProject.View
 
         }
 
+        private void LogoClick(object sender, RoutedEventArgs e)
+        {
+            InitializeComponent();
+
+            Guest2PageTours guest2PageTours = new Guest2PageTours(Username);
+            mainFrame.Content = guest2PageTours;
+
+            PaintButtons();
+            ToursButton.Background = Brushes.LightGray;
+            ToursButton.Foreground = Brushes.Black;
+
+            currentlySelected = ToursButton;
+        }
     }
 }
