@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="Most Popular Tour" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Yellow" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <!-- Add more setters for other properties as needed -->
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -38,6 +48,14 @@
         <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
             <Grid Grid.Column="1">
                 <TextBlock Text="Your Most Popular Tour" Margin="50,40,10,0" FontSize="20" FontWeight="Bold" />
+
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/question_mark.png" Width="16" Height="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="296,47,0,0" Panel.ZIndex="999">
+                    <Image.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Select one specific year or all time options and press SEARCH button to see your most popular tour"/>
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
 
                 <Border BorderBrush="Black" BorderThickness="1" Margin="20,150,10,450" HorizontalAlignment="Stretch">
                     <Grid>

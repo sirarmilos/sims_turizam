@@ -58,6 +58,8 @@ namespace InitialProject.View
             TourGuidences = new List<TourGuidence>();
             TourGuidences = tourGuidenceService.FindAll();
             dataGrid.ItemsSource = TourGuidences;
+            SelectedToDate = DateTime.Today;
+            SelectedFromDate = DateTime.Today;
         }
         private void GoToLogout(object sender, RoutedEventArgs e)
         {

@@ -54,7 +54,7 @@
                 <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/question_mark.png" Width="16" Height="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="300,47,0,0" Panel.ZIndex="999">
                     <Image.ToolTip>
                         <ToolTip>
-                            <TextBlock Text="Select a row in the table to start the tour."/>
+                            <TextBlock Text="Select a row in the table and press START button to start the tour."/>
                         </ToolTip>
                     </Image.ToolTip>
                 </Image>

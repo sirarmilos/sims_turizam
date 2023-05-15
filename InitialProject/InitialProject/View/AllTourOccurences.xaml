@@ -49,7 +49,23 @@
         <Grid Grid.Column="1">
             <TextBlock Text="Choose Date" Margin="50,40,147,0" FontSize="12" FontWeight="Bold"/>
 
-            <Grid Grid.Column="1">
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/question_mark.png" Width="16" Height="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="142,41,0,0" Panel.ZIndex="999">
+                    <Image.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="You can enter date range and press button APPLY FILTER to update tour table and then select one row and press button OPTIONS to see more details!"/>
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
+
+                <!--<Image Source="pack://application:,,,/InitialProject;component/Resources/Images/question_mark.png" Width="16" Height="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="176,41,0,0" Panel.ZIndex="999">
+                    <Image.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Enter date range and press button APPLY FILTER to update tour table"/>
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>-->
+
+                <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
@@ -62,10 +78,10 @@
                 <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0"  Margin="51,83,605,-83">
                 <Grid >
                     <!-- Add your content for the top grid here -->
-                    <Label Content="From: " FontSize="10" Margin="20,0,0,0"/>
+                    <Label Content="From: " FontSize="10" Margin="21,0,0,0"/>
                     <Label Content="To: " FontSize="10" HorizontalAlignment="Left" Margin="368,1,0,1" Width="36"/>
 
-                    <Border BorderBrush="Black" BorderThickness="1" Margin="74,0,369,0">
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="62,0,372,0">
                         <DatePicker x:Name="fromDatePicker"  SelectedDate="{Binding SelectedFromDate, Mode=TwoWay}"/>
                     </Border>
 
@@ -78,16 +94,16 @@
 
             </Grid>
 
-            <Button Content="APPLY FILTER" Margin="736,85,346,632" Click="ApplyDateFilters">
+            <Button Content="APPLY FILTER" Margin="736,77,346,617" Click="ApplyDateFilters">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="Black"/>
                 </Button.BorderBrush>
                 <Button.BorderThickness>
                     <Thickness>2</Thickness>
                 </Button.BorderThickness>
-                    <Button.ToolTip>
+                    <!--<Button.ToolTip>
                         <ToolTip>You can choose date range for filter</ToolTip>
-                    </Button.ToolTip>
+                    </Button.ToolTip>-->
                 </Button>
             
             
@@ -100,13 +116,13 @@
                 <Button.BorderThickness>
                     <Thickness>2</Thickness>
                 </Button.BorderThickness>
-                    <Button.ToolTip>
+                    <!--<Button.ToolTip>
                         <ToolTip>When clicked, it will appear details about tour</ToolTip>
-                    </Button.ToolTip>
+                    </Button.ToolTip>-->
                 </Button>
 
 
-            <Label Content="Please select one tour and click OPTIONS button in right bottom corner for more details" HorizontalAlignment="Left" Margin="50,173,0,0" VerticalAlignment="Top" Width="481"/>
+            <!--<Label Content="Please select one tour and click OPTIONS button in right bottom corner for more details" HorizontalAlignment="Left" Margin="50,173,0,0" VerticalAlignment="Top" Width="481"/>-->
 
         </Grid>
         </Border>

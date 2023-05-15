@@ -80,6 +80,7 @@ namespace InitialProject.View
                 TourGuidence selectedItem = (TourGuidence)dgStart1.SelectedItem;
                 tourGuidenceService.UpdateStartedField(selectedItem.Id);
                 MessageBox.Show("Tour successfully started");
+                selectedItem = tourGuidenceService.FindById(selectedItem.Id);   
                 //ShowKeyPointsInStartedTourGuidence window = new(TourGuidence, TourGuidences);
                 GuideStart2 window = new GuideStart2(Guide, selectedItem);
                 window.Show();
