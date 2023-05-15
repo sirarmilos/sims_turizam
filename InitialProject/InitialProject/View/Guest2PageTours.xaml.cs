@@ -32,9 +32,9 @@ namespace InitialProject.View
 
         private string city;
         private string country;
-        private int duration;
+        private string duration;
         private Language language;
-        private int maxGuests;
+        private string maxGuests;
 
 
         public string City
@@ -59,12 +59,33 @@ namespace InitialProject.View
 
         }
 
-        public int Duration
+        public string Duration
         {
             get { return duration; }
             set
             {
-                duration = value;
+                if (int.TryParse(value.ToString(), out int result) || string.IsNullOrEmpty(value))
+                {
+                    if (int.Parse(value) < 0)
+                    {
+                        duration = value;
+                        durationWarning.Visibility = Visibility.Visible;
+                        searchButton.IsEnabled = false;
+                    }
+                    else
+                    {
+                        duration = value;
+                        durationWarning.Visibility = Visibility.Hidden;
+                        searchButton.IsEnabled = true;
+                    }
+                }
+                else
+                {
+                    duration = value;
+                    durationWarning.Visibility = Visibility.Visible;
+                    searchButton.IsEnabled = false;
+                }
+
                 OnPropertyChanged(nameof(Duration));
             }
 
@@ -80,18 +101,41 @@ namespace InitialProject.View
             }
         }
 
-        public int MaxGuests
+        public string MaxGuests
         {
             get { return maxGuests; }
             set
             {
-                maxGuests = value;
+                if (int.TryParse(value.ToString(), out int result) || string.IsNullOrEmpty(value))
+                {
+                    if (int.Parse(value) < 0)
+                    {
+                        maxGuests = value;
+                        maxGuestsWarning.Visibility = Visibility.Visible;
+                        searchButton.IsEnabled = false;
+                    }
+                    else
+                    {
+                        maxGuests = value;
+                        maxGuestsWarning.Visibility = Visibility.Hidden;
+                        searchButton.IsEnabled = true;
+                    }
+                }
+                else
+                {
+                    maxGuests = value;
+                    maxGuestsWarning.Visibility = Visibility.Visible;
+                    searchButton.IsEnabled = false;
+                }
+
+         
                 OnPropertyChanged(nameof(MaxGuests));
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+
+        protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -106,6 +150,8 @@ namespace InitialProject.View
 
             listTours.ItemsSource = tourService.GetToursForDisplay();
 
+            City = "";
+            Country = "";
             createReservationButton.IsEnabled = false;
         }
 
@@ -143,7 +189,12 @@ namespace InitialProject.View
 
         private void SearchTours(object sender, RoutedEventArgs e)
         {
-           listTours.ItemsSource = tourService.SearchAndShow(City, Country, Duration, Languagee, MaxGuests);
+            if (string.IsNullOrEmpty(Duration))
+                Duration = "0";
+            if (string.IsNullOrEmpty(MaxGuests))
+                MaxGuests = "0";
+
+            listTours.ItemsSource = tourService.SearchAndShow(City, Country, int.Parse(Duration), Languagee, int.Parse(MaxGuests));
         }
     }
 }

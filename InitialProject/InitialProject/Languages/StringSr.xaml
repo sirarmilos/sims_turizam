@@ -53,6 +53,23 @@
     <system:String x:Key="StrTo">Do:</system:String>
     <system:String x:Key="StrCreateRequest">Kreiraj zahtev</system:String>
 
-    <system:String x:Key="StrRateGuide">Oceni voidča</system:String>
+    <system:String x:Key="StrRateGuide">Oceni vodiča</system:String>
+
+    <system:String x:Key="StrMaxGuestWarning">Unesite odgovarajuću vrednost</system:String>
+
+    <system:String x:Key="StrThereAreOnly">Preostalo je još</system:String>
+    <system:String x:Key="StrSlotsLeft">slobodno/ih mesta!</system:String>
+
+    <system:String x:Key="StrDateRange">Odaberite validne datume</system:String>
+
+    <system:String x:Key="StrGeneralInfo">Informacije:</system:String>
+    <system:String x:Key="StrUsername">Korisničko ime:</system:String>
+    <system:String x:Key="StrPhoneNumber">Broj telefona:</system:String>
+    <system:String x:Key="StrAddress">Adresa:</system:String>
+    <system:String x:Key="StrVoucherType">Tip vaučera</system:String>
+    <system:String x:Key="StrExpDate">Rok trajanja</system:String>
+
+    <system:String x:Key="StrTourStillActive">Tura je aktivna</system:String>
+
 
 </ResourceDictionary>

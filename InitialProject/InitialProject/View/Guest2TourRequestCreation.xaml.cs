@@ -36,7 +36,7 @@ namespace InitialProject.View
         private string country;
         private string description;
         private Language language;
-        private int maxGuests;
+        private string maxGuests;
 
         private DateTime startDate;
         private DateTime endDate;
@@ -46,6 +46,14 @@ namespace InitialProject.View
             get { return city; }
             set
             {
+                if(string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(Description) || string.IsNullOrEmpty(MaxGuests))
+                {
+                    createRequestButton.IsEnabled = false;
+                }
+                else
+                {
+                    createRequestButton.IsEnabled = true;
+                }
                 city = value;
                 OnPropertyChanged(nameof(City));
             }
@@ -57,6 +65,14 @@ namespace InitialProject.View
             get { return country; }
             set
             {
+                if (string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Description) || string.IsNullOrEmpty(MaxGuests))
+                {
+                    createRequestButton.IsEnabled = false;
+                }
+                else
+                {
+                    createRequestButton.IsEnabled = true;
+                }
                 country = value;
                 OnPropertyChanged(nameof(Country));
             }
@@ -68,6 +84,14 @@ namespace InitialProject.View
             get { return description; }
             set
             {
+                if (string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(MaxGuests))
+                {
+                    createRequestButton.IsEnabled = false;
+                }
+                else
+                {
+                    createRequestButton.IsEnabled = true;
+                }
                 description = value;
                 OnPropertyChanged(nameof(Country));
             }
@@ -85,12 +109,39 @@ namespace InitialProject.View
             }
         }
 
-        public int MaxGuests
+        public string MaxGuests
         {
             get { return maxGuests; }
             set
             {
-                maxGuests = value;
+                if (int.TryParse(value.ToString(), out int result))
+                {
+                    if (int.Parse(value) < 0)
+                    {
+                        maxGuests = value;
+                        maxGuestsWarning.Visibility = Visibility.Visible;
+                        createRequestButton.IsEnabled = false;
+                    }
+                    else
+                    {
+                        maxGuests = value;
+                        maxGuestsWarning.Visibility = Visibility.Hidden;
+                        createRequestButton.IsEnabled = true;
+                    }
+                }
+                else
+                {
+                    maxGuests = value;
+                    maxGuestsWarning.Visibility = Visibility.Visible;
+                    createRequestButton.IsEnabled = false;
+                }
+
+                if(string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Description))
+                {
+                    createRequestButton.IsEnabled = false;
+                }
+
+
                 OnPropertyChanged(nameof(MaxGuests));
             }
         }
@@ -98,8 +149,21 @@ namespace InitialProject.View
         public DateTime StartDate
         {
             get { return startDate; }
-            set 
+            set
             {
+                if (EndDate < value)
+                {
+                    createRequestButton.IsEnabled = false;
+                    datePickerWarningLabel.Visibility = Visibility.Visible;
+                }
+
+                else
+                {
+                    createRequestButton.IsEnabled = true;
+                    datePickerWarningLabel.Visibility = Visibility.Hidden;
+                }
+
+
                 startDate = value;
                 OnPropertyChanged(nameof(StartDate));
             }
@@ -110,6 +174,18 @@ namespace InitialProject.View
             get { return endDate; }
             set
             {
+                if(StartDate>value)
+                {
+                    createRequestButton.IsEnabled = false;
+                    datePickerWarningLabel.Visibility = Visibility.Visible;
+                }
+
+                else
+                {
+                    createRequestButton.IsEnabled = true;
+                    datePickerWarningLabel.Visibility = Visibility.Hidden;
+                }
+
                 endDate = value;
                 OnPropertyChanged(nameof(EndDate));
             }
@@ -128,6 +204,11 @@ namespace InitialProject.View
             InitializeCbLang();
             this.Username = Username;
             DataContext = this;
+
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now;
+
+            createRequestButton.IsEnabled = false;
         }
 
         public void InitializeCbLang()
@@ -151,13 +232,17 @@ namespace InitialProject.View
             tourRequest.Location = location;
             tourRequest.Description = Description;
             tourRequest.Language = Languagee;
-            tourRequest.GuestNumber = MaxGuests;
+            tourRequest.GuestNumber = int.Parse(MaxGuests);
             tourRequest.StartDate = StartDate;
             tourRequest.EndDate = EndDate;
             tourRequest.Status = "pending";
             tourRequest.CreationDate = DateTime.Now;
 
             bool result = tourRequestService.SaveTourRequest(tourRequest);
+
+            Guest2RateTourAndGuide guest2RateTourAndGuide = new Guest2RateTourAndGuide();
+            NavigationService.Navigate(guest2RateTourAndGuide);
+
         }
     }
 }

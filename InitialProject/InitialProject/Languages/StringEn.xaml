@@ -53,5 +53,22 @@
     <system:String x:Key="StrCreateRequest">Create request</system:String>
 
     <system:String x:Key="StrRateGuide">Rate guide</system:String>
-    
+
+    <system:String x:Key="StrMaxGuestWarning">Enter valid value</system:String>
+
+    <system:String x:Key="StrThereAreOnly">There are only</system:String>
+    <system:String x:Key="StrSlotsLeft">available slots left!</system:String>
+
+    <system:String x:Key="StrDateRange">Select valid range of dates</system:String>
+
+
+    <system:String x:Key="StrGeneralInfo">General info:</system:String>
+    <system:String x:Key="StrUsername">Username:</system:String>
+    <system:String x:Key="StrPhoneNumber">Phone number:</system:String>
+    <system:String x:Key="StrAddress">Adress:</system:String>
+    <system:String x:Key="StrVoucherType">Voucher type</system:String>
+    <system:String x:Key="StrExpDate">Expiration date</system:String>
+
+    <system:String x:Key="StrTourStillActive">     Tour still active   </system:String>
+
 </ResourceDictionary>

@@ -328,6 +328,11 @@ namespace InitialProject.Service
             return null;
         }
 
+        public TourGuidence FindByTourAndDate(Tour tour,DateTime dateTime)
+        {
+            return tourGuidenceRepository.FindByTourAndDate(tour,dateTime);
+        }
+
     }
 
 }

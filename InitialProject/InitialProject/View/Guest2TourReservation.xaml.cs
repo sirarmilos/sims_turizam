@@ -3,6 +3,7 @@ using InitialProject.Model;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,13 @@ namespace InitialProject.View
     public partial class Guest2TourReservation : Page
     {
         private readonly Guest2Service guest2Service = new Guest2Service();
+        
+        private readonly TourService tourService = new TourService();
+
+        private readonly TourGuidenceService tourGuidenceService = new TourGuidenceService();
+        
+        private readonly TourReservationService tourReservationService = new TourReservationService();  
+
         private string Username { get; set; }
 
 
@@ -36,11 +44,73 @@ namespace InitialProject.View
         public string Date { get; set; }
         public string KeyPoints { get; set; }
 
+        private string maxGuests;
+
+        public string MaxGuests
+        {
+            get { return maxGuests; }
+            set
+            {
+                if (int.TryParse(value.ToString(), out int result) || string.IsNullOrEmpty(value))
+                {
+                    if (int.Parse(value) < 0)
+                    {
+                        maxGuests = value;
+                        guestsNumWarning.Visibility = Visibility.Visible;
+                        createReservationButton.IsEnabled = false;
+                    }
+                    else
+                    {
+                        if (tourDisplayDTO.FreeSlots < int.Parse(value))
+                        {
+                            maxGuests = value;
+                            guestsNumWarning.Visibility = Visibility.Hidden;
+                            createReservationButton.IsEnabled = false;
+                            numOfSlotsLabel.Content = tourDisplayDTO.FreeSlots.ToString();
+
+                            warning1label.Visibility = Visibility.Visible;
+                            warning2label.Visibility = Visibility.Visible;
+                            numOfSlotsLabel.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            maxGuests = value;
+                            guestsNumWarning.Visibility = Visibility.Hidden;
+                            createReservationButton.IsEnabled = true;
+
+                            warning1label.Visibility = Visibility.Hidden;
+                            warning2label.Visibility = Visibility.Hidden;
+                            numOfSlotsLabel.Visibility = Visibility.Hidden;
+                        }
+                    }
+                }
+                else
+                {
+                    maxGuests = value;
+                    guestsNumWarning.Visibility = Visibility.Visible;
+                    createReservationButton.IsEnabled = false;
+                }
+
+                OnPropertyChanged(nameof(MaxGuests));
+            }
+        }
+
+        public TourDisplayDTO tourDisplayDTO { get; set; }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 
         public Guest2TourReservation()
         {
             InitializeComponent();
             InitializeComboBoxVouchers();
+            DataContext = this;
         }
 
         public Guest2TourReservation(string username,TourDisplayDTO tourDisplayDTO)
@@ -49,6 +119,10 @@ namespace InitialProject.View
             Username = username;
 
             InitializeComboBoxVouchers();
+
+            this.tourDisplayDTO = tourDisplayDTO;
+
+            DataContext = this;
 
             TourName = tourDisplayDTO.TourName;
             tourName.Content = TourName;
@@ -102,6 +176,42 @@ namespace InitialProject.View
             //Window parent = Window.GetWindow(this);
             NavigationService.Navigate(guest2PageTours);
             //page.Content = guest2PageTours;
+
+        }
+
+        private void createReservationButton_Click(object sender, RoutedEventArgs e)
+        {
+            int numberOfGuests = int.Parse(MaxGuests);
+
+            ComboBoxItem selectedItem = ComboBoxVouchers.SelectedItem as ComboBoxItem;
+
+            int voucherId = 0;
+
+            if (selectedItem != null)
+            {
+                string selectedValue = selectedItem.Tag as string;
+
+                if (int.TryParse(selectedValue, out voucherId))
+                {
+                }
+                else
+                {
+                    voucherId = 0;
+                }
+            }
+
+            Tour tour = tourService.FindByName(tourDisplayDTO);
+            TourGuidence tourGuidence = tourGuidenceService.FindByTourAndDate(tour,tourDisplayDTO.TourDate);
+
+            if(numberOfGuests<=tourGuidence.FreeSlots)
+            {
+                if(tourReservationService.CreateReservation(Username,tourGuidence,numberOfGuests,voucherId,tourReservationService.NextId()))
+                {
+                    guest2Service.UpdateVoucherUsedStatus(voucherId);
+                    Guest2RateTourAndGuide guest2RateTourAndGuide = new Guest2RateTourAndGuide();
+                    NavigationService.Navigate(guest2RateTourAndGuide);
+                }
+            }
 
         }
     }

@@ -24,11 +24,13 @@
                 <ComboBox x:Name="cbLanguage" SelectedItem="{Binding Languagee}" HorizontalAlignment="Left" Margin="422,81,0,0" VerticalAlignment="Top" Width="277" FontSize="28"/>
                 <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrGuestsForTours}" HorizontalAlignment="Left" Margin="422,161,0,0" VerticalAlignment="Top" FontSize="24"/>
                 <TextBox HorizontalAlignment="Left" Margin="422,203,0,0" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="277" FontSize="28"/>
-                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrFrom}" HorizontalAlignment="Left" Margin="392,338,0,0" VerticalAlignment="Top" FontSize="24"/>
-                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrTo}" HorizontalAlignment="Left" Margin="580,338,0,0" VerticalAlignment="Top" FontSize="24"/>
-                <DatePicker SelectedDate="{Binding StartDate}" HorizontalAlignment="Left" Margin="389,394,0,0" VerticalAlignment="Top"/>
-                <DatePicker SelectedDate="{Binding EndDate}" HorizontalAlignment="Left" Margin="580,394,0,0" VerticalAlignment="Top"/>
-                <Button Background="{DynamicResource ButtonColor}" Content="{DynamicResource StrCreateRequest}" HorizontalAlignment="Center" Margin="0,479,0,0" VerticalAlignment="Top" FontSize="28" Height="81" Width="216" Click="CreateTourRequest"/>
+                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrFrom}" HorizontalAlignment="Left" Margin="389,324,0,0" VerticalAlignment="Top" FontSize="24"/>
+                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrTo}" HorizontalAlignment="Left" Margin="577,324,0,0" VerticalAlignment="Top" FontSize="24"/>
+                <DatePicker SelectedDate="{Binding StartDate}" HorizontalAlignment="Left" Margin="386,380,0,0" VerticalAlignment="Top" Width="134"/>
+                <DatePicker SelectedDate="{Binding EndDate}" HorizontalAlignment="Left" Margin="577,380,0,0" VerticalAlignment="Top" Width="134"/>
+                <Button x:Name="createRequestButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" Content="{DynamicResource StrCreateRequest}" HorizontalAlignment="Center" Margin="0,479,0,0" VerticalAlignment="Top" FontSize="28" Height="81" Width="216" Click="CreateTourRequest"/>
+                <Label x:Name="maxGuestsWarning" Visibility="Hidden" Foreground="Red" Content="{DynamicResource StrMaxGuestWarning}" HorizontalAlignment="Left" Margin="422,247,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="datePickerWarningLabel" Visibility="Hidden" Content="{DynamicResource StrDateRange}" Foreground="Red" HorizontalAlignment="Left" Margin="440,420,0,0" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
 

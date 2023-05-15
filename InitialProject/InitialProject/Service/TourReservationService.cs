@@ -158,6 +158,7 @@ namespace InitialProject.Service
             return tourReservationRepository.FindById(id);
         }
 
-
+        public int NextId()
+        { return tourReservationRepository.NextId();}
     }
 }
