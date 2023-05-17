@@ -99,7 +99,7 @@ namespace InitialProject.Repository
 
                 return;
             }
-            
+
             allReservationReschedulingRequests = FindAll();
             allReservationReschedulingRequests.Add(
                 new ReservationReschedulingRequest(NextId(), reservation, newStartDate, newEndDate, status, comment, false));
