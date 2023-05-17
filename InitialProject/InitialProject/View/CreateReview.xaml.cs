@@ -212,19 +212,29 @@ namespace InitialProject.View
 
         private void SaveReview(object sender, RoutedEventArgs e)
         {
-            SaveNewCreateReviewDTO saveNewCreateReviewDTO = 
+            if (!IsValidationPassed())
+            {
+                MessageBox.Show("You haven't input a recommendation comment.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            SaveNewCreateReviewDTO saveNewCreateReviewDTO =
                 new SaveNewCreateReviewDTO(
-                    SelectedAccommodation.ReservationId, 
-                    Cleanliness, 
-                    Staff, 
-                    Comfort, 
-                    ValueForMoney, 
-                    Comment, 
-                    Images, 
-                    RecommendationLevel, 
+                    SelectedAccommodation.ReservationId,
+                    Cleanliness,
+                    Staff,
+                    Comfort,
+                    ValueForMoney,
+                    Comment,
+                    Images,
+                    RecommendationLevel,
                     RecommendationComment);
 
-            reviewService.SaveNewReview(saveNewCreateReviewDTO);
+            if (renovationCheckBox.IsChecked.GetValueOrDefault())
+                reviewService.SaveNewReviewWithRenovation(saveNewCreateReviewDTO);
+            else
+                reviewService.SaveNewReview(saveNewCreateReviewDTO);
+
 
             reviewService.CheckSuperOwner(saveNewCreateReviewDTO.ReservationId);
 
@@ -241,6 +251,13 @@ namespace InitialProject.View
                 MessageBox.Show("All accommodations are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 GoToSearchAndShowAccommodations(sender, e);
             }
+        }
+
+        public bool IsValidationPassed()
+        {
+            if (renovationCheckBox.IsChecked.GetValueOrDefault() && string.IsNullOrWhiteSpace(RecommendationComment)) return false;
+
+            return true;
         }
 
         private void CancelReview(object sender, RoutedEventArgs e)

@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         WindowStyle="None"
         Title="MainWindow"
-        Width="838" Height="684"
+        Width="1400" Height="800"
         WindowStartupLocation ="CenterScreen">
+    <!--    Width="838" Height="684" -->
     
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"></Frame>

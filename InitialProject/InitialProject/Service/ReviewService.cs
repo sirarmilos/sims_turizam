@@ -120,7 +120,7 @@ namespace InitialProject.Service
             return null;
         }
 
-        public void SaveNewReview(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
+        public void SaveNewReviewWithRenovation(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
         {
             Review review = new Review(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
 
@@ -128,7 +128,14 @@ namespace InitialProject.Service
                 new RenovationRecommendation(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
 
             renovationRecommendationService.SaveRenovationRecommendation(renovationRecommendation);
-            reviewRepository.Add(review); // mozda Save
+            reviewRepository.Add(review); 
+        }
+
+        public void SaveNewReview(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
+        {
+            Review review = new Review(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
+
+            reviewRepository.Add(review);
         }
 
         public bool Guest1HasNotification()

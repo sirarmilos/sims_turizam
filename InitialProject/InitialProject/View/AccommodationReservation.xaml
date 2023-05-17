@@ -95,7 +95,7 @@
                         <StackPanel Grid.Column="1">
                             <Border Visibility="Visible" BorderBrush="Gray" Grid.Column="1"  BorderThickness="2" VerticalAlignment="Top" MinHeight="475" Margin="0,4,10,0">
                                 <StackPanel>
-                                    <TextBlock Visibility="Collapsed" x:Name="SuggestedDatesMessage" Grid.Column="1" TextAlignment="Center"  Foreground="{Binding LabelColor}" FontSize="24" FontWeight="Bold" Text="Poruka poruka" TextWrapping="Wrap" Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                    <TextBlock Visibility="Collapsed" Margin="0,10,0,0" x:Name="SuggestedDatesMessage" Grid.Column="1" TextAlignment="Center"  Foreground="{Binding LabelColor}" FontSize="24" FontWeight="Bold" Text="Poruka poruka" TextWrapping="Wrap" Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                                     <Grid x:Name="FirstWindow">
                                         <Grid.RowDefinitions>
@@ -149,7 +149,7 @@
                                         <TextBox Grid.Row="3" PreviewTextInput="AllowOnlyDigits" FontSize="20" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding GuestsNumber,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" Height="30" Width="280" Margin="0,38,0,0"/>
                                         <TextBlock Grid.Row="3" Text="required" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,64,0,0" Grid.RowSpan="2"  />
 
-                                        <Button Grid.Row="4" Content="Reserve" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="CreateReservation" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
+                                        <Button Grid.Row="4" Content="Book" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="CreateReservation" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
 
                                         <Button Grid.Row="5" Content="Back" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="BackToFirstWindow" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
                                     </Grid>
