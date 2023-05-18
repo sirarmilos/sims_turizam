@@ -240,8 +240,8 @@ namespace InitialProject.View
 
             bool result = tourRequestService.SaveTourRequest(tourRequest);
 
-            Guest2RateTourAndGuide guest2RateTourAndGuide = new Guest2RateTourAndGuide();
-            NavigationService.Navigate(guest2RateTourAndGuide);
+            Guest2DisplayRequestedTours guest2DisplayRequestedTours = new Guest2DisplayRequestedTours(Username);
+            //NavigationService.Navigate(guest2DisplayRequestedTours);
 
         }
     }

@@ -1,0 +1,23 @@
+﻿<Page x:Class="InitialProject.View.Guest2NotificationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:InitialProject.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="630" d:DesignWidth="1494"
+      Title="Guest2NotificationPage">
+
+    <Grid  Background="{DynamicResource BackGrid}" Margin="0,0,0,0">
+        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" x:Name="dataGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tour name" Binding="{Binding Tour.TourName}" Width="80"/>
+                <DataGridTextColumn Header="Country" Binding="{Binding Tour.Location.Country}" Width="80"/>
+                <DataGridTextColumn Header="City" Binding="{Binding Tour.Location.City}" Width="80"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Tour.Description}" Width="80"/>
+                <DataGridTextColumn Header="Language" Binding="{Binding Tour.Language}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Page>

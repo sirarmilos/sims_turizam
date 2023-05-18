@@ -58,15 +58,15 @@ namespace InitialProject.View
                 dataGrid.ItemsSource = tourDisplayDTOs;
 
                 DataGridTemplateColumn buttonColumn = new DataGridTemplateColumn();
-                buttonColumn.Header = "Button Column";
+               // buttonColumn.Header = "Button Column";
 
-                FrameworkElementFactory buttonFactory = new FrameworkElementFactory(typeof(Button));
+              /* FrameworkElementFactory buttonFactory = new FrameworkElementFactory(typeof(Button));
                 buttonFactory.SetValue(Button.ContentProperty, "Attend tour!");
                 buttonFactory.SetValue(Button.TagProperty, tourReservationId);
                 buttonFactory.AddHandler(Button.ClickEvent, new RoutedEventHandler(Button_Click));
 
                 buttonColumn.CellTemplate = new DataTemplate();
-                buttonColumn.CellTemplate.VisualTree = buttonFactory;
+                buttonColumn.CellTemplate.VisualTree = buttonFactory;*/
 
                 dataGrid.Columns.Add(buttonColumn);
 

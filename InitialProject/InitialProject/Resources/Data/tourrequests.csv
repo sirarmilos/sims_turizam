@@ -1,10 +1,18 @@
-1|Guest21|1|opis1|SERBIAN|3|15-Jul-23 12:00:00 AM|30-Jul-23 12:00:00 AM|15-May-23 12:00:00 AM|pending
-2|Guest22|7|opis2|ENGLISH|7|26-Jun-23 12:00:00 AM|28-Jun-23 12:00:00 AM|15-May-23 12:00:00 AM|pending
-3|Guest23|2|opis3|ENGLISH|10|20-May-23 12:00:00 AM|25-May-23 12:00:00 AM|15-May-23 12:00:00 AM|pending
-4|Guest21|21|asdasd|SERBIAN|3123|12-Jan-01 12:00:00 AM|01-Mar-01 12:00:00 AM|14-May-23 12:00:00 AM|pending
-5|Guest21|22|tura po rumenki ide gas|SERBIAN|69|18-Jan-01 12:00:00 AM|01-Feb-01 12:00:00 AM|14-May-23 12:00:00 AM|pending
-6|Guest21|23|Tura po Rumenki|SERBIAN|20|15-May-23 12:00:00 AM|24-May-23 12:00:00 AM|15-May-23 12:00:00 AM|pending
-7|Guest21|24|Tura po Rumenackim gostionicama|SERBIAN|123|08-May-23 12:00:00 AM|31-May-23 12:00:00 AM|15-May-23 12:00:00 AM|pending
-8|Guest21|25|Tura po Rumenackim predelima i lepotama|SERBIAN|100|02-May-23 12:00:00 AM|11-May-23 12:00:00 AM|15-May-23 12:00:00 AM|pending
-9|Guest21|26|Tura po Rumenki|SERBIAN|32|02-May-23 12:00:00 AM|11-May-23 12:00:00 AM|15-May-23 12:00:00 AM|pending
-10|Guest21|27|Luda bleja po poljima maka|ENGLISH|420|10-May-23 12:00:00 AM|25-May-23 12:00:00 AM|15-May-23 12:00:00 AM|pending
+1|Guest21|1|opis1|SERBIAN|3|15-Jul-23 12:00:00 AM|30-Jul-23 12:00:00 AM|15-May-23 12:00:00 AM|accepted
+2|Guest22|7|opis2|ENGLISH|7|26-Jun-23 12:00:00 AM|28-Jun-23 12:00:00 AM|15-May-23 12:00:00 AM|accepted
+3|Guest23|2|opis3|ENGLISH|10|20-May-23 12:00:00 AM|25-May-23 12:00:00 AM|15-May-23 12:00:00 AM|invalid
+4|Guest21|21|asdasd|SERBIAN|3123|12-Jan-01 12:00:00 AM|01-Mar-01 12:00:00 AM|14-May-23 12:00:00 AM|invalid
+5|Guest21|22|tura po rumenki ide gas|GERMAN|69|18-Jan-01 12:00:00 AM|01-Feb-01 12:00:00 AM|14-May-23 12:00:00 AM|invalid
+6|Guest21|23|Tura po Rumenki|GERMAN|20|15-May-23 12:00:00 AM|24-May-23 12:00:00 AM|15-May-23 12:00:00 AM|invalid
+7|Guest21|24|Tura po Rumenackim gostionicama|GERMAN|123|08-May-23 12:00:00 AM|31-May-23 12:00:00 AM|15-May-23 12:00:00 AM|invalid
+8|Guest21|25|Tura po Rumenackim predelima i lepotama|GERMAN|100|02-May-23 12:00:00 AM|11-May-23 12:00:00 AM|15-May-23 12:00:00 AM|invalid
+9|Guest21|26|Tura po Rumenki|SERBIAN|32|02-May-23 12:00:00 AM|11-May-23 12:00:00 AM|15-May-23 12:00:00 AM|invalid
+10|Guest21|27|Luda bleja po poljima maka|ENGLISH|420|10-May-23 12:00:00 AM|25-May-23 12:00:00 AM|15-May-23 12:00:00 AM|invalid
+11|Guest21|28|asasdads|SERBIAN|233|10-May-23 12:00:00 AM|16-May-23 12:00:00 AM|16-May-23 12:00:00 AM|invalid
+12|Guest21|29|Bleja po rumenki|ENGLISH|3|09-May-23 12:00:00 AM|10-May-23 12:00:00 AM|17-May-23 12:00:00 AM|invalid
+13|Guest21|30|bleja po dizeldorfu|GERMAN|1203|28-May-23 12:00:00 AM|31-May-23 12:00:00 AM|18-May-23 12:00:00 AM|accepted
+14|Guest21|31|asdkasdkasdk|MANDARINSKI|31232123|19-Aug-23 12:00:00 AM|06-Oct-23 12:00:00 AM|18-May-23 12:00:00 AM|pending
+15|Guest21|32|sdaasd|ENGLISH|2313|28-May-23 12:00:00 AM|31-May-23 12:00:00 AM|18-May-23 12:00:00 AM|pending
+16|Guest21|33|asdasd|ENGLISH|12|08-Jul-25 12:00:00 AM|19-Nov-25 12:00:00 AM|18-May-23 12:00:00 AM|pending
+17|Guest21|34|asdasd|ENGLISH|12|08-Jul-25 12:00:00 AM|19-Nov-25 12:00:00 AM|18-May-23 12:00:00 AM|pending
+18|Guest21|35|adwad|GERMAN|100|18-Jun-25 12:00:00 AM|12-Nov-25 12:00:00 AM|18-May-23 12:00:00 AM|pending

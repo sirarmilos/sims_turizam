@@ -235,5 +235,41 @@ namespace InitialProject.View
 
             currentlySelected = ToursButton;
         }
+
+        private void TourRequestDisplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            Guest2DisplayRequestedTours guest2DisplayRequestedTours = new Guest2DisplayRequestedTours(Username);
+            mainFrame.Content = guest2DisplayRequestedTours;
+
+            PaintButtons();
+            TourRequestDisplayButton.Background = Brushes.LightGray;
+            TourRequestDisplayButton.Foreground = Brushes.Black;
+
+            currentlySelected = TourRequestDisplayButton;
+        }
+
+        private void NotificationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Guest2NotificationPage guest2NotificationPage = new Guest2NotificationPage(Username);
+            mainFrame.Content = guest2NotificationPage; 
+
+            PaintButtons();
+            NotificationsButton.Background = Brushes.LightGray;
+            NotificationsButton.Foreground = Brushes.Black;
+
+            currentlySelected = NotificationsButton;
+        }
+
+        private void TourRequestStatisticsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Guest2TourRequestStatistics guest2TourRequestStatistics = new Guest2TourRequestStatistics(Username);
+            mainFrame.Content = guest2TourRequestStatistics;
+
+            PaintButtons();
+            TourRequestStatisticsButton.Background = Brushes.LightGray;
+            TourRequestStatisticsButton.Foreground = Brushes.Black;
+
+            currentlySelected = TourRequestStatisticsButton;
+        }
     }
 }

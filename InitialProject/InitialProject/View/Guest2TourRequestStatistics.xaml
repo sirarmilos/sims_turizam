@@ -1,0 +1,41 @@
+﻿<Page x:Class="InitialProject.View.Guest2TourRequestStatistics"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:InitialProject.View"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+      mc:Ignorable="d" 
+      d:DesignHeight="630" d:DesignWidth="1494"
+      Title="Guest2TourRequestStatistics">
+
+    <Grid x:Name="myGrid" Background="{DynamicResource BackGrid}">
+        <lvc:PieChart x:Name="pieChart" RenderTransformOrigin="0.506,0.512" Margin="72,86,1086,268"/>
+        <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="138,17,0,0" TextWrapping="Wrap" Text="Ratio of accepted vs invalid tours" FontSize="22" VerticalAlignment="Top" Height="69" Width="204"/>
+        <ComboBox x:Name="comboBoxYears" SelectedItem="{Binding Year}" HorizontalAlignment="Left" Margin="413,128,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Year:" HorizontalAlignment="Left" Margin="413,97,0,0" VerticalAlignment="Top"/>
+        <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="720,17,0,0" TextWrapping="Wrap" Text="Tour requests per language" FontSize="22" VerticalAlignment="Top" Height="69" Width="204"/>
+        <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="1132,17,0,0" TextWrapping="Wrap" Text="Tour requests per location" FontSize="22" VerticalAlignment="Top" Height="69" Width="204"/>
+
+        <lvc:CartesianChart x:Name="chartLanguague" Width="336" Height="276" Margin="654,86,504,268" Series="{Binding Path=DataChart}" LegendLocation="Right" AutomationProperties.IsOffscreenBehavior="Onscreen" DisableAnimations="True">
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title="Languages" Labels="{Binding Path=XLabels}"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Number of occurences"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
+        <GroupBox Header="Accepted guests" Margin="396,448,246,38">
+            <Grid>
+                <Label Content="Average number of accepted guests:" HorizontalAlignment="Left" Margin="40,10,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="tb1" HorizontalAlignment="Left" Margin="40,43,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="203" Height="18"/>
+                <Label Content="Year:" HorizontalAlignment="Left" Margin="492,10,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="comboBoxYears1" SelectedItem="{Binding Year1}" HorizontalAlignment="Left" Margin="492,45,0,0" VerticalAlignment="Top" Width="120"/>
+            </Grid>
+        </GroupBox>
+
+
+    </Grid>
+
+
+</Page>
