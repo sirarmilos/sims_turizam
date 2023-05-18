@@ -57,7 +57,7 @@ namespace InitialProject.Service
             }
 
 
-            return result;
+            return result.Distinct().ToList();
         }
 
     }

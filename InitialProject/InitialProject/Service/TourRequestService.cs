@@ -251,17 +251,19 @@ namespace InitialProject.Service
 
             foreach(TourRequest tourRequest in GetByUser(username))
             {
-
-                if (string.IsNullOrEmpty(year))
+                if (tourRequest.Status.Equals("accepted"))
                 {
-                    count++;
-                    average += tourRequest.GuestNumber;
-                }
+                    if (string.IsNullOrEmpty(year))
+                    {
+                        count++;
+                        average += tourRequest.GuestNumber;
+                    }
 
-                else if(tourRequest.StartDate.Year.ToString().Equals(year))
-                {
-                    count++;
-                    average += tourRequest.GuestNumber;
+                    else if (tourRequest.StartDate.Year.ToString().Equals(year))
+                    {
+                        count++;
+                        average += tourRequest.GuestNumber;
+                    }
                 }
             }
 
