@@ -15,6 +15,10 @@ namespace InitialProject.Model
 
         public Reservation Reservation { get; set; }
 
+        public DateTime OldStartDate { get; set; }
+
+        public DateTime OldEndDate { get; set; }
+
         public DateTime NewStartDate { get; set; }
 
         public DateTime NewEndDate { get; set; }
@@ -34,6 +38,8 @@ namespace InitialProject.Model
         {
             Id = id;
             Reservation = reservation;
+            OldStartDate = reservation.StartDate;
+            OldEndDate = reservation.EndDate;
             NewStartDate = newStartDate;
             NewEndDate = newEndDate;
             Status = status;
@@ -41,20 +47,9 @@ namespace InitialProject.Model
             ViewedByGuest = viewedByGuest;
         }
 
-        public ReservationReschedulingRequest(ReservationReschedulingRequest reservationReschedulingRequest)
-        {
-            this.Id = reservationReschedulingRequest.Id;
-            this.Reservation = reservationReschedulingRequest.Reservation;
-            this.NewStartDate = reservationReschedulingRequest.NewStartDate;
-            this.NewEndDate = reservationReschedulingRequest.NewEndDate;
-            this.Status = reservationReschedulingRequest.Status;
-            this.Comment = reservationReschedulingRequest.Comment;
-            this.ViewedByGuest = reservationReschedulingRequest.ViewedByGuest;
-        }
-
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Reservation.ReservationId.ToString(), NewStartDate.ToString("dd.MM.yyyy"), NewEndDate.ToString("dd.MM.yyyy"), Status.ToString(), Comment.ToString(), ViewedByGuest.ToString() };
+            string[] csvValues = { Id.ToString(), Reservation.ReservationId.ToString(), OldStartDate.ToString("dd.MM.yyyy"), OldEndDate.ToString("dd.MM.yyyy"), NewStartDate.ToString("dd.MM.yyyy"), NewEndDate.ToString("dd.MM.yyyy"), Status.ToString(), Comment.ToString(), ViewedByGuest.ToString() };
             return csvValues;
         }
 
@@ -68,18 +63,30 @@ namespace InitialProject.Model
             string temporaryDate = values[2];
             if (!string.IsNullOrEmpty(temporaryDate))
             {
-                NewStartDate = DateTime.ParseExact(temporaryDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                OldStartDate = DateTime.ParseExact(temporaryDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
             }
 
             temporaryDate = values[3];
             if (!string.IsNullOrEmpty(temporaryDate))
             {
+                OldEndDate = DateTime.ParseExact(temporaryDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            }
+
+            temporaryDate = values[4];
+            if (!string.IsNullOrEmpty(temporaryDate))
+            {
+                NewStartDate = DateTime.ParseExact(temporaryDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            }
+
+            temporaryDate = values[5];
+            if (!string.IsNullOrEmpty(temporaryDate))
+            {
                 NewEndDate = DateTime.ParseExact(temporaryDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
             }
 
-            Status = values[4];
-            Comment = values[5];
-            ViewedByGuest = Convert.ToBoolean(values[6]);
+            Status = values[6];
+            Comment = values[7];
+            ViewedByGuest = Convert.ToBoolean(values[8]);
         }
     }
 }

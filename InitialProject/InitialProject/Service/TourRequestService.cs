@@ -168,6 +168,19 @@ namespace InitialProject.Service
                 return false;
             }
         }
+        public bool SaveTourRequest(TourRequest tourRequest)
+        {
+            try
+            {
+                tourRequestRepository.Save(tourRequest);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+            
 
         public Location FindMostFrequentLocationInLastYear()
         {

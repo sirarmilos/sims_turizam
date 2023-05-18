@@ -130,14 +130,16 @@ namespace InitialProject.View
             dgFreeDates.IsEnabled = false;
 
             dpStartDate.SelectedDate = DateTime.Now.AddDays(1);
+            dpStartDate.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Now));
+
             dpEndDate.SelectedDate = DateTime.Now.AddDays(2);
+            dpEndDate.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Now));
+
             dgFreeDates.Items.Refresh();
             dgFreeDates.ItemsSource = AvailableDateSlots;
+
             tbDuration.Text = string.Empty;
             tbDescription.Text = string.Empty;
-
-            dpStartDate.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Now));
-            dpEndDate.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Now));
         }
 
         private void RenovateAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -201,19 +203,6 @@ namespace InitialProject.View
             return string.IsNullOrEmpty(SelectedAccommodationName) || dpStartDate.SelectedDate == null || dpEndDate.SelectedDate == null || string.IsNullOrEmpty(tbDuration.Text);
         }
 
-        private bool CheckErrorDate()
-        {
-            if(dpStartDate.SelectedDate == null || dpEndDate.SelectedDate == null)
-            {
-                return true;
-            }
-
-            StartDate = dpStartDate.SelectedDate.Value;
-            EndDate = dpEndDate.SelectedDate.Value;
-
-            return DateTime.Compare(StartDate, EndDate) >= 0;
-        }
-
         private bool CheckErrorDuration()
         {
             return Duration > EndDate.Subtract(StartDate).Days;
@@ -233,7 +222,7 @@ namespace InitialProject.View
             }
         }
 
-        private void CheckErrorDuration(object sender, TextChangedEventArgs e) //
+        private void CheckErrorDurationTextChanged(object sender, TextChangedEventArgs e)
         {
             textBlockErrorDuration1.Visibility = Visibility.Hidden;
 
@@ -256,20 +245,6 @@ namespace InitialProject.View
             }
         }
 
-        private void LoadingRowForDgFreeDates(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
-
-        private void labeltbFocus(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 1)
-            {
-                var label = (Label)sender;
-                Keyboard.Focus(label.Target);
-            }
-        }
-
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(dgFreeDates.IsEnabled == true)
@@ -278,7 +253,7 @@ namespace InitialProject.View
             }
         }
 
-        private void dpEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void EndDateSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(CheckErrorDate() == true)
             {
@@ -291,7 +266,7 @@ namespace InitialProject.View
             }
         }
 
-        private void dpStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void StartDateSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CheckErrorDate() == true)
             {
@@ -301,6 +276,33 @@ namespace InitialProject.View
             else
             {
                 labelErrorDate.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private bool CheckErrorDate()
+        {
+            if (dpStartDate.SelectedDate == null || dpEndDate.SelectedDate == null)
+            {
+                return true;
+            }
+
+            StartDate = dpStartDate.SelectedDate.Value;
+            EndDate = dpEndDate.SelectedDate.Value;
+
+            return DateTime.Compare(StartDate, EndDate) >= 0;
+        }
+
+        private void LoadingRowForDgFreeDates(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+        }
+
+        private void labeltbFocus(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 1)
+            {
+                var label = (Label)sender;
+                Keyboard.Focus(label.Target);
             }
         }
     }

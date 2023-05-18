@@ -107,7 +107,6 @@ namespace InitialProject.Repository
 
 
 
-        // moraju da dele allAccommodations, nez da l u rep ili servisu da ostavim
         public List<Accommodation> FindAllByAccommodationName(List<Accommodation> allAccommodations, string name) 
         {
             return allAccommodations.FindAll(x => x.AccommodationName.ToLower().StartsWith(name.ToLower()) == true);

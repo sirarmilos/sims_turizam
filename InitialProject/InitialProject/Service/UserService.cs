@@ -103,7 +103,7 @@ namespace InitialProject.Service
             foreach (User temporaryUser in allGuests1)
             {
                 if (!IsSuperGuest(temporaryUser.Username))
-                    superGuestService.CheckIfUserEligibleForSuperGuest(temporaryUser.Username);
+                    superGuestService.MakeEligibleUserSuperGuest(temporaryUser.Username);
             }
         }
 
@@ -138,5 +138,12 @@ namespace InitialProject.Service
         {
             canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
         }
+
+        public User FindByUsername(string username)
+        {
+            return userRepository.FindByUsername(username);
+        }
+
+
     }
 }

@@ -89,6 +89,119 @@ namespace InitialProject.View
 
         public List<string> ChartPeriodTime { get; set; }
 
+        private void OwnerHomePageLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OwnerHomePageLogin_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void AccommodationStart_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void AccommodationStart_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            AccommodationStart window = new AccommodationStart(OwnerUsername);
+            window.Show();
+            Close();
+        }
+
+        private void ShowOwnerManageBookingMoveRequests_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ShowOwnerManageBookingMoveRequests_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void ShowAndCancellationRenovation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ShowAndCancellationRenovation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void RateGuests_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void RateGuests_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            RateGuests window = new RateGuests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void ShowGuestReviews_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ShowGuestReviews_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void OwnerForum_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OwnerForum_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        private void Logout_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Logout_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (GlobalOwnerClass.NotificationRead == true)
+            {
+                accommodationService.MarkAsReadNotificationsCancelledReservations(UnreadCancelledReservationsToDelete);
+            }
+
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
+        private void Notifications_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Notifications_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            GlobalOwnerClass.NotificationRead = true;
+            notifications.IsSubmenuOpen = true;
+            rateGuestsNotifications.Focus();
+        }
+
         public AccommodationStatistics(string ownerUsername, string ownerHeader, ShowStatisticsAccommodationDTO showStatisticsAccommodationDTO)
         {
             InitializeComponent();
@@ -131,93 +244,122 @@ namespace InitialProject.View
 
         private void SetDefaultValue()
         {
-            SelectedYear = null;
-
-            Years = new List<string>();
-
             Years = accommodationService.FindAccommodationYears(ShowStatisticsAccommodationDTO.Id);
+
+            SelectedYear = "all year";
 
             if(Years.Count == 1)
             {
-                Years.Clear();
-                labelDataNotFound.Visibility = Visibility.Visible;
-                cbSelectYear.IsEnabled = false;
-                MostBusyPeriodTime = "-";
-                chartReservation.Visibility = Visibility.Hidden;
-                chartCanceledReservation.Visibility = Visibility.Hidden;
-                chartRescheduledReservation.Visibility = Visibility.Hidden;
-                chartRenovationRecommendation.Visibility = Visibility.Hidden;
+                SetDefaultEmptyValue();
             }
             else
             {
-                labelDataNotFound.Visibility = Visibility.Hidden;
-                AccommodationStatisticsDataDTOs = new List<AccommodationStatisticsDataDTO>();
-
-                AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationYearStatistics(ShowStatisticsAccommodationDTO.Id, Years);
-
-                MostBusyPeriodTime = accommodationService.FindMostBusyYear(ShowStatisticsAccommodationDTO.Id, Years).ToString();
-
-                SetChartYearValue();
+                SetDefaultExistingValue();
             }
+        }
+
+        private void SetDefaultEmptyValue()
+        {
+            Years.Clear();
+            labelDataNotFound.Visibility = Visibility.Visible;
+            labelReservationTitle.Visibility = Visibility.Hidden;
+            labelCanceledReservationTitle.Visibility = Visibility.Hidden;
+            labelRescheduledReservationTitle.Visibility = Visibility.Hidden;
+            labelRenovationRecommendationTitle.Visibility = Visibility.Hidden;
+            chartReservation.Visibility = Visibility.Hidden;
+            chartCanceledReservation.Visibility = Visibility.Hidden;
+            chartRescheduledReservation.Visibility = Visibility.Hidden;
+            chartRenovationRecommendation.Visibility = Visibility.Hidden;
+            cbSelectPeriod.IsEnabled = false;
+            MostBusyPeriodTime = "-";
+        }
+
+        private void SetDefaultExistingValue()
+        {
+            labelDataNotFound.Visibility = Visibility.Hidden;
+
+            AccommodationStatisticsDataDTOs = accommodationService.FindAccommodationYearStatistics(ShowStatisticsAccommodationDTO.Id, Years);
+
+            MostBusyPeriodTime = accommodationService.FindMostBusyYear(ShowStatisticsAccommodationDTO.Id, Years).ToString();
+
+            SetChartYearValue();
         }
 
         private void SetChartYearValue()
         {
             ChartPeriodTime = Years.FindAll(x => x.Equals("all year") == false);
 
+            SetChartYearReservation();
+            SetChartYearCanceledReservation();
+            SetChartYearRescheduledReservation();
+            SetChartYearRenovationRecommendation();
+        }
+
+        private void SetChartYearReservation()
+        {
             SeriesCollectionReservation = new SeriesCollection
             {
                 new ColumnSeries
                 {
-                    Title = "number of reservations",
+                    Title = "Number of reservations",
                     DataLabels = true,
                     Values = new ChartValues<int>(accommodationService.FindAccommodationReservationCount(AccommodationStatisticsDataDTOs))
                 }
             };
 
+            labelXAxisReservation.Title = "Years";
+            labelXAxisReservation.Labels = ChartPeriodTime;
+            chartReservation.Series = SeriesCollectionReservation;
+        }
+
+        private void SetChartYearCanceledReservation()
+        {
             SeriesCollectionCanceledReservation = new SeriesCollection()
             {
                 new ColumnSeries
                 {
-                    Title = "number of canceled reservations",
+                    Title = "Number of canceled reservations",
                     DataLabels = true,
                     Values = new ChartValues<int>(accommodationService.FindAccommodationCanceledReservationCount(AccommodationStatisticsDataDTOs))
                 }
             };
 
+            labelXAxisCanceledReservation.Title = "Years";
+            labelXAxisCanceledReservation.Labels = ChartPeriodTime;
+            chartCanceledReservation.Series = SeriesCollectionCanceledReservation;
+        }
+
+        private void SetChartYearRescheduledReservation()
+        {
             SeriesCollectionRescheduledReservation = new SeriesCollection
             {
                 new ColumnSeries
                 {
-                    Title = "number of rescheduled reservations",
+                    Title = "Number of rescheduled reservations",
                     DataLabels = true,
                     Values = new ChartValues<int>(accommodationService.FindAccommodationRescheduledReservationCount(AccommodationStatisticsDataDTOs))
                 }
             };
 
+            labelXAxisRescheduledReservation.Title = "Years";
+            labelXAxisRescheduledReservation.Labels = ChartPeriodTime;
+            chartRescheduledReservation.Series = SeriesCollectionRescheduledReservation;
+        }
+
+        private void SetChartYearRenovationRecommendation()
+        {
             SeriesCollectionRenovationRecommedation = new SeriesCollection
             {
                 new ColumnSeries
                 {
-                    Title = "number of renovation recommedations",
+                    Title = "Number of renovation recommedations",
                     DataLabels = true,
                     Values = new ChartValues<int>(accommodationService.FindAccommodationRenovationRecommendationsCount(AccommodationStatisticsDataDTOs))
                 }
             };
 
-            labelXAxisReservation.Title = "Years";
-            labelXAxisCanceledReservation.Title = "Years";
-            labelXAxisRescheduledReservation.Title = "Years";
             labelXAxisRenovationRecommendation.Title = "Years";
-
-            labelXAxisReservation.Labels = ChartPeriodTime;
-            labelXAxisCanceledReservation.Labels = ChartPeriodTime;
-            labelXAxisRescheduledReservation.Labels = ChartPeriodTime;
             labelXAxisRenovationRecommendation.Labels = ChartPeriodTime;
-
-            chartReservation.Series = SeriesCollectionReservation;
-            chartCanceledReservation.Series = SeriesCollectionCanceledReservation;
-            chartRescheduledReservation.Series = SeriesCollectionRescheduledReservation;
             chartRenovationRecommendation.Series = SeriesCollectionRenovationRecommedation;
         }
 
@@ -245,88 +387,79 @@ namespace InitialProject.View
 
         public void SetChartMonthValue()
         {
-            List<string> months = new List<string> { "January", "February", "March", "April", "May", "June", "July", "August", "Septmeber", "October", "November", "December" };
+            ChartPeriodTime = new List<string> { "January", "February", "March", "April", "May", "June", "July", "August", "Septmeber", "October", "November", "December" };
 
-            ChartPeriodTime = months;
+            SetChartMonthReservation();
+            SetChartMonthCanceledReservation();
+            SetChartMonthRescheduledReservation();
+            SetChartMonthRenovationRecommendation();
+        }
 
-            /* labelXAxisReservation = new LiveCharts.Wpf.Axis()
-            {
-                Separator = new LiveCharts.Wpf.Separator { Step = 1 },
-            };
-
-            labelXAxisCanceledReservation = new LiveCharts.Wpf.Axis()
-            {
-                Separator = new LiveCharts.Wpf.Separator { Step = 1 },
-            };
-
-            labelXAxisRescheduledReservation = new LiveCharts.Wpf.Axis()
-            {
-                Separator = new LiveCharts.Wpf.Separator { Step = 1 },
-            };
-
-            labelXAxisRenovationRecommendation = new LiveCharts.Wpf.Axis()
-            {
-                Separator = new LiveCharts.Wpf.Separator { Step = 1 },
-            };*/
-
-            /* LiveCharts.Wpf.Axis ax = new LiveCharts.Wpf.Axis()
-            {
-                Separator = new LiveCharts.Wpf.Separator { Step = 1 },
-            };*/
-
+        private void SetChartMonthReservation()
+        {
             SeriesCollectionReservation = new SeriesCollection
             {
                 new ColumnSeries
                 {
-                    Title = "number of reservations",
+                    Title = "Number of reservations",
                     DataLabels = true,
                     Values = new ChartValues<int>(accommodationService.FindAccommodationReservationMonthCount(AccommodationStatisticsDataDTOs))
                 }
             };
 
+            labelXAxisReservation.Title = "Months";
+            labelXAxisReservation.Labels = ChartPeriodTime;
+            chartReservation.Series = SeriesCollectionReservation;
+        }
+
+        private void SetChartMonthCanceledReservation()
+        {
             SeriesCollectionCanceledReservation = new SeriesCollection()
             {
                 new ColumnSeries
                 {
-                    Title = "number of canceled reservations",
+                    Title = "Number of canceled reservations",
                     DataLabels = true,
                     Values = new ChartValues<int>(accommodationService.FindAccommodationCanceledReservationMonthCount(AccommodationStatisticsDataDTOs))
                 }
             };
 
+            labelXAxisCanceledReservation.Title = "Months";
+            labelXAxisCanceledReservation.Labels = ChartPeriodTime;
+            chartCanceledReservation.Series = SeriesCollectionCanceledReservation;
+        }
+
+        private void SetChartMonthRescheduledReservation()
+        {
             SeriesCollectionRescheduledReservation = new SeriesCollection
             {
                 new ColumnSeries
                 {
-                    Title = "number of rescheduled reservations",
+                    Title = "Number of rescheduled reservations",
                     DataLabels = true,
                     Values = new ChartValues<int>(accommodationService.FindAccommodationRescheduledReservationMonthCount(AccommodationStatisticsDataDTOs))
                 }
             };
 
+            labelXAxisRescheduledReservation.Title = "Months";
+            labelXAxisRescheduledReservation.Labels = ChartPeriodTime;
+            chartRescheduledReservation.Series = SeriesCollectionRescheduledReservation;
+        }
+
+        private void SetChartMonthRenovationRecommendation()
+        {
             SeriesCollectionRenovationRecommedation = new SeriesCollection
             {
                 new ColumnSeries
                 {
-                    Title = "number of renovation recommedations",
+                    Title = "Number of renovation recommedations",
                     DataLabels = true,
                     Values = new ChartValues<int>(accommodationService.FindAccommodationRenovationRecommendationsMonthCount(AccommodationStatisticsDataDTOs))
                 }
             };
 
-            labelXAxisReservation.Title = "Months";
-            labelXAxisCanceledReservation.Title = "Months";
-            labelXAxisRescheduledReservation.Title = "Months";
             labelXAxisRenovationRecommendation.Title = "Months";
-
-            labelXAxisReservation.Labels = ChartPeriodTime;
-            labelXAxisCanceledReservation.Labels = ChartPeriodTime;
-            labelXAxisRescheduledReservation.Labels = ChartPeriodTime;
             labelXAxisRenovationRecommendation.Labels = ChartPeriodTime;
-
-            chartReservation.Series = SeriesCollectionReservation;
-            chartCanceledReservation.Series = SeriesCollectionCanceledReservation;
-            chartRescheduledReservation.Series = SeriesCollectionRescheduledReservation;
             chartRenovationRecommendation.Series = SeriesCollectionRenovationRecommedation;
         }
 
@@ -342,67 +475,6 @@ namespace InitialProject.View
         void LoadingRowForDgImages(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
-
-        private void GoToOwnerHomePageLogin(object sender, RoutedEventArgs e)
-        {
-            OwnerHomePageLogin window = new OwnerHomePageLogin(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToAccommodationStart(object sender, RoutedEventArgs e)
-        {
-            AccommodationStart window = new AccommodationStart(OwnerUsername);
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowOwnerManageBookingMoveRequests(object sender, RoutedEventArgs e)
-        {
-            OwnerManageBookingMoveRequests window = new OwnerManageBookingMoveRequests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowAndCancellationRenovation(object sender, RoutedEventArgs e)
-        {
-            ShowAndCancellationRenovation window = new ShowAndCancellationRenovation(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToRateGuests(object sender, RoutedEventArgs e)
-        {
-            RateGuests window = new RateGuests(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToShowGuestReviews(object sender, RoutedEventArgs e)
-        {
-            ShowGuestReviews window = new ShowGuestReviews(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToOwnerForum(object sender, RoutedEventArgs e)
-        {
-            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
-            window.Show();
-            Close();
-        }
-
-        private void GoToOwnerHomePageNotLogin(object sender, RoutedEventArgs e)
-        {
-            if (GlobalOwnerClass.NotificationRead == true)
-            {
-                accommodationService.MarkAsReadNotificationsCancelledReservations(UnreadCancelledReservationsToDelete);
-            }
-
-            LoginForm window = new LoginForm();
-            window.Show();
-            Close();
         }
     }
 }

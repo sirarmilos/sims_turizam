@@ -1,4 +1,5 @@
-﻿using InitialProject.IRepository;
+﻿using InitialProject.Dto;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.View;
@@ -309,6 +310,11 @@ namespace InitialProject.Service
             return tourGuidenceRepository.FindById(tourGuidenceId);
         }
 
+        public TourAttendanceDTO FindTourAttendanceDTO(int id)
+        {
+            return tourGuidenceRepository.FindTourAttendanceDTO(id);
+        }
+        
         public TourGuidence CheckIfStartedAndNotFinished()
         {
             List<TourGuidence> guidences = tourGuidenceRepository.FindAll();
@@ -341,4 +347,5 @@ namespace InitialProject.Service
         }
 
     }
+
 }
