@@ -79,7 +79,7 @@ namespace InitialProject.Repository
 
 
 
-        public void Create(Reservation reservation, DateTime newStartDate, DateTime newEndDate, string status, string comment) // todo: izmestiti u servis? ili srediti sa sirarovim funkcijama kao dole
+        public void Create(Reservation reservation, DateTime newStartDate, DateTime newEndDate, string status, string comment)
         {
             ReservationReschedulingRequest requestAlreadyExists = FindRequestByReservationId(reservation.ReservationId, reservation.GuestUsername);
             List<ReservationReschedulingRequest> allReservationReschedulingRequests;
@@ -99,7 +99,7 @@ namespace InitialProject.Repository
 
                 return;
             }
-            
+
             allReservationReschedulingRequests = FindAll();
             allReservationReschedulingRequests.Add(
                 new ReservationReschedulingRequest(NextId(), reservation, newStartDate, newEndDate, status, comment, false));
@@ -126,6 +126,11 @@ namespace InitialProject.Repository
             return FindAllByGuest1Username(guest1Username).ToList().Find(x => x.Reservation.ReservationId == reservationId);
         }
 
+        public ReservationReschedulingRequest FindRequestByRequestId(int requestId, string guest1Username)
+        {
+            return FindAllByGuest1Username(guest1Username).ToList().Find(x => x.Id == requestId);
+        }
+
         public void UpdateViewedRequestsByGuest1(string guest1Username) 
         {
             List<ReservationReschedulingRequest> allReservationReschedulingRequests = FindAll();
@@ -140,12 +145,12 @@ namespace InitialProject.Repository
 
         public int FindAccommodationRescheduledReservationCountByYear(int accommodationId, int year)
         {
-            return FindByAccommodationId(accommodationId).ToList().FindAll(x => (x.NewStartDate.Year == year || x.NewEndDate.Year == year) && x.Status.Equals("accepted") == true).Count; //
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => (x.OldStartDate.Year == year || x.OldEndDate.Year == year) && x.Status.Equals("accepted") == true).Count; //
         }
 
         public List<ReservationReschedulingRequest> FindAccommodationRescheduledReservationsByYear(int accommodationId, int year)
         {
-            return FindByAccommodationId(accommodationId).ToList().FindAll(x => (x.NewStartDate.Year == year || x.NewEndDate.Year == year) && x.Status.Equals("accepted") == true); //
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => (x.OldStartDate.Year == year || x.OldEndDate.Year == year) && x.Status.Equals("accepted") == true); //
         }
     }
 }

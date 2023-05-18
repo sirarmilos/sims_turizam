@@ -1,78 +1,34 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Diagnostics;
-//using System.Reflection.PortableExecutable;
-//using System.Windows;
-//using System.Windows.Input;
-//using GalaSoft.MvvmLight.Command;
-//using InitialProject.DTO;
-//using InitialProject.Model;
-//using InitialProject.Service;
-//using InitialProject.ViewModel;
-
-using InitialProject.DTO;
+﻿using InitialProject.DTO;
+using InitialProject.Model;
+using InitialProject.Repository;
 using InitialProject.Service;
-using InitialProject.View;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows;
-using Prism.Commands;
-using GalaSoft.MvvmLight.Command;
-using System.Collections.ObjectModel;
-using System.Windows.Documents;
 using System.Windows.Controls;
-using InitialProject.Model;
-using System.Windows.Navigation;
-using System;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
-using System.ComponentModel;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace InitialProject.View
 {
-    public partial class ShowReservations : Page, INotifyPropertyChanged
+    public partial class Guest1RequestPreview : Page
     {
-        private ReservationService reservationService;
+        private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
         private string accommodationName;
-        private DateTime startDate;
-        private DateTime endDate;
-        private int guestsNumber;
+        private DateTime oldStartDate;
+        private DateTime oldEndDate;
+        private DateTime newStartDate;
+        private DateTime newEndDate;
         private string guest1;
-
-
-        public int GuestsNumber
-        {
-            get { return guestsNumber; }
-            set
-            {
-                guestsNumber = value;
-            }
-        }
-
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set
-            {
-                startDate = value;
-            }
-        }
-
-        public DateTime EndDate
-        {
-            get { return endDate; }
-            set
-            {
-                endDate = value;
-            }
-        }
 
         public string Guest1
         {
@@ -92,46 +48,51 @@ namespace InitialProject.View
             }
         }
 
-        public ObservableCollection<ShowReservationDTO> ShowReservationDTOs
+        public DateTime OldStartDate
+        {
+            get { return oldStartDate; }
+            set
+            {
+                oldStartDate = value;
+            }
+        }
+
+        public DateTime OldEndtDate
+        {
+            get { return oldEndDate; }
+            set
+            {
+                oldEndDate = value;
+            }
+        }
+
+        public DateTime NewStartDate
+        {
+            get { return newStartDate; }
+            set
+            {
+                newStartDate = value;
+            }
+        }
+
+        public DateTime NewEndDate
+        {
+            get { return newEndDate; }
+            set
+            {
+                newEndDate = value;
+            }
+        }
+
+        public Guest1RebookingRequestsDTO Guest1RebookingRequestsDTO
         {
             get;
             set;
         }
 
-        //private bool notification;
-        //public bool Notification
-        //{
-        //    get { return notification; }
-        //    set
-        //    {
-        //        notification = value;
-        //    }
-        //}
 
+        public string Caller { get; set; }
 
-
-        //public string NotificationEnable
-        //{
-        //    get;
-        //    set;
-        //}
-
-
-        public ICommand CancelCommand { get; set; }
-
-        public ICommand RescheduleCommand { get; set; }
-
-        //public DelegateCommand GoToGuest1StartCommand { get; }
-
-        //public DelegateCommand GoToSearchAndShowAccommodationsCommand { get; }
-
-        //public DelegateCommand GoToCreateReviewCommand { get; }
-
-        //public DelegateCommand GoToGuest1RequestsCommand { get; }
-
-        //public DelegateCommand GoToLogoutCommand { get; }
-
-        //public DelegateCommand CheckNotificationCommand { get; }
         private bool notification;
         public bool Notification
         {
@@ -141,18 +102,6 @@ namespace InitialProject.View
                 notification = value;
             }
         }
-
-        private Brush _labelColor;
-        public Brush LabelColor
-        {
-            get { return _labelColor; }
-            set
-            {
-                _labelColor = value;
-                OnPropertyChanged(nameof(LabelColor));
-            }
-        }
-
 
         private void CheckNotification()
         {
@@ -168,100 +117,57 @@ namespace InitialProject.View
             }
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public ShowReservations(string username, Page page)
+        public Guest1RequestPreview(string guest1, Guest1RebookingRequestsDTO guest1RebookingRequestsDTO, string callingWindow, Page page)
         {
             InitializeComponent();
-            this.DataContext = this;
-            Guest1 = username;
-            reservationService = new ReservationService(Guest1);
 
-            //GoToGuest1StartCommand = new DelegateCommand(GoToGuest1Start);
-            //GoToSearchAndShowAccommodationsCommand = new DelegateCommand(GoToSearchAndShowAccommodations);
-            //GoToCreateReviewCommand = new DelegateCommand(GoToCreateReview);
-            //GoToGuest1RequestsCommand = new DelegateCommand(GoToGuest1Requests);
-            //GoToLogoutCommand = new DelegateCommand(GoToLogout);
+            Guest1 = guest1;
+
+            DataContext = this;
+
+            Caller = callingWindow;
+
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
+
+            //Guest1RebookingRequestsDTOs = reservationReschedulingRequestService.FindAllByGuest1Username();
+            Guest1RebookingRequestsDTO = guest1RebookingRequestsDTO;
 
             SetUsernameHeader();
 
-            ValidationMessage.Visibility = Visibility.Collapsed;
-
-            //CheckNotificationCommand = new DelegateCommand(CheckNotification);
-
-            ShowReservationDTOs = new ObservableCollection<ShowReservationDTO>(reservationService.FindAll(Guest1));
-            CancelCommand = new RelayCommand<ShowReservationDTO>(Cancel);
-            RescheduleCommand = new RelayCommand<ShowReservationDTO>(Reschedule);
-
             SetComboBoxes(page);
-        }
 
+        }
         private void SetUsernameHeader()
         {
-            Notification = reservationService.Guest1HasNotification();
+            Notification = reservationReschedulingRequestService.Guest1HasNotification();
             CheckNotification();
             usernameAndSuperGuest.Text = $"{Guest1}";
             superGuest.Text = $"{CheckSuperType()}";
+        }
+
+        public void ReturnBackToCaller(object sender, RoutedEventArgs e)
+        {
+            if (Caller.Equals("Guest1Requests"))
+                GoToGuest1Requests(sender, e);
+            else
+                GoToShowGuest1Notifications(sender,e);
         }
 
         private string CheckSuperType()
         {
             string superType = string.Empty;
 
-            if (reservationService.IsSuperGuest(Guest1))
+            if (reservationReschedulingRequestService.IsSuperGuest(Guest1))
             {
-                superType = "(Super guest)";
+                superType = " (Super guest)";
             }
 
             return superType;
         }
 
-        private void Cancel(ShowReservationDTO showReservationDTO)
+        void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
         {
-            bool isReservationCancelEligible = reservationService.IsRemoved(showReservationDTO);
-
-            if (showReservationDTO.StartDate <= DateTime.Now)
-            {
-                //MessageBox.Show("Reservation is not eligible for cancellation since the start date is in the past.", "Error",
-                    //MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (!isReservationCancelEligible)
-            {
-                ValidationMessage.Text = "Reservation is not eligible for cancellation. Since the number of left cancelation days is 0.";
-                ValidationMessage.Visibility = Visibility.Visible;
-                ValidationBorder.Visibility = Visibility.Visible;
-                LabelColor = Brushes.Red;
-                //MessageBox.Show("Reservation is not eligible for cancellation. Since the number of left cancelation days is 0.", "Error",
-                //MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            ShowReservationDTOs.Remove(showReservationDTO);
-
-            ValidationMessage.Text = "Reservation has been successfully canceled.";
-            ValidationMessage.Visibility = Visibility.Visible;
-            ValidationBorder.Visibility = Visibility.Visible;
-            LabelColor = Brushes.Green;
-        }
-
-        private void Reschedule(ShowReservationDTO showReservationDTO)
-        {
-
-            if (showReservationDTO.StartDate < DateTime.Now)
-            {
-                MessageBox.Show("Reservation is not eligible for rescheduling since it already started.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            NavigationService?.Navigate(new CreateReservationReschedulingRequest(showReservationDTO, Guest1, "ShowReservations", this));
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
         private bool comboBoxClicked = false;
@@ -321,6 +227,11 @@ namespace InitialProject.View
         private void CBItemPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             itemClicked = true;
+        }
+
+        private void CreateRequest(object sender, RoutedEventArgs e)
+        {
+            GoToShowReservations(sender, e);
         }
 
         private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
@@ -496,38 +407,7 @@ namespace InitialProject.View
                 }
             }
         }
+
+
     }
-
-    public class DateTimeToVisibilityConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is DateTime dateTime)
-            {
-                if (parameter is string parameterValue)
-                {
-                    if (parameterValue == "Past")
-                    {
-                        return dateTime < DateTime.Now ? Visibility.Collapsed : Visibility.Visible;
-                    }
-                    else if (parameterValue == "Future")
-                    {
-                        return dateTime > DateTime.Now ? Visibility.Collapsed : Visibility.Visible;
-                    }
-                }
-            }
-
-            return Visibility.Visible;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
 }
-
-
-
-

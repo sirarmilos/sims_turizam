@@ -105,7 +105,7 @@ namespace InitialProject.Service
         {
             int days = DateTime.Now.Subtract(temporaryReservation.EndDate).Days;
 
-            if (days <= 5 && days >= 0)
+            if (days <= 5 && days > 0)
             {
                 string deadline = "This is the last day to rate an accommodation.";
 
@@ -120,7 +120,7 @@ namespace InitialProject.Service
             return null;
         }
 
-        public void SaveNewReview(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
+        public void SaveNewReviewWithRenovation(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
         {
             Review review = new Review(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
 
@@ -128,7 +128,14 @@ namespace InitialProject.Service
                 new RenovationRecommendation(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
 
             renovationRecommendationService.SaveRenovationRecommendation(renovationRecommendation);
-            reviewRepository.Add(review); // mozda Save
+            reviewRepository.Add(review); 
+        }
+
+        public void SaveNewReview(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
+        {
+            Review review = new Review(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
+
+            reviewRepository.Add(review);
         }
 
         public bool Guest1HasNotification()

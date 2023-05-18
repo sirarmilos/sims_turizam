@@ -13,6 +13,12 @@ namespace InitialProject.DTO
 
         public string AccommodationName { get; set; }
 
+        public string City { get; set; }
+
+        public string Country { get; set; }
+
+        public string OwnerUsername { get; set; }
+
         public DateTime OldStartDate { get; set; }
 
         public DateTime OldEndDate { get; set; }
@@ -43,12 +49,31 @@ namespace InitialProject.DTO
             Status = status;
         }
 
+        public Guest1RebookingRequestsDTO(ReservationReschedulingRequest temporaryReservationReschedulingRequest)
+        {
+            ReservationId = temporaryReservationReschedulingRequest.Reservation.ReservationId;
+            AccommodationName = temporaryReservationReschedulingRequest.Reservation.Accommodation.AccommodationName;
+            City = temporaryReservationReschedulingRequest.Reservation.Accommodation.Location.City;
+            Country = temporaryReservationReschedulingRequest.Reservation.Accommodation.Location.Country;
+            OwnerUsername = temporaryReservationReschedulingRequest.Reservation.Accommodation.OwnerUsername;
+            OldStartDate = temporaryReservationReschedulingRequest.OldStartDate;
+            OldEndDate = temporaryReservationReschedulingRequest.OldEndDate;
+            NewStartDate = temporaryReservationReschedulingRequest.NewStartDate;
+            NewEndDate = temporaryReservationReschedulingRequest.NewEndDate;
+            Comment = temporaryReservationReschedulingRequest.Comment;
+            ViewedByGuest = temporaryReservationReschedulingRequest.ViewedByGuest;
+            Status = temporaryReservationReschedulingRequest.Status;
+        }
+
         public Guest1RebookingRequestsDTO(Reservation reservation, ReservationReschedulingRequest temporaryRebookingRequest)
         {
             ReservationId = reservation.ReservationId;
             AccommodationName = reservation.Accommodation.AccommodationName;
-            OldStartDate = reservation.StartDate;
-            OldEndDate = reservation.EndDate;
+            City = reservation.Accommodation.Location.City;
+            Country = reservation.Accommodation.Location.Country;
+            OwnerUsername = reservation.Accommodation.OwnerUsername;
+            OldStartDate = temporaryRebookingRequest.OldStartDate;
+            OldEndDate = temporaryRebookingRequest.OldEndDate;
             NewStartDate = temporaryRebookingRequest.NewStartDate;
             NewEndDate = temporaryRebookingRequest.NewEndDate;
             Comment = temporaryRebookingRequest.Comment;

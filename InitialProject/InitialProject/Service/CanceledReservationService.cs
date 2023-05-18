@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace InitialProject.Service
 {
@@ -54,7 +55,7 @@ namespace InitialProject.Service
 
             foreach(CanceledReservation temporaryCanceledReservation in yearCanceledReservations.ToList())
             {
-                canceledReservationCount[temporaryCanceledReservation.StartDate.Month - 1]++;
+                canceledReservationCount[temporaryCanceledReservation.CancellationDate.Month - 1]++;
             }
 
             return canceledReservationCount;

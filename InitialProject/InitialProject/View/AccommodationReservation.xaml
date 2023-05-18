@@ -1,105 +1,238 @@
-﻿<Window x:Class="InitialProject.View.AccommodationReservation"
+﻿<Page x:Class="InitialProject.View.AccommodationReservation"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="AccommodationReservation" Height="768" Width="1376">
-
-    <Grid>
-
-
+            xmlns:designData="clr-namespace:InitialProject.DesignData"
+        Background="White"
+        Title="Accommodation Reservation" d:DesignHeight="684" d:DesignWidth="838">
 
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="700" />
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+    <Page.DataContext>
+        <designData:AccommodationReservationDesignData />
+    </Page.DataContext>
 
 
+    <DockPanel>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <DockPanel DockPanel.Dock="Top" Margin="0,2,15,0">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="https://img001.prntscr.com/file/img001/AboPt71lRn6VPLBmk3xMmA.png" Width="88" Height="50" Margin="0,0,0,0" />
+            </StackPanel>
 
+            <Grid HorizontalAlignment="Right">
 
-        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1">
-            <Menu DockPanel.Dock ="Top" Width="711">
-                <MenuItem Header="Home" Click="GoToGuest1Start"/>
-                <MenuItem Header="Create Review" Click="GoToCreateReview"/>
-                <MenuItem Header="Search and Show Accommodations" Click="GoToSearchAndShowAccommodations"/>
-                <MenuItem Header="My reservations" Click="GoToShowReservations"/>
-                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
-                <MenuItem Header="Logout" Click="GoToLogout"/>
-                <MenuItem x:Name="usernameAndSuperGuest" IsEnabled="False"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
-            </Menu>
+                <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0" />
+                <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
+
+                <StackPanel Grid.Column="1" Orientation="Vertical">
+                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="22" />
+                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" FontSize="20"  FontWeight="Bold" Height="28" />
+                </StackPanel>
+
+            </Grid>
+
         </DockPanel>
 
-        <DataGrid ItemsSource="{Binding Accommodation.Images, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Width="500" Height="241" Margin="84,388,86,270">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Images" Width="472">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding}" Height="241"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Width="834" Height="67" Margin="4,0,4,0">
 
 
-        <DatePicker Height="30" Width="503" Grid.Column="2" x:Name="StartDatePicker" Margin="106,58,-94,811"/>
-        <Label Content="End date" FontSize="14" Margin="50,96,381,667" Grid.Column="1" Grid.ColumnSpan="2" />
+            <Button Content="Home" Click="GoToSearchAndShowAccommodations" Width="70" Height="50" Margin="10,0,8,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC"/>
 
-        <DatePicker Height="30" Width="503" Grid.Column="2" x:Name="EndDatePicker" Margin="106,96,-94,773"/>
-        <Button Content="Search" Click="Search" Margin="393,168,-94,674" Grid.Column="2"/>
+            <Button Content="Reservations" Click="GoToShowReservations"  Width="140" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" BorderBrush="#FFACACAC">
+                <Button.Background>
+                    <SolidColorBrush Color="#FFF0F0F0"/>
+                </Button.Background>
+            </Button>
 
-        <TextBox Height="30" Width="250" PreviewTextInput="AllowOnlyDigits" Text="{Binding CalendarReservationDays, Mode = OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="51,195,268,674" Grid.Column="1" Grid.ColumnSpan="2"/>
-        <Label Content="Number of reservation days (*)" FontSize="14" Margin="49,164,268,698" Grid.Column="1" Grid.ColumnSpan="2" />
-
-
-        <StackPanel Margin="50,263,-109,159" Grid.Column="1" Grid.ColumnSpan="2">
-            <Label FontSize="16" Content="Available dates" Height="40" />
-            <ListBox x:Name="DateSlotsListBox" Height="Auto" Width="600" Margin="0,30,0,10" />
-        </StackPanel>
-        <Label FontSize="10" Grid.Column="1"  x:Name="SuggestedDatesMessage" Foreground="Red" Content="" Margin="50,293,130,583" Grid.ColumnSpan="2"/>
-
-        <Label Content="Start date" FontSize="14" Margin="50,58,381,699" Grid.Column="1" Grid.ColumnSpan="2" />
-        <DatePicker Height="30" Width="503" Grid.Column="2" x:Name="ReservationStartDatePicker" Margin="106,508,-94,361"/>
-        <Label Content="End date" FontSize="14" Margin="50,546,381,218" Grid.Column="1" Grid.ColumnSpan="2" />
-        <DatePicker Height="30" Width="503" Grid.Column="2" x:Name="ReservationEndDatePicker" Margin="106,549,-94,320"/>
-        <Label Content="Start date" FontSize="14" Margin="50,508,381,250" Grid.Column="1" Grid.ColumnSpan="2" />
-        <Label Content="Reserve your accommodation stay" FontSize="16" Margin="50,466,267,388" Grid.Column="1" Grid.ColumnSpan="2" />
-        <Label Content="See availability" FontSize="16" Margin="50,10,381,747" Grid.Column="1" Grid.ColumnSpan="2" />
-        <Button Content="Reserve" Click="CreateReservation" Margin="393,626,-94,218" Grid.Column="2"/>
-        <TextBox Height="30" Width="250" PreviewTextInput="AllowOnlyDigits" Text="{Binding GuestsNumber, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="51,649,268,220" Grid.Column="1" Grid.ColumnSpan="2"/>
-        <Label Content="Number of guests (*)" FontSize="14" Margin="50,616,267,246" Grid.Column="1" Grid.ColumnSpan="2" />
+            <ComboBox x:Name="CBCreateReview" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBCreateReviewDropDownClosed" FontSize="20" FontWeight="Bold" Width="160" Height="50" Margin="9,0,9,0" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBoxItem Content="Create review" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Reviews" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Requests" PreviewMouseDown="CBItemPreviewMouseDown" />
+            </ComboBox>
 
 
+            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
+                <StackPanel>
+                    <TextBlock Text="Whenever" HorizontalAlignment="Center" Height="22" Margin="0,0,0,0" VerticalAlignment="Top" />
+                    <TextBlock Text="Wherever" Height="23" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                </StackPanel>
+            </Button>
 
-        <Label FontSize="15" Grid.Column="0" x:Name="AccommodationLabel" Content="" Margin="44,95,310,767"/>
-        <Label Content="Accommodation" FontSize="20" Margin="37,12,395,837" />
-        <Label Content="Name" FontSize="16" Margin="44,73,418,788" />
-        <Label Content="Location" FontSize="16" Margin="44,132,418,731" />
-        <DataGrid Height="45" Width="400" Margin="79,174,191,680" x:Name="listAccommodations" CanUserAddRows="False" IsReadOnly="True" AutoGenerateColumns="False" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="120" Header="City" Binding="{Binding Location.City }"/>
-                <DataGridTextColumn Width="100" Header="State" Binding="{Binding Location.Country}"/>
-                <DataGridTextColumn Width="*" Header="Address" Binding="{Binding Location.Address}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Label FontSize="15" Grid.Column="0" x:Name="AccommodationLabelMinReservationDays" Content="" Margin="44,274,310,583"/>
-        <Label Content="Minimal number of reservation days" FontSize="16" Margin="44,241,283,617" />
-        <Label FontSize="15" Grid.Column="0" x:Name="AccommodationLabelMaxGuests" Content="" Margin="44,344,310,509"/>
-        <Label Content="Maximal number of guests" FontSize="16" Margin="44,311,283,546" />
+            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC" />
+
+            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+                <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Logout" PreviewMouseDown="CBItemPreviewMouseDown" />
+            </ComboBox>
+
+        </DockPanel>
 
 
 
 
-    </Grid>
+        <ScrollViewer>
+            <StackPanel>
+
+                <StackPanel Margin="10,0,0,10">
+                    <!-- margina skroz dole je 20 -->
+                    <Label Content="Accommodation Reservation" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
+
+                    <Grid Margin="0,0,0,0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="*"/>
+                            <ColumnDefinition Width="320"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="1">
+                            <Border Visibility="Visible" BorderBrush="Gray" Grid.Column="1"  BorderThickness="2" VerticalAlignment="Top" MinHeight="475" Margin="0,4,10,0">
+                                <StackPanel>
+                                    <TextBlock Visibility="Collapsed" Margin="0,10,0,0" x:Name="SuggestedDatesMessage" Grid.Column="1" TextAlignment="Center"  Foreground="{Binding LabelColor}" FontSize="24" FontWeight="Bold" Text="Poruka poruka" TextWrapping="Wrap" Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                                    <Grid x:Name="FirstWindow">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="100" />
+                                            <RowDefinition Height="90" />
+                                            <RowDefinition Height="90" />
+                                            <RowDefinition Height="80" />
+                                            <RowDefinition Height="100" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0" Text="Start Date" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" FontSize="24" FontWeight="Bold" Margin="0,8,0,0"  />
+                                        <DatePicker Grid.Row="0" FontSize="20" FontWeight="Bold" x:Name="StartDatePicker" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" Width="200" Margin="0,43,0,0"/>
+                                        <TextBlock Grid.Row="0" Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"  />
+
+                                        <TextBlock Grid.Row="1" Text="End Date" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold"  />
+                                        <DatePicker Grid.Row="1" FontSize="20" FontWeight="Bold" x:Name="EndDatePicker" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,33,0,0" Height="30" Width="200"/>
+                                        <TextBlock Grid.Row="1" Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"  />
+
+                                        <TextBlock Grid.Row="2" Text="Reservation Days" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,2,0,0" />
+                                        <TextBox Grid.Row="2" PreviewTextInput="AllowOnlyDigits" FontSize="20" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding CalendarReservationDays, Mode = OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" Height="30" Width="280" Margin="0,38,0,0"/>
+                                        <TextBlock Grid.Row="2" Text="required" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,64,0,0" Grid.RowSpan="2"  />
+
+                                        <Button Grid.Row="3" Content="Check" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="Search" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
+
+                                        <Button Grid.Row="4" Content="Back" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="GoToSearchAndShowAccommodations" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
+                                    </Grid>
+
+                                    <Grid x:Name="SecondWindow" Visibility="Collapsed">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="100" />
+                                            <RowDefinition Height="90" />
+                                            <RowDefinition Height="90" />
+                                            <RowDefinition Height="80" />
+                                            <RowDefinition Height="100" />
+
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0" Text="Available Dates" Height="35" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,5,0,35"  />
+                                        <ListBox Grid.Row="0" x:Name="DateSlotsListBox" Height="Auto" Width="Auto" Margin="10,0,10,0" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+
+                                        <TextBlock Grid.Row="1" Text="Start Date" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" FontSize="24" FontWeight="Bold" Margin="0,8,0,0"  />
+                                        <DatePicker Grid.Row="1" FontSize="20" FontWeight="Bold" x:Name="ReservationStartDatePicker" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" Width="200" Margin="0,43,0,0"/>
+                                        <TextBlock Grid.Row="1" Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"  />
+
+                                        <TextBlock Grid.Row="2" Text="End Date" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold"  />
+                                        <DatePicker Grid.Row="2" FontSize="20" FontWeight="Bold" x:Name="ReservationEndDatePicker" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,33,0,0" Height="30" Width="200"/>
+                                        <TextBlock Grid.Row="2" Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"  />
+
+                                        <TextBlock Grid.Row="3" Text="Guests number" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,2,0,0" />
+                                        <TextBox Grid.Row="3" PreviewTextInput="AllowOnlyDigits" FontSize="20" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding GuestsNumber,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" Height="30" Width="280" Margin="0,38,0,0"/>
+                                        <TextBlock Grid.Row="3" Text="required" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,64,0,0" Grid.RowSpan="2"  />
+
+                                        <Button Grid.Row="4" Content="Book" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="CreateReservation" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
+
+                                        <Button Grid.Row="5" Content="Back" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="BackToFirstWindow" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
+                                    </Grid>
+
+                                    <Button x:Name="MyReservationsButton" Visibility="Collapsed" Grid.Row="5" Content="My Reservations" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="GoToShowReservations" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>    
+                                </StackPanel>
+                                
+                            </Border>
+
+                            
+                        </StackPanel>
+                        
 
 
-</Window>
+                        <!-- x:Name="ListAccommodations" ItemsSource = "{Binding ListAccommodations}" -->
+                        
+
+                        <Border BorderBrush="Gray" BorderThickness="2" Margin="0,4,7,0" Width="Auto">
+                            <!-- margina izmedju kartica je 20 -->
+                            <Grid Margin="0,0,0,-119">
+                                <StackPanel Margin="0,0,0,-25">
+                                    <TextBlock TextWrapping="Wrap" Margin="10,10,10,0" FontWeight="Bold" FontSize="28" Width="462" Text="{Binding Accommodation.AccommodationName}" Height="Auto"/>
+
+                                    <TextBlock TextWrapping="Wrap" FontSize="20" Margin="10,0,10,0"  FontWeight="Bold" >
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{Binding Accommodation.RecentlyRenovated}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Accommodation.RecentlyRenovated}" Value="True">
+                                                        <Setter Property="Text" Value="(recently renovated)" />
+                                                        <Setter Property="Foreground" Value="Green" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Accommodation.RecentlyRenovated}" Value="False">
+                                                        <Setter Property="Text" Value="" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+
+                                    <TextBlock TextWrapping="Wrap" Height="Auto" FontSize="24" Margin="10,0,10,0" FontWeight="Bold"  >
+                                        <Run Text="{Binding Accommodation.Location.Address}" />
+                                        <Run Text=", " />
+                                        <Run Text="{Binding Accommodation.Location.City}" />
+                                        <Run Text=", " />
+                                        <Run Text="{Binding Accommodation.Location.Country}" />
+                                    </TextBlock>
+
+                                    <TextBlock TextWrapping="Wrap" Height="Auto" FontSize="24" Margin="10,0,10,0" FontWeight="Bold"  >
+                                        <Run Text="Min reservation days:" />
+                                        <Run Text="{Binding Accommodation.MinDaysReservation}" />
+                                    </TextBlock>
+
+                                    <TextBlock TextWrapping="Wrap" Height="Auto" FontSize="24" Margin="10,0,10,0" FontWeight="Bold"  >
+                                        <Run Text="Max guests:" />
+                                        <Run Text="{Binding Accommodation.MinDaysReservation}" />
+                                    </TextBlock>
+
+                                    <Image Grid.Row="0" Source="{Binding CurrentImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,0"  Stretch="UniformToFill" Height="240" />
+
+                                    <StackPanel Orientation="Horizontal" Grid.Row="1"   HorizontalAlignment="Center" Margin="0,10,0,0">
+                                        <Button Content="&lt;" Width="35" Margin="0,0,0,0" FontWeight="Bold" Height="35" CommandParameter="{Binding}" Command="{Binding DataContext.PreviousImageCommand, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" />
+                                        <Button Content="&gt;" Width="35" Margin="20,0,0,0" FontWeight="Bold" Height="35" CommandParameter="{Binding}" Command="{Binding DataContext.NextImageCommand, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" />
+                                    </StackPanel>
+
+                                </StackPanel>
+
+                            </Grid>
+                        </Border>
+                    
+                    </Grid>
+
+                </StackPanel>
+
+            </StackPanel>
+
+
+        </ScrollViewer>
+
+
+
+
+    </DockPanel>
+
+
+</Page>

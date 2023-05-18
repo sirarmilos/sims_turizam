@@ -1,22 +1,19 @@
-﻿<Window x:Class="InitialProject.View.Guest1Start"
+﻿<Page x:Class="InitialProject.View.Guest1Start"
      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
      xmlns:local="clr-namespace:InitialProject.View"
+      
      mc:Ignorable="d"
-     Title="Guest1Start" Height="450" Width="800">
+     Background="White"
+     Title="Guest1Start" Width="838" Height="684">
+
     <Grid>
+       
         <DockPanel>
-            <Menu DockPanel.Dock ="Top">
-                <MenuItem Header="Search and show accommodations" Click="GoToSearchAndShowAccommodations"/>
-                <MenuItem Header="Create Review" Click="GoToCreateReview"/>
-                <MenuItem Header="My reservations" Click="GoToShowReservations"/>
-                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
+            <Menu DockPanel.Dock ="Top" Height="69">
                 <MenuItem x:Name="usernameAndSuperGuest" IsEnabled="False"/>
-                <MenuItem Header="Logout" Click="GoToLogout"/>
-                <MenuItem Header="Owner Reviews" Click="GoToShowOwnerReviews"/>
-                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
             </Menu>
             <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -26,4 +23,4 @@
             </Grid>
         </DockPanel>
     </Grid>
-</Window>
+</Page>

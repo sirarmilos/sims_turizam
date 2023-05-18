@@ -228,6 +228,22 @@ namespace InitialProject.View
             UpdateDgRenovations();
         }
 
+        private void UpdateDgRenovations()
+        {
+            int dgPreviousCount = ShowRenovationDTOs.Count;
+
+            ShowRenovationDTOs = renovationService.FindAllRenovations(OwnerUsername);
+
+            if(ShowRenovationDTOs.Count != dgPreviousCount)
+            {
+                dgRenovations.Items.Refresh();
+
+                dgRenovations.ItemsSource = ShowRenovationDTOs;
+
+                MessageBox.Show("New renovation of accommodation has been successfully scheduled.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
         private void CancelRenovation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if(SelectedRenovation != null && SelectedRenovation.Status.Equals("Can be cancelled") == true)
@@ -237,22 +253,6 @@ namespace InitialProject.View
             else
             {
                 e.CanExecute = false;
-            }
-        }
-
-        private void UpdateDgRenovations()
-        {
-            int dgPreviousCount = ShowRenovationDTOs.Count;
-
-            ShowRenovationDTOs = renovationService.FindAllRenovations(OwnerUsername);
-
-            if (ShowRenovationDTOs.Count != dgPreviousCount)
-            {
-                dgRenovations.Items.Refresh();
-
-                dgRenovations.ItemsSource = ShowRenovationDTOs;
-
-                MessageBox.Show("New renovation of accommodation has been successfully scheduled.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

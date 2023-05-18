@@ -83,8 +83,7 @@ namespace InitialProject.View
             buttonPDF.Visibility = Visibility.Hidden;
             buttonBack.Visibility = Visibility.Hidden;
             this.Height = 639;
-
-            // this.IsEnabled = false;
+            this.Width = 1400;
 
             PrintDialog printDialog = new PrintDialog();
             if(printDialog.ShowDialog() == true)
@@ -95,9 +94,11 @@ namespace InitialProject.View
             buttonPDF.Visibility = Visibility.Visible;
             buttonBack.Visibility = Visibility.Visible;
             this.Height = 740;
+            this.Width = 1416;
 
-            OwnerPDFReportView window = new OwnerPDFReportView();
-            window.ShowDialog();
+            MessageBox.Show("You have successfully saved the report in PDF format.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            Close();
         }
 
         private void BackFromPDFReport_CanExecute(object sender, CanExecuteRoutedEventArgs e)

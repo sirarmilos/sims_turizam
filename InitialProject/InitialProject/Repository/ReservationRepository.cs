@@ -109,12 +109,9 @@ namespace InitialProject.Repository
 
         public void Save(string guest1Username, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
         {
-
             reservations = reservationSerializer.FromCSV(FilePathReservation);
-            Reservation reservation = new Reservation(NextId(), guest1Username, accommodation, startDate, endDate, guestsNumber); 
-            reservations.Add(reservation);
+            reservations.Add(new Reservation(NextId(), guest1Username, accommodation, startDate, endDate, guestsNumber));
             reservationSerializer.ToCSV(FilePathReservation, reservations);
-
         }
 
         public int NextId()
@@ -126,19 +123,9 @@ namespace InitialProject.Repository
             return FindAll().Max(c => c.ReservationId) + 1;
         }
 
-        public List<Reservation> FindAllByAccommodation(int id)
+        public List<Reservation> FindAllByAccommodation(int id) // refaktorisao
         {
-            List<Reservation> accommodationReservations = new List<Reservation>();
-
-            foreach (Reservation reservation in reservations)
-            {
-                if (reservation.Accommodation.Id == id)
-                {
-                    accommodationReservations.Add(reservation);
-                }
-            }
-
-            return accommodationReservations;
+            return FindAll().FindAll(x => x.Accommodation.Id == id);
         }
 
         public List<Reservation> FindGuest1Reservations(string guest1)

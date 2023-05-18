@@ -112,7 +112,16 @@ namespace InitialProject.Service
 
             List<Reservation> guest1Reservations = FindGuest1Reservations(Guest1);
 
-            return GetShowReservationsDTO(guest1Reservations);
+            var showReservationDTOs = GetShowReservationsDTO(guest1Reservations);
+
+            SortByStartTimeDescending(showReservationDTOs);
+
+            return showReservationDTOs;
+        }
+
+        public void SortByStartTimeDescending(List<ShowReservationDTO> showReservationDTOs)
+        {
+            showReservationDTOs.Sort((x, y) => DateTime.Compare(y.StartDate, x.StartDate));
         }
 
         public List<Reservation> FindGuest1Reservations(string username)
@@ -168,7 +177,6 @@ namespace InitialProject.Service
         public void Save(ShowReservationDTO showReservationDTO)
         {
             superGuestService = new SuperGuestService(Guest1);
-            SuperGuest superGuest = superGuestService.FindSuperGuestByGuest1Username();
 
             reservationRepository.Save(
                 Guest1, 
@@ -182,15 +190,30 @@ namespace InitialProject.Service
             {
                 superGuestService.DecreaseOneBonusPoint();
             }
-
-            if (!IsSuperGuest(Guest1) || 
-                (IsSuperGuest(Guest1) && superGuest.NumberOfBonusPoints == 0))
+            else if (MakeEligibleUserSuperGuest())
             {
-                if (superGuestService.CheckIfUserEligibleForSuperGuest(Guest1))
-                    superGuestService.DecreaseOneBonusPoint();
+                superGuestService.DecreaseOneBonusPoint();
             }
-                
+
+
         }
+
+        private bool MakeEligibleUserSuperGuest()
+        {
+            userService = new UserService();
+
+            if (FindNumberOfReservationsInPastYear() >= 10)
+            {
+                superGuestService.MakeUserSuperGuest(Guest1);
+
+                userService.MakeUserSuperGuest(Guest1);
+
+                return true;
+            }
+
+            return false;
+        }
+
 
         public int FindNumberOfReservationsInPastYear()
         {
