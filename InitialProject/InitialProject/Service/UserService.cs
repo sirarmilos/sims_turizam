@@ -103,7 +103,7 @@ namespace InitialProject.Service
             foreach (User temporaryUser in allGuests1)
             {
                 if (!IsSuperGuest(temporaryUser.Username))
-                    superGuestService.CheckIfUserEligibleForSuperGuest(temporaryUser.Username);
+                    superGuestService.MakeEligibleUserSuperGuest(temporaryUser.Username);
             }
         }
 

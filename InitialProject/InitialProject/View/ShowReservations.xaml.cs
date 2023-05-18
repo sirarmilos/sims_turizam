@@ -168,10 +168,20 @@ namespace InitialProject.View
             }
         }
 
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public ShowReservations(string username, Page page)
         {
             InitializeComponent();
             this.DataContext = this;
+            Guest1 = username;
+            reservationService = new ReservationService(Guest1);
 
             //GoToGuest1StartCommand = new DelegateCommand(GoToGuest1Start);
             //GoToSearchAndShowAccommodationsCommand = new DelegateCommand(GoToSearchAndShowAccommodations);
@@ -179,14 +189,7 @@ namespace InitialProject.View
             //GoToGuest1RequestsCommand = new DelegateCommand(GoToGuest1Requests);
             //GoToLogoutCommand = new DelegateCommand(GoToLogout);
 
-            Guest1 = username;
-            
-            reservationService = new ReservationService(Guest1);
-            usernameAndSuperGuest.Text = $"{Guest1}";
-            superGuest.Text  = $"{CheckSuperType()}";
-
-            Notification = reservationService.Guest1HasNotification();
-            CheckNotification();
+            SetUsernameHeader();
 
             ValidationMessage.Visibility = Visibility.Collapsed;
 
@@ -197,14 +200,14 @@ namespace InitialProject.View
             RescheduleCommand = new RelayCommand<ShowReservationDTO>(Reschedule);
 
             SetComboBoxes(page);
-
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void SetUsernameHeader()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Notification = reservationService.Guest1HasNotification();
+            CheckNotification();
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
         }
 
         private string CheckSuperType()

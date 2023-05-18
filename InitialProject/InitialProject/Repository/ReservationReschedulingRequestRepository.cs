@@ -79,7 +79,7 @@ namespace InitialProject.Repository
 
 
 
-        public void Create(Reservation reservation, DateTime newStartDate, DateTime newEndDate, string status, string comment) // todo: izmestiti u servis? ili srediti sa sirarovim funkcijama kao dole
+        public void Create(Reservation reservation, DateTime newStartDate, DateTime newEndDate, string status, string comment)
         {
             ReservationReschedulingRequest requestAlreadyExists = FindRequestByReservationId(reservation.ReservationId, reservation.GuestUsername);
             List<ReservationReschedulingRequest> allReservationReschedulingRequests;

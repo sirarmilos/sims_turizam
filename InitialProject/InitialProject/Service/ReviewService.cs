@@ -105,7 +105,7 @@ namespace InitialProject.Service
         {
             int days = DateTime.Now.Subtract(temporaryReservation.EndDate).Days;
 
-            if (days <= 5 && days >= 0)
+            if (days <= 5 && days > 0)
             {
                 string deadline = "This is the last day to rate an accommodation.";
 

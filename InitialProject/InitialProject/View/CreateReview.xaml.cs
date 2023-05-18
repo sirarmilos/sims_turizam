@@ -175,11 +175,9 @@ namespace InitialProject.View
             InitializeComponent();
             DataContext = this;
             Guest1 = guest1;
-
             reviewService = new ReviewService(Guest1);
-            Notification = reviewService.Guest1HasNotification();
-            CheckNotification();
-            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
+
+            SetUsernameHeader();
 
             CreateReviewDTOs = new List<CreateReviewDTO>();
 
@@ -196,6 +194,13 @@ namespace InitialProject.View
             }
 
             SetDefaultValue();
+        }
+
+        private void SetUsernameHeader()
+        {
+            Notification = reviewService.Guest1HasNotification();
+            CheckNotification();
+            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
         }
 
         private string CheckSuperType()
@@ -307,7 +312,7 @@ namespace InitialProject.View
             }
         }
 
-        private bool CheckErrorUrlExists() // todo: moze da se refaktorise
+        private bool CheckErrorUrlExists() 
         {
             string[] allowedExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".jfif" };
             Uri uriResult;

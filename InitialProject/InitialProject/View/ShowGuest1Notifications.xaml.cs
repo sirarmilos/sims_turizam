@@ -135,10 +135,7 @@ namespace InitialProject.View
             InitializeComponent();
             DataContext = this;
             Guest1 = username;
-
             reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
-            usernameAndSuperGuest.Text = $"{Guest1}";
-            superGuest.Text = $"{CheckSuperType()}";
 
             //ShowReservationDTOs = new ObservableCollection<ShowReservationDTO>(reservationService.FindAll(Guest1));
             //CancelCommand = new RelayCommand<ShowReservationDTO>(Cancel);
@@ -148,12 +145,17 @@ namespace InitialProject.View
 
             reservationReschedulingRequestService.UpdateViewedRequestsByGuest1();
 
-            Notification = reservationReschedulingRequestService.Guest1HasNotification();
-
-            CheckNotification();
+            SetUsernameHeader(); // position matters
 
             SetComboBoxes(page);
+        }
 
+        private void SetUsernameHeader()
+        {
+            Notification = reservationReschedulingRequestService.Guest1HasNotification();
+            CheckNotification();
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
         }
 
         private void ReadMore(Guest1NotificationDTO guest1NotificationDTO)

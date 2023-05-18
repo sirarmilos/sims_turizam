@@ -125,18 +125,20 @@ namespace InitialProject.View
 
             Guest1RebookingRequestsDTOs.ItemsSource = new ObservableCollection<Guest1RebookingRequestsDTO>(reservationReschedulingRequestService.FindAllByGuest1Username());
 
-            Notification = reservationReschedulingRequestService.Guest1HasNotification();
-            CheckNotification();
+            SetUsernameHeader();
 
             MoreDetailsCommand = new RelayCommand<Guest1RebookingRequestsDTO>(MoreDetails);
-
-            usernameAndSuperGuest.Text = $"{Guest1}";
-            superGuest.Text = $"{CheckSuperType()}";
 
             SetComboBoxes(page);
         }
 
-
+        private void SetUsernameHeader()
+        {
+            Notification = reservationReschedulingRequestService.Guest1HasNotification();
+            CheckNotification();
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
+        }
 
         private string _selectedReview;
 

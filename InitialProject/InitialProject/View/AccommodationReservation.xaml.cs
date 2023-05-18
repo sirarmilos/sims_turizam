@@ -24,7 +24,6 @@ namespace InitialProject.View
     {
         private readonly ReservationService reservationService;
         private Accommodation accommodation;
-        private Location location;
         private int calendarReservationDays;
         private int guestsNumber;
         private List<DateSlot> freeDateSlots;
@@ -50,12 +49,6 @@ namespace InitialProject.View
                 accommodation = value;
                 OnPropertyChanged();
             }
-        }
-
-        public Location Location
-        {
-            get { return location; }
-            set { }
         }
 
         public int CalendarReservationDays
@@ -134,53 +127,6 @@ namespace InitialProject.View
             }
         }
 
-        private void CheckNotification()
-        {
-            if (Notification)
-            {
-                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Visible;
-                NotificationMenuItemImageRegularBell.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Collapsed;
-                NotificationMenuItemImageRegularBell.Visibility = Visibility.Visible;
-            }
-        }
-
-        public AccommodationReservation(Accommodation accommodation, string username, Page page)
-        {
-            InitializeComponent();
-            DataContext = this;
-            Guest1 = username;
-            reservationService = new ReservationService(Guest1);
-            Notification = reservationService.Guest1HasNotification();
-            CheckNotification();
-
-            usernameAndSuperGuest.Text = $"{Guest1}";
-            superGuest.Text = $"{CheckSuperType()}";
-
-            Accommodation = accommodation;
-            Location = accommodation.Location;
-            FreeDateSlots = new List<DateSlot>();
-
-            //AccommodationLabel.Content = accommodation.AccommodationName;
-            //AccommodationLabelMinReservationDays.Content = accommodation.MinDaysReservation;
-            //AccommodationLabelMaxGuests.Content = accommodation.MaxGuests;
-            List<Accommodation> list = new List<Accommodation>();
-            list.Add(accommodation);
-            //listAccommodations.ItemsSource = list;
-
-            Images = new ObservableCollection<string>(Accommodation.Images);
-            _currentIndex = 0;
-            PreviousImageCommand = new RelayCommand(PreviousImage);
-            NextImageCommand = new RelayCommand(NextImage);
-
-            SetComboBoxes(page);
-
-            LabelColor = Brushes.Red;
-        }
-
         private Brush _labelColor;
         public Brush LabelColor
         {
@@ -220,6 +166,62 @@ namespace InitialProject.View
         public ICommand PreviousImageCommand { get; private set; }
         public ICommand NextImageCommand { get; private set; }
 
+        private void CheckNotification()
+        {
+            if (Notification)
+            {
+                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Visible;
+                NotificationMenuItemImageRegularBell.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Collapsed;
+                NotificationMenuItemImageRegularBell.Visibility = Visibility.Visible;
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public AccommodationReservation(Accommodation accommodation, string username, Page page)
+        {
+            InitializeComponent();
+            DataContext = this;
+            Guest1 = username;
+            reservationService = new ReservationService(Guest1);
+            Accommodation = accommodation;
+            FreeDateSlots = new List<DateSlot>();
+
+            SetUsernameHeader();
+
+            SetImagePreviewer();
+
+            SetComboBoxes(page);
+
+            SetMessageShow("", Visibility.Collapsed);
+        }
+
+        private void SetImagePreviewer()
+        {
+            Images = new ObservableCollection<string>(Accommodation.Images);
+            _currentIndex = 0;
+            PreviousImageCommand = new RelayCommand(PreviousImage);
+            NextImageCommand = new RelayCommand(NextImage);
+        }
+
+        private void SetUsernameHeader()
+        {
+            Notification = reservationService.Guest1HasNotification();
+            CheckNotification();
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
+        }
+
+
         private void PreviousImage()
         {
             _currentIndex--;
@@ -251,13 +253,6 @@ namespace InitialProject.View
                 CurrentImage = null;
             }
             OnPropertyChanged(nameof(CurrentImage));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void BackToFirstWindow(object sender, RoutedEventArgs e)
@@ -304,18 +299,15 @@ namespace InitialProject.View
                     DateSlot temporaryDateSlot = FirstAvailableDate();
                     if (temporaryDateSlot == null)
                     {
-                        SuggestedDatesMessage.Text = "Unfortunately, there are no available dates in the next one year. Try again.";
-                        SuggestedDatesMessage.Visibility = Visibility.Visible;
-                        //MessageBox.Show($"Unfortunately, there are no available dates in the next one year. Try again.");
+                        SetMessageShow("Unfortunately, there are no available dates in the next one year. Try again.", Visibility.Visible);
                         return;
                     }
                 }
             }
             else
             {
-                SuggestedDatesMessage.Text = "No dates are selected.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-                //MessageBox.Show($"No dates are selected.");
+                SetMessageShow("No dates are selected.", Visibility.Visible);
+
                 return;
             }
 
@@ -332,49 +324,31 @@ namespace InitialProject.View
 
             if (StartDate.Date < DateTime.Now.Date || EndDate.Date < DateTime.Now.Date)
             {
-                SuggestedDatesMessage.Text = "You can't choose dates from the past. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
+                SetMessageShow("You can't choose dates from the past. Try again.", Visibility.Visible);
                 return false;
             }
 
-            if (CalendarReservationDays == 0 && ActualReservationDays == 0)
+            if (CalendarReservationDays == 0 && ActualReservationDays == 0 || ActualReservationDays < 0)
             {
-                SuggestedDatesMessage.Text = "Invalid number of reservation days. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-                return false;
-            }
-
-            if (ActualReservationDays < 0)
-            {
-                SuggestedDatesMessage.Text = "Invalid number of reservation days. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-                //MessageBox.Show($"Invalid number of reservation days. Try again.");
+                SetMessageShow("Invalid number of reservation days. Try again.", Visibility.Visible);
                 return false;
             }
 
             if (ActualReservationDays < Accommodation.MinDaysReservation)
             {
-                SuggestedDatesMessage.Text = $"Number of reservation days couldn't be less than minimal days of reservation which is: {Accommodation.MinDaysReservation}. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-                //MessageBox.Show(
-                //    $"Number of reservation days couldn't be less than minimal days of reservation which is: {Accommodation.MinDaysReservation}. Try again.");
+                SetMessageShow($"Number of reservation days couldn't be less than minimal days of reservation which is: {Accommodation.MinDaysReservation}. Try again.", Visibility.Visible);
                 return false;
             }
 
             if (StartDate > EndDate)
             {
-                SuggestedDatesMessage.Text = "Start date is greater than end date. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-                //MessageBox.Show($"Start date is greater than end date. Try again.");
+                SetMessageShow("Start date is greater than end date. Try again.", Visibility.Visible);
                 return false;
             }
 
             if (StartDate.AddDays(ActualReservationDays) > EndDate)
             {
-                SuggestedDatesMessage.Text = "Number of reservation days couldn't be more than selected dates. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-
-                //MessageBox.Show($"Number of reservation days couldn't be more than selected dates. Try again.");
+                SetMessageShow("Number of reservation days couldn't be more than selected dates. Try again.", Visibility.Visible);
                 return false;
             }
 
@@ -403,8 +377,7 @@ namespace InitialProject.View
                 List<DateSlot> temporaryDateSlots = FindAvailable();
                 if (temporaryDateSlots.Count != 0)
                 {
-                    SuggestedDatesMessage.Text = "All our appointments are reserved. We have offered you the first available period.";
-                    SuggestedDatesMessage.Visibility = Visibility.Visible;
+                    SetMessageShow("All our appointments are reserved. We have offered you the first available period.", Visibility.Visible);
                     return temporaryDateSlots[0];
                 }
 
@@ -412,6 +385,17 @@ namespace InitialProject.View
 
             return null;
 
+        }
+
+        private void SetMessageShow(string message, Visibility visibilityStatus, SolidColorBrush messageColor = null)
+        {
+            if (messageColor == null)
+                LabelColor = Brushes.Red;
+            else
+                LabelColor = messageColor;
+         
+            SuggestedDatesMessage.Text = message;
+            SuggestedDatesMessage.Visibility = visibilityStatus;
         }
 
         private List<DateSlot> FindAvailable()
@@ -426,22 +410,17 @@ namespace InitialProject.View
         
         private void CreateReservation(object sender, RoutedEventArgs e)
         {
-            SuggestedDatesMessage.Visibility = Visibility.Collapsed;
+            SetMessageShow("", Visibility.Collapsed);
 
             if (GuestsNumber > Accommodation.MaxGuests)
             {
-                SuggestedDatesMessage.Text = $"The number of guests couldn't be more than the maximum number of guests: {Accommodation.MaxGuests}. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-
-                //MessageBox.Show($"The number of guests couldn't be more than the maximum number of guests: {Accommodation.MaxGuests}. Try again.");
+                SetMessageShow($"The number of guests couldn't be more than the maximum number of guests: {Accommodation.MaxGuests}. Try again.", Visibility.Visible);
                 return;
             }
 
             if (GuestsNumber == 0)
             {
-                SuggestedDatesMessage.Text = "The number of guests can't be zero. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-
+                SetMessageShow("The number of guests can't be zero. Try again.", Visibility.Visible);
                 return;
             }
 
@@ -454,21 +433,13 @@ namespace InitialProject.View
 
                 reservationService.Save(new ShowReservationDTO(Accommodation, StartDate, EndDate, GuestsNumber));
 
-                SuggestedDatesMessage.Text = "A reservation has been successfully created.";
-                LabelColor = Brushes.Green;
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
+                SetMessageShow("A reservation has been successfully created.", Visibility.Visible, Brushes.Green);
                 MyReservationsButton.Visibility = Visibility.Visible;
                 SecondWindow.Visibility = Visibility.Collapsed;
-
-
-                //MessageBox.Show($"A reservation has been successfully created.");
             }
             else
             {
-                SuggestedDatesMessage.Text = "You need to select start and end date. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-
-                //MessageBox.Show($"You need to select start and end date. Try again.");
+                SetMessageShow("You need to select start and end date. Try again.", Visibility.Visible);
             }
         }
         
@@ -479,28 +450,19 @@ namespace InitialProject.View
 
             if ((FreeDateSlots == null) || (FreeDateSlots.Count == 0))
             {
-                SuggestedDatesMessage.Text = "Firstly you need to look up available dates. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-
-                //MessageBox.Show($"Firstly you need to look up available dates. Try again.");
+                SetMessageShow("Firstly you need to look up available dates. Try again.", Visibility.Visible);
                 return false;
             }
 
             if (StartDate > EndDate)
-            {
-                SuggestedDatesMessage.Text = "Start date is greater than end date. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-
-                //MessageBox.Show($"Start date is greater than end date. Try again.");
+            {   
+                SetMessageShow("Start date is greater than end date. Try again.", Visibility.Visible);
                 return false;
             }
 
             if (StartDate.AddDays(CalendarReservationDays) != EndDate)
             {
-                SuggestedDatesMessage.Text = "Invalid input: The start date and end date are not suitable for the number of reservation days. Try again.";
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-
-                //MessageBox.Show( $"Invalid input: The start date and end date are not suitable for the number of reservation days. Try again.");
+                SetMessageShow("Invalid input: The start date and end date are not suitable for the number of reservation days. Try again.", Visibility.Visible);
                 return false;
             }
 
@@ -517,10 +479,7 @@ namespace InitialProject.View
                 }
             }
 
-            SuggestedDatesMessage.Text = "You can only select available dates from the list above.";
-            SuggestedDatesMessage.Visibility = Visibility.Visible;
-
-            //MessageBox.Show($"You can only select available dates from the list above.");
+            SetMessageShow("You can only select available dates from the list above.", Visibility.Visible);
             return false;
         }
 
