@@ -132,15 +132,17 @@ namespace InitialProject.View
             //Guest1RebookingRequestsDTOs = reservationReschedulingRequestService.FindAllByGuest1Username();
             Guest1RebookingRequestsDTO = guest1RebookingRequestsDTO;
 
-            Notification = reservationReschedulingRequestService.Guest1HasNotification();
-            CheckNotification();
-
-
-            usernameAndSuperGuest.Text = $"{Guest1}";
-            superGuest.Text = $"{CheckSuperType()}";
+            SetUsernameHeader();
 
             SetComboBoxes(page);
 
+        }
+        private void SetUsernameHeader()
+        {
+            Notification = reservationReschedulingRequestService.Guest1HasNotification();
+            CheckNotification();
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
         }
 
         public void ReturnBackToCaller(object sender, RoutedEventArgs e)

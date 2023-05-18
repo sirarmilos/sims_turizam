@@ -128,11 +128,8 @@ namespace InitialProject.View
 
             ShowReservationDTO = showReservationDTO;    
             reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
-            Notification = reservationReschedulingRequestService.Guest1HasNotification();
-            CheckNotification();
-
-            usernameAndSuperGuest.Text = $"{Guest1}";
-            superGuest.Text = $"{CheckSuperType()}";
+            
+            SetUsernameHeader();
 
             AccommodationNameLabel.Content = showReservationDTO.Accommodation.AccommodationName.ToString();
             OldStartDate = showReservationDTO.StartDate;
@@ -140,6 +137,14 @@ namespace InitialProject.View
 
             SetComboBoxes(page);
 
+        }
+
+        private void SetUsernameHeader()
+        {
+            Notification = reservationReschedulingRequestService.Guest1HasNotification();
+            CheckNotification();
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -185,7 +190,7 @@ namespace InitialProject.View
         {
             SuggestedDatesMessage.Text = "";
 
-            if (StartDatePicker.SelectedDate != null && EndDatePicker.SelectedDate != null) // nez da l ove validacije u neki servis da se urade?
+            if (StartDatePicker.SelectedDate != null && EndDatePicker.SelectedDate != null) 
             {
                 if (!IsSearchInputValid()) return;
 
@@ -194,21 +199,16 @@ namespace InitialProject.View
 
                 reservationReschedulingRequestService.CreateRequest(request);
 
-                //SuggestedDatesMessage.Text = "The request has been successfully created!";
                 SuccesfullyCreatedMessage.Content = "The request has been successfully created!";
-                //LabelColor = Brushes.Green;
 
                 StackPanel1.Visibility = Visibility.Collapsed;
                 StackPanel2.Visibility = Visibility.Visible;
 
-                //MessageBox.Show(
-                //    $"The request has been successfully created!");
             }
             else
             {
-                SuggestedDatesMessage.Text = "No dates are selected.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"No dates are selected.");
+                SetErrorMessageShow("No dates are selected.");
+
                 return;
             }
         }
@@ -222,47 +222,50 @@ namespace InitialProject.View
 
             if (StartDate > EndDate)
             {
-                SuggestedDatesMessage.Text = "Start date is greater than end date. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"Start date is greater than end date. Try again.");
+                SetErrorMessageShow("Start date is greater than end date. Try again.");
+
                 return false;
             }
 
             if ((StartDate == ShowReservationDTO.StartDate) & (EndDate == ShowReservationDTO.EndDate))
             {
-                SuggestedDatesMessage.Text = "Choose different dates. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"Choose different dates. Try again.");
+                SetErrorMessageShow("Choose different dates. Try again.");
+
                 return false;
             }
 
             if (StartDate.Date < DateTime.Now.Date)
             {
-                SuggestedDatesMessage.Text = "The start date is in the past. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"The start date is in the past. Try again.");
+                SetErrorMessageShow("The start date is in the past. Try again.");
+
                 return false;
             }
 
             if (EndDate.Date < DateTime.Now.Date)
             {
-                SuggestedDatesMessage.Text = "The end date is in the past. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show($"The start date is in the past. Try again.");
+                SetErrorMessageShow("The end date is in the past. Try again.");
+
                 return false;
             }
 
             if (newReservationDays < ShowReservationDTO.Accommodation.MinDaysReservation)
             {
+                SetErrorMessageShow($"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.");
 
-                SuggestedDatesMessage.Text = $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.";
-                LabelColor = Brushes.Red;
-                //MessageBox.Show(
-                //    $"Number of reservation days couldn't be less than minimal days of reservation which is: {ShowReservationDTO.Accommodation.MinDaysReservation}. Try again.");
                 return false;
             }
 
             return true;
+        }
+
+        private void SetErrorMessageShow(string message, SolidColorBrush messageColor = null)
+        {
+            if (messageColor == null)
+                LabelColor = Brushes.Red;
+            else
+                LabelColor = messageColor;
+
+            SuggestedDatesMessage.Text = message;
         }
 
         private bool comboBoxClicked = false;

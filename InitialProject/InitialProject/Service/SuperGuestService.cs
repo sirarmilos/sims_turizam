@@ -77,7 +77,7 @@ namespace InitialProject.Service
             superGuestRepository.Add(superGuest);
         }
 
-        public bool CheckIfUserEligibleForSuperGuest(string guest1Username)
+        public bool MakeEligibleUserSuperGuest(string guest1Username) 
         {
             userService = new UserService();
             reservationService = new ReservationService(guest1Username);
@@ -93,7 +93,5 @@ namespace InitialProject.Service
 
             return false;
         }
-
-
     }
 }

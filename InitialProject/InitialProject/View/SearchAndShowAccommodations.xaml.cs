@@ -195,28 +195,18 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
-
-
         public SearchAndShowAccommodations(string username, Page page)
         {
             InitializeComponent();
 
             FirstSearchWindow.Visibility = Visibility.Visible;
-
             SecondSearchWindow.Visibility = Visibility.Collapsed;
 
             Guest1 = username;
             DataContext = this;
-
             accommodationService = new AccommodationService(Guest1);
-            Notification = accommodationService.Guest1HasNotification();
-            CheckNotification();
-            usernameAndSuperGuest.Text = $"{Guest1}";
-            superGuest.Text = $"{CheckSuperType()}";
-            //usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
 
-            ListAccommodations.ItemsSource = null;
+            SetUsernameHeader();
 
             Images = new List<string>();
             SeeAvailabilityCommand = new RelayCommand<Accommodation>(SeeAvailability);
@@ -232,11 +222,12 @@ namespace InitialProject.View
 
         }
 
-        public ComboBoxItem GetSelectedReview()
+        private void SetUsernameHeader()
         {
-            var selectedReview = (ComboBoxItem)CBCreateReview.SelectedItem;
-            Debug.WriteLine("Selected Review: " + selectedReview?.Content);
-            return selectedReview;
+            Notification = accommodationService.Guest1HasNotification();
+            CheckNotification();
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
         }
 
         private string CheckSuperType()

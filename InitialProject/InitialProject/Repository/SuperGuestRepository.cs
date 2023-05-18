@@ -82,10 +82,8 @@ namespace InitialProject.Repository
         {
             List<SuperGuest> superGuests = FindAll();
             SuperGuest latestSuperGuest = FindLatestByGuest1(guest1Username);
-            superGuests.Remove(superGuests.Find(x => 
-                x.Guest1Username.Equals(guest1Username) 
-                && x.StartDate == latestSuperGuest.StartDate 
-                && x.NumberOfBonusPoints == latestSuperGuest.NumberOfBonusPoints));
+            superGuests.Remove(
+                superGuests.Find(x => x.Guest1Username.Equals(guest1Username) && x.StartDate == latestSuperGuest.StartDate && x.NumberOfBonusPoints == latestSuperGuest.NumberOfBonusPoints));
             return superGuests;
         }
 
