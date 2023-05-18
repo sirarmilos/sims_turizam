@@ -346,17 +346,17 @@ namespace InitialProject.Service
 
             foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequest in yearRescheduledReservations.ToList())
             {
-                if(temporaryReservationReschedulingRequest.NewStartDate.Year != year)
+                if(temporaryReservationReschedulingRequest.OldStartDate.Year != year)
                 {
-                    temporaryReservationReschedulingRequest.NewStartDate = new DateTime(year, 1, 1);
+                    temporaryReservationReschedulingRequest.OldStartDate = new DateTime(year, 1, 1);
                 }
 
-                if(temporaryReservationReschedulingRequest.NewEndDate.Year != year)
+                if(temporaryReservationReschedulingRequest.OldEndDate.Year != year)
                 {
-                    temporaryReservationReschedulingRequest.NewEndDate = new DateTime(year, 12, 31);
+                    temporaryReservationReschedulingRequest.OldEndDate = new DateTime(year, 12, 31);
                 }
 
-                for(int month = temporaryReservationReschedulingRequest.NewStartDate.Month; month <= temporaryReservationReschedulingRequest.NewEndDate.Month; month++)
+                for(int month = temporaryReservationReschedulingRequest.OldStartDate.Month; month <= temporaryReservationReschedulingRequest.OldEndDate.Month; month++)
                 {
                     rescheduledReservationCount[month - 1]++;
                 }
