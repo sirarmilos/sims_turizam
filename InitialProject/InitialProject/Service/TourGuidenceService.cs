@@ -329,5 +329,16 @@ namespace InitialProject.Service
             return filteredTourGuidences;
         }
 
+        public bool CheckIfGuideIsFreeInPeriod(string GuideUsername, DateTime SelectedStartDate)
+        {
+            List<TourGuidence> guidences = tourGuidenceRepository.FindAll().FindAll(x => x.Tour.GuideUsername.Equals(GuideUsername));
+            foreach(TourGuidence tg in guidences)
+            {
+                if (SelectedStartDate.Date == tg.StartTime.Date)
+                    return false;
+            }
+            return true;
+        }
+
     }
 }

@@ -35,7 +35,9 @@
                     <MenuItem Header="Profile" Margin="0,5,0,0"/>
                     <MenuItem Header="Future Tours" Margin="0,5,0,0"/>
                     <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
-                    <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
+                    <MenuItem Header="Create Tour Request Statics" Margin="0,5,0,0" Click="GoToCreateTourRequestStats"/>
+                    <MenuItem Header="Request statistics" Margin="0,5,0,0" Click="GoToRequestStatistics"/>
                 </StackPanel>
                 <Grid>
                     <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>

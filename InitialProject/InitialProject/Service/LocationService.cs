@@ -29,5 +29,10 @@ namespace InitialProject.Service
 
             return location;
         }
+
+        public Location FindById(int id)
+        {
+            return locationRepository.FindById(id);
+        }
     }
 }
