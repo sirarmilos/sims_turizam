@@ -46,12 +46,12 @@ namespace InitialProject.Repository
 
         public int FindAccommodationRenovationRecommedationCountByYear(int accommodationId, int year)
         {
-            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.Reservation.StartDate.Year == year).Count; //
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.CreationDate.Year == year).Count; //
         }
 
         public List<RenovationRecommendation> FindAccommodationRenovationRecommedationsByYear(int accommodationId, int year)
         {
-            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.Reservation.StartDate.Year == year);
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.CreationDate.Year == year);
         }
 
 

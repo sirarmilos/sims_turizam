@@ -32,7 +32,7 @@ namespace InitialProject.Service
 
             foreach (RenovationRecommendation temporaryRenovationRecommendation in yearRenovationRecommendations.ToList())
             {
-                renovationRecommendationCount[temporaryRenovationRecommendation.Reservation.StartDate.Month - 1]++;
+                renovationRecommendationCount[temporaryRenovationRecommendation.CreationDate.Month - 1]++;
             }
 
             return renovationRecommendationCount;

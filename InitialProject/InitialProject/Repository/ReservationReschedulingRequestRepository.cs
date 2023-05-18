@@ -145,12 +145,12 @@ namespace InitialProject.Repository
 
         public int FindAccommodationRescheduledReservationCountByYear(int accommodationId, int year)
         {
-            return FindByAccommodationId(accommodationId).ToList().FindAll(x => (x.NewStartDate.Year == year || x.NewEndDate.Year == year) && x.Status.Equals("accepted") == true).Count; //
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => (x.OldStartDate.Year == year || x.OldEndDate.Year == year) && x.Status.Equals("accepted") == true).Count; //
         }
 
         public List<ReservationReschedulingRequest> FindAccommodationRescheduledReservationsByYear(int accommodationId, int year)
         {
-            return FindByAccommodationId(accommodationId).ToList().FindAll(x => (x.NewStartDate.Year == year || x.NewEndDate.Year == year) && x.Status.Equals("accepted") == true); //
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => (x.OldStartDate.Year == year || x.OldEndDate.Year == year) && x.Status.Equals("accepted") == true); //
         }
     }
 }

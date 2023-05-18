@@ -320,11 +320,6 @@ namespace InitialProject.Service
             return showStatisticsAccommodationDTO;
         }
 
-        /* public List<int> FindAccommodationYears(int accommodationId)
-        {
-            return reservationService.FindAccommodationReservationsYears(accommodationId);
-        }*/
-
         public List<string> FindAccommodationYears(int accommodationId)
         {
             List<string> years = new List<string>();
@@ -496,7 +491,7 @@ namespace InitialProject.Service
             List<int> rescheduledReservationCount = reservationReschedulingRequestService.FindAccommodationRescheduledReservationCountByMonth(accommodationId, year);
             List<int> renovationRecommedationCount = renovationRecommendationService.FindAccommodationRenovationRecommedationCountByMonth(accommodationId, year);
 
-            for (int i = 0; i <= 11; i++)
+            for(int i = 0; i <= 11; i++)
             {
                 accommodationStatisticsDataDTOs.Add(new AccommodationStatisticsDataDTO(i + 1, reservationCount[i], canceledReservationCount[i], rescheduledReservationCount[i], renovationRecommedationCount[i]));
             }
@@ -508,7 +503,7 @@ namespace InitialProject.Service
         {
             List<int> reservationCount = new List<int>();
 
-            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            foreach(AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
             {
                 reservationCount.Add(temporaryAccommodationStatisticsDataDTO.ReservationsCount);
             }
@@ -520,7 +515,7 @@ namespace InitialProject.Service
         {
             List<int> canceledReservationCount = new List<int>();
 
-            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            foreach(AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
             {
                 canceledReservationCount.Add(temporaryAccommodationStatisticsDataDTO.CanceledReservationsCount);
             }
@@ -532,7 +527,7 @@ namespace InitialProject.Service
         {
             List<int> rescheduledReservationCount = new List<int>();
 
-            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            foreach(AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
             {
                 rescheduledReservationCount.Add(temporaryAccommodationStatisticsDataDTO.RescheduledReservationCount);
             }
@@ -544,7 +539,7 @@ namespace InitialProject.Service
         {
             List<int> renovationRecommendationsCount = new List<int>();
 
-            foreach (AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
+            foreach(AccommodationStatisticsDataDTO temporaryAccommodationStatisticsDataDTO in accommodationStatisticsDataDTOs.ToList())
             {
                 renovationRecommendationsCount.Add(temporaryAccommodationStatisticsDataDTO.RenovationRecommedationsCount);
             }
@@ -569,24 +564,24 @@ namespace InitialProject.Service
         {
             Dictionary<int, decimal> busyMonths = new Dictionary<int, decimal>();
 
-            for (int i = 0; i <= 11; i++)
+            for(int i = 0; i <= 11; i++)
             {
                 busyMonths[i] = 0;
             }
 
-            foreach (Reservation temporaryReservation in reservations.ToList())
+            foreach(Reservation temporaryReservation in reservations.ToList())
             {
-                if (temporaryReservation.StartDate.Year != year)
+                if(temporaryReservation.StartDate.Year != year)
                 {
                     temporaryReservation.StartDate = new DateTime(year, 1, 1);
                 }
 
-                if (temporaryReservation.EndDate.Year != year)
+                if(temporaryReservation.EndDate.Year != year)
                 {
                     temporaryReservation.EndDate = new DateTime(year, 12, 31);
                 }
 
-                while (temporaryReservation.EndDate.Month != temporaryReservation.StartDate.Month && temporaryReservation.StartDate.Month != 12)
+                while(temporaryReservation.EndDate.Month != temporaryReservation.StartDate.Month && temporaryReservation.StartDate.Month != 12)
                 {
                     int maximumMonthDay = DateTime.DaysInMonth(year, temporaryReservation.StartDate.Month);
                     busyMonths[temporaryReservation.StartDate.Month - 1] += maximumMonthDay;
@@ -604,7 +599,7 @@ namespace InitialProject.Service
 
         public Dictionary<int, decimal> CalculateBusyMonthsPercentage(Dictionary<int, decimal> busyMonths, int year)
         {
-            for (int i = 0; i <= 11; i++)
+            for(int i = 0; i <= 11; i++)
             {
                 int monthDays = DateTime.DaysInMonth(year, i + 1);
                 busyMonths[i] = busyMonths[i] / monthDays;
