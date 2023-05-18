@@ -258,11 +258,6 @@ namespace InitialProject.View
             }
         }
 
-        void LoadingRowForDgAccommodations(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
-
         private void RenovateAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (SelectedShowAccommodationDTO == null)
@@ -299,6 +294,11 @@ namespace InitialProject.View
             InitialProject.View.AccommodationStatistics window = new AccommodationStatistics(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showStatisticsAccommodationDTO);
             window.Show();
             Close();
+        }
+
+        void LoadingRowForDgAccommodations(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
     }
 }
