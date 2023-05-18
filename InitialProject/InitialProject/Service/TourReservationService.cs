@@ -142,7 +142,7 @@ namespace InitialProject.Service
         public void ConfirmTourAttendance(string username, int tourReservationId)
         {
             List<Model.TourReservation> result = tourReservationRepository.FindAll();
-            foreach (Model.TourReservation tourReservation in tourReservationRepository.FindAll())
+            foreach (Model.TourReservation tourReservation in result)
             {
                 if (tourReservation.Id == tourReservationId && tourReservation.userId.Equals(username))
                 {
@@ -158,6 +158,38 @@ namespace InitialProject.Service
             return tourReservationRepository.FindById(id);
         }
 
+        public int NextId()
+        { return tourReservationRepository.NextId();}
 
+        public Dictionary<int,int> AddedToTour(string username)
+        {
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+            List<int> startedToursForGuest = tourGuidenceService.NotifyGuestOfTourStarting(username);
+            List<int> result = new List<int>();
+
+            Dictionary<int,int> keyValuePairs = new Dictionary<int,int>();  
+
+            foreach(int id in startedToursForGuest)
+            {
+                foreach(Model.TourReservation tourReservation in tourReservationRepository.FindAll())
+                {
+                    if(id==tourReservation.Id)
+                    {
+                        int br = 0;
+                        foreach (bool accepted in tourReservation.TourKeyPointArrival)
+                        {
+                            br++;
+                            if(accepted == true)
+                            {
+                                keyValuePairs[tourReservation.Id] = br;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return keyValuePairs;
+
+        }
     }
 }

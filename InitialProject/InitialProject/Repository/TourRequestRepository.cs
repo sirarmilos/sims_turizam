@@ -22,6 +22,7 @@ namespace InitialProject.Repository
         public TourRequestRepository()
         {
             tourRequestSerializer = new Serializer<TourRequest>();
+            Invalidate();
         }
 
         public List<TourRequest> FindAll()
@@ -97,6 +98,34 @@ namespace InitialProject.Repository
         public List<TourRequest> FindAllByDateRange(List<TourRequest> allTourRequests, DateTime filterStartDate, DateTime filterEndDate)
         {
             return allTourRequests.FindAll(x => (x.StartDate >= filterStartDate && x.EndDate <= filterEndDate) || (x.StartDate <= filterStartDate && x.EndDate >= filterEndDate));
+        }
+        
+        public List<TourRequest> FindAllByUser(string username)
+        {
+            List<TourRequest> tourRequests = new List<TourRequest>();   
+            foreach(TourRequest tourRequest in FindAll())
+            {
+                if(tourRequest.User.Username.Equals(username))
+                {
+                    tourRequests.Add(tourRequest);
+                }
+            }
+
+            return tourRequests.Distinct().ToList();
+        }
+
+        public void Invalidate()
+        {
+            List<TourRequest> tourRequests = FindAll();
+            foreach(TourRequest tourRequest in tourRequests)
+            {
+                if((tourRequest.StartDate<DateTime.Now.AddDays(2) && !tourRequest.Status.Equals("accepted")) || (tourRequest.StartDate<=DateTime.Now))
+                {
+                    tourRequest.Status = "invalid";
+                }
+            }
+
+            Save(tourRequests);
         }
     }
 }

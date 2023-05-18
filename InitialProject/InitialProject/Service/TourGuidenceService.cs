@@ -62,6 +62,7 @@ namespace InitialProject.Service
             return results;
         }
 
+    
         public List<int> GetTourReservationsForTracking(string username)
         {
             List<int> results = new List<int>();
@@ -344,6 +345,11 @@ namespace InitialProject.Service
                     return false;
             }
             return true;
+        }
+        
+        public TourGuidence FindByTourAndDate(Tour tour,DateTime dateTime)
+        {
+            return tourGuidenceRepository.FindByTourAndDate(tour,dateTime);
         }
 
     }

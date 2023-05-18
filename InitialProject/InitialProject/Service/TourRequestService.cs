@@ -212,5 +212,133 @@ namespace InitialProject.Service
 
 
 
+        public List<TourRequest> GetByUser(string username)
+        {
+            List<TourRequest> tourRequests = new List<TourRequest>();
+
+            foreach(TourRequest tourRequest in tourRequestRepository.FindAll())
+            {
+                if(tourRequest.User.Username.Equals(username))
+                    tourRequests.Add(tourRequest);
+            }
+
+            return tourRequests;
+        }
+
+
+        public List<TourRequest> GetRejectedByUser(string username)
+        {
+            List<TourRequest> tourRequests = new List<TourRequest>();
+
+            foreach(TourRequest tourRequest in GetByUser(username))
+            {
+                if(tourRequest.Status.Equals("invalid"))
+                {
+                    tourRequests.Add(tourRequest);
+                }
+            }
+
+            return tourRequests;
+        }
+
+        public int CountAcceptedForUser(string username,string year)
+        {
+            int number = 0;
+
+            foreach (TourRequest tourRequest in GetByUser(username))
+            {
+                if(tourRequest.Status.Equals("accepted") && string.IsNullOrEmpty(year))
+                {
+                    number++;
+                }
+
+                else if(tourRequest.Status.Equals("accepted") && tourRequest.StartDate.Year.ToString().Equals(year))
+                {
+                    number++;
+                }
+            }
+
+            return number;
+
+        }
+
+
+        public int CountInvalidForUser(string username,string year)
+        {
+            int number = 0;
+
+            foreach (TourRequest tourRequest in GetByUser(username))
+            {
+                if (tourRequest.Status.Equals("invalid") && string.IsNullOrEmpty(year))
+                {
+                    number++;
+                }
+
+                else if(tourRequest.Status.Equals("invalid") && tourRequest.StartDate.Year.ToString().Equals(year))
+                {
+                    number++;
+                }
+            }
+
+            return number;
+
+        }
+
+
+        public List<string> GetYears(string username)
+        {
+            List<string> years = new List<string>();
+
+            foreach(TourRequest tourRequest in GetByUser(username))
+            {
+                years.Add(tourRequest.StartDate.Year.ToString());
+            }
+
+            return years.Distinct().ToList();
+
+        }
+
+        public int GetCountOfLanguage(string username,Language language)
+        {
+            int number = 0;
+
+            foreach (TourRequest tourRequest in GetByUser(username))
+            {
+                if(tourRequest.Language.Equals(language))
+                {
+                    number++;
+                }
+            }
+
+            return number;
+        }
+
+        public double GetAverageGuestsByYear(string username,string year)
+        {
+            int count = 0;
+            double average = 0;
+
+
+            foreach(TourRequest tourRequest in GetByUser(username))
+            {
+
+                if (string.IsNullOrEmpty(year))
+                {
+                    count++;
+                    average += tourRequest.GuestNumber;
+                }
+
+                else if(tourRequest.StartDate.Year.ToString().Equals(year))
+                {
+                    count++;
+                    average += tourRequest.GuestNumber;
+                }
+            }
+
+            return  Math.Round(average/count,2);
+
+        }
+
+
     }
 }

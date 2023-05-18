@@ -13,6 +13,7 @@
     <None Remove="Resources\Images\choose_image.png" />
     <None Remove="Resources\Images\delete.png" />
     <None Remove="Resources\Images\edit.png" />
+    <None Remove="Resources\Images\logo.jpg" />
     <None Remove="Resources\Images\logo.png" />
     <None Remove="Resources\Images\logo_icon.ico" />
     <None Remove="Resources\Images\turtle_tourism_logo_2.png" />
@@ -30,6 +31,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\choose_image.png" />
+    <Resource Include="Resources\Images\logo.jpg" />
     <Resource Include="Resources\Images\logo.png" />
     <Resource Include="Resources\Images\logo_icon.ico" />
     <Content Include="Resources\Images\delete.png">

@@ -1,0 +1,16 @@
+﻿<Page x:Class="InitialProject.View.Guest2TourRequestsDisplay"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:InitialProject.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="630" d:DesignWidth="1494"
+      Title="Guest2TourRequestsDisplay">
+
+    <Grid Background="{DynamicResource BackGrid}">
+        <DataGrid x:Name="dataGrid" CanUserAddRows="False" AutoGenerateColumns="False">
+        </DataGrid>
+
+    </Grid>
+</Page>
