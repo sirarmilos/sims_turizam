@@ -269,6 +269,33 @@ namespace InitialProject.Service
 
         }
 
+        public Dictionary<string, int> LocationCount(string username)
+        {
+            Dictionary<string, int> locationCounts = new Dictionary<string, int>();
+
+            LocationService locationService = new LocationService();
+
+            List<Location> locations = locationService.FindAll();
+
+            foreach(TourRequest tourRequest in tourRequestRepository.FindAllByUser(username))
+            {
+                string key = tourRequest.Location.Country + "_" + tourRequest.Location.City;
+
+                if (locationCounts.ContainsKey(key))
+                {
+                    locationCounts[key]++;
+                }
+                else
+                {
+                    locationCounts[key] = 1;
+                } 
+            }
+
+            return locationCounts;
+
+        }
+
+
 
     }
 }

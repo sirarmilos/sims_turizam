@@ -7,6 +7,7 @@ using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,5 +36,11 @@ namespace InitialProject.Service
         {
             return locationRepository.Save(locationDto);
         }
+
+        public List<Location>  FindAll()
+        {
+            return locationRepository.FindAll();
+        }
+
     }
 }

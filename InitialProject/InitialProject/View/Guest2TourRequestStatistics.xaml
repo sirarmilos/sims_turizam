@@ -17,7 +17,7 @@
         <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="720,17,0,0" TextWrapping="Wrap" Text="Tour requests per language" FontSize="22" VerticalAlignment="Top" Height="69" Width="204"/>
         <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="1132,17,0,0" TextWrapping="Wrap" Text="Tour requests per location" FontSize="22" VerticalAlignment="Top" Height="69" Width="204"/>
 
-        <lvc:CartesianChart x:Name="chartLanguague" Width="336" Height="276" Margin="654,86,504,268" Series="{Binding Path=DataChart}" LegendLocation="Right" AutomationProperties.IsOffscreenBehavior="Onscreen" DisableAnimations="True">
+        <lvc:CartesianChart FontSize="10" x:Name="chartLanguague" Width="336" Height="276" Margin="654,86,504,268" Series="{Binding Path=DataChart}" LegendLocation="Right" AutomationProperties.IsOffscreenBehavior="Onscreen" DisableAnimations="True">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Title="Languages" Labels="{Binding Path=XLabels}"></lvc:Axis>
             </lvc:CartesianChart.AxisX>
@@ -35,7 +35,7 @@
         </GroupBox>
         <lvc:CartesianChart x:Name="chartCountryCity" Width="336" Height="276" Margin="1066,86,92,268" Series="{Binding DataChart}" LegendLocation="Right" AutomationProperties.IsOffscreenBehavior="Onscreen" DisableAnimations="True">
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="City and country"/>
+                <lvc:Axis Title="City and country" Labels="{Binding XAxis_Loc}"/>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Number of occurences"/>
