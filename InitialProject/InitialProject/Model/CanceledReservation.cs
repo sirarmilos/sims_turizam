@@ -20,6 +20,8 @@ namespace InitialProject.Model
 
         public DateTime EndDate { get; set; }
 
+        public DateTime CancellationDate { get; set; }
+
         public int GuestsNumber { get; set; }
 
         public bool ViewedByOwner { get; set; }
@@ -33,13 +35,14 @@ namespace InitialProject.Model
             Accommodation = reservation.Accommodation;
             StartDate = reservation.StartDate;
             EndDate = reservation.EndDate;
+            CancellationDate = DateTime.Now;
             GuestsNumber = reservation.GuestsNumber;
             ViewedByOwner = viewedByOwner;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ReservationId.ToString(), GuestUsername, Accommodation.Id.ToString(), StartDate.ToString("dd.MM.yyyy"), EndDate.ToString("dd.MM.yyyy"), GuestsNumber.ToString(), ViewedByOwner.ToString() };
+            string[] csvValues = { ReservationId.ToString(), GuestUsername, Accommodation.Id.ToString(), StartDate.ToString("dd.MM.yyyy"), EndDate.ToString("dd.MM.yyyy"), CancellationDate.ToString("dd.MM.yyyy"), GuestsNumber.ToString(), ViewedByOwner.ToString() };
             return csvValues;
         }
 
@@ -64,8 +67,14 @@ namespace InitialProject.Model
                 EndDate = DateTime.ParseExact(temporaryDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
             }
 
-            GuestsNumber = Convert.ToInt32(values[5]);
-            ViewedByOwner = Convert.ToBoolean(values[6]);
+            temporaryDate = values[5];
+            if (!string.IsNullOrEmpty(temporaryDate))
+            {
+                CancellationDate = DateTime.ParseExact(temporaryDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            }
+
+            GuestsNumber = Convert.ToInt32(values[6]);
+            ViewedByOwner = Convert.ToBoolean(values[7]);
         }
     }
 }

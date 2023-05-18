@@ -84,12 +84,12 @@ namespace InitialProject.Repository
 
         public int FindAccommodationCanceledReservationCountByYear(int accommodationId, int year)
         {
-            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.StartDate.Year == year).Count;
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.CancellationDate.Year == year).Count;
         }
 
         public List<CanceledReservation> FindAccommodationCanceledReservationsByYear(int accommodationId, int year)
         {
-            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.StartDate.Year == year);
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.CancellationDate.Year == year);
         }
     }
 }

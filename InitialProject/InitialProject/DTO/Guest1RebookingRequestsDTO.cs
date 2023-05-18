@@ -56,8 +56,8 @@ namespace InitialProject.DTO
             City = temporaryReservationReschedulingRequest.Reservation.Accommodation.Location.City;
             Country = temporaryReservationReschedulingRequest.Reservation.Accommodation.Location.Country;
             OwnerUsername = temporaryReservationReschedulingRequest.Reservation.Accommodation.OwnerUsername;
-            OldStartDate = temporaryReservationReschedulingRequest.Reservation.StartDate;
-            OldEndDate = temporaryReservationReschedulingRequest.Reservation.EndDate;
+            OldStartDate = temporaryReservationReschedulingRequest.OldStartDate;
+            OldEndDate = temporaryReservationReschedulingRequest.OldEndDate;
             NewStartDate = temporaryReservationReschedulingRequest.NewStartDate;
             NewEndDate = temporaryReservationReschedulingRequest.NewEndDate;
             Comment = temporaryReservationReschedulingRequest.Comment;
@@ -72,8 +72,8 @@ namespace InitialProject.DTO
             City = reservation.Accommodation.Location.City;
             Country = reservation.Accommodation.Location.Country;
             OwnerUsername = reservation.Accommodation.OwnerUsername;
-            OldStartDate = reservation.StartDate;
-            OldEndDate = reservation.EndDate;
+            OldStartDate = temporaryRebookingRequest.OldStartDate;
+            OldEndDate = temporaryRebookingRequest.OldEndDate;
             NewStartDate = temporaryRebookingRequest.NewStartDate;
             NewEndDate = temporaryRebookingRequest.NewEndDate;
             Comment = temporaryRebookingRequest.Comment;
