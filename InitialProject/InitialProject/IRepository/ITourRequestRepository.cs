@@ -22,5 +22,7 @@ namespace InitialProject.IRepository
         List<TourRequest> FindAllByGuestsNumber(List<TourRequest> allTourRequests, int? quantity);
 
         List<TourRequest> FindAllByLanguage(List<TourRequest> allTourRequests, string? language);
+
+        List<TourRequest> FindAllByDateRange(List<TourRequest> allTourRequests, DateTime filterStartDate, DateTime filterEndDate);
     }
 }

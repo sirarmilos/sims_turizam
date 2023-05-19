@@ -173,5 +173,24 @@ namespace InitialProject.View
             ShowMostPopularTour window = new ShowMostPopularTour();
             window.Show();
         }
+
+        private void GoToTourRequests(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests();
+            window.Show();
+        }
+
+        private void GoToCreateTourRequestStats(object sender, RoutedEventArgs e)
+        {
+            CreateTourForRequestStatistics window = new CreateTourForRequestStatistics(Guide);
+            window.Show();
+        }
+
+        private void GoToRequestStatistics(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowRequestStatistics window = new SearchAndShowRequestStatistics(Guide);
+            window.Show();
+        }
+
     }
 }
