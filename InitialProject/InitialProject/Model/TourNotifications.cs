@@ -12,7 +12,7 @@ namespace InitialProject.Model
         public TourGuidence TourGuidence { get; set; }  
         public bool IsNotified { get; set; }
 
-        public User User { get; set; }  
+        public User User { get; set; }
 
         public TourNotifications() { }
 

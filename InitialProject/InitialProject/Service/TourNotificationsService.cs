@@ -75,5 +75,6 @@ namespace InitialProject.Service
         {
             return tourRequest.Language.Equals(tourNotification.TourGuidence.Tour.Language);
         }
+
     }
 }

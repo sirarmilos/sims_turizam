@@ -57,7 +57,12 @@ namespace InitialProject.View
 
 
 
+
+
             dataGrid.ItemsSource = tourGuidenceDtos;
+
+
+            List<TourRequest> tourRequests = new List<TourRequest>();
 
            // List<TourDisplayDTO> tourDisplayDTOsResult = new List<TourDisplayDTO>();
 
