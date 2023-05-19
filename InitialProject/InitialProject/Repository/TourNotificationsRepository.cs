@@ -25,14 +25,14 @@ namespace InitialProject.Repository
 
         public List<TourNotifications> FindAll()
         {
-            TourRepository tourRepository = new TourRepository();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
             UserRepository userRepository = new UserRepository();
 
             tourNotifications = tourNotificationsSerializer.FromCSV(FilePathTourNotifications);
 
             foreach(TourNotifications tourNotification in tourNotifications)
             {
-                tourNotification.Tour = tourRepository.FindById(tourNotification.Tour.Id);
+                tourNotification.TourGuidence = tourGuidenceRepository.FindById(tourNotification.TourGuidence.Id);
                 tourNotification.User = userRepository.FindByUsername(tourNotification.User.Username);
             }
 
@@ -54,25 +54,25 @@ namespace InitialProject.Repository
 
         public void Update()
         {
-            TourRepository tourRepository = new TourRepository();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
             UserRepository userRepository = new UserRepository();
 
             List<TourNotifications> tourNotifications = FindAll();
-            List<Tour> tours = tourRepository.FindAll();
+            List<TourGuidence> tours = tourGuidenceRepository.FindAll();
 
             List<TourNotifications> result = FindAll();
 
-            foreach (Tour tour in tours)
+            foreach (TourGuidence tour in tours)
             {
                 TourNotifications notification = new TourNotifications();
                 bool contains = false;
 
 
-                notification.Tour = tour;
+                notification.TourGuidence = tour;
 
                 foreach (TourNotifications tourNotification in tourNotifications)
                 {
-                    if (tour.Id == tourNotification.Tour.Id)
+                    if (tour.Id == tourNotification.TourGuidence.Id)
                     {
                         contains = true;
                         break;
@@ -87,7 +87,7 @@ namespace InitialProject.Repository
                         {
                             TourNotifications tourNotification = new TourNotifications();
 
-                            tourNotification.Tour = notification.Tour;
+                            tourNotification.TourGuidence = notification.TourGuidence;
                             tourNotification.IsNotified = false;
                             tourNotification.User = user;
                             result.Add(tourNotification);
@@ -106,7 +106,7 @@ namespace InitialProject.Repository
 
             foreach(TourNotifications notification in tourNotifications)
             {
-                if(notification.Tour.Id.Equals(tourNotification.Tour.Id) && notification.IsNotified.Equals(tourNotification.IsNotified) && notification.User.Username.Equals(tourNotification.User.Username))
+                if(notification.TourGuidence.Id.Equals(tourNotification.TourGuidence.Id) && notification.IsNotified.Equals(tourNotification.IsNotified) && notification.User.Username.Equals(tourNotification.User.Username))
                 {
                     notification.IsNotified = true;
                 }

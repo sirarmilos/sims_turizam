@@ -42,6 +42,7 @@ namespace InitialProject.Service
         {
             TourRequestService tourRequestService = new TourRequestService();
             List<TourRequest> tourRequests = tourRequestService.GetRejectedByUser(username);
+         
 
             List<TourNotifications> result = new List<TourNotifications>();
 
@@ -49,9 +50,9 @@ namespace InitialProject.Service
             {
                 foreach(TourRequest tourRequest in tourRequests)
                 {
-                    if(tourRequest.Language.Equals(tourNotification.Tour.Language) || (tourRequest.Location.Country.Equals(tourNotification.Tour.Location.Country) && tourRequest.Location.City.Equals(tourNotification.Tour.Location.City)))
+                    if (CheckSameLanguage(tourNotification, tourRequest) || CheckSameLocation(tourNotification, tourRequest))
                     {
-                        result.Add(tourNotification);
+                        Add(result, tourNotification);
                     }
                 }
             }
@@ -60,5 +61,19 @@ namespace InitialProject.Service
             return result.Distinct().ToList();
         }
 
+        public void Add(List<TourNotifications> result, TourNotifications tourNotification)
+        {
+            result.Add(tourNotification);
+        }
+
+        public bool CheckSameLocation(TourNotifications tourNotification, TourRequest tourRequest)
+        {
+            return (tourRequest.Location.Country.Equals(tourNotification.TourGuidence.Tour.Location.Country) && tourRequest.Location.City.Equals(tourNotification.TourGuidence.Tour.Location.City));
+        }
+
+        public bool CheckSameLanguage(TourNotifications tourNotification, TourRequest tourRequest)
+        {
+            return tourRequest.Language.Equals(tourNotification.TourGuidence.Tour.Language);
+        }
     }
 }

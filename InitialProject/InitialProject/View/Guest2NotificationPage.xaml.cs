@@ -49,7 +49,30 @@ namespace InitialProject.View
 
             tourReservationService = new TourReservationService();
 
-            dataGrid.ItemsSource = tourNotificationsService.NotifyOfNewTour(Username);
+            List<TourGuidence> tourGuidenceDtos = new List<TourGuidence>();   
+            foreach(TourNotifications tourNotifications in tourNotificationsService.NotifyOfNewTour(Username))
+            {
+                tourGuidenceDtos.Add(tourNotifications.TourGuidence);
+            }
+
+
+
+            dataGrid.ItemsSource = tourGuidenceDtos;
+
+           // List<TourDisplayDTO> tourDisplayDTOsResult = new List<TourDisplayDTO>();
+
+           /* foreach(TourDisplayDTO tourDisplayDTO1 in tourService.GetToursForDisplay())
+            {
+                foreach(TourNotifications tourNotifications in tourNotificationsService.NotifyOfNewTour(Username))
+                {
+                    if(tourDisplayDTO1.TourName.Equals(tourNotifications.TourGuidence.Tour.TourName) && tourDisplayDTO1.TourDate.Equals(tourNotifications.TourGuidence.StartTime))
+                    {
+                        tourDisplayDTOsResult.Add(tourDisplayDTO1);
+                    }
+                }
+            }
+
+            dataGrid.ItemsSource = tourDisplayDTOsResult;*/
 
 
             List<int> tourReservationIds = tourGuidenceService.NotifyGuestOfTourStarting(username);
