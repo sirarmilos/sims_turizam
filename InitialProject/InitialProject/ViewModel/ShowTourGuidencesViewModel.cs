@@ -27,12 +27,19 @@ namespace InitialProject.ViewModel
 
         public TourGuidence selectedGuidence { get; set; }
 
-        public ICommand DetailsTourGuidenceCommand { get; set; } 
+        public ICommand DetailsTourGuidenceCommand { get; set; }
 
-        public ShowTourGuidencesViewModel()
+        public string GuideUsername
         {
+            get;
+            set;
+        }
+
+        public ShowTourGuidencesViewModel(string guideUsername)
+        {
+            GuideUsername = guideUsername;
             tourGuidenceService = new TourGuidenceService();
-            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceService.GetAllForToday());
+            tourGuidences = new ObservableCollection<TourGuidence>(tourGuidenceService.FindAllForToday(GuideUsername));
             DetailsTourGuidenceCommand = new RelayCommand<TourGuidence>(DetailsTourGuidence);
         }
 

@@ -16,7 +16,9 @@ namespace InitialProject.Service
         private readonly IVoucherRepository voucherRepository;
         public VoucherService() 
         {
-            voucherRepository = new VoucherRepository();
+            voucherRepository = Injector.Injector.CreateInstance<IVoucherRepository>();
+
+            //voucherRepository = new VoucherRepository();
         }
 
         public void CreateForCancelledTourGuidence(int guidenceId)
@@ -25,7 +27,7 @@ namespace InitialProject.Service
             UserRepository userRepository = new UserRepository();
             List<Voucher> vouchers = voucherRepository.FindAll();
 
-            foreach (Model.TourReservation reservation in tourReservationService.GetAll())
+            foreach (Model.TourReservation reservation in tourReservationService.FindAll())
             {
                 if (reservation.tourGuidenceId == guidenceId)
                 {
@@ -44,7 +46,7 @@ namespace InitialProject.Service
             TourGuidenceService tourGuidanceService = new TourGuidenceService();
             TourReservationService tourReservationService = new TourReservationService();
 
-            List<TourGuidence> tourGuidences = tourGuidanceService.GetAll();
+            List<TourGuidence> tourGuidences = tourGuidanceService.FindAll();
 
             double withVoucher = 0, count = 0;
 
@@ -52,7 +54,7 @@ namespace InitialProject.Service
             {
                 if (tg.Finished == true && tg.Tour.Id == tourId)
                 {
-                    foreach (Model.TourReservation tr in tourReservationService.GetAll())
+                    foreach (Model.TourReservation tr in tourReservationService.FindAll())
                     {
                         if (tg.Id == tr.tourGuidenceId && tr.Confirmed == true)
                         {
@@ -65,8 +67,12 @@ namespace InitialProject.Service
                     }
                 }
             }
-            retVal[0] = Math.Round((withVoucher / count) * 100, 2);
-            retVal[1] = Math.Round((1 - (withVoucher / count)) * 100, 2);
+
+            if (count != 0)
+            {
+                retVal[0] = Math.Round((withVoucher / count) * 100, 2);
+                retVal[1] = Math.Round((1 - (withVoucher / count)) * 100, 2);
+            } 
             return retVal;
         }
     }

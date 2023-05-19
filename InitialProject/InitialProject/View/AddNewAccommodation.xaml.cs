@@ -294,12 +294,14 @@ namespace InitialProject.View
                 SetDefaultValue();
 
                 MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                Close();
             }
         }
 
         private bool CheckErrorAllFieldsFilled()
         {
-            return string.IsNullOrEmpty(AccommodationName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || !MaxGuests.HasValue || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
+            return string.IsNullOrEmpty(AccommodationName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || !MaxGuests.HasValue; // || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
         }
 
         private bool CheckErrorImagesNumber()
@@ -327,6 +329,20 @@ namespace InitialProject.View
             buttonRemoveImage.IsEnabled = false;
         }
 
+        private void ChooseImage(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+
+            bool? response = openFileDialog.ShowDialog();
+
+            if (response == true)
+            {
+                Image = openFileDialog.FileName;
+                tbImage.Text = openFileDialog.FileName;
+                tbImage.Focus();
+            }
+        }
+
         private void AddImageToList(object sender, RoutedEventArgs e)
         {
             if(CheckUrlExists() == false)
@@ -348,8 +364,15 @@ namespace InitialProject.View
 
         private bool CheckUrlExists()
         {
-            return Uri.TryCreate(Image.ToString(), UriKind.Absolute, out Uri checkUri) && (checkUri.Scheme == Uri.UriSchemeHttp || checkUri.Scheme == Uri.UriSchemeHttps);
+            return (Uri.TryCreate(Image.ToString(), UriKind.Absolute, out Uri checkUri) && (checkUri.Scheme == Uri.UriSchemeHttp || checkUri.Scheme == Uri.UriSchemeHttps)) || CheckImageExtension();
         }
+
+        public bool CheckImageExtension()
+        {
+            string imageExtension = Image.Substring(Image.Length - 4);
+            return (imageExtension.Equals(".png") == true) || (imageExtension.Equals(".jpg") == true) || (imageExtension.Equals(".jpeg") == true) || (imageExtension.Equals(".jpe") == true) || (imageExtension.Equals(".bmp") == true) || (imageExtension.Equals(".gif") == true);
+        }
+
         private bool CheckImageExist()
         {
             return Images.Any(x => x.Equals(Image) == true);
@@ -372,7 +395,7 @@ namespace InitialProject.View
             }
         }
 
-        private void CheckErrorMinDaysReservation(object sender, TextChangedEventArgs e)
+        private void CheckErrorMinDaysReservation(object sender, TextChangedEventArgs e) //
         {
             if (MinDaysReservationCheck.Equals(string.Empty) == false)
             {
@@ -392,7 +415,7 @@ namespace InitialProject.View
             }
         }
 
-        private void CheckErrorLeftCancelationDays(object sender, TextChangedEventArgs e)
+        private void CheckErrorLeftCancelationDays(object sender, TextChangedEventArgs e) //
         {
             if (LeftCancelationDaysCheck.Equals(string.Empty) == false)
             {

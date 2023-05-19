@@ -13,6 +13,7 @@ namespace InitialProject.Model
     {
         public string userId { get; set; }
         public int tourGuidenceId { get; set; }
+
         public List<Boolean> TourKeyPointArrival { get; set; }
         public int numberOfGuests { get; set; }
         public Boolean Confirmed { get; set; }

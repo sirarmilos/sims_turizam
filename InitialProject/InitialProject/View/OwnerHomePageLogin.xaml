@@ -1,0 +1,154 @@
+﻿<Window x:Class="InitialProject.View.OwnerHomePageLogin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+        
+        mc:Ignorable="d"
+        Title="Home" Height="819" Width="1416" Icon="../Resources/Images/logo_icon.ico"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerHomePageLogin" CanExecute="OwnerHomePageLogin_CanExecute" Executed="OwnerHomePageLogin_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.AccommodationStart" CanExecute="AccommodationStart_CanExecute" Executed="AccommodationStart_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests" CanExecute="ShowOwnerManageBookingMoveRequests_CanExecute" Executed="ShowOwnerManageBookingMoveRequests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowAndCancellationRenovation" CanExecute="ShowAndCancellationRenovation_CanExecute" Executed="ShowAndCancellationRenovation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RateGuests" CanExecute="RateGuests_CanExecute" Executed="RateGuests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowGuestReviews" CanExecute="ShowGuestReviews_CanExecute" Executed="ShowGuestReviews_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerForum" CanExecute="OwnerForum_CanExecute" Executed="OwnerForum_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Logout" CanExecute="Logout_CanExecute" Executed="Logout_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Notifications" CanExecute="Notifications_CanExecute" Executed="Notifications_Executed"></CommandBinding>
+    </Window.CommandBindings>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="150" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="280" />
+            <RowDefinition Height="263" />
+            <!-- 247 -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1416" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Row="0">
+
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch" FontSize="13">
+
+                <Menu.ItemsPanel>
+
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="340" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+
+                </Menu.ItemsPanel>
+
+                <MenuItem Grid.Column="0" Header="_Home (F1)" Command="cmd:RoutedCommands.OwnerHomePageLogin"/>
+                <MenuItem Grid.Column="1" Header="_Accommodation (F2)" Command="cmd:RoutedCommands.AccommodationStart"/>
+                <MenuItem Grid.Column="2" Header="_Management of booking move requests (F3)" Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests"/>
+                <MenuItem Grid.Column="3" Header="Reno_vate (F4)" Command="cmd:RoutedCommands.ShowAndCancellationRenovation"/>
+                <MenuItem Grid.Column="4" Header="Ra_te guests (F5)" Command="cmd:RoutedCommands.RateGuests"/>
+                <MenuItem Grid.Column="5" Header="_Guest reviews (F6)" Command="cmd:RoutedCommands.ShowGuestReviews"/>
+                <MenuItem Grid.Column="6" Header="_Forum (F7)" Command="cmd:RoutedCommands.OwnerForum"/>
+                <MenuItem Grid.Column="7" x:Name="usernameAndSuperOwner" HorizontalAlignment="Right" IsEnabled="False"/>
+                <MenuItem Grid.Column="8" Header="_Logout (F8)" Command="cmd:RoutedCommands.Logout"/>
+                <MenuItem Grid.Column="9" x:Name="notifications" Header="_Notifications (F9)" Command="cmd:RoutedCommands.Notifications">
+                    <MenuItem x:Name="rateGuestsNotifications" Command="cmd:RoutedCommands.RateGuests"/>
+                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations" IsEnabled="False"/>
+                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList"/>
+                </MenuItem>
+
+            </Menu>
+
+        </DockPanel>
+
+        <!--<Button Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Center" Height="180" VerticalAlignment="Bottom" Width="180" Command="cmd:RoutedCommands.OwnerHomePageLogin" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4">
+            <Image Source="../Resources/Images/logo.png" />
+        </Button>-->
+
+        <Button Grid.Row="1" HorizontalAlignment="Left" Height="95" VerticalAlignment="Bottom" Width="150" Command="cmd:RoutedCommands.OwnerHomePageLogin" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Margin="625,0,0,0">
+            <Image Source="../Resources/Images/logo.png" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Width="150" Height="95"/>
+        </Button>
+
+        <Label Grid.Row="2" Content="Turtle tourism" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="595,0,0,0" FontSize="32" FontWeight="SemiBold"/>
+
+        <GroupBox Grid.Row="3" Grid.RowSpan="2" HorizontalAlignment="Left" Height="275" VerticalAlignment="Top" Width="750" Margin="325,25,0,0" FontSize="14">
+
+            <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="245" VerticalAlignment="Center" Width="700">
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    Turtle tourism is an online booking application created in 2023 for the needs of the SIMS and HCI project. This application offers a wide range of possibilities, options and functionalities related to reservations.
+                </TextBlock>
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0">
+                        The application allows two types of reservations:
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Tour Reservations
+                    </TextBlock>   
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Accommodation Reservations
+                    </TextBlock>                    
+                </TextBlock>
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0">
+                        The application offers 4 types of users:
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Owner
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Guest 1
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Guide
+                    </TextBlock>
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,3,0,0" FontWeight="Bold">
+                        Guest 2
+                    </TextBlock>
+                </TextBlock>                            
+                
+            </TextBlock>
+
+        </GroupBox>
+
+        <GroupBox Grid.Row="4" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="750" Margin="325,45,0,0" FontSize="14">
+
+            <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="131" VerticalAlignment="Center" Width="700">
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    The owner can create accommodations that he wants to offer to the market through our application, schedule the renovation of his accommodation or share his opinion with other owners and guests through the forum. In addition to these options, there are many more options that allow the Owner to work easily, quickly and efficiently in this application, who has everything he needs to present his product to the market.
+                </TextBlock>
+                
+                <TextBlock TextWrapping="WrapWithOverflow" Width="700" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" FontWeight="SemiBold" FontStyle="Italic">
+                    Enjoy like turtle!
+                </TextBlock>
+                
+            </TextBlock>
+
+        </GroupBox>
+
+    </Grid>
+
+</Window>

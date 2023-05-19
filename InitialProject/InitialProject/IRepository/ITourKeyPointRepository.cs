@@ -19,7 +19,5 @@ namespace InitialProject.IRepository
 
         void SaveToFile(TourKeyPoint tkp);
 
-        void UpdateCheckedKeyPoints(List<TourKeyPoint> keyPoints);
-
     }
 }

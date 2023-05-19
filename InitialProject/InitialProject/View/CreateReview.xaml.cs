@@ -17,10 +17,12 @@ using System.IO;
 using System.Net.Mime;
 using System.Net;
 using System.Reflection;
+using System.Windows.Navigation;
+using InitialProject.Model;
 
 namespace InitialProject.View
 {
-    public partial class CreateReview : Window
+    public partial class CreateReview : Page
     {
         private readonly ReviewService reviewService;
         private string guest1;
@@ -30,6 +32,8 @@ namespace InitialProject.View
         private int valueForMoney;
         private string comment;
         private string image;
+        private string recommendationLevel;
+        private string recommendationComment;
 
         public string Guest1
         {
@@ -119,6 +123,24 @@ namespace InitialProject.View
             }
         }
 
+        public string RecommendationLevel
+        {
+            get { return recommendationLevel; }
+            set
+            {
+                recommendationLevel = value;
+            }
+        }
+
+        public string RecommendationComment
+        {
+            get { return recommendationComment; }
+            set
+            {
+                recommendationComment = value;
+            }
+        }
+
         private bool notification;
         public bool Notification
         {
@@ -148,15 +170,14 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public CreateReview(string guest1)
+        public CreateReview(string guest1, Page page)
         {
             InitializeComponent();
             DataContext = this;
             Guest1 = guest1;
-
             reviewService = new ReviewService(Guest1);
-            Notification = reviewService.Guest1HasNotification();
-            CheckNotification();
+
+            SetUsernameHeader();
 
             CreateReviewDTOs = new List<CreateReviewDTO>();
 
@@ -175,12 +196,50 @@ namespace InitialProject.View
             SetDefaultValue();
         }
 
+        private void SetUsernameHeader()
+        {
+            Notification = reviewService.Guest1HasNotification();
+            CheckNotification();
+            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
+        }
+
+        private string CheckSuperType()
+        {
+            string superType = string.Empty;
+
+            if (reviewService.IsSuperGuest(Guest1))
+            {
+                superType = " (Super guest)";
+            }
+
+            return superType;
+        }
+
         private void SaveReview(object sender, RoutedEventArgs e)
         {
-            SaveNewCreateReviewDTO saveNewCreateReviewDTO = 
-                new SaveNewCreateReviewDTO(SelectedAccommodation.ReservationId, Cleanliness, Staff, Comfort, ValueForMoney, Comment, Images);
+            if (!IsValidationPassed())
+            {
+                MessageBox.Show("You haven't input a recommendation comment.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
-            reviewService.SaveNewReview(saveNewCreateReviewDTO);
+            SaveNewCreateReviewDTO saveNewCreateReviewDTO =
+                new SaveNewCreateReviewDTO(
+                    SelectedAccommodation.ReservationId,
+                    Cleanliness,
+                    Staff,
+                    Comfort,
+                    ValueForMoney,
+                    Comment,
+                    Images,
+                    RecommendationLevel,
+                    RecommendationComment);
+
+            if (renovationCheckBox.IsChecked.GetValueOrDefault())
+                reviewService.SaveNewReviewWithRenovation(saveNewCreateReviewDTO);
+            else
+                reviewService.SaveNewReview(saveNewCreateReviewDTO);
+
 
             reviewService.CheckSuperOwner(saveNewCreateReviewDTO.ReservationId);
 
@@ -195,8 +254,15 @@ namespace InitialProject.View
             if (CreateReviewDTOs.Count == 0)
             {
                 MessageBox.Show("All accommodations are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                GoToGuest1Start(sender, e);
+                GoToSearchAndShowAccommodations(sender, e);
             }
+        }
+
+        public bool IsValidationPassed()
+        {
+            if (renovationCheckBox.IsChecked.GetValueOrDefault() && string.IsNullOrWhiteSpace(RecommendationComment)) return false;
+
+            return true;
         }
 
         private void CancelReview(object sender, RoutedEventArgs e)
@@ -246,7 +312,7 @@ namespace InitialProject.View
             }
         }
 
-        private bool CheckErrorUrlExists() // todo: moze da se refaktorise
+        private bool CheckErrorUrlExists() 
         {
             string[] allowedExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".jfif" };
             Uri uriResult;
@@ -333,47 +399,55 @@ namespace InitialProject.View
             ValueForMoney = Convert.ToInt32(sliderValueForMoney.Value);
         }
 
-        private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        private void SliderRenovationRecommendationLevelValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Guest1Start window = new Guest1Start(Guest1);
-            window.Show();
-            Close();
+            RecommendationLevel = "Level " + Convert.ToString(sliderRenovationRecommendationLevel.Value);
         }
 
-        private void GoToSearchAndShowAccommodation(object sender, RoutedEventArgs e)
+        private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
         {
-            SearchAndShowAccommodations window = new SearchAndShowAccommodations(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
         }
 
-        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        //private void GoToGuest1Start(object sender, RoutedEventArgs e)
+        //{
+        //    NavigationService?.Navigate(new Guest1Start(Guest1, this));
+        //}
+
+        private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
         {
-            CreateReview window = new CreateReview(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
         }
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)
         {
-            ShowReservations window = new ShowReservations(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new ShowReservations(Guest1, this));
+        }
+
+        private void GoToCreateReview(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new CreateReview(Guest1, this));
         }
 
         private void GoToGuest1Requests(object sender, RoutedEventArgs e)
         {
-            Guest1Requests window = new Guest1Requests(Guest1);
-            window.Show();
-            Close();
+            NavigationService?.Navigate(new Guest1Requests(Guest1, this));
+        }
+
+        private void GoToShowGuest1Notifications(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new ShowGuest1Notifications(Guest1, this));
         }
 
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
+            Window currentWindow = Window.GetWindow(this);
+
             LoginForm window = new LoginForm();
             window.Show();
-            Close();
+            currentWindow.Close();
         }
+
 
     }
 }

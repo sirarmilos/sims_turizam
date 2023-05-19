@@ -15,6 +15,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace InitialProject.View
@@ -25,6 +26,7 @@ namespace InitialProject.View
     public partial class LoginForm : Window
     {
         private readonly UserService userService;
+        private readonly TourGuidenceService tourGuidenceService;
 
         private string username;
         private string password;
@@ -56,29 +58,30 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public LoginForm()
+        private void Login_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            InitializeComponent();
-
-            DataContext = this;
-
-            userService = new UserService();
+            e.CanExecute = true;
         }
 
-        private void Login(object sender, RoutedEventArgs e)
+        private void Login_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if(userService.IsUsernameExist(Username) == false)
+            Password = pbPassword.Password;
+
+            labelErrorUsername.Visibility = Visibility.Hidden;
+            labelErrorPassword.Visibility = Visibility.Hidden;
+
+            if (userService.IsUsernameExist(Username) == false)
             {
-                tbUsername.Text = string.Empty;
-                tbPassword.Text = string.Empty;
-                MessageBox.Show("Username you entered does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                /*tbUsername.Text = string.Empty;
+                pbPassword.Password = string.Empty;*/
+                labelErrorUsername.Visibility = Visibility.Visible;
                 tbUsername.Focus();
             }
-            else if(userService.IsPasswordCorrect(Username, Password) == false)
+            else if (userService.IsPasswordCorrect(Username, Password) == false)
             {
-                tbPassword.Text = string.Empty;
-                MessageBox.Show("Password you entered is incorrect.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                tbPassword.Focus();
+                // pbPassword.Password = string.Empty;
+                labelErrorPassword.Visibility = Visibility.Visible;
+                pbPassword.Focus();
             }
             else
             {
@@ -86,31 +89,69 @@ namespace InitialProject.View
 
                 if (type.Equals("owner") == true)
                 {
-                    OwnerStart window = new OwnerStart(Username);
+                    AccommodationStart window = new AccommodationStart(Username);
                     window.Show();
                     Close();
                 }
                 if (type.Equals("guest1") == true)
                 {
-                    Guest1Start window = new Guest1Start(Username);
+                    Guest1MainWindow window = new Guest1MainWindow(Username);
                     window.Show();
                     Close();
+                    return;
                 }
                 if (type.Equals("guide") == true)
                 {
                     GuideStart window = new GuideStart(Username);
                     window.Show();
                     Close();
+
+                   /* TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+                    if (tg != null)
+                    {
+                        GuideStart2 window1 = new GuideStart2(Username, tg);
+                        window1.Show();
+                        Close();
+                    }
+                    else
+                    {
+                        GuideStart1 window2 = new GuideStart1(Username);
+                        window2.Show();
+                        Close();
+                    }*/
+                    
                 }
                 if (type.Equals("guest2") == true)
                 {
-                    Guest2Start window = new Guest2Start(Username);
+                    //Guest2Start window = new Guest2Start(Username);
+
+                    Guest2MainWindow window = new Guest2MainWindow(Username);
                     window.Show();
                     Close();
                 }
 
-                MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        public LoginForm()
+        {
+            InitializeComponent();
+
+            DataContext = this;
+
+            userService = new UserService();
+
+            tourGuidenceService = new TourGuidenceService();
+
+            userService.CheckRecentlyRenovatedAccommodation();
+
+            userService.CheckUsersSuperGuestStatus();
+
+            tbUsername.Focus();
+
+            labelErrorUsername.Visibility = Visibility.Hidden;
+            labelErrorPassword.Visibility = Visibility.Hidden;
         }
 
         private void labeltbFocus(object sender, MouseButtonEventArgs e)
@@ -121,5 +162,6 @@ namespace InitialProject.View
                 Keyboard.Focus(label.Target);
             }
         }
+
     }
 }

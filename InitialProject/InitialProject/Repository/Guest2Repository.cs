@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
 using InitialProject.View;
@@ -11,8 +12,10 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Repository
 {
-    class Guest2Repository
+    class Guest2Repository : IGuest2Repository
     {
+        private  UserRepository userRepository;
+
         private const string FilePathGuest2 = "../../../Resources/Data/guest2.csv";
         private const string FilePathVouchers = "../../../Resources/Data/vouchers.csv";
         private const string FilePathGuideReviews = "../../../Resources/Data/guidereviews.csv";
@@ -35,6 +38,20 @@ namespace InitialProject.Repository
 
             rateGuideSerializer = new Serializer<Model.RateGuide>();
             rateGuides = rateGuideSerializer.FromCSV(FilePathGuideReviews);
+        }
+
+        public List<Guest2> FindAll()
+        {
+            userRepository = new UserRepository();
+
+            guests2 = guest2Serializer.FromCSV(FilePathGuest2);
+
+            foreach (Guest2 temporaryGuest2 in guests2.ToList())
+            {
+                temporaryGuest2.User = userRepository.FindByUsername(temporaryGuest2.User.Username);
+            }
+
+            return guests2;
         }
 
         public int NextIdVoucher()
@@ -94,18 +111,6 @@ namespace InitialProject.Repository
 
             return result;
 
-        }
-
-        public int GetAge(string username)
-        {
-            foreach(Guest2 guest2 in guests2)
-            {
-                if (guest2.User.Username.Equals(username))
-                {
-                    return guest2.Age;
-                }
-            }
-            return 0;
         }
 
         public void GuideRating(string userId, string guideId, int tourGuidenceId, int guideKnowledge, int guideLanguage, int tourExperience, string comment, List<string> images)

@@ -1,4 +1,5 @@
 ﻿using InitialProject.DTO;
+using InitialProject.Injector;
 using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
@@ -21,6 +22,10 @@ namespace InitialProject.Service
         private readonly ReservationService reservationService;
 
         private readonly RateGuestsService rateGuestsService;
+
+        private readonly UserService userService;
+
+        private readonly CanceledReservationService canceledReservationService;
 
         public List<BusyReservation> BusyReservations
         {
@@ -52,7 +57,8 @@ namespace InitialProject.Service
 
         public ReservationReschedulingRequestService()
         {
-            reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
+            reservationReschedulingRequestRepository = Injector.Injector.CreateInstance<IReservationReschedulingRequestRepository>();
+            //reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
 
         }
 
@@ -60,9 +66,12 @@ namespace InitialProject.Service
         {
             Owner = username;
             Guest1 = username;
-            reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
+            reservationReschedulingRequestRepository = Injector.Injector.CreateInstance<IReservationReschedulingRequestRepository>();
+            //reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
             reservationService = new ReservationService(Owner);
             rateGuestsService = new RateGuestsService(Owner);
+            userService = new UserService();
+            canceledReservationService = new CanceledReservationService();
 
             BusyReservations = new List<BusyReservation>();
         }
@@ -200,7 +209,7 @@ namespace InitialProject.Service
             return GetGuest1RebookingRequestsDTOs(guest1Reservations);
         }
 
-        public List<Guest1RebookingRequestsDTO> GetGuest1RebookingRequestsDTOs(List<Reservation> guest1Reservations)
+        public List<Guest1RebookingRequestsDTO> GetGuest1RebookingRequestsDTOs(List<Reservation> guest1Reservations) // moze jednostavnije da se uradi
         {
             List<Guest1RebookingRequestsDTO> guest1RebookingRequestsDTOs = new List<Guest1RebookingRequestsDTO>();
 
@@ -218,6 +227,76 @@ namespace InitialProject.Service
             }
 
             return guest1RebookingRequestsDTOs;
+        }
+
+        public List<Guest1NotificationDTO> FindAllNotificationsByGuest1Username()
+        {
+            List<Guest1RebookingRequestsDTO> allRequests = FindAllByGuest1Username();
+
+            List <Guest1NotificationDTO> allNotifications = new List<Guest1NotificationDTO>();
+
+            if (allRequests == null) return null;
+
+            GetGuest1NotificationDTOs(allRequests, allNotifications);
+            
+            return allNotifications;
+        }
+
+        private void GetGuest1NotificationDTOs(List<Guest1RebookingRequestsDTO> allRequests, List<Guest1NotificationDTO> allNotifications)
+        {
+            foreach (Guest1RebookingRequestsDTO temporaryRequest in allRequests)
+            {
+                if (temporaryRequest.Status.Equals("rejected") || temporaryRequest.Status.Equals("accepted"))
+                {
+                    Guest1NotificationDTO temporaryGuest1NotificationDTO = new Guest1NotificationDTO(temporaryRequest);
+
+                    temporaryGuest1NotificationDTO.RequestId = reservationReschedulingRequestRepository
+                        .FindRequestByReservationId(temporaryRequest.ReservationId, Guest1).Id;
+
+                    allNotifications.Add(temporaryGuest1NotificationDTO);
+                }
+            }
+        }
+
+        public Guest1RebookingRequestsDTO FindRebookingRequestByRequestId(int requestId)
+        {
+            ReservationReschedulingRequest temporaryRebookingRequest = 
+                reservationReschedulingRequestRepository.FindRequestByRequestId(requestId, Guest1);
+
+            if (temporaryRebookingRequest == null) return null;
+            
+            Guest1RebookingRequestsDTO temporaryRebookingRequestDTO =
+                new Guest1RebookingRequestsDTO(temporaryRebookingRequest);
+
+            return temporaryRebookingRequestDTO;
+            
+        }
+
+        public List<Guest1RebookingRequestsDTO> FindAllRejectedByGuest1Username()
+        {
+            List<Guest1RebookingRequestsDTO> allRequests = FindAllByGuest1Username();
+
+            if (allRequests == null) return null;
+
+            return allRequests.FindAll(x => x.Status.Equals("rejected"));
+        }
+
+        public List<Guest1RebookingRequestsDTO> FindAllAcceptedByGuest1Username()
+        {
+            List<Guest1RebookingRequestsDTO> allRequests = FindAllByGuest1Username();
+
+            if (allRequests == null) return null;
+
+            return allRequests.FindAll(x => x.Status.Equals("accepted"));
+        }
+
+        public List<Guest1RebookingRequestsDTO> FindAllPendingByGuest1Username()
+        {
+            List<Guest1RebookingRequestsDTO> allRequests = FindAllByGuest1Username();
+
+            if (allRequests == null) return null;
+
+            return allRequests.FindAll(x => x.Status.Equals("pending"));
         }
 
         public void RemoveRequestsToCancelledReservation(int reservationId)
@@ -241,5 +320,54 @@ namespace InitialProject.Service
                 x => x.Reservation.GuestUsername.Equals(Guest1) && (x.ViewedByGuest == false) && ((x.Status.Equals("rejected") == true) || (x.Status.Equals("accepted") == true)) );
         }
 
+        public bool IsSuperGuest(string guest1Username)
+        {
+            return userService.IsSuperGuest(guest1Username);
+        }
+
+
+
+
+        public List<CancelledReservationsNotificationDTO> FindUnreadCancelledReservations(string ownerUsername)
+        {
+            return userService.FindUnreadCancelledReservations(ownerUsername);
+        }
+
+        public int FindAccommodationRescheduledReservationCountByYear(int accommodationId, int year)
+        {
+            return reservationReschedulingRequestRepository.FindAccommodationRescheduledReservationCountByYear(accommodationId, year);
+        }
+
+        public List<int> FindAccommodationRescheduledReservationCountByMonth(int accommodationId, int year)
+        {
+            List<int> rescheduledReservationCount = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            List<ReservationReschedulingRequest> yearRescheduledReservations = reservationReschedulingRequestRepository.FindAccommodationRescheduledReservationsByYear(accommodationId, year);
+
+            foreach(ReservationReschedulingRequest temporaryReservationReschedulingRequest in yearRescheduledReservations.ToList())
+            {
+                if(temporaryReservationReschedulingRequest.OldStartDate.Year != year)
+                {
+                    temporaryReservationReschedulingRequest.OldStartDate = new DateTime(year, 1, 1);
+                }
+
+                if(temporaryReservationReschedulingRequest.OldEndDate.Year != year)
+                {
+                    temporaryReservationReschedulingRequest.OldEndDate = new DateTime(year, 12, 31);
+                }
+
+                for(int month = temporaryReservationReschedulingRequest.OldStartDate.Month; month <= temporaryReservationReschedulingRequest.OldEndDate.Month; month++)
+                {
+                    rescheduledReservationCount[month - 1]++;
+                }
+            }
+
+            return rescheduledReservationCount;
+        }
+
+        public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
+        {
+            canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
+        }
     }
 }

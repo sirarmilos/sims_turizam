@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Windows.Interactivity;
 using System.Windows;
 using System.Xml.Linq;
+using InitialProject.Injector;
+using InitialProject.IRepository;
 
 namespace InitialProject.Service
 {
@@ -20,7 +22,11 @@ namespace InitialProject.Service
 
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
-        private ReservationRepository reservationRepository;
+        private UserService userService;
+
+        private SuperGuestService superGuestService;
+
+        private IReservationRepository reservationRepository;
 
         private string owner;
 
@@ -46,7 +52,9 @@ namespace InitialProject.Service
 
         public ReservationService()
         {
-            reservationRepository = new ReservationRepository();
+            reservationRepository = Injector.Injector.CreateInstance<IReservationRepository>();
+            //reservationRepository = new ReservationRepository();
+
             canceledReservationService = new CanceledReservationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }
@@ -55,7 +63,9 @@ namespace InitialProject.Service
         {
             Owner = username;
             Guest1 = username;
-            reservationRepository = new ReservationRepository();
+            reservationRepository = Injector.Injector.CreateInstance<IReservationRepository>();
+            //reservationRepository = new ReservationRepository();
+
             canceledReservationService = new CanceledReservationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
         }
@@ -102,7 +112,16 @@ namespace InitialProject.Service
 
             List<Reservation> guest1Reservations = FindGuest1Reservations(Guest1);
 
-            return GetShowReservationsDTO(guest1Reservations);
+            var showReservationDTOs = GetShowReservationsDTO(guest1Reservations);
+
+            SortByStartTimeDescending(showReservationDTOs);
+
+            return showReservationDTOs;
+        }
+
+        public void SortByStartTimeDescending(List<ShowReservationDTO> showReservationDTOs)
+        {
+            showReservationDTOs.Sort((x, y) => DateTime.Compare(y.StartDate, x.StartDate));
         }
 
         public List<Reservation> FindGuest1Reservations(string username)
@@ -145,7 +164,9 @@ namespace InitialProject.Service
 
             reservationRepository.RemoveById(reservation.ReservationId);
 
-            canceledReservationService.Save(reservation);
+            CanceledReservation canceledReservation = new CanceledReservation(reservation, false);
+
+            canceledReservationService.Save(canceledReservation);
         }
 
         public bool Guest1HasNotification()
@@ -155,6 +176,8 @@ namespace InitialProject.Service
 
         public void Save(ShowReservationDTO showReservationDTO)
         {
+            superGuestService = new SuperGuestService(Guest1);
+
             reservationRepository.Save(
                 Guest1, 
                 showReservationDTO.Accommodation, 
@@ -162,9 +185,57 @@ namespace InitialProject.Service
                 showReservationDTO.EndDate, 
                 showReservationDTO.GuestsNumber
             );
+
+            if (IsSuperGuest(Guest1))
+            {
+                superGuestService.DecreaseOneBonusPoint();
+            }
+            else if (MakeEligibleUserSuperGuest())
+            {
+                superGuestService.DecreaseOneBonusPoint();
+            }
+
+
+        }
+
+        private bool MakeEligibleUserSuperGuest()
+        {
+            userService = new UserService();
+
+            if (FindNumberOfReservationsInPastYear() >= 10)
+            {
+                superGuestService.MakeUserSuperGuest(Guest1);
+
+                userService.MakeUserSuperGuest(Guest1);
+
+                return true;
+            }
+
+            return false;
         }
 
 
+        public int FindNumberOfReservationsInPastYear()
+        {
+            List<Reservation> allReservations = reservationRepository.FindGuest1Reservations(Guest1);
+            int numberOfReservations = 0;
+
+            foreach (Reservation reservation in allReservations) 
+            {
+                if (DateTime.Now.Subtract(reservation.StartDate).Days < 365)
+                {
+                    numberOfReservations++;
+                }
+            }
+
+            return numberOfReservations;
+        }
+
+        public bool IsSuperGuest(string guest1Username)
+        {
+            userService = new UserService();
+            return userService.IsSuperGuest(guest1Username);
+        }
 
 
 
@@ -305,5 +376,73 @@ namespace InitialProject.Service
             return false;
         }
 
+        public List<Reservation> FindReservationsByAccommodationName(string accommodationName)
+        {
+            return reservationRepository.FindReservationsByAccommodationName(accommodationName);
+        }
+
+        public List<int> FindAccommodationReservationsYears(int accommodationId)
+        {
+            List<int> years = new List<int>();
+
+            List<Reservation> accommodationReservations = reservationRepository.FindByAccommodationId(accommodationId);
+
+            foreach (Reservation temporaryAccommodationReservation in accommodationReservations.ToList())
+            {
+                for(int year = temporaryAccommodationReservation.StartDate.Year; year <= temporaryAccommodationReservation.EndDate.Year; year++)
+                {
+                    if(years.Exists(x => x == year) == false)
+                    {
+                        years.Add(year);
+                    }
+                }
+            }
+
+            years.Sort();
+
+            return years;
+        }
+
+        public int FindAccommodationReservationCountByYear(int accommodationId, int year)
+        {
+            return reservationRepository.FindAccommodationReservationCountByYear(accommodationId, year);
+        }
+
+        public List<int> FindAccommodationReservationCountByMonth(int accommodationId, int year)
+        {
+            List<int> reservationCount = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+            List<Reservation> yearReservations = reservationRepository.FindAccommodationReservationsByYear(accommodationId, year);
+
+            foreach(Reservation temporaryYearReservation in yearReservations.ToList())
+            {
+                if(temporaryYearReservation.StartDate.Year != year)
+                {
+                    temporaryYearReservation.StartDate = new DateTime(year, 1, 1);
+                }
+
+                if(temporaryYearReservation.EndDate.Year != year)
+                {
+                    temporaryYearReservation.EndDate = new DateTime(year, 12, 31);
+                }
+
+                for(int month = temporaryYearReservation.StartDate.Month; month <= temporaryYearReservation.EndDate.Month; month++)
+                {
+                    reservationCount[month - 1]++;
+                }
+            }
+
+            return reservationCount;
+        }
+
+        public List<Reservation> FindByAccommodationId(int accommodationId)
+        {
+            return reservationRepository.FindByAccommodationId(accommodationId);
+        }
+
+        public List<Reservation> FindAccommodationReservationsByYear(int accommodationId, int year)
+        {
+            return reservationRepository.FindAccommodationReservationsByYear(accommodationId, year);
+        }
     }
 }

@@ -19,12 +19,26 @@ namespace InitialProject.DTO
 
         public List<string> Images { get; set; }
 
+        public string RecommendationLevel { get; set; }
+
+        public string RecommendationComment { get; set; }
+
         public SaveNewCreateReviewDTO()
         {
 
         }
 
-        public SaveNewCreateReviewDTO(int reservationId, int cleanliness, int staff, int comfort, int valueForMoney, string comment, ObservableCollection<string> images) // todo: promeniti observable collection !!!
+        public SaveNewCreateReviewDTO(
+            int reservationId, 
+            int cleanliness, 
+            int staff, 
+            int comfort, 
+            int valueForMoney, 
+            string comment, 
+            ObservableCollection<string> images, // todo: promeniti observable collection !!!
+            string recommendationLevel,
+            string recommendationComment
+            ) 
         {
             ReservationId = reservationId;
             Cleanliness = cleanliness;
@@ -33,6 +47,8 @@ namespace InitialProject.DTO
             ValueForMoney = valueForMoney;
             Comment = comment;
             Images = new List<string>(images);
+            RecommendationLevel = recommendationLevel;
+            RecommendationComment = recommendationComment;
         }
     }
 }

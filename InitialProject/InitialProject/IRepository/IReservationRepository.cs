@@ -34,5 +34,13 @@ namespace InitialProject.IRepository
         List<Reservation> FindAllByAccommodation(int id);
 
         List<Reservation> FindGuest1Reservations(string guest1);
+
+        List<Reservation> FindReservationsByAccommodationName(string accommodationName);
+
+        List<Reservation> FindByAccommodationId(int accommodationId);
+
+        int FindAccommodationReservationCountByYear(int accommodationId, int year);
+
+        List<Reservation> FindAccommodationReservationsByYear(int accommodationId, int year);
     }
 }

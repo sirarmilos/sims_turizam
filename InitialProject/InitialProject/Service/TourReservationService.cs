@@ -14,12 +14,16 @@ namespace InitialProject.Service
     {
         private readonly ITourReservationRepository tourReservationRepository;
 
+        private readonly TourKeyPointService tourKeyPointService;
+
         public TourReservationService()
         {
-            tourReservationRepository = new TourReservationRepository();
+            tourReservationRepository = Injector.Injector.CreateInstance<ITourReservationRepository>();
+            //tourReservationRepository = new TourReservationRepository();    
+            tourKeyPointService = new TourKeyPointService();
         }
 
-        public List<Model.TourReservation> GetAll()
+        public List<Model.TourReservation> FindAll()
         {
             return tourReservationRepository.FindAll();
         }
@@ -68,12 +72,8 @@ namespace InitialProject.Service
         public List<Dto.ReservationDisplayDto> GetAllForOneTourGuidence(int guidenceId)
         {
             List<Dto.ReservationDisplayDto> reservations = new List<Dto.ReservationDisplayDto>();
-            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
             List<TourKeyPoint> tourKeyPoints = new List<TourKeyPoint>();
-
-            TourKeyPointService tourKeyPointService = new TourKeyPointService();
-
-            tourKeyPoints = tourKeyPointService.GetByTourGuidance(guidenceId);
+            tourKeyPoints = tourKeyPointService.FindByTourGuidance(guidenceId);
 
             foreach (Model.TourReservation tr in tourReservationRepository.FindAll())
             {
@@ -129,9 +129,8 @@ namespace InitialProject.Service
 
         public List<Boolean> SetArrivalsToFalse(int guidenceId)
         {
-            List<TourKeyPoint> tourKeyPoints = new List<TourKeyPoint>();
-            TourKeyPointService tourKeyPointService = new TourKeyPointService();    
-            tourKeyPoints = tourKeyPointService.GetByTourGuidance(guidenceId);
+            List<TourKeyPoint> tourKeyPoints = new List<TourKeyPoint>();   
+            tourKeyPoints = tourKeyPointService.FindByTourGuidance(guidenceId);
             List<Boolean> retVal = new List<Boolean>();
             foreach (TourKeyPoint kp in tourKeyPoints)
             {
@@ -143,7 +142,7 @@ namespace InitialProject.Service
         public void ConfirmTourAttendance(string username, int tourReservationId)
         {
             List<Model.TourReservation> result = tourReservationRepository.FindAll();
-            foreach (Model.TourReservation tourReservation in tourReservationRepository.FindAll())
+            foreach (Model.TourReservation tourReservation in result)
             {
                 if (tourReservation.Id == tourReservationId && tourReservation.userId.Equals(username))
                 {
@@ -154,7 +153,43 @@ namespace InitialProject.Service
             }
         }
 
+        public Model.TourReservation FindById(int id)
+        {
+            return tourReservationRepository.FindById(id);
+        }
 
+        public int NextId()
+        { return tourReservationRepository.NextId();}
 
+        public Dictionary<int,int> AddedToTour(string username)
+        {
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+            List<int> startedToursForGuest = tourGuidenceService.NotifyGuestOfTourStarting(username);
+            List<int> result = new List<int>();
+
+            Dictionary<int,int> keyValuePairs = new Dictionary<int,int>();  
+
+            foreach(int id in startedToursForGuest)
+            {
+                foreach(Model.TourReservation tourReservation in tourReservationRepository.FindAll())
+                {
+                    if(id==tourReservation.Id)
+                    {
+                        int br = 0;
+                        foreach (bool accepted in tourReservation.TourKeyPointArrival)
+                        {
+                            br++;
+                            if(accepted == true)
+                            {
+                                keyValuePairs[tourReservation.Id] = br;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return keyValuePairs;
+
+        }
     }
 }

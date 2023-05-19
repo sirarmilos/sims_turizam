@@ -1,0 +1,139 @@
+﻿<Window x:Class="InitialProject.View.ShowKeyPoints"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="Key Points" Height="775" Width="1400"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style x:Key="CenterTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="CenterHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Menu column -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content column -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Menu -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0">
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <StackPanel>
+                    <MenuItem Header="Home Page" Margin="0,25,0,0"/>
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Profile" Margin="0,5,0,0"/>
+                    <MenuItem Header="Future Tours" Margin="0,5,0,0"/>
+                    <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
+                </StackPanel>
+                <Grid>
+                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+
+        <!-- Main content -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
+            <Grid Grid.Column="1">
+                <TextBlock Text="{Binding TitleText}" Margin="200,40,10,0" FontSize="20" FontWeight="Bold" />
+
+                <Border BorderBrush="Black" BorderThickness="1" Margin="200,158,200,274" Height="Auto">
+                    <DataGrid x:Name="dataGridKP" ItemsSource="{Binding tourKeyPoints}" CanUserAddRows="False"  AutoGenerateColumns="False" VerticalContentAlignment="Stretch" Height="Auto">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Key Point Name" Binding="{Binding KeyPointName}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Location.Address}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Header="View Guests" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Background="AliceBlue" Foreground="Black" Content="VIEW" Click="ViewGuestsDataGrid"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTemplateColumn.HeaderStyle>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+                <DataGrid x:Name="GuestsDataGrid" AutoGenerateColumns="False" IsReadOnly="True" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Height="Auto" Margin="0,0,198,147">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="*" Header="GUESTS" ElementStyle="{StaticResource CenterTextBlockStyle}" HeaderStyle="{StaticResource CenterHeaderStyle}" Binding="{Binding}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+
+
+                <Button Content="BACK" HorizontalAlignment="Left" Margin="202,627,0,0" VerticalAlignment="Top" Height="38" Width="97" Click="GoToPreviousWindow"/>
+                <Label x:Name="Label1" Content="There are no guests for this key point" HorizontalAlignment="Left" Margin="790,585,0,0" VerticalAlignment="Top" Width="226"/>
+
+
+
+            </Grid>
+        </Border>
+
+
+
+    </Grid>
+</Window>

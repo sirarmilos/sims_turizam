@@ -321,6 +321,18 @@ namespace InitialProject.View
             }
         }
 
+        public TourRequest TourRequest
+        {
+            get;
+            set;
+        }
+
+        public Location Location
+        {
+            get;
+            set;
+        }
+
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -356,12 +368,145 @@ namespace InitialProject.View
             KeyPointLocation = new List<Location>();
             tbDate.Text = "01/01/0001 00:00:00";
             counter = tourKeyPointRepository.NextId() - 1;
+            Location = null;
         }
+
+        public AddNewTour(string guide, Location location)
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            Guide = guide;
+
+            locationRepository = new LocationRepository();
+            tourRepository = new TourRepository();
+            tourKeyPointRepository = new TourKeyPointRepository();
+            tourGuidenceRepository = new TourGuidenceRepository();
+
+            tourKeyPointDtos = new List<TourKeyPointDto>();
+            tourKeyPoints = new List<TourKeyPoint>();
+            tourGuidences = new List<TourGuidence>();
+            tourGuidenceDtos = new List<TourGuidenceDto>();
+
+            Images = new List<string>();
+            ImagesView = new ObservableCollection<ImagesView>();
+            SelectedImage = null;
+
+            TourDates = new List<DateTime>();
+            KeyPointLocation = new List<Location>();
+            tbDate.Text = "01/01/0001 00:00:00";
+            counter = tourKeyPointRepository.NextId() - 1;
+
+            TourCountry = location.Country;
+            TourCity = location.City;
+            TourAddress = location.Address;
+            TourLatitude = location.Latitude;
+            TourLongitude = location.Longitude;
+            tbCountry.IsReadOnly = true;
+            tbCity.IsReadOnly = true;
+            tbAddress.IsReadOnly = true;
+            sliderLatitude.Value = (double)location.Latitude;
+            sliderLongitude.Value = (double)location.Longitude;
+
+            Location = location;
+            
+        }
+
+        public AddNewTour(string guide, Language language)
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            Guide = guide;
+
+            locationRepository = new LocationRepository();
+            tourRepository = new TourRepository();
+            tourKeyPointRepository = new TourKeyPointRepository();
+            tourGuidenceRepository = new TourGuidenceRepository();
+
+            tourKeyPointDtos = new List<TourKeyPointDto>();
+            tourKeyPoints = new List<TourKeyPoint>();
+            tourGuidences = new List<TourGuidence>();
+            tourGuidenceDtos = new List<TourGuidenceDto>();
+
+            Images = new List<string>();
+            ImagesView = new ObservableCollection<ImagesView>();
+            SelectedImage = null;
+
+            TourDates = new List<DateTime>();
+            KeyPointLocation = new List<Location>();
+            tbDate.Text = "01/01/0001 00:00:00";
+            counter = tourKeyPointRepository.NextId() - 1;
+
+            /*Languages = language;
+            tbLanguage.IsReadOnly = true;*/
+            Languages = language;
+            tbLanguage.Text = language.ToString();
+            tbLanguage.IsReadOnly = true;
+            Location = null;
+        }
+
+        public AddNewTour(string guide, TourRequest tourRequest, DateTime selectedStartByGuide)
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            Guide = guide;
+            TourRequest = tourRequest;
+
+            locationRepository = new LocationRepository();
+            tourRepository = new TourRepository();
+            tourKeyPointRepository = new TourKeyPointRepository();
+            tourGuidenceRepository = new TourGuidenceRepository();
+
+            tourKeyPointDtos = new List<TourKeyPointDto>();
+            tourKeyPoints = new List<TourKeyPoint>();
+            tourGuidences = new List<TourGuidence>();
+            tourGuidenceDtos = new List<TourGuidenceDto>();
+
+            Images = new List<string>();
+            ImagesView = new ObservableCollection<ImagesView>();
+            SelectedImage = null;
+
+            TourDates = new List<DateTime>();
+            KeyPointLocation = new List<Location>();
+            counter = tourKeyPointRepository.NextId() - 1;
+
+            TourCountry = TourRequest.Location.Country;
+            TourCity = TourRequest.Location.City;
+            tbCountry.IsReadOnly = true;
+            tbCity.IsReadOnly = true;
+
+            MaxGuestsCheck = TourRequest.GuestNumber.ToString();
+            tbMaxGuests.Text = TourRequest.GuestNumber.ToString();
+
+            Languages = TourRequest.Language;
+            tbLanguage.Text = TourRequest.Language.ToString();
+            tbLanguage.IsReadOnly = true;
+
+            TourDate = selectedStartByGuide;
+            tbDate.Text = selectedStartByGuide.ToString();
+
+            Location = tourRequest.Location;
+        }
+
 
         private void SaveTour(object sender, RoutedEventArgs e)
         {
-            LocationDto locationDto = new LocationDto(TourCountry, TourCity, TourAddress, TourLatitude, TourLongitude);
-            Location location = locationRepository.Save(locationDto);
+            /*LocationDto locationDto = new LocationDto(TourCountry, TourCity, TourAddress, TourLatitude, TourLongitude);
+            Location location = locationRepository.Save(locationDto);*/
+            Location location = new Location();
+
+            if (Location != null)
+            {
+                location = Location;
+            }
+            else
+            {
+                LocationDto locationDto = new LocationDto(TourCountry, TourCity, TourAddress, TourLatitude, TourLongitude);
+                location = locationRepository.Save(locationDto);
+            }
+            
 
             TourDto tourDto = new TourDto(TourName, location, Description, Languages, maxGuests, Duration, Images, Guide);
             Tour tour = tourRepository.Save(tourDto);
@@ -370,6 +515,8 @@ namespace InitialProject.View
             foreach (TourGuidenceDto t in tourGuidenceDtos)
             {
                 TourGuidence tourGuidence = new(tourGuidenceRepository.NextId(), tour, t.StartTime, false, false, false);
+
+
                 //t.Tour = tour;
                 //tourGuidenceRepository.Update(t);
                 tourGuidenceRepository.SaveToFile(tourGuidence);

@@ -17,38 +17,17 @@ namespace InitialProject.Repository
     {
         private LocationRepository locationRepository;
 
-        private const string FilePathAccommodation = "../../../Resources/Data/accommodations.csv";
+        private RenovationRepository renovationRepository;
 
-        private const string FilePathLocation = "../../../Resources/Data/locations.csv";
+        private const string FilePathAccommodation = "../../../Resources/Data/accommodations.csv";
 
         private readonly Serializer<Accommodation> accommodationSerializer;
 
-        private readonly Serializer<Location> locationSerializer;
-
         private List<Accommodation> accommodations;
-
-        private List<Location> locations;
 
         public AccommodationRepository()
         {
             accommodationSerializer = new Serializer<Accommodation>();
-            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-            locationSerializer = new Serializer<Location>();
-            locations = locationSerializer.FromCSV(FilePathLocation);
-
-            foreach (Accommodation accommodation in accommodations)
-            {
-                if (locations == null)
-                    break;
-                foreach (Location location in locations)
-                {
-                    if (location.Id == accommodation.Location.Id)
-                    {
-                        accommodation.Location = location;
-                        break;
-                    }
-                }
-            }
         }
 
         public List<Accommodation> FindAll()
@@ -97,10 +76,14 @@ namespace InitialProject.Repository
             return FindAll().ToList().Find(x => x.Id == accommodationId);
         }
 
+        public Accommodation FindByAccommodationName(string accommodationName)
+        {
+            return FindAll().ToList().Find(x => x.AccommodationName == accommodationName);
+        }
 
 
 
-        // moraju da dele allAccommodations, nez da l u rep ili servisu da ostavim
+
         public List<Accommodation> FindAllByAccommodationName(List<Accommodation> allAccommodations, string name) 
         {
             return allAccommodations.FindAll(x => x.AccommodationName.ToLower().StartsWith(name.ToLower()) == true);
@@ -129,6 +112,18 @@ namespace InitialProject.Repository
         public List<Accommodation> FindAllAboveMinReservationDays(List<Accommodation> allAccommodations, int? minDaysReservation)
         {
             return allAccommodations.FindAll(x => x.MinDaysReservation <= minDaysReservation);
+        }
+
+        public List<Renovation> FindAllRenovations()
+        {
+            renovationRepository = new RenovationRepository();
+
+            return renovationRepository.FindAll();
+        }
+
+        public List<Accommodation> FindByOwnerUsername(string ownerUsername)
+        {
+            return FindAll().ToList().FindAll(x => x.OwnerUsername.Equals(ownerUsername) == true);
         }
     }
 }

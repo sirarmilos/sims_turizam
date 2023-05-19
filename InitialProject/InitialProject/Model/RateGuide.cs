@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Model
 {
-    class RateGuide : ISerializable
+    public class RateGuide : ISerializable
     {
         public string UserId { get; set; }
         public string GuideId { get; set; }
         public int tourGuidenceId { get; set; }
+
+
         public int GuideKnowledge { get; set; }
         public int GuideLanguage { get; set; }
         public int TourExperience { get; set; }
@@ -46,7 +48,7 @@ namespace InitialProject.Model
                 imageToString += ",";
             }
 
-            if (Images.Count>=2)
+            if (Images.Count>=1)
             {
                 imageToString = imageToString.Substring(0, imageToString.Length - 2);
             }

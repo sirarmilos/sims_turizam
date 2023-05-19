@@ -19,37 +19,13 @@ namespace InitialProject.Repository
 
         private const string FilePathReservation = "../../../Resources/Data/reservations.csv";
 
-        private const string FilePathAccommodation = "../../../Resources/Data/accommodations.csv";
-
         private readonly Serializer<Reservation> reservationSerializer;
 
-        private readonly Serializer<Accommodation> accommodationSerializer;
-
         private List<Reservation> reservations;
-
-        private List<Accommodation> accommodations;
 
         public ReservationRepository()
         {
             reservationSerializer = new Serializer<Reservation>();
-            reservations = reservationSerializer.FromCSV(FilePathReservation);
-
-            accommodationSerializer = new Serializer<Accommodation>();
-            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-            
-            foreach (Reservation reservation in reservations)
-            {
-                if (accommodations == null)
-                    break;
-                foreach (Accommodation accommodation in accommodations)
-                {
-                    if (accommodation.Id == reservation.Accommodation.Id)
-                    {
-                        reservation.Accommodation = accommodation;
-                        break;
-                    }
-                }
-            }
         }
 
         public void SaveReservations(List<Reservation> reservations)
@@ -109,12 +85,10 @@ namespace InitialProject.Repository
 
         public void Save(string guest1Username, Accommodation accommodation, DateTime startDate, DateTime endDate, int guestsNumber)
         {
-
             reservations = reservationSerializer.FromCSV(FilePathReservation);
-            Reservation reservation = new Reservation(NextId(), guest1Username, accommodation, startDate, endDate, guestsNumber); 
+            Reservation reservation = new Reservation(NextId(), guest1Username, accommodation, startDate, endDate, guestsNumber);
             reservations.Add(reservation);
             reservationSerializer.ToCSV(FilePathReservation, reservations);
-
         }
 
         public int NextId()
@@ -128,22 +102,32 @@ namespace InitialProject.Repository
 
         public List<Reservation> FindAllByAccommodation(int id)
         {
-            List<Reservation> accommodationReservations = new List<Reservation>();
-
-            foreach (Reservation reservation in reservations)
-            {
-                if (reservation.Accommodation.Id == id)
-                {
-                    accommodationReservations.Add(reservation);
-                }
-            }
-
-            return accommodationReservations;
+            return FindAll().FindAll(x => x.Accommodation.Id == id);
         }
 
         public List<Reservation> FindGuest1Reservations(string guest1)
         {
             return FindAll().ToList().FindAll(x => x.GuestUsername.Equals(guest1) == true);
+        }
+
+        public List<Reservation> FindReservationsByAccommodationName(string accommodationName)
+        {
+            return FindAll().ToList().FindAll(x => x.Accommodation.AccommodationName.Equals(accommodationName) == true);
+        }
+
+        public List<Reservation> FindByAccommodationId(int accommodationId)
+        {
+            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+        }
+
+        public int FindAccommodationReservationCountByYear(int accommodationId, int year)
+        {
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.StartDate.Year == year || x.EndDate.Year == year).Count;
+        }
+
+        public List<Reservation> FindAccommodationReservationsByYear(int accommodationId, int year)
+        {
+            return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.StartDate.Year == year || x.EndDate.Year == year);
         }
     }
 }

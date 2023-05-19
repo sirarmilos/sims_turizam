@@ -11,13 +11,18 @@ using System.Threading.Tasks;
 
 namespace InitialProject.Service
 {
-    internal class TourService
+    public class TourService
     {
         private readonly ITourRepository tourRepository;
 
         public TourService()
         {
-            tourRepository = new TourRepository();
+            tourRepository = Injector.Injector.CreateInstance<ITourRepository>();
+        }
+
+        public List<Tour> FindAll()
+        {
+            return tourRepository.FindAll();
         }
 
 
@@ -28,7 +33,7 @@ namespace InitialProject.Service
             TourKeyPointService tourKeyPointService = new TourKeyPointService();    
 
 
-            foreach (TourGuidence tourGuidence in tourGuidanceService.GetAll())
+            foreach (TourGuidence tourGuidence in tourGuidanceService.FindAll())
             {
                 TourDisplayDTO tourDisplayDTO = new TourDisplayDTO();
 
@@ -41,7 +46,7 @@ namespace InitialProject.Service
 
                 tourDisplayDTO.TourKeyPoints = new List<TourKeyPoint>();
 
-                foreach (TourKeyPoint tourKeyPoint in tourKeyPointService.GetAll())
+                foreach (TourKeyPoint tourKeyPoint in tourKeyPointService.FindAll())
                 {
                     if (tourKeyPoint.TourGuidence.Id == tourGuidence.Id)
                     {
@@ -73,9 +78,9 @@ namespace InitialProject.Service
 
 
 
-            foreach (Model.TourReservation tourReservation in tourReservationService.GetAll())
+            foreach (Model.TourReservation tourReservation in tourReservationService.FindAll())
             {
-                foreach (TourGuidence tourGuidence in tourGuidanceService.GetAll())
+                foreach (TourGuidence tourGuidence in tourGuidanceService.FindAll())
                 {
                     if (tourGuidence.Id == tourReservation.tourGuidenceId && tourReservationId == tourReservation.Id)
                     {
@@ -89,7 +94,7 @@ namespace InitialProject.Service
 
                         tourDisplayDTO.TourKeyPoints = new List<TourKeyPoint>();
 
-                        foreach (TourKeyPoint tourKeyPoint in tourKeyPointService.GetAll())
+                        foreach (TourKeyPoint tourKeyPoint in tourKeyPointService.FindAll())
                         {
                             if (tourKeyPoint.TourGuidence.Id == tourGuidence.Id)
                             {
@@ -141,7 +146,7 @@ namespace InitialProject.Service
             return result;
         }
 
-        private static List<TourDisplayDTO> CheckFreeSlots(int numberOfGuests, List<TourDisplayDTO> moreGuests, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckFreeSlots(int numberOfGuests, List<TourDisplayDTO> moreGuests, List<TourDisplayDTO> displayedTours)
         {
             if (numberOfGuests >= 0)
             {
@@ -161,9 +166,9 @@ namespace InitialProject.Service
             return moreGuests;
         }
 
-        private static List<TourDisplayDTO> CheckSameLanguage(Language language, List<TourDisplayDTO> sameLanguage, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckSameLanguage(Language language, List<TourDisplayDTO> sameLanguage, List<TourDisplayDTO> displayedTours)
         {
-            if (language >= 0)
+            if (language > 0)
             {
                 foreach (TourDisplayDTO tour in displayedTours)
                 {
@@ -181,7 +186,7 @@ namespace InitialProject.Service
             return sameLanguage;
         }
 
-        private static List<TourDisplayDTO> CheckLongerDuration(int duration, List<TourDisplayDTO> longerDuration, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckLongerDuration(int duration, List<TourDisplayDTO> longerDuration, List<TourDisplayDTO> displayedTours)
         {
             if (duration >= 0)
             {
@@ -201,7 +206,7 @@ namespace InitialProject.Service
             return longerDuration;
         }
 
-        private static List<TourDisplayDTO> CheckSameCity(string city, List<TourDisplayDTO> sameCity, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckSameCity(string city, List<TourDisplayDTO> sameCity, List<TourDisplayDTO> displayedTours)
         {
             if (!string.IsNullOrEmpty(city))
             {
@@ -221,7 +226,7 @@ namespace InitialProject.Service
             return sameCity;
         }
 
-        private static List<TourDisplayDTO> CheckSameCountry(string country, List<TourDisplayDTO> sameCountry, List<TourDisplayDTO> displayedTours)
+        private  List<TourDisplayDTO> CheckSameCountry(string country, List<TourDisplayDTO> sameCountry, List<TourDisplayDTO> displayedTours)
         {
             if (!string.IsNullOrEmpty(country))
             {
@@ -257,6 +262,51 @@ namespace InitialProject.Service
             }
 
             return result;
+        }
+
+        
+
+        public List<int> FindGuestNumber(int tourId, string username)
+        {
+            // type = [(1, <18), (2, 18-50), (3, >50)]
+            List<int> count = new List<int>(new int[3]);
+
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+
+            TourReservationService tourReservationService = new TourReservationService();
+
+            Guest2Service guest2Service = new Guest2Service();
+
+            List<TourGuidence> finishedTourGuidence = tourGuidenceService.FindFinishedByGuideUsername(tourId, username);
+
+            foreach (Model.TourReservation tourReservation in tourReservationService.FindAll())
+            {
+                List<TourGuidence> finalList = finishedTourGuidence.FindAll(x => x.Id == tourReservation.tourGuidenceId);
+
+                foreach (TourGuidence tourGuidence in finalList)
+                {
+                    int age = guest2Service.FindAge(tourReservation.userId);
+                    switch (age)
+                    {
+                        case <= 18:
+                            count[0]++;
+                            break;
+                        case >= 50:
+                            count[2]++;
+                            break;
+                        default:
+                            count[1]++;
+                            break;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        public Tour FindByName(TourDisplayDTO tourDisplayDTO)
+        {
+            return tourRepository.FindByName(tourDisplayDTO.TourName);
         }
 
 

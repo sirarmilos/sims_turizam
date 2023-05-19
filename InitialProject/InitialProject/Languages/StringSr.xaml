@@ -1,0 +1,75 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:system="clr-namespace:System;assembly=netstandard">
+    
+    <system:String x:Key="StrNotifications">Obavestenja</system:String>
+    <system:String x:Key="StrProfile">Profil</system:String>
+    <system:String x:Key="StrTheme">SVETLA / TAMNA</system:String>
+    <system:String x:Key="StrTours">Ture</system:String>
+    <system:String x:Key="StrTourAttendance">Prisustvo turi</system:String>
+    <system:String x:Key="StrTourRequestCreation">Kreiranje zahteva za turu</system:String>
+    <system:String x:Key="StrRequestedToursDisplay">Prikaz zahteva za turu</system:String>
+    <system:String x:Key="StrRequestStats">Statistika zahteva za turu</system:String>
+    <system:String x:Key="StrComplexTourRequest">Zahtev za kompleksnu turu</system:String>
+    <system:String x:Key="StrComplexTourDisplay">Prikaz kompleksnih tura</system:String>
+
+    <system:String x:Key="StrLanguage">Jezik</system:String>
+    <system:String x:Key="StrThemeLabel">Tema</system:String>
+
+    <system:String x:Key="StrSearch">Pretraga</system:String>
+    <system:String x:Key="StrCountry">Država</system:String>
+    <system:String x:Key="StrCity">Grad</system:String>
+    <system:String x:Key="StrTourDuration">Trajanje ture</system:String>
+    <system:String x:Key="StrMaxGuests">Broj slobodnih mesta:</system:String>
+    <system:String x:Key="StrSelectTourToReservate">Odaberite jednu od tura da bi rezervisali</system:String>
+
+    <system:String x:Key="StrName">Naziv tura</system:String>
+    <system:String x:Key="StrDescription">Opis</system:String>
+    <system:String x:Key="StrFreeSlots">Broj mesta</system:String>
+    <system:String x:Key="StrDate">Datum</system:String>
+
+    <system:String x:Key="StrCreateResButton">Rezerviši!</system:String>
+
+    <system:String x:Key="StrKeyPoints">Ključne tačke:</system:String>
+
+    <system:String x:Key="StrGuestsForTours">Broj gostiju:</system:String>
+    <system:String x:Key="StrSelectVoucher">Odaberite vaučer:</system:String>
+
+    <system:String x:Key="StrCreateReservation">Rezerviši</system:String>
+    <system:String x:Key="StrCancelReservation">Otkaži rezervaciju</system:String>
+
+    <system:String x:Key="StrName1">Naziv ture:</system:String>
+    <system:String x:Key="StrCountry1">Država:</system:String>
+    <system:String x:Key="StrCity1">Grad:</system:String>
+    <system:String x:Key="StrDescription1">Opis:</system:String>
+    <system:String x:Key="StrLanguage1">Jezik:</system:String>
+    <system:String x:Key="StrTourDuration1">Trajanje:</system:String>
+    <system:String x:Key="StrDate1">Datum:</system:String>
+    <system:String x:Key="StrKeyPoints1">Ključne tačke:</system:String>
+
+    <system:String x:Key="StrTourInfo">Informacije o turi</system:String>
+
+    <system:String x:Key="StrTourRequest">Zahtev za turu</system:String>
+    <system:String x:Key="StrFrom">Od:</system:String>
+    <system:String x:Key="StrTo">Do:</system:String>
+    <system:String x:Key="StrCreateRequest">Kreiraj zahtev</system:String>
+
+    <system:String x:Key="StrRateGuide">Oceni vodiča</system:String>
+
+    <system:String x:Key="StrMaxGuestWarning">Unesite odgovarajuću vrednost</system:String>
+
+    <system:String x:Key="StrThereAreOnly">Preostalo je još</system:String>
+    <system:String x:Key="StrSlotsLeft">slobodno/ih mesta!</system:String>
+
+    <system:String x:Key="StrDateRange">Odaberite validne datume</system:String>
+
+    <system:String x:Key="StrGeneralInfo">Informacije:</system:String>
+    <system:String x:Key="StrUsername">Korisničko ime:</system:String>
+    <system:String x:Key="StrPhoneNumber">Broj telefona:</system:String>
+    <system:String x:Key="StrAddress">Adresa:</system:String>
+    <system:String x:Key="StrVoucherType">Tip vaučera</system:String>
+    <system:String x:Key="StrExpDate">Rok trajanja</system:String>
+
+    <system:String x:Key="StrTourStillActive">Tura je aktivna</system:String>
+
+
+</ResourceDictionary>

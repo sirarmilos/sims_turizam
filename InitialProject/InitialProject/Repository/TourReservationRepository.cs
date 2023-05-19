@@ -21,28 +21,18 @@ namespace InitialProject.Repository
         public TourReservationRepository()
         {
             tourReservationSerializer = new Serializer<TourReservation>();
-            tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
+            //tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
         }
 
 
         public List<TourReservation> FindAll()
         {
-            return tourReservations;
+            return tourReservationSerializer.FromCSV(FilePathReservatedTours);
         }
 
-        public TourReservation FindById(int id)
+        public TourReservation FindById(int tourReservatonId)
         {
-            TourReservation result = new TourReservation();
-            foreach(TourReservation tourReservation in tourReservations)
-            {
-                if(id==tourReservation.Id)
-                {
-                    result = tourReservation;
-                    break;
-                }
-            }
-
-            return result;
+            return FindAll().ToList().Find(x => x.Id == tourReservatonId);
 
         }
 
@@ -53,12 +43,12 @@ namespace InitialProject.Repository
 
         public int NextId()
         {
-            tourReservations = tourReservationSerializer.FromCSV(FilePathReservatedTours);
-            if (tourReservations.Count < 1)
+            if (FindAll().Count < 1)
             {
                 return 1;
             }
-            return tourReservations.Max(c => c.Id) + 1;
+
+            return FindAll().Max(x => x.Id) + 1;
         }
 
     }

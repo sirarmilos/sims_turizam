@@ -35,9 +35,11 @@ namespace InitialProject.View
 
         private ObservableCollection<double> voucherPercentage;
 
-        private readonly TourGuidenceRepository tourGuidenceRepository;
+        private readonly TourGuidenceService tourGuidenceService;
 
-        private readonly TourRepository tourRepository;
+        private readonly TourService tourService;
+
+       // private readonly TourRepository tourRepository;
 
         private readonly VoucherService voucherService;
 
@@ -84,13 +86,13 @@ namespace InitialProject.View
             DataContext = this;
             Guide = username;
             voucherService = new VoucherService();
-            tourGuidenceRepository = new TourGuidenceRepository();
-            tourRepository = new TourRepository();
-            tour = tourGuidenceRepository.GetMostVisitedAllTime();
-            int year = 2022;
-            tourFiltered = tourGuidenceRepository.GetMostVisitedByYear(year);
+            tourGuidenceService = new TourGuidenceService();
+            tourService = new TourService();
+            tour = tourGuidenceService.FindMostVisitedAllTime();
+            int year = 2021;
+            tourFiltered = tourGuidenceService.FindMostVisitedByYear(year);
             //tourAgeStats = tourRepository.GetById(3);
-            tourAgeStats = new ObservableCollection<Tour>(tourRepository.FindAll());
+            tourAgeStats = new ObservableCollection<Tour>(tourService.FindAll());
             //ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(tourAgeStats.Id));
            // voucherPercentage = new ObservableCollection<double>(/*tourRepository.GetVoucherPercentage(tourAgeStats.Id)*/);
         }
@@ -110,7 +112,7 @@ namespace InitialProject.View
 
         private void GoToShowTourGuidences(object sender, RoutedEventArgs e)
         {
-            ShowTourGuidences window = new ShowTourGuidences();
+            ShowTourGuidences window = new ShowTourGuidences(Guide);
             window.Show();
         }
 
@@ -139,7 +141,7 @@ namespace InitialProject.View
         private void DisplayStatistics(int id)
         {
             voucherPercentage = new ObservableCollection<double>(voucherService.GetVoucherPercentage(id));
-            ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(id));
+            ageCount = new ObservableCollection<int>(tourService.FindGuestNumber(id, Guide));
             OnPropertyChanged(nameof(WithVoucher));
             OnPropertyChanged(nameof(WithoutVoucher));
             OnPropertyChanged(nameof(Under18));
@@ -152,5 +154,43 @@ namespace InitialProject.View
             ShowReviewsGuest2 window = new ShowReviewsGuest2(Guide);
             window.Show();
         }
+
+        private void ShowKeyPoints(object sender, RoutedEventArgs e)
+        {
+            TourGuidence tourGuidence = tourGuidenceService.FindById(1);
+            ShowKeyPoints window = new ShowKeyPoints(tourGuidence);
+            window.Show();
+        }
+
+        private void GoToSearchAndShowTourRequests(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests();
+            window.Show();
+        }
+
+        private void GoToMostPopularTour(object sender, RoutedEventArgs e)
+        {
+            ShowMostPopularTour window = new ShowMostPopularTour();
+            window.Show();
+        }
+
+        private void GoToTourRequests(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests();
+            window.Show();
+        }
+
+        private void GoToCreateTourRequestStats(object sender, RoutedEventArgs e)
+        {
+            CreateTourForRequestStatistics window = new CreateTourForRequestStatistics(Guide);
+            window.Show();
+        }
+
+        private void GoToRequestStatistics(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowRequestStatistics window = new SearchAndShowRequestStatistics(Guide);
+            window.Show();
+        }
+
     }
 }

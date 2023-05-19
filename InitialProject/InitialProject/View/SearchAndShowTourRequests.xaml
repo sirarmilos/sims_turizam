@@ -1,0 +1,96 @@
+﻿<Window x:Class="InitialProject.View.SearchAndShowTourRequests"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="Search and show tour requests" Height="775" Width="1400">
+    <Grid Margin="0,0,0,-6">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="299" />
+            <RowDefinition Height="3.281"/>
+            <RowDefinition Height="287.719"/>
+
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1100" />
+            <ColumnDefinition Width="950"/>
+        </Grid.ColumnDefinitions>
+
+        <!--<DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,281">
+            <Menu DockPanel.Dock ="Top">
+                <MenuItem Header="Home" Click="GoToGuest1Start"/>
+                <MenuItem Header="Create Review" Click="GoToCreateReview"/>
+                <MenuItem Header="My reservations" Click="GoToShowReservations"/>
+                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
+                <MenuItem Header="Logout" Click="GoToLogout"/>
+                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
+            </Menu>
+        </DockPanel>-->
+
+        <Button Content="Search"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Height="30" Click="Search"  Margin="45,240,703,0"/>
+        <TextBox PreviewTextInput="AllowOnlyDigits" Height="20" TextWrapping="Wrap" Text="{Binding GuestNumber,TargetNullValue=''}" Validation.ErrorTemplate="{x:Null}" Margin="27,214,738,65" Grid.Column="1" />
+        <TextBlock Grid.Column="1" Margin="102,108,808,169" Text="City" />
+        <TextBlock  Text="Country"  Grid.Column="1" Grid.Row="0" Margin="102,45,794,236"/>
+        <TextBox PreviewTextInput="AllowOnlyCharacters" TextWrapping="Wrap" Height="20" Text="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}"  Grid.Column="1" Grid.Row="0" Margin="27,130,738,149"  />
+        <TextBox PreviewTextInput="AllowOnlyCharacters" TextWrapping="Wrap" Text="{Binding Path=Country, UpdateSourceTrigger=PropertyChanged}"  Grid.Column="1" Grid.Row="0" Height="20" Margin="27,78,738,201" />
+        <TextBlock  Text="Language"  Grid.Column="1" Grid.Row="2" Margin="80,10,738,260"/>
+        <TextBox PreviewTextInput="AllowOnlyCharacters" TextWrapping="Wrap" Text="{Binding Path=Jezik, UpdateSourceTrigger=PropertyChanged}" Height="20" Margin="27,33,738,235" Grid.Column="1" Grid.Row="2"/>
+        <TextBlock Grid.Column="1" Text="Number of Guests" Margin="61,193,794,90"/>
+
+        <DataGrid SelectionUnit="FullRow"  Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" x:Name="ListTourRequests" Margin="40,40,40,150" CanUserAddRows="False" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="False" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Guest2 Name" Binding="{Binding User.Username}" Width="140">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="60">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="60">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Guest number" Binding="{Binding GuestNumber}" Width="135"/>
+                <DataGridTextColumn Header="Language" Binding="{Binding Language}" Width="210"/>
+                <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate.Date}" Width="210"/>
+                <DataGridTextColumn Header="End Date" Binding="{Binding EndDate.Date}" Width="210"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="PROCEED" HorizontalAlignment="Left" Margin="510,240,0,0" Grid.Row="2" VerticalAlignment="Top" Width="172" Height="30" Click="ProceedTourRequest"/>
+
+        <DatePicker x:Name="dpFilterStartDate" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="109" FontSize="13" SelectedDate="{Binding FilterStartDate, Mode=TwoWay}" Margin="27,144,0,0" Grid.Column="1" Grid.Row="2">
+            <DatePicker.Resources>
+                <Style TargetType="DatePickerTextBox">
+                    <Setter Property="IsReadOnly" Value="True"/>
+                </Style>
+            </DatePicker.Resources>
+        </DatePicker>
+
+        <DatePicker x:Name="dpFilterEndDate" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="109" FontSize="13" SelectedDate="{Binding FilterEndDate, Mode=TwoWay}" Margin="159,144,0,0" Grid.Column="1" Grid.Row="2">
+            <DatePicker.Resources>
+                <Style TargetType="DatePickerTextBox">
+                    <Setter Property="IsReadOnly" Value="True"/>
+                </Style>
+            </DatePicker.Resources>
+        </DatePicker>
+        <Label Grid.Column="1" Content="From:" HorizontalAlignment="Left" Margin="67,108,0,0" Grid.Row="2" VerticalAlignment="Top" Width="53"/>
+        <Label Grid.Column="1" Content="To:" HorizontalAlignment="Left" Margin="196,109,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+
+
+    </Grid>
+</Window>

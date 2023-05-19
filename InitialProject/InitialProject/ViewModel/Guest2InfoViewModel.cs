@@ -1,6 +1,7 @@
 ﻿using InitialProject.Dto;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace InitialProject.ViewModel
     public class Guest2InfoViewModel
     {
         private readonly Guest2Repository guest2Repository;
+
+        private Guest2Service guest2Service = new Guest2Service();
 
         private string username;
 
@@ -30,7 +33,7 @@ namespace InitialProject.ViewModel
 
             VoucherDisplayDTOs = new List<VoucherDisplayDTO>();
 
-            Guest2 guest2 = guest2Repository.GetByUsername(username);
+            Guest2 guest2 = guest2Service.GetByUsername(username);
 
             Username = guest2.User.Username.ToString();
             Email = guest2.Email.ToString();
@@ -38,7 +41,7 @@ namespace InitialProject.ViewModel
 
             List<VoucherDisplayDTO> voucherDisplayDTOs = new List<VoucherDisplayDTO>();
 
-            List<Voucher> vouchers = guest2Repository.GetGuestsVouchers(username);
+            List<Voucher> vouchers = guest2Service.GetGuestsVouchers(username);
 
             foreach (Voucher voucher in vouchers)
             {

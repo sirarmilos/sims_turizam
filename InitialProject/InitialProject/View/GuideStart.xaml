@@ -5,54 +5,97 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="GuideStart" Height="450" Width="800">
+        Title="Guide Start" Height="775" Width="1400"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Yellow" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <!-- Add more setters for other properties as needed -->
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        <DockPanel>
-            <Menu DockPanel.Dock ="Top">
-                <MenuItem Header="Add new tour" Click="GoToAddNewTour" />
-                <MenuItem Header="Show tours for guide" Click="GoToShowTourGuidences" />
-                <MenuItem Header="Future Tours" Click="GoToFutureTours" />
-                <MenuItem Header="Show Reviews" Click ="GoToShowReviews"/>
-                <MenuItem Header="Logout" Click="GoToLogout"/>
-            </Menu>
-            <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="119*"/>
-                    <ColumnDefinition Width="41*"/>
-                </Grid.ColumnDefinitions>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="205,57,0,0" TextWrapping="Wrap" Text="{Binding tour.TourName}" VerticalAlignment="Top" Width="74"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="205,88,0,0" TextWrapping="Wrap" Text="{Binding tour.Location.Country}" VerticalAlignment="Top" Width="74"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="205,118,0,0" TextWrapping="Wrap" Text="{Binding tour.Location.City}" VerticalAlignment="Top" Width="74"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="205,147,0,0" TextWrapping="Wrap" Text="{Binding tour.Language}" VerticalAlignment="Top" Width="74"/>
-                <Label Content="Most Visited Tour All Time: " HorizontalAlignment="Left" Margin="12,97,0,0" VerticalAlignment="Top" Width="165"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Menu column -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content column -->
+        </Grid.ColumnDefinitions>
 
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="587,57,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.TourName}" VerticalAlignment="Top" Width="74" Grid.ColumnSpan="2"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="587,88,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.Location.Country}" VerticalAlignment="Top" Width="74" Grid.ColumnSpan="2"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="587,118,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.Location.City}" VerticalAlignment="Top" Width="74" Grid.ColumnSpan="2"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="587,147,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.Language}" VerticalAlignment="Top" Width="74" Grid.ColumnSpan="2"/>
-                <Label Content="Most Visited Tour For Spec. Year: " HorizontalAlignment="Left" Margin="374,97,0,0" VerticalAlignment="Top" Width="188"/>
+        <!-- Menu -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0">
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <StackPanel>
+                    <MenuItem Header="Home Page" Margin="0,25,0,0"/>
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Profile" Margin="0,5,0,0"/>
+                    <MenuItem Header="Future Tours" Margin="0,5,0,0"/>
+                    <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
+                    <MenuItem Header="Create Tour Request Statics" Margin="0,5,0,0" Click="GoToCreateTourRequestStats"/>
+                    <MenuItem Header="Request statistics" Margin="0,5,0,0" Click="GoToRequestStatistics"/>
+                </StackPanel>
+                <Grid>
+                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
 
-                <!--<TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="46,326,0,0" TextWrapping="Wrap" Text="{Binding tourAgeStats.TourName}" VerticalAlignment="Top" Width="120"/>-->
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="284,276,0,0" TextWrapping="Wrap" Text="{Binding Under18, Mode=OneWay}" VerticalAlignment="Top" Width="64"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="285,326,0,0" TextWrapping="Wrap" Text="{Binding From18To50, Mode=OneWay}" VerticalAlignment="Top" Width="64"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="284,371,0,0" TextWrapping="Wrap"  Text="{Binding Above50, Mode=OneWay}" VerticalAlignment="Top" Width="64"/>
-                <Label Content="&lt;=18" HorizontalAlignment="Left" Margin="227,273,0,0" VerticalAlignment="Top" Width="44"/>
-                <Label Content="18-50" HorizontalAlignment="Left" Margin="228,322,0,0" VerticalAlignment="Top" Width="44"/>
-                <Label Content=">=50" HorizontalAlignment="Left" Margin="227,367,0,0" VerticalAlignment="Top" Width="44"/>
-                <Label Content="Age Statisics" Margin="279,218,217,0" VerticalAlignment="Top"/>
-                <Label Content="Voucher Statistics" HorizontalAlignment="Left" Margin="453,219,0,0" VerticalAlignment="Top" Width="114"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="469,276,0,0" TextWrapping="Wrap" Text="{Binding WithVoucher, Mode=OneWay}" VerticalAlignment="Top" Width="64" TextAlignment="Right"/>
-                <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="469,326,0,0" TextWrapping="Wrap" Text="{Binding WithoutVoucher, Mode=OneWay}" VerticalAlignment="Top" Width="64" TextAlignment="Right"/>
-                <Label Content="with" HorizontalAlignment="Left" Margin="406,272,0,0" VerticalAlignment="Top"/>
-                <Label Content="without" HorizontalAlignment="Left" Margin="405,324,0,0" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="533,277,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="533,327,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top"/>
-                <ComboBox ItemsSource="{Binding tourAgeStats}" DisplayMemberPath="TourName" HorizontalAlignment="Left" Margin="34,264,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectTour" />
+        <!-- Main content -->
+        <Grid Grid.Column="1">
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="222,57,0,0" TextWrapping="Wrap" Text="{Binding tour.TourName}" VerticalAlignment="Top" Width="74" Height="18"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="222,88,0,0" TextWrapping="Wrap" Text="{Binding tour.Location.Country}" VerticalAlignment="Top" Width="74" Height="18"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="222,118,0,0" TextWrapping="Wrap" Text="{Binding tour.Location.City}" VerticalAlignment="Top" Width="74" Height="18"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="222,147,0,0" TextWrapping="Wrap" Text="{Binding tour.Language}" VerticalAlignment="Top" Width="74" Height="18"/>
+            <Label Content="Most Visited Tour All Time: " HorizontalAlignment="Left" Margin="12,97,0,0" VerticalAlignment="Top" Width="165" Height="26"/>
+
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="638,57,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.TourName}" VerticalAlignment="Top" Width="74" Height="18"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="638,88,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.Location.Country}" VerticalAlignment="Top" Width="74" Height="18"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="638,118,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.Location.City}" VerticalAlignment="Top" Width="74" Height="18"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="638,147,0,0" TextWrapping="Wrap" Text="{Binding tourFiltered.Language}" VerticalAlignment="Top" Width="74" Height="18"/>
+            <Label Content="Most Visited Tour For Spec. Year: " HorizontalAlignment="Left" Margin="374,97,0,0" VerticalAlignment="Top" Width="188" Height="26"/>
+
+            <!--<TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="46,326,0,0" TextWrapping="Wrap" Text="{Binding tourAgeStats.TourName}" VerticalAlignment="Top" Width="120"/>-->
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="284,276,0,0" TextWrapping="Wrap" Text="{Binding Under18, Mode=OneWay}" VerticalAlignment="Top" Width="64" Height="18"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="285,326,0,0" TextWrapping="Wrap" Text="{Binding From18To50, Mode=OneWay}" VerticalAlignment="Top" Width="64" Height="18"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="284,371,0,0" TextWrapping="Wrap"  Text="{Binding Above50, Mode=OneWay}" VerticalAlignment="Top" Width="64" Height="18"/>
+            <Label Content="&lt;=18" HorizontalAlignment="Left" Margin="227,273,0,0" VerticalAlignment="Top" Width="44" Height="26"/>
+            <Label Content="18-50" HorizontalAlignment="Left" Margin="228,322,0,0" VerticalAlignment="Top" Width="44" Height="26"/>
+            <Label Content=">=50" HorizontalAlignment="Left" Margin="227,367,0,0" VerticalAlignment="Top" Width="44" Height="26"/>
+            <Label Content="Age Statisics" Margin="279,218,217,0" VerticalAlignment="Top" Height="26"/>
+            <Label Content="Voucher Statistics" HorizontalAlignment="Left" Margin="453,219,0,0" VerticalAlignment="Top" Width="114" Height="26"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="469,276,0,0" TextWrapping="Wrap" Text="{Binding WithVoucher, Mode=OneWay}" VerticalAlignment="Top" Width="64" TextAlignment="Right" Height="18"/>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="469,326,0,0" TextWrapping="Wrap" Text="{Binding WithoutVoucher, Mode=OneWay}" VerticalAlignment="Top" Width="64" TextAlignment="Right" Height="18"/>
+            <Label Content="with" HorizontalAlignment="Left" Margin="406,272,0,0" VerticalAlignment="Top" Height="26" Width="32"/>
+            <Label Content="without" HorizontalAlignment="Left" Margin="405,324,0,0" VerticalAlignment="Top" Height="26" Width="50"/>
+            <TextBlock HorizontalAlignment="Left" Margin="533,277,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Height="16" Width="10"/>
+            <TextBlock HorizontalAlignment="Left" Margin="533,327,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Height="16" Width="10"/>
+            <ComboBox ItemsSource="{Binding tourAgeStats}" DisplayMemberPath="TourName" HorizontalAlignment="Left" Margin="34,264,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SelectTour" Height="22" />
+
+            <Label Content="Name:" HorizontalAlignment="Left" Margin="166,53,0,0" VerticalAlignment="Top" Height="26" Width="44"/>
+            <Label Content="Country:" HorizontalAlignment="Left" Margin="161,84,0,0" VerticalAlignment="Top" Height="26" Width="55"/>
+            <Label Content="City:" HorizontalAlignment="Left" Margin="173,113,0,0" VerticalAlignment="Top" Height="26" Width="33"/>
+            <Label Content="Language:" HorizontalAlignment="Left" Margin="152,142,0,0" VerticalAlignment="Top" Height="26" Width="64"/>
+            <Label Content="Name:" HorizontalAlignment="Left" Margin="569,53,0,0" VerticalAlignment="Top" Height="26" Width="44"/>
+            <Label Content="Country:" HorizontalAlignment="Left" Margin="564,84,0,0" VerticalAlignment="Top" Width="55" Height="26"/>
+            <Label Content="City:" HorizontalAlignment="Left" Margin="577,113,0,0" VerticalAlignment="Top" Height="26" Width="33"/>
+            <Label Content="Language:" HorizontalAlignment="Left" Margin="556,142,0,0" VerticalAlignment="Top" Width="64" Height="26"/>
+            <Button Content="Show key points" HorizontalAlignment="Left" Margin="206,637,0,0" VerticalAlignment="Top" Click="ShowKeyPoints" />
+
+            <Button Content="Click Me" HorizontalAlignment="Left" Margin="1080,482,0,0" VerticalAlignment="Top">
+                <Button.ToolTip>
+                    <ToolTip>This is a button. Click it to perform an action.</ToolTip>
+                </Button.ToolTip>
+            </Button>
+
+        </Grid>
 
 
 
-
-            </Grid>
-        </DockPanel>
     </Grid>
 </Window>

@@ -12,6 +12,7 @@ using System.Windows.Interactivity;
 using System.Windows;
 using System.Xml.Linq;
 using InitialProject.IRepository;
+using InitialProject.Serializer;
 
 namespace InitialProject.Service
 {
@@ -23,9 +24,15 @@ namespace InitialProject.Service
 
         private readonly RateGuestsService rateGuestsService;
 
+        private readonly RenovationRecommendationService renovationRecommendationService;
+
         private readonly IReviewRepository reviewRepository;
 
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
+
+        private readonly AccommodationService accommodationService;
+
+        private readonly CanceledReservationService canceledReservationService;
 
         private string owner;
         private string guest1;
@@ -56,9 +63,14 @@ namespace InitialProject.Service
             userService = new UserService();
             reservationService = new ReservationService();
             rateGuestsService = new RateGuestsService(Owner);
-            reservationReschedulingRequestService = new ReservationReschedulingRequestService();    
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService();
+            renovationRecommendationService = new RenovationRecommendationService();
+            accommodationService = new AccommodationService();
+            canceledReservationService = new CanceledReservationService();
 
-            reviewRepository = new ReviewRepository();
+
+            reviewRepository = Injector.Injector.CreateInstance<IReviewRepository>();
+            //reviewRepository = new ReviewRepository();
         }
 
         public List<CreateReviewDTO> FindAllReviewsToRate()
@@ -93,7 +105,7 @@ namespace InitialProject.Service
         {
             int days = DateTime.Now.Subtract(temporaryReservation.EndDate).Days;
 
-            if (days <= 5 && days >= 0)
+            if (days <= 5 && days > 0)
             {
                 string deadline = "This is the last day to rate an accommodation.";
 
@@ -108,11 +120,22 @@ namespace InitialProject.Service
             return null;
         }
 
+        public void SaveNewReviewWithRenovation(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
+        {
+            Review review = new Review(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
+
+            RenovationRecommendation renovationRecommendation = 
+                new RenovationRecommendation(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
+
+            renovationRecommendationService.SaveRenovationRecommendation(renovationRecommendation);
+            reviewRepository.Add(review); 
+        }
+
         public void SaveNewReview(SaveNewCreateReviewDTO saveNewCreateReviewDTO)
         {
             Review review = new Review(reservationService.FindById(saveNewCreateReviewDTO.ReservationId), saveNewCreateReviewDTO);
 
-            reviewRepository.Add(review); // mozda Save
+            reviewRepository.Add(review);
         }
 
         public bool Guest1HasNotification()
@@ -120,6 +143,34 @@ namespace InitialProject.Service
             return reservationReschedulingRequestService.Guest1HasNotification(Guest1);
         }
 
+
+        public List<ShowOwnerReviewsDTO> FindAllOwnerReviews()
+        {
+            return FindShowOwnerReviewsDTOs(reviewRepository.FindReviewsByGuest1Username(Guest1));
+        }
+
+        public List<ShowOwnerReviewsDTO> FindShowOwnerReviewsDTOs(List<Review> guest1Reviews)
+        {
+            List<ShowOwnerReviewsDTO> showOwnerReviewsDTOs = new List<ShowOwnerReviewsDTO>();
+
+            foreach (Review temporaryReview in guest1Reviews.ToList())
+            {
+                RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(temporaryReview.Reservation.ReservationId);
+
+                if (rateGuest != null)
+                {
+                    ShowOwnerReviewsDTO showOwnerReviewsDTO = new ShowOwnerReviewsDTO(rateGuest);
+                    showOwnerReviewsDTOs.Add(showOwnerReviewsDTO);
+                }
+            }
+
+            return showOwnerReviewsDTOs;
+        }
+
+        public bool IsSuperGuest(string guest1Username)
+        {
+            return userService.IsSuperGuest(guest1Username);
+        }
 
 
 
@@ -177,6 +228,114 @@ namespace InitialProject.Service
         public int FindNumberOfUnratedGuests(string ownerUsername)
         {
             return rateGuestsService.FindNumberOfUnratedGuests(ownerUsername);
+        }
+
+        public List<CancelledReservationsNotificationDTO> FindUnreadCancelledReservations(string ownerUsername)
+        {
+            return userService.FindUnreadCancelledReservations(ownerUsername);
+        }
+
+        public List<OwnerPDFReportDTO> FindOwnerPDFReportDTOs(string ownerUsername)
+        {
+            List<OwnerPDFReportDTO> averageList = new List<OwnerPDFReportDTO>();
+
+            List<Accommodation> ownerAccommodations = accommodationService.FindOwnerAccommodationsToPDFReport(ownerUsername);
+
+            foreach (Accommodation temporaryAccommodation in ownerAccommodations.ToList())
+            {
+                averageList.Add(new OwnerPDFReportDTO(temporaryAccommodation));
+            }
+
+            List<ShowGuestReviewsDTO> ownerReviews = FindAllReviews(); // zbog onog uslova sa SIMS-a
+
+            foreach(ShowGuestReviewsDTO temporaryShowGuestReviewsDTO in ownerReviews.ToList())
+            {
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.AverageCleanliness += temporaryShowGuestReviewsDTO.Cleanliness);
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.AverageStaff += temporaryShowGuestReviewsDTO.Staff);
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.AverageComfort += temporaryShowGuestReviewsDTO.Comfort);
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.AverageValueForMoney += temporaryShowGuestReviewsDTO.ValueForMoney);
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.NumberOfReviews += 1);
+            }
+
+            foreach(OwnerPDFReportDTO temporaryOwnerPDFReportDTO in averageList.ToList())
+            {
+                if(temporaryOwnerPDFReportDTO.NumberOfReviews > 0)
+                {
+                    temporaryOwnerPDFReportDTO.AverageAll = Math.Round((temporaryOwnerPDFReportDTO.AverageCleanliness + temporaryOwnerPDFReportDTO.AverageStaff + temporaryOwnerPDFReportDTO.AverageComfort + temporaryOwnerPDFReportDTO.AverageValueForMoney) / new Decimal(4.0) / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                    temporaryOwnerPDFReportDTO.AverageCleanliness = Math.Round(temporaryOwnerPDFReportDTO.AverageCleanliness / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                    temporaryOwnerPDFReportDTO.AverageStaff = Math.Round(temporaryOwnerPDFReportDTO.AverageStaff / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                    temporaryOwnerPDFReportDTO.AverageComfort = Math.Round(temporaryOwnerPDFReportDTO.AverageComfort / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                    temporaryOwnerPDFReportDTO.AverageValueForMoney = Math.Round(temporaryOwnerPDFReportDTO.AverageValueForMoney / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                }
+            }
+
+            return averageList;
+        }
+
+        /* refaktorisan kod, proveri da li je dobro
+        
+        public List<OwnerPDFReportDTO> FindOwnerPDFReportDTOs(string ownerUsername)
+        {
+            List<Accommodation> ownerAccommodations = accommodationService.FindOwnerAccommodationsToPDFReport(ownerUsername);
+
+            List<ShowGuestReviewsDTO> ownerReviews = FindAllReviews(); // zbog onog uslova sa SIMS-a
+
+            return CalculateAverageList(SumWithOwnerReviews(ownerReviews, InitializationWithOwnerAccommodations(ownerAccommodations)));
+        }
+
+        public List<OwnerPDFReportDTO> InitializationWithOwnerAccommodations(List<Accommodation> ownerAccommodations)
+        {
+            List<OwnerPDFReportDTO> averageList = new List<OwnerPDFReportDTO>();
+
+            foreach (Accommodation temporaryAccommodation in ownerAccommodations.ToList())
+            {
+                averageList.Add(new OwnerPDFReportDTO(temporaryAccommodation));
+            }
+
+            return averageList;
+        }
+
+        public List<OwnerPDFReportDTO> SumWithOwnerReviews(List<ShowGuestReviewsDTO> ownerReviews, List<OwnerPDFReportDTO> averageList)
+        {
+            foreach (ShowGuestReviewsDTO temporaryShowGuestReviewsDTO in ownerReviews.ToList())
+            {
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.AverageCleanliness += temporaryShowGuestReviewsDTO.Cleanliness);
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.AverageStaff += temporaryShowGuestReviewsDTO.Staff);
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.AverageComfort += temporaryShowGuestReviewsDTO.Comfort);
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.AverageValueForMoney += temporaryShowGuestReviewsDTO.ValueForMoney);
+                averageList.Where(x => x.AccommodationName.Equals(temporaryShowGuestReviewsDTO.AccommodationName) == true).SetValue(x => x.NumberOfReviews += 1);
+            }
+
+            return averageList;
+        }
+
+        public List<OwnerPDFReportDTO> CalculateAverageList(List<OwnerPDFReportDTO> averageList)
+        {
+            foreach (OwnerPDFReportDTO temporaryOwnerPDFReportDTO in averageList.ToList())
+            {
+                if (temporaryOwnerPDFReportDTO.NumberOfReviews > 0)
+                {
+                    temporaryOwnerPDFReportDTO.AverageAll = Math.Round((temporaryOwnerPDFReportDTO.AverageCleanliness + temporaryOwnerPDFReportDTO.AverageStaff + temporaryOwnerPDFReportDTO.AverageComfort + temporaryOwnerPDFReportDTO.AverageValueForMoney) / new Decimal(4.0) / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                    temporaryOwnerPDFReportDTO.AverageCleanliness = Math.Round(temporaryOwnerPDFReportDTO.AverageCleanliness / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                    temporaryOwnerPDFReportDTO.AverageStaff = Math.Round(temporaryOwnerPDFReportDTO.AverageStaff / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                    temporaryOwnerPDFReportDTO.AverageComfort = Math.Round(temporaryOwnerPDFReportDTO.AverageComfort / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                    temporaryOwnerPDFReportDTO.AverageValueForMoney = Math.Round(temporaryOwnerPDFReportDTO.AverageValueForMoney / temporaryOwnerPDFReportDTO.NumberOfReviews, 2);
+                }
+            }
+
+            return averageList;
+        }
+
+        */
+
+        public string FindSuperTypeByOwnerName(string username)
+        {
+            return userService.FindSuperTypeByOwnerName(username);
+        }
+
+        public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
+        {
+            canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
         }
     }
 }
