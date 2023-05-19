@@ -38,27 +38,52 @@ namespace InitialProject.Service
             return result;
         }
 
-        public List<TourNotifications> NotifyOfNewTour(string username)
+
+        public void AddNotifyOfNewTour(string username)
         {
             TourRequestService tourRequestService = new TourRequestService();
             List<TourRequest> tourRequests = tourRequestService.GetRejectedByUser(username);
-         
+
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+            List<TourGuidence> tourGuidences = tourGuidenceService.FindAll();
 
             List<TourNotifications> result = new List<TourNotifications>();
 
-            foreach(TourNotifications tourNotification in GetForDisplay(username))
+            foreach(TourGuidence tourGuidence in tourGuidences)
             {
                 foreach(TourRequest tourRequest in tourRequests)
                 {
-                    if (CheckSameLanguage(tourNotification, tourRequest) || CheckSameLocation(tourNotification, tourRequest))
+                    if (CheckSameLanguage(tourGuidence,tourRequest) || CheckSameLocation(tourGuidence, tourRequest))
                     {
-                        Add(result, tourNotification);
+                        UserService userService = new UserService();
+                        User user = userService.FindByUsername(username);
+
+                        TourNotifications tourNotifications = new TourNotifications();
+                        tourNotifications.TourGuidence = tourGuidence;
+                        tourNotifications.Type = "newTourNotification";
+                        tourNotifications.IsNotified = false;
+                        tourNotifications.User = user;
+
+                        Add(tourNotifications);
                     }
                 }
             }
 
+        }
 
-            return result.Distinct().ToList();
+        public List<TourNotifications> NotifyOfNewTours(string username)
+        {
+            List<TourNotifications> result = new List<TourNotifications>();
+
+            foreach(TourNotifications tourNotifications in tourNotificationsRepository.FindAll())
+            {
+                if(tourNotifications.Type.Equals("newTourNotification") && tourNotifications.User.Username.Equals(username))
+                {
+                    result.Add(tourNotifications);
+                }
+            }
+
+            return result;
         }
 
         public void Add(List<TourNotifications> result, TourNotifications tourNotification)
@@ -66,14 +91,41 @@ namespace InitialProject.Service
             result.Add(tourNotification);
         }
 
-        public bool CheckSameLocation(TourNotifications tourNotification, TourRequest tourRequest)
+        public bool CheckSameLocation(TourGuidence tourGuidence, TourRequest tourRequest)
         {
-            return (tourRequest.Location.Country.Equals(tourNotification.TourGuidence.Tour.Location.Country) && tourRequest.Location.City.Equals(tourNotification.TourGuidence.Tour.Location.City));
+            return (tourRequest.Location.Country.Equals(tourGuidence.Tour.Location.Country) && tourRequest.Location.City.Equals(tourGuidence.Tour.Location.City));
         }
 
-        public bool CheckSameLanguage(TourNotifications tourNotification, TourRequest tourRequest)
+        public bool CheckSameLanguage(TourGuidence tourGuidence, TourRequest tourRequest)
         {
-            return tourRequest.Language.Equals(tourNotification.TourGuidence.Tour.Language);
+            return tourRequest.Language.Equals(tourGuidence.Tour.Language);
+        }
+
+        public void Add(TourNotifications tour)
+        {
+            List<TourNotifications> tourNotifications = tourNotificationsRepository.FindAll();
+            tourNotifications.Add(tour);
+
+            tourNotificationsRepository.Save(tourNotifications);
+        }
+
+        public List<TourNotifications> GetAcceptedTourRequests(string username)
+        {
+            TourRequestService tourRequestService = new TourRequestService();
+            List<TourRequest> tourRequests = tourRequestService.GetRejectedByUser(username);
+
+
+            List<TourNotifications> result = new List<TourNotifications>();
+
+            foreach (TourNotifications tourNotification in GetForDisplay(username))
+            {
+                if(tourNotification.Type.Equals("acceptedRequest"))
+                {
+                    result.Add(tourNotification);
+                }
+            }
+
+            return result.Distinct().ToList();
         }
 
     }

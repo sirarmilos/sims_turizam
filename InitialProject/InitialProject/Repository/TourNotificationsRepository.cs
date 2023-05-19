@@ -28,14 +28,23 @@ namespace InitialProject.Repository
             TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
             UserRepository userRepository = new UserRepository();
 
-            tourNotifications = tourNotificationsSerializer.FromCSV(FilePathTourNotifications);
+            tourNotifications = new List<TourNotifications>();
 
-            foreach(TourNotifications tourNotification in tourNotifications)
+
+            try
             {
-                tourNotification.TourGuidence = tourGuidenceRepository.FindById(tourNotification.TourGuidence.Id);
-                tourNotification.User = userRepository.FindByUsername(tourNotification.User.Username);
+
+                tourNotifications = tourNotificationsSerializer.FromCSV(FilePathTourNotifications);
+
+                foreach (TourNotifications tourNotification in tourNotifications)
+                {
+                    tourNotification.TourGuidence = tourGuidenceRepository.FindById(tourNotification.TourGuidence.Id);
+                    tourNotification.User = userRepository.FindByUsername(tourNotification.User.Username);
+                }
             }
 
+            catch 
+            { }
             return tourNotifications;
         }
 

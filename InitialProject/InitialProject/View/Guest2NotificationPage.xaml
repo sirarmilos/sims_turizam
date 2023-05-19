@@ -9,17 +9,11 @@
       Title="Guest2NotificationPage">
 
     <Grid Background="{DynamicResource BackGrid}" Margin="0,0,0,0">
-        <DataGrid  CanUserAddRows="False" AutoGenerateColumns="True" x:Name="dataGrid" Margin="0,0,0,481">
-           <!-- <DataGrid.Columns>
-                <DataGridTextColumn Header="Tour name" Binding="{Binding Tour.TourName}" Width="80"/>
-                <DataGridTextColumn Header="Country" Binding="{Binding Tour.Location.Country}" Width="80"/>
-                <DataGridTextColumn Header="City" Binding="{Binding Tour.Location.City}" Width="80"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Tour.Description}" Width="80"/>
-                <DataGridTextColumn Header="Language" Binding="{Binding Tour.Language}" Width="80"/>
-                   
-            </DataGrid.Columns> -->
-        </DataGrid>
-        <Grid x:Name="myGrid" Margin="0,154,0,0"/>
+        <DataGrid  CanUserAddRows="False" AutoGenerateColumns="True" x:Name="dataGrid" Margin="0,0,0,481"/>
+        <DataGrid CanUserAddRows="False"  AutoGenerateColumns="True" x:Name="dataAcceptedTours" Margin="10,175,-10,334"/>
+        <Label Content="Tour request accepted" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,157,0,0"/>
+        <Grid x:Name="myGrid" Margin="0,154,0,0">
+        </Grid>
 
     </Grid>
 </Page>

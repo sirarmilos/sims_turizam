@@ -1,6 +1,7 @@
 ﻿using InitialProject.Dto;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -514,12 +515,27 @@ namespace InitialProject.View
 
             foreach (TourGuidenceDto t in tourGuidenceDtos)
             {
-                TourGuidence tourGuidence = new(tourGuidenceRepository.NextId(), tour, t.StartTime, false, false, false);
 
+                TourGuidence tourGuidence = new(tourGuidenceRepository.NextId(), tour, t.StartTime, false, false, false);
 
                 //t.Tour = tour;
                 //tourGuidenceRepository.Update(t);
                 tourGuidenceRepository.SaveToFile(tourGuidence);
+
+                if (!(TourRequest == null))
+                {
+                    TourNotificationsService tourNotificationsService = new TourNotificationsService();
+
+                    TourNotifications tourNotifications = new TourNotifications();
+                    tourNotifications.TourGuidence = tourGuidence;
+                    tourNotifications.User = TourRequest.User;
+                    tourNotifications.IsNotified = false;
+                    tourNotifications.Type = "acceptedRequest";
+
+                    tourNotificationsService.Add(tourNotifications);
+
+                }
+
                 foreach (TourKeyPointDto tkp in tourKeyPointDtos)
                 {
                     TourKeyPoint tourKeyPoint = new(tourKeyPointRepository.NextId(), tkp.TourKeyPointName, tkp.Location, tourGuidence, false);

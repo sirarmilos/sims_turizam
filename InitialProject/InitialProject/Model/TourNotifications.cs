@@ -14,17 +14,23 @@ namespace InitialProject.Model
 
         public User User { get; set; }
 
-        public TourNotifications() { }
+        public string Type { get; set; }
+
+        public TourNotifications()
+        {
+            Type = "";
+        }
 
         public TourNotifications(TourGuidence tour) 
         {
             TourGuidence = tour;
             IsNotified = false;
+            Type = "";
         }
 
         public string[] ToCSV()
         {
-            return new string[] { TourGuidence.Id.ToString(), IsNotified.ToString(), User.Username.ToString() };
+            return new string[] { TourGuidence.Id.ToString(), IsNotified.ToString(), User.Username.ToString(), Type.ToString() };
         }
 
         public void FromCSV(string[] values)
@@ -32,6 +38,7 @@ namespace InitialProject.Model
             TourGuidence = new TourGuidence() { Id = int.Parse(values[0]) };
             IsNotified = bool.Parse(values[1]);
             User = new User() { Username = values[2] };
+            Type = values[3];
         }
     }
 }

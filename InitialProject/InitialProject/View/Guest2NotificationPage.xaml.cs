@@ -41,7 +41,7 @@ namespace InitialProject.View
 
             tourNotificationsService = new TourNotificationsService();
 
-            tourNotificationsService.Update();
+            //tourNotificationsService.Update();
 
             tourGuidenceService = new TourGuidenceService();
 
@@ -49,37 +49,27 @@ namespace InitialProject.View
 
             tourReservationService = new TourReservationService();
 
-            List<TourGuidence> tourGuidenceDtos = new List<TourGuidence>();   
-            foreach(TourNotifications tourNotifications in tourNotificationsService.NotifyOfNewTour(Username))
+            List<TourGuidence> tourGuidenceDtos = new List<TourGuidence>();
+
+            tourNotificationsService.AddNotifyOfNewTour(Username);
+
+            tourGuidenceDtos.Clear();
+            foreach (TourNotifications tourNotifications1 in tourNotificationsService.NotifyOfNewTours(username))
             {
-                tourGuidenceDtos.Add(tourNotifications.TourGuidence);
+                tourGuidenceDtos.Add(tourNotifications1.TourGuidence);
             }
-
-
-
-
 
             dataGrid.ItemsSource = tourGuidenceDtos;
 
-
-            List<TourRequest> tourRequests = new List<TourRequest>();
-
-           // List<TourDisplayDTO> tourDisplayDTOsResult = new List<TourDisplayDTO>();
-
-           /* foreach(TourDisplayDTO tourDisplayDTO1 in tourService.GetToursForDisplay())
+            tourGuidenceDtos.Clear();
+            foreach(TourNotifications tourNotifications1 in tourNotificationsService.GetAcceptedTourRequests(username))
             {
-                foreach(TourNotifications tourNotifications in tourNotificationsService.NotifyOfNewTour(Username))
-                {
-                    if(tourDisplayDTO1.TourName.Equals(tourNotifications.TourGuidence.Tour.TourName) && tourDisplayDTO1.TourDate.Equals(tourNotifications.TourGuidence.StartTime))
-                    {
-                        tourDisplayDTOsResult.Add(tourDisplayDTO1);
-                    }
-                }
+                tourGuidenceDtos.Add(tourNotifications1.TourGuidence);
             }
 
-            dataGrid.ItemsSource = tourDisplayDTOsResult;*/
+            dataAcceptedTours.ItemsSource = tourGuidenceDtos;
 
-
+            
             List<int> tourReservationIds = tourGuidenceService.NotifyGuestOfTourStarting(username);
 
             StackPanel stackPanel = new StackPanel();
