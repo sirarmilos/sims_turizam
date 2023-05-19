@@ -22,6 +22,8 @@ namespace InitialProject.Service
 
         private ReservationService reservationService;
 
+        private ReservationReschedulingRequestService reservationReschedulingRequestService;
+
         private UserService userService;
 
         private string guest1;
@@ -44,9 +46,20 @@ namespace InitialProject.Service
         {
             Guest1 = guest1;
             superGuestRepository = Injector.Injector.CreateInstance<ISuperGuestRepository>();
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService();
 
         }
 
+        public bool Guest1HasNotification()
+        {
+            return reservationReschedulingRequestService.Guest1HasNotification(Guest1);
+        }
+
+        public bool IsSuperGuest(string guest1Username)
+        {
+            userService = new UserService();
+            return userService.IsSuperGuest(guest1Username);
+        }
 
         public void DecreaseOneBonusPoint()
         {
