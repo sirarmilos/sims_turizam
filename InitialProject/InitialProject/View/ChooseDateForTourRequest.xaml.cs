@@ -99,6 +99,7 @@ namespace InitialProject.View
             if (tourRequestService.AcceptTourRequest(GuideUsername, TourRequest, SelectedStartDate))
             {
                 MessageBox.Show("Succesfull");
+                tourRequestService.UpdateStatusToAccepted(TourRequest);
                 AddNewTour window = new AddNewTour(GuideUsername, TourRequest, SelectedStartDate);
                 window.Show();
             }
