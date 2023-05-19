@@ -63,4 +63,8 @@
     <Resource Include="Themes\DarkTheme.xaml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repository\Diagrams\" />
+  </ItemGroup>
+
 </Project>
