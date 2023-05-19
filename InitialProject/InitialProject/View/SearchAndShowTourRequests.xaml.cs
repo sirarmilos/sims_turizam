@@ -74,12 +74,34 @@ namespace InitialProject.View
             }
         }
 
+        private DateTime filterStartDate;
+        public DateTime FilterStartDate
+        {
+            get { return filterStartDate; }
+            set
+            {
+                filterStartDate = value;
+            }
+        }
+
+        private DateTime filterEndDate;
+        public DateTime FilterEndDate
+        {
+            get { return filterEndDate; }
+            set
+            {
+                filterEndDate = value;
+            }
+        }
+
         public SearchAndShowTourRequests()
         {
             InitializeComponent();
             DataContext = this;
             tourRequestService = new TourRequestService();
             //Jezik = null;
+            FilterStartDate = DateTime.Today;
+            FilterEndDate = DateTime.Today;
         }
 
 
@@ -92,7 +114,7 @@ namespace InitialProject.View
                 return;
             }
             SearchAndShowTourRequestDTO searchShowTourRequestDTO =
-                new SearchAndShowTourRequestDTO(Country, City, GuestNumber, Jezik);
+                new SearchAndShowTourRequestDTO(Country, City, GuestNumber, Jezik, FilterStartDate, FilterEndDate) ;
             List<TourRequest> tourRequests = tourRequestService.FindAll(searchShowTourRequestDTO);
             if(tourRequests == null)
             {
@@ -128,11 +150,17 @@ namespace InitialProject.View
             }
         }
 
-        private void AcceptTourRequest(object sender, RoutedEventArgs e)
+        private void ProceedTourRequest(object sender, RoutedEventArgs e)
         {
-            TourRequest selectedItem = (TourRequest)ListTourRequests.SelectedItem;
+            /*TourRequest selectedItem = (TourRequest)ListTourRequests.SelectedItem;
             tourRequestService.UpdateStatusToAccepted(selectedItem);
-            MessageBox.Show("Successfully accepted!");
+            MessageBox.Show("Successfully accepted!");*/
+            TourRequest selectedItem = (TourRequest)ListTourRequests.SelectedItem;
+            ChooseDateForTourRequest window = new ChooseDateForTourRequest("Guide1", selectedItem);
+            window.ShowDialog();
+            //ListTourRequests.Items.Refresh();
+
+
         }
     }
 }

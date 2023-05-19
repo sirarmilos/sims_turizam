@@ -36,14 +36,18 @@
             </Grid>
         </GroupBox>
         <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrGuestsForTours}" HorizontalAlignment="Left" Margin="682,361,0,0" VerticalAlignment="Top" FontSize="32"/>
-        <TextBox HorizontalAlignment="Left" Margin="682,419,0,0" TextWrapping="Wrap" Text="" FontSize="32" VerticalAlignment="Top" Width="282" Height="36"/>
+        <TextBox HorizontalAlignment="Left" Margin="682,419,0,0" TextWrapping="Wrap" Text="{Binding MaxGuests, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{0:#;;}}" FontSize="32" VerticalAlignment="Top" Width="282" Height="41"/>
         <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrSelectVoucher}" HorizontalAlignment="Left" Margin="682,485,0,0" VerticalAlignment="Top" FontSize="32"/>
         <ComboBox x:Name="ComboBoxVouchers" HorizontalAlignment="Left" Margin="682,543,0,0" VerticalAlignment="Top" Width="282" FontSize="32"/>
-        <Button Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="984,395,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.025,-0.526" FontSize="24" Height="74" Width="190">
+        <Button x:Name="createReservationButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" HorizontalAlignment="Left" Margin="984,395,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.025,-0.526" FontSize="24" Height="74" Width="190" Click="createReservationButton_Click">
             <TextBlock TextWrapping="Wrap" TextAlignment="Center"><Run Text="{DynamicResource StrCreateReservation}"/></TextBlock>
         </Button>
-        <Button Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="984,525,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.025,-0.526" FontSize="24" Height="74" Width="190" Click="CancelReservation">
+        <Button Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" HorizontalAlignment="Left" Margin="984,525,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.025,-0.526" FontSize="24" Height="74" Width="190" Click="CancelReservation">
             <TextBlock TextWrapping="Wrap" TextAlignment="Center"><Run Text="{DynamicResource StrCancelReservation}"/></TextBlock>
         </Button>
+        <Label x:Name="guestsNumWarning" Visibility="Hidden" Foreground="Red" Content="{DynamicResource StrMaxGuestWarning}" HorizontalAlignment="Left" Margin="682,460,0,0" VerticalAlignment="Top"/>
+        <Label Visibility="Hidden" x:Name="warning1label" Content="{DynamicResource StrThereAreOnly}" Foreground="Red" HorizontalAlignment="Left" Margin="1235,401,0,0" VerticalAlignment="Top"/>
+        <Label Visibility="Hidden" x:Name="warning2label" Content="{DynamicResource StrSlotsLeft}" Foreground="Red" HorizontalAlignment="Left" Margin="1235,432,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.606,0.693"/>
+        <Label Foreground="Red" Visibility="Hidden" x:Name="numOfSlotsLabel" Content="" HorizontalAlignment="Left" Margin="1320,401,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.316,0.077"/>
     </Grid>
 </Page>

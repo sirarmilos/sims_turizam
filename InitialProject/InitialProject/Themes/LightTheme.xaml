@@ -3,4 +3,5 @@
     <SolidColorBrush Color="#F6F6F6" x:Key="BackGrid"/>
     <SolidColorBrush Color="#4CAF50" x:Key="ButtonColor"/>
     <SolidColorBrush Color="#333333" x:Key="TextColor"/>
+    <SolidColorBrush Color="Black" x:Key="ButtonText"/>
 </ResourceDictionary>

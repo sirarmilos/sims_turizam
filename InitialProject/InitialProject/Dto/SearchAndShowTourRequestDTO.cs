@@ -14,7 +14,7 @@ namespace InitialProject.Dto
 
         public int? GuestNumber { get; set; }
 
-        public string? Language { get; set; }
+        public string Language { get; set; }
 
         public DateTime StartDate { get; set; }
 
@@ -23,14 +23,14 @@ namespace InitialProject.Dto
         public SearchAndShowTourRequestDTO() { }
 
         //AccommodationName, Country, City, Type, MaxGuests, MinDaysReservation
-        public SearchAndShowTourRequestDTO(string country, string city, int? guestNumber, string? language/*, DateTime startDate, DateTime endDate*/)
+        public SearchAndShowTourRequestDTO(string country, string city, int? guestNumber, string? language, DateTime startDate, DateTime endDate)
         {
             Country = country;
             City = city;
             GuestNumber = guestNumber;
             Language = language;
-            //StartDate = startDate;
-            //EndDate = endDate;
+            StartDate = startDate;
+            EndDate = endDate;
         }
     }
 }

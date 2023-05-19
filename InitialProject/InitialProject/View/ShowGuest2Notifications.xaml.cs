@@ -68,6 +68,7 @@ namespace InitialProject.View
                 buttonColumn.CellTemplate = new DataTemplate();
                 buttonColumn.CellTemplate.VisualTree = buttonFactory;
 
+
                 dataGrid.Columns.Add(buttonColumn);
 
                 dataGrid.CanUserAddRows = false;

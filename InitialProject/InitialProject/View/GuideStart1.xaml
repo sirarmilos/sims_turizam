@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="Home Page" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Yellow" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <!-- Add more setters for other properties as needed -->
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -20,10 +30,10 @@
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
                 <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                 <StackPanel>
-                    <MenuItem Header="Home Page" Margin="0,25,0,0"/>
-                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
                     <MenuItem Header="Profile" Margin="0,5,0,0"/>
-                    <MenuItem Header="Future Tours" Margin="0,5,0,0"/>
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
                     <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
                     <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
                 </StackPanel>
@@ -37,9 +47,18 @@
         <!-- Main content -->
         <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
             <Grid Grid.Column="1">
-                
+
                 <TextBlock Text="{Binding WelcomeText}" Margin="106,40,10,0" FontSize="20" FontWeight="Bold" />
-                <TextBlock Text="Select row of tour You want to start and press START button" Margin="106,125,0,0" FontSize="16" FontWeight="Normal" Width="423" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <!--<TextBlock Text="Select row of tour You want to start and press START button" Margin="106,125,0,0" FontSize="16" FontWeight="Normal" Width="423" HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
+
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/question_mark.png" Width="16" Height="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="300,47,0,0" Panel.ZIndex="999">
+                    <Image.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Select a row in the table and press START button to start the tour."/>
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
+
 
                 <DataGrid x:Name="dgStart1" Margin="104,200,161,260" AutoGenerateColumns="False" SelectionUnit="FullRow" CanUserAddRows="False" SelectionMode="Single" IsReadOnly="True">
                     <DataGrid.Columns>

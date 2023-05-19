@@ -101,7 +101,7 @@ namespace InitialProject.View
                 TourGuidence tourGuidence = tourGuidenceRepository.FindById(tourReservation.tourGuidenceId);
                 if (tourGuidence.Finished == false)
                 {
-                    buttonFactory.SetValue(Button.IsEnabledProperty, false);
+                    buttonFactory.SetValue(Button.IsEnabledProperty, true);
                 }
                 else
                 {

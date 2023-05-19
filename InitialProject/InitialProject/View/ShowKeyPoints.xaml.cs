@@ -26,6 +26,8 @@ namespace InitialProject.View
     {
         public static ObservableCollection<TourKeyPoint> tourKeyPoints { get; set; }
 
+        private readonly TourGuidenceService tourGuidenceService;
+
         public string TitleText
         {
             get;
@@ -42,6 +44,7 @@ namespace InitialProject.View
             InitializeComponent();
             DataContext = this;
             TourKeyPointService tourKeyPointService = new TourKeyPointService();
+            tourGuidenceService = new TourGuidenceService();
             tourKeyPoints = new ObservableCollection<TourKeyPoint>(tourKeyPointService.FindByTourGuidance(tourGuidence.Id));
             TitleText = "Tour Key Points for " + tourGuidence.Tour.TourName;
             
@@ -66,11 +69,36 @@ namespace InitialProject.View
         {
             ShowMostPopularTour window = new ShowMostPopularTour();
             window.Show();
+            Close();
         }
 
         private void GoToPreviousWindow(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void GoToAllTourOccurences(object sender, RoutedEventArgs e)
+        {
+            AllTourOccurences window = new AllTourOccurences();
+            window.Show();
+            Close();
+        }
+
+        private void GoToHomePage(object sender, RoutedEventArgs e)
+        {
+            TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+            if (tg != null)
+            {
+                GuideStart2 window = new GuideStart2("Guide1", tg);
+                window.Show();
+                Close();
+            }
+            else
+            {
+                GuideStart1 window = new GuideStart1("Guide1");
+                window.Show();
+                Close();
+            }
         }
 
         private void ViewGuestsDataGrid(object sender, RoutedEventArgs e)

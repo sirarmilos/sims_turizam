@@ -62,6 +62,7 @@ namespace InitialProject.View
         {
             ShowMostPopularTour window = new ShowMostPopularTour();
             window.Show();
+            Close();
         }
 
         private void StartTourGuidence(object sender, RoutedEventArgs e)
@@ -79,6 +80,7 @@ namespace InitialProject.View
                 TourGuidence selectedItem = (TourGuidence)dgStart1.SelectedItem;
                 tourGuidenceService.UpdateStartedField(selectedItem.Id);
                 MessageBox.Show("Tour successfully started");
+                selectedItem = tourGuidenceService.FindById(selectedItem.Id);   
                 //ShowKeyPointsInStartedTourGuidence window = new(TourGuidence, TourGuidences);
                 GuideStart2 window = new GuideStart2(Guide, selectedItem);
                 window.Show();
@@ -86,7 +88,32 @@ namespace InitialProject.View
                 //window.Show();
                 
             }
-
         }
+
+        private void GoToAllTourOccurences(object sender, RoutedEventArgs e)
+        {
+            AllTourOccurences window = new AllTourOccurences();
+            window.Show();
+            Close();
+        }
+
+        private void GoToHomePage(object sender, RoutedEventArgs e)
+        {
+            TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+            if (tg != null)
+            {
+                GuideStart2 window = new GuideStart2(Guide, tg);
+                window.Show();
+                Close();
+            }
+            else
+            {
+                GuideStart1 window = new GuideStart1(Guide);
+                window.Show();
+                Close();
+            }
+        }
+
+
     }
 }

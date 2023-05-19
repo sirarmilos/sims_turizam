@@ -62,6 +62,7 @@ namespace InitialProject.Service
             return results;
         }
 
+    
         public List<int> GetTourReservationsForTracking(string username)
         {
             List<int> results = new List<int>();
@@ -326,6 +327,29 @@ namespace InitialProject.Service
                 }
             }
             return null;
+        }
+
+        public List<TourGuidence> FindAllInsideDateRange(DateTime SelectedFromDate, DateTime SelectedToDate)
+        {
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.FindAll();
+            List<TourGuidence> filteredTourGuidences = tourGuidences.Where(tg => tg.StartTime >= SelectedFromDate && tg.StartTime <= SelectedToDate).ToList();
+            return filteredTourGuidences;
+        }
+
+        public bool CheckIfGuideIsFreeInPeriod(string GuideUsername, DateTime SelectedStartDate)
+        {
+            List<TourGuidence> guidences = tourGuidenceRepository.FindAll().FindAll(x => x.Tour.GuideUsername.Equals(GuideUsername));
+            foreach(TourGuidence tg in guidences)
+            {
+                if (SelectedStartDate.Date == tg.StartTime.Date)
+                    return false;
+            }
+            return true;
+        }
+        
+        public TourGuidence FindByTourAndDate(Tour tour,DateTime dateTime)
+        {
+            return tourGuidenceRepository.FindByTourAndDate(tour,dateTime);
         }
 
     }

@@ -39,13 +39,13 @@
         <Button Grid.Column="3" Grid.Row="7" Content="Add date" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="156,5,0,0"  Click="AddDateToList" Height="20" Width="100"/>
 
         <Label Target="{x:Reference tbCountry}" Grid.Column="0" Grid.Row="1" Content="Country:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Height="26" Width="55"/>
-        <TextBox x:Name="tbCountry" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=TourCountry, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="18"/>
+        <TextBox x:Name="tbCountry" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=TourCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="18"/>
 
         <Label Target="{x:Reference tbCity}" Grid.Column="0" Grid.Row="2" Content="City:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Height="26" Width="33"/>
-        <TextBox x:Name="tbCity" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=TourCity, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="18"/>
+        <TextBox x:Name="tbCity" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=TourCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="18"/>
 
         <Label Target="{x:Reference tbAddress}"  Grid.Column="0" Grid.Row="3" Content="Address:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Height="26" Width="55"/>
-        <TextBox x:Name="tbAddress" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=TourAddress, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="18"/>
+        <TextBox x:Name="tbAddress" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=TourAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="18"/>
 
         <Label Target="{x:Reference sliderLatitude}" Grid.Column="0" Grid.Row="4" Content="Latitude:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Height="26" Width="56"/>
         <TextBox x:Name="tbLatitude" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Text="{Binding ElementName=sliderLatitude, Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={cvt:DecimalStringConverter}}" VerticalAlignment="Top" Width="31" IsReadOnly="True" Height="18"/>

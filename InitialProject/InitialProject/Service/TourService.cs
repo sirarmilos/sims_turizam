@@ -304,6 +304,11 @@ namespace InitialProject.Service
             return count;
         }
 
+        public Tour FindByName(TourDisplayDTO tourDisplayDTO)
+        {
+            return tourRepository.FindByName(tourDisplayDTO.TourName);
+        }
+
 
     }
 }

@@ -12,6 +12,7 @@ namespace InitialProject.Model
     {
         public int Id { get; set; }
         public User User { get; set; } 
+
         public Location Location { get; set; }
 
         public string Description { get; set; }
