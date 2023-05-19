@@ -205,7 +205,7 @@
 
                                     <TextBlock TextWrapping="Wrap" Height="Auto" FontSize="24" Margin="10,0,10,0" FontWeight="Bold"  >
                                         <Run Text="Max guests:" />
-                                        <Run Text="{Binding Accommodation.MinDaysReservation}" />
+                                        <Run Text="{Binding Accommodation.MaxGuests}" />
                                     </TextBlock>
 
                                     <Image Grid.Row="0" Source="{Binding CurrentImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,0"  Stretch="UniformToFill" Height="240" />
