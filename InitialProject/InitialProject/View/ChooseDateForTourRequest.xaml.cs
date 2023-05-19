@@ -68,7 +68,7 @@ namespace InitialProject.View
 
         }
 
-        private void AcceptTourRequest(object sender, RoutedEventArgs e)
+        /*private void AcceptTourRequest(object sender, RoutedEventArgs e)
         {
             if (tourRequestService.CheckIfIsInDateRange(TourRequest, SelectedStartDate))
             {
@@ -91,6 +91,22 @@ namespace InitialProject.View
                 MessageBox.Show("Selected date is not from date range in request!");
             }
             
+        }*/
+
+
+        private void AcceptTourRequest(object sender, RoutedEventArgs e)
+        {
+            if (tourRequestService.AcceptTourRequest(GuideUsername, TourRequest, SelectedStartDate))
+            {
+                MessageBox.Show("Succesfull");
+                AddNewTour window = new AddNewTour(GuideUsername, TourRequest, SelectedStartDate);
+                window.Show();
+            }
+            else
+            {
+                MessageBox.Show("Error");
+            }
+
         }
     }
 }

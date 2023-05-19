@@ -5,9 +5,12 @@ using InitialProject.Model;
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Documents;
 
 namespace InitialProject.Service
 {
@@ -178,6 +181,20 @@ namespace InitialProject.Service
             catch
             {
                 return false;
+            }
+        }
+
+        public bool AcceptTourRequest(string guideUsername, TourRequest tourRequest, DateTime selectedStartDate)
+        {
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+
+            if(!CheckIfIsInDateRange(tourRequest, selectedStartDate) || !tourGuidenceService.CheckIfGuideIsFreeInPeriod(guideUsername, selectedStartDate))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
             
