@@ -1,4 +1,5 @@
 ﻿using InitialProject.Model;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace InitialProject.View
     {
         public TourGuidence TourGuidence { get; set; }
 
+        private readonly TourGuidenceService tourGuidenceService;
+
         private string guide;
 
         public string Guide
@@ -44,6 +47,7 @@ namespace InitialProject.View
             DataContext = this;
             Guide = username;
             TourGuidence = tourGuidence;
+            tourGuidenceService = new TourGuidenceService();
             WelcomeText = "WELCOME, " + Guide;
         }
 
@@ -58,6 +62,7 @@ namespace InitialProject.View
         {
             ShowMostPopularTour window = new ShowMostPopularTour();
             window.Show();
+            Close();
         }
 
         private void MoreInfo(object sender, RoutedEventArgs e)
@@ -65,6 +70,30 @@ namespace InitialProject.View
             TourGuidenceInformation window = new TourGuidenceInformation(TourGuidence);
             window.Show();
             Close();
+        }
+
+        private void GoToAllTourOccurences(object sender, RoutedEventArgs e)
+        {
+            AllTourOccurences window = new AllTourOccurences();
+            window.Show();
+            Close();
+        }
+
+        private void GoToHomePage(object sender, RoutedEventArgs e)
+        {
+            TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+            if (tg != null)
+            {
+                GuideStart2 window = new GuideStart2(Guide, tg);
+                window.Show();
+                Close();
+            }
+            else
+            {
+                GuideStart1 window = new GuideStart1(Guide);
+                window.Show();
+                Close();
+            }
         }
     }
 }

@@ -17,40 +17,50 @@ using System.Windows.Shapes;
 namespace InitialProject.View
 {
     /// <summary>
-    /// Interaction logic for GuideStart1.xaml
+    /// Interaction logic for AllTourOccurences.xaml
     /// </summary>
-    public partial class GuideStart1 : Window
+    public partial class AllTourOccurences : Window
     {
         private readonly TourGuidenceService tourGuidenceService;
 
-        public TourGuidence tourGuidence { get; private set; }
-
-        private string guide;
-
-        public string Guide
+        private List<TourGuidence> TourGuidences
         {
-            get { return guide; }
+            get;
+            set;
+        }
+
+        private DateTime selectedFromDate;
+        public DateTime SelectedFromDate
+        {
+            get { return selectedFromDate; }
             set
             {
-                guide = value;
+                selectedFromDate = value;
             }
         }
 
-        public string WelcomeText
+        private DateTime selectedToDate;
+        public DateTime SelectedToDate
         {
-            get; set;
+            get { return selectedToDate; }
+            set
+            {
+                selectedToDate = value;
+            }
         }
 
-        public GuideStart1(string username)
+
+        public AllTourOccurences()
         {
             InitializeComponent();
             DataContext = this;
             tourGuidenceService = new TourGuidenceService();
-            Guide = username;
-            WelcomeText = "WELCOME, " + Guide;
-            dgStart1.ItemsSource = tourGuidenceService.FindAllForToday(Guide);
+            TourGuidences = new List<TourGuidence>();
+            TourGuidences = tourGuidenceService.FindAll();
+            dataGrid.ItemsSource = TourGuidences;
+            SelectedToDate = DateTime.Today;
+            SelectedFromDate = DateTime.Today;
         }
-
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
             LoginForm window = new LoginForm();
@@ -65,31 +75,6 @@ namespace InitialProject.View
             Close();
         }
 
-        private void StartTourGuidence(object sender, RoutedEventArgs e)
-        {
-            TourGuidenceService tourGuidenceService = new TourGuidenceService();
-            /*if (tourGuidenceService.CheckGuidencesForStart(TourGuidences))
-            {
-                MessageBox.Show("You already started another tour!");
-                this.Close();
-                ShowTourGuidences window = new ShowTourGuidences(Guide);
-                window.Show();
-            }
-            else*/
-            {
-                TourGuidence selectedItem = (TourGuidence)dgStart1.SelectedItem;
-                tourGuidenceService.UpdateStartedField(selectedItem.Id);
-                MessageBox.Show("Tour successfully started");
-                selectedItem = tourGuidenceService.FindById(selectedItem.Id);   
-                //ShowKeyPointsInStartedTourGuidence window = new(TourGuidence, TourGuidences);
-                GuideStart2 window = new GuideStart2(Guide, selectedItem);
-                window.Show();
-                this.Close();
-                //window.Show();
-                
-            }
-        }
-
         private void GoToAllTourOccurences(object sender, RoutedEventArgs e)
         {
             AllTourOccurences window = new AllTourOccurences();
@@ -102,18 +87,39 @@ namespace InitialProject.View
             TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
             if (tg != null)
             {
-                GuideStart2 window = new GuideStart2(Guide, tg);
+                GuideStart2 window = new GuideStart2("Guide1", tg);
                 window.Show();
                 Close();
             }
             else
             {
-                GuideStart1 window = new GuideStart1(Guide);
+                GuideStart1 window = new GuideStart1("Guide1");
                 window.Show();
                 Close();
             }
         }
 
+        private void ApplyDateFilters(object sender, RoutedEventArgs e)
+        {
+            if(SelectedFromDate == null || SelectedToDate == null)
+            {
+                return;
+            }
+            TourGuidences =  tourGuidenceService.FindAllInsideDateRange(SelectedFromDate, SelectedToDate);
+            dataGrid.ItemsSource = TourGuidences;
+        }
 
+        private void OptionButton(object sender, RoutedEventArgs e)
+        {
+            TourGuidence selectedItem = (TourGuidence)dataGrid.SelectedItem;
+            if(selectedItem != null)
+            {
+                TourGuidenceInformation window = new TourGuidenceInformation(selectedItem);
+                window.Show();
+                Close();
+            }
+            
+            
+        }
     }
 }

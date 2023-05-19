@@ -95,6 +95,11 @@ namespace InitialProject.Repository
             return allTourRequests.FindAll(x => x.Language.ToString().ToLower().StartsWith(language.ToLower()));
         }
 
+        public List<TourRequest> FindAllByDateRange(List<TourRequest> allTourRequests, DateTime filterStartDate, DateTime filterEndDate)
+        {
+            return allTourRequests.FindAll(x => (x.StartDate >= filterStartDate && x.EndDate <= filterEndDate) || (x.StartDate <= filterStartDate && x.EndDate >= filterEndDate));
+        }
+        
         public List<TourRequest> FindAllByUser(string username)
         {
             List<TourRequest> tourRequests = new List<TourRequest>();   

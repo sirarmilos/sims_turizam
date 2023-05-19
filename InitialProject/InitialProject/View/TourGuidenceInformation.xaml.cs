@@ -1,4 +1,5 @@
 ﻿using InitialProject.Model;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,10 @@ namespace InitialProject.View
     {
         public TourGuidence TourGuidence { get; set; }
 
+        private readonly TourGuidenceService tourGuidenceService;
+
+        private readonly VoucherService voucherService;
+
         public string TitleText
         {
             get;
@@ -46,6 +51,8 @@ namespace InitialProject.View
             InitializeComponent();
             DataContext = this;
             TourGuidence = tourGuidence;
+            tourGuidenceService = new TourGuidenceService();
+            voucherService = new VoucherService();  
             TitleText = "Information About " + TourGuidence.Tour.TourName;
             LatAndLong = TourGuidence.Tour.Location.Latitude + " and " + TourGuidence.Tour.Location.Longitude;
             LoremIpsum = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
@@ -72,6 +79,7 @@ namespace InitialProject.View
         {
             ShowMostPopularTour window = new ShowMostPopularTour();
             window.Show();
+            Close();
         }
 
         private void CheckButtonAvailable()
@@ -81,7 +89,7 @@ namespace InitialProject.View
                 CancelButton.IsEnabled = false;
             }
 
-            if(TourGuidence.Finished == false)
+            if (TourGuidence.Finished == false)
             {
                 StatsButton.IsEnabled = false;
             }
@@ -97,6 +105,61 @@ namespace InitialProject.View
         {
             TourImages window = new TourImages();
             window.Show();
+        }
+
+        private void GoToAllTourOccurences(object sender, RoutedEventArgs e)
+        {
+            AllTourOccurences window = new AllTourOccurences();
+            window.Show();
+            Close();
+        }
+
+        private void GoToHomePage(object sender, RoutedEventArgs e)
+        {
+            TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+            if (tg != null)
+            {
+                GuideStart2 window = new GuideStart2("Guide1", tg);
+                window.Show();
+                Close();
+            }
+            else
+            {
+                GuideStart1 window = new GuideStart1("Guide1");
+                window.Show();
+                Close();
+            }
+        }
+
+        private void GoToCancelTour(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to cancel Your Tour?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                if (tourGuidenceService.CheckValidDateForCancel(TourGuidence.StartTime))
+                {
+                    if(TourGuidence.Cancelled == true)
+                    {
+                        MessageBox.Show("Tour already cancelled");
+                    }
+                    else
+                    {
+                        tourGuidenceService.UpdateCancelledField(TourGuidence.Id);
+                        voucherService.CreateForCancelledTourGuidence(TourGuidence.Id);
+                    }
+                    
+                }
+                else
+                {
+                    MessageBox.Show("You can not cancel tour - less than 48 hours!");
+                }
+
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                return;
+            }
         }
     }
 }

@@ -102,19 +102,23 @@ namespace InitialProject.View
                 }
                 if (type.Equals("guide") == true)
                 {
-                    TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+                    GuideStart window = new GuideStart(Username);
+                    window.Show();
+                    Close();
+
+                   /* TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
                     if (tg != null)
                     {
-                        GuideStart2 window = new GuideStart2(Username, tg);
-                        window.Show();
+                        GuideStart2 window1 = new GuideStart2(Username, tg);
+                        window1.Show();
                         Close();
                     }
                     else
                     {
-                        GuideStart1 window = new GuideStart1(Username);
-                        window.Show();
+                        GuideStart1 window2 = new GuideStart1(Username);
+                        window2.Show();
                         Close();
-                    }
+                    }*/
                     
                 }
                 if (type.Equals("guest2") == true)

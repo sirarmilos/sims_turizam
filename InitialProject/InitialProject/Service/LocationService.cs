@@ -32,6 +32,11 @@ namespace InitialProject.Service
             return location;
         }
 
+        public Location FindById(int id)
+        {
+            return locationRepository.FindById(id);
+        }
+        
         public Location Save(LocationDto locationDto)
         {
             return locationRepository.Save(locationDto);
