@@ -21,36 +21,13 @@ namespace InitialProject.Repository
 
         private const string FilePathAccommodation = "../../../Resources/Data/accommodations.csv";
 
-        private const string FilePathLocation = "../../../Resources/Data/locations.csv";
-
         private readonly Serializer<Accommodation> accommodationSerializer;
 
-        private readonly Serializer<Location> locationSerializer;
-
         private List<Accommodation> accommodations;
-
-        private List<Location> locations;
 
         public AccommodationRepository()
         {
             accommodationSerializer = new Serializer<Accommodation>();
-            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-            locationSerializer = new Serializer<Location>();
-            locations = locationSerializer.FromCSV(FilePathLocation);
-
-            foreach (Accommodation accommodation in accommodations)
-            {
-                if (locations == null)
-                    break;
-                foreach (Location location in locations)
-                {
-                    if (location.Id == accommodation.Location.Id)
-                    {
-                        accommodation.Location = location;
-                        break;
-                    }
-                }
-            }
         }
 
         public List<Accommodation> FindAll()

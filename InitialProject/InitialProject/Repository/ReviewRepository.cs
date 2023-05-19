@@ -23,7 +23,6 @@ namespace InitialProject.Repository
         public ReviewRepository()
         {
             reviewSerializer = new Serializer<Review>();
-            //reviews = reviewSerializer.FromCSV(FilePathReview); 
         }
 
         public List<Review> FindAll()

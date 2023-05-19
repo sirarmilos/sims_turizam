@@ -21,8 +21,6 @@ namespace InitialProject.Repository
         public CanceledReservationRepository()
         {
             canceledReservationsSerializer = new Serializer<CanceledReservation>();
-
-            accommodationRepository = new AccommodationRepository();
         }
         public void Save(CanceledReservation canceledReservation)
         {
