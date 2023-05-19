@@ -5,9 +5,12 @@ using InitialProject.Model;
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Documents;
 
 namespace InitialProject.Service
 {
@@ -180,6 +183,20 @@ namespace InitialProject.Service
                 return false;
             }
         }
+
+        public bool AcceptTourRequest(string guideUsername, TourRequest tourRequest, DateTime selectedStartDate)
+        {
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+
+            if(!CheckIfIsInDateRange(tourRequest, selectedStartDate) || !tourGuidenceService.CheckIfGuideIsFreeInPeriod(guideUsername, selectedStartDate))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
             
 
         public Location FindMostFrequentLocationInLastYear()
@@ -321,23 +338,52 @@ namespace InitialProject.Service
 
             foreach(TourRequest tourRequest in GetByUser(username))
             {
-
-                if (string.IsNullOrEmpty(year))
+                if (tourRequest.Status.Equals("accepted"))
                 {
-                    count++;
-                    average += tourRequest.GuestNumber;
-                }
+                    if (string.IsNullOrEmpty(year))
+                    {
+                        count++;
+                        average += tourRequest.GuestNumber;
+                    }
 
-                else if(tourRequest.StartDate.Year.ToString().Equals(year))
-                {
-                    count++;
-                    average += tourRequest.GuestNumber;
+                    else if (tourRequest.StartDate.Year.ToString().Equals(year))
+                    {
+                        count++;
+                        average += tourRequest.GuestNumber;
+                    }
                 }
             }
 
             return  Math.Round(average/count,2);
 
         }
+
+        public Dictionary<string, int> LocationCount(string username)
+        {
+            Dictionary<string, int> locationCounts = new Dictionary<string, int>();
+
+            LocationService locationService = new LocationService();
+
+            List<Location> locations = locationService.FindAll();
+
+            foreach(TourRequest tourRequest in tourRequestRepository.FindAllByUser(username))
+            {
+                string key = tourRequest.Location.Country + "_" + tourRequest.Location.City;
+
+                if (locationCounts.ContainsKey(key))
+                {
+                    locationCounts[key]++;
+                }
+                else
+                {
+                    locationCounts[key] = 1;
+                } 
+            }
+
+            return locationCounts;
+
+        }
+
 
 
     }
