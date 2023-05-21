@@ -32,20 +32,9 @@ namespace InitialProject.Model
 
         public bool RecentlyRenovated { get; set; }
 
-        public Accommodation() { }
+        public bool Removed { get; set; }
 
-        public Accommodation(int id, string name, string ownerUsername, Location location, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images)
-        {
-            Id = id;
-            AccommodationName = name;
-            OwnerUsername = ownerUsername;
-            Location = location;
-            Type = type;
-            MaxGuests = maxGuests;
-            MinDaysReservation = minDaysReservation;
-            LeftCancelationDays = leftCancelationDays;
-            Images = images;
-        }
+        public Accommodation() { }
 
         public Accommodation(int id, string name, string ownerUsername, Location location, string type, int maxGuests, int minDaysReservation, int leftCancelationDays, List<string> images, bool recentlyRenovated)
         {
