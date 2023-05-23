@@ -72,14 +72,11 @@ namespace InitialProject.View
 
             if (userService.IsUsernameExist(Username) == false)
             {
-                /*tbUsername.Text = string.Empty;
-                pbPassword.Password = string.Empty;*/
                 labelErrorUsername.Visibility = Visibility.Visible;
                 tbUsername.Focus();
             }
             else if (userService.IsPasswordCorrect(Username, Password) == false)
             {
-                // pbPassword.Password = string.Empty;
                 labelErrorPassword.Visibility = Visibility.Visible;
                 pbPassword.Focus();
             }
@@ -130,7 +127,7 @@ namespace InitialProject.View
                     Close();
                 }
 
-                //MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

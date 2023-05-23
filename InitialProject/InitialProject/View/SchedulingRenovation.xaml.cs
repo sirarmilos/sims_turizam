@@ -156,7 +156,7 @@ namespace InitialProject.View
 
         private void RenovateAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Renovation renovation = new Renovation(renovationService.FindNextId(), renovationService.FindAccommodationByAccommodationName(SelectedAccommodationName), SelectedDateSlot.StartDate, SelectedDateSlot.EndDate, Description);
+            Renovation renovation = renovationService.CreateRenovationToAdd(SelectedAccommodationName, SelectedDateSlot.StartDate, SelectedDateSlot.EndDate, Description);
             renovationService.AddRenovation(renovation);
 
             Close();
