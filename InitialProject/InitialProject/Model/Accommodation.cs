@@ -70,10 +70,10 @@ namespace InitialProject.Model
             foreach(string image in Images)
             {
                 imageToString += image;
-                imageToString += ", ";
+                imageToString += ",";
             }
 
-            imageToString = imageToString.Substring(0, imageToString.Length - 2);
+            imageToString = imageToString.Substring(0, imageToString.Length - 1);
 
             string[] csvValues = { Id.ToString(), AccommodationName.ToString(), OwnerUsername.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString(), imageToString.ToString(), RecentlyRenovated.ToString() };
             return csvValues;

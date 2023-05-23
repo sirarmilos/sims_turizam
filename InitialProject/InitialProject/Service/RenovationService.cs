@@ -191,6 +191,13 @@ namespace InitialProject.Service
             return dateCheckSlotStartDate || dateCheckSlotEndDate;
         }
 
+        public Renovation CreateRenovationToAdd(string accommodationName, DateTime startDate, DateTime endDate, string description)
+        {
+            Renovation renovation = new Renovation(FindNextId(), FindAccommodationByAccommodationName(accommodationName), startDate, endDate, description);
+
+            return renovation;
+        }
+
         public int FindNextId()
         {
             return renovationRepository.NextId();
