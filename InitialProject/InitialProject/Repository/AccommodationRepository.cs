@@ -125,5 +125,12 @@ namespace InitialProject.Repository
         {
             return FindAll().ToList().FindAll(x => x.OwnerUsername.Equals(ownerUsername) == true);
         }
+
+        public void Remove(string country, string city)
+        {
+            List<Accommodation> allAccommodations = FindAll();
+            allAccommodations.ToList().Where(x => x.Location.Country.Equals(country) == true && x.Location.City.Equals(city) == true).SetValue(x => x.Removed = true);
+            Save(allAccommodations);
+        }
     }
 }

@@ -3,6 +3,7 @@ using InitialProject.Injector;
 using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Serializer;
 using InitialProject.View;
 using System;
 using System.Collections.Generic;
@@ -630,6 +631,133 @@ namespace InitialProject.Service
         public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
         {
             canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
+        }
+
+        public string FindTopLocation()
+        {
+            List<Accommodation> allAccommodations = accommodationRepository.FindAll();
+
+            List<TopAndWorstLocationDTO> topLocationDTOs = FindAllLocations(allAccommodations);
+
+            return TopLocationCheck(topLocationDTOs);
+        }
+
+        public List<TopAndWorstLocationDTO> FindAllLocations(List<Accommodation> allAccommodations)
+        {
+            List<TopAndWorstLocationDTO> topLocationDTOs = new List<TopAndWorstLocationDTO>();
+
+            foreach(Accommodation temporaryAccommodation in allAccommodations.ToList())
+            {
+                decimal totalBusyPercentage = FindLocationTotalBusyPercentage(temporaryAccommodation.Id, 2022, 2024);
+
+                string location = temporaryAccommodation.Location.Country + ", " + temporaryAccommodation.Location.City;
+
+                bool isAlreadyAdded = topLocationDTOs.ToList().Exists(x => x.Location.Equals(location) == true);
+
+                if(isAlreadyAdded == false)
+                {
+                    TopAndWorstLocationDTO topLocationDTO = new TopAndWorstLocationDTO(temporaryAccommodation.Location, totalBusyPercentage);
+                    topLocationDTOs.Add(topLocationDTO);
+                }
+            }
+
+            return topLocationDTOs;
+        }
+
+        public decimal FindLocationTotalBusyPercentage(int accommodationId, int startYear, int endYear)
+        {
+            List<int> years = new List<int>();
+
+            for(int year = startYear; year <= endYear; year++)
+            {
+                years.Add(year);
+            }
+
+            List<Reservation> accommodationReservations = reservationService.FindByAccommodationId(accommodationId);
+
+            return FindLocationBusyYears(accommodationReservations, years, startYear, endYear);
+        }
+
+        public decimal FindLocationBusyYears(List<Reservation> reservations, List<int> years, int startYear, int endYear)
+        {
+            Dictionary<int, decimal> busyYears = new Dictionary<int, decimal>();
+
+            foreach (int year in years.ToList())
+            {
+                busyYears[year] = 0;
+            }
+
+            foreach (Reservation temporaryAccommodationReservation in reservations.ToList())
+            {
+                bool dateConditions = temporaryAccommodationReservation.StartDate.Year >= startYear && temporaryAccommodationReservation.EndDate.Year <= endYear;
+
+                while(temporaryAccommodationReservation.StartDate.Year != temporaryAccommodationReservation.EndDate.Year)
+                {
+                    DateTime temporaryStartDate = new DateTime(temporaryAccommodationReservation.EndDate.Year, 1, 1);
+                    busyYears[temporaryAccommodationReservation.EndDate.Year] += (temporaryAccommodationReservation.EndDate.Subtract(temporaryStartDate).Days + 1); //
+
+                    temporaryAccommodationReservation.EndDate = temporaryAccommodationReservation.EndDate.AddYears(-1);
+                    temporaryAccommodationReservation.EndDate = new DateTime(temporaryAccommodationReservation.EndDate.Year, 12, 31);
+                }
+
+                if (dateConditions == true)
+                {
+                    busyYears[temporaryAccommodationReservation.StartDate.Year] += (temporaryAccommodationReservation.EndDate.Subtract(temporaryAccommodationReservation.StartDate).Days + 1); //
+                }
+            }
+
+            DateTime yearStartDate = new DateTime(startYear, 1, 1);
+            DateTime yearEndDate = new DateTime(endYear, 12, 31);
+            int totalDays = yearEndDate.Subtract(yearStartDate).Days + 1;
+
+            return busyYears.Sum(x => x.Value) / totalDays;
+        }
+
+        public string TopLocationCheck(List<TopAndWorstLocationDTO> topLocationDTOs)
+        {
+            if (topLocationDTOs.Count == 0)
+            {
+                return "-";
+            }
+
+            TopAndWorstLocationDTO topLocation = topLocationDTOs.MaxBy(x => x.TotalBusyPercentage);
+
+            if(topLocation.TotalBusyPercentage == 0)
+            {
+                return "-";
+            }
+
+            return topLocation.Location.ToString();
+        }
+
+        public string FindWorstLocation()
+        {
+            List<Accommodation> allAccommodations = accommodationRepository.FindAll();
+
+            List<TopAndWorstLocationDTO> worstLocationDTOs = FindAllLocations(allAccommodations);
+
+            TopAndWorstLocationDTO worstLocation = worstLocationDTOs.MinBy(x => x.TotalBusyPercentage);
+
+            return worstLocation.Location.ToString();
+        }
+
+        public void RemoveWorstLocations()
+        {
+            List<Accommodation> allAccommodations = accommodationRepository.FindAll();
+
+            List<TopAndWorstLocationDTO> worstLocationDTOs = FindAllLocations(allAccommodations);
+
+            RemoveWorst(worstLocationDTOs);
+        }
+
+        public void RemoveWorst(List<TopAndWorstLocationDTO> worstLocationDTOs)
+        {
+            TopAndWorstLocationDTO worstLocation = worstLocationDTOs.MinBy(x => x.TotalBusyPercentage);
+
+            string country = worstLocation.Location.Split(", ")[0];
+            string city = worstLocation.Location.Split(", ")[1];
+
+            accommodationRepository.Remove(country, city);
         }
     }
 }

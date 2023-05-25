@@ -75,12 +75,14 @@ namespace InitialProject.Model
 
             imageToString = imageToString.Substring(0, imageToString.Length - 1);
 
-            string[] csvValues = { Id.ToString(), AccommodationName.ToString(), OwnerUsername.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString(), imageToString.ToString(), RecentlyRenovated.ToString() };
+            string[] csvValues = { Id.ToString(), AccommodationName.ToString(), OwnerUsername.ToString(), Location.Id.ToString(), Type.ToString(), MaxGuests.ToString(), MinDaysReservation.ToString(), LeftCancelationDays.ToString(), imageToString.ToString(), RecentlyRenovated.ToString(), Removed.ToString() };
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
+            // if (string.IsNullOrWhiteSpace(values[0])) return;
+
             Id = Convert.ToInt32(values[0]);
             AccommodationName = values[1];
             OwnerUsername = values[2];
@@ -104,6 +106,7 @@ namespace InitialProject.Model
             // unosi sa zarezima i onda ih ovde odvajam
 
             RecentlyRenovated = Convert.ToBoolean(values[9]);
+            Removed = Convert.ToBoolean(values[9]);
         }
 
     }

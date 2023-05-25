@@ -57,6 +57,18 @@ namespace InitialProject.View
             set;
         }
 
+        public string MostPopularLocation
+        {
+            get;
+            set;
+        }
+
+        public string NotPopularLocation
+        {
+            get;
+            set;
+        }
+
         private void OwnerHomePageLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -187,6 +199,9 @@ namespace InitialProject.View
             ShowAccommodationDTOs = accommodationService.FindOwnerAccommodations(OwnerUsername);
 
             dgAccommodations.ItemsSource = ShowAccommodationDTOs;
+
+            MostPopularLocation = accommodationService.FindTopLocation();
+            NotPopularLocation = accommodationService.FindWorstLocation();
         }
 
         private void SetMenu()
@@ -295,6 +310,41 @@ namespace InitialProject.View
             InitialProject.View.AccommodationStatistics window = new AccommodationStatistics(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showStatisticsAccommodationDTO);
             window.Show();
             Close();
+        }
+
+        private void AddTopLocationAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if(MostPopularLocation == "-")
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void AddTopLocationAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            AddTopLocationAccommodation window = new AddTopLocationAccommodation(OwnerUsername, MostPopularLocation);
+            window.ShowDialog();
+        }
+
+        private void RemoveWorstLocationAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if(NotPopularLocation == "-")
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void RemoveWorstLocationAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            accommodationService.RemoveWorstLocations();
         }
 
         void LoadingRowForDgAccommodations(object sender, DataGridRowEventArgs e)
