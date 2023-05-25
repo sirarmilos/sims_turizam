@@ -326,5 +326,27 @@ namespace InitialProject.Commands.OwnerCommands
                 new KeyGesture(Key.P, ModifierKeys.Control)
             }
         );
+
+        public static readonly RoutedUICommand AddTopLocationAccommodation = new RoutedUICommand
+        (
+            "Add top location accommodation",
+            "AddTopLocationAccommodation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.K, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand RemoveWorstLocationAccommodation = new RoutedUICommand
+        (
+            "Remove worst location accommodation",
+            "RemoveWorstLocationAccommodation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.D, ModifierKeys.Control)
+            }
+        );
     }
 }

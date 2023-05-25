@@ -1,5 +1,5 @@
-﻿using InitialProject.Model;
-using InitialProject.Repository;
+﻿using InitialProject.DTO;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,18 +16,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics;
-using System.IO;
-using InitialProject.Service;
-using InitialProject.DTO;
 
 namespace InitialProject.View
 {
     /// <summary>
-    /// Interaction logic for AddNewAccommodation.xaml
+    /// Interaction logic for AddTopLocationAccommodation.xaml
     /// </summary>
-    public partial class AddNewAccommodation : Window
+    public partial class AddTopLocationAccommodation : Window
     {
         private readonly AccommodationService accommodationService;
 
@@ -260,11 +255,13 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public AddNewAccommodation(string ownerUsername)
+        public AddTopLocationAccommodation(string ownerUsername, string mostPopularLocation)
         {
             InitializeComponent();
 
             OwnerUsername = ownerUsername;
+            Country = mostPopularLocation.Split(", ")[0];
+            City = mostPopularLocation.Split(", ")[1];
 
             DataContext = this;
 
@@ -328,7 +325,7 @@ namespace InitialProject.View
 
         private void AddImage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(string.IsNullOrEmpty(tbImage.Text) == true)
+            if (string.IsNullOrEmpty(tbImage.Text) == true)
             {
                 e.CanExecute = false;
             }
@@ -340,11 +337,11 @@ namespace InitialProject.View
 
         private void AddImage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if(CheckUrlExists() == false)
+            if (CheckUrlExists() == false)
             {
                 textBlockErrorImage1.Visibility = Visibility.Visible;
             }
-            else if(CheckImageExist() == false)
+            else if (CheckImageExist() == false)
             {
                 Images.Add(Image.ToString());
                 tbImage.Text = string.Empty;
@@ -365,7 +362,7 @@ namespace InitialProject.View
 
         public bool CheckImageExtension()
         {
-            if(Image.Length < 5)
+            if (Image.Length < 5)
             {
                 return false;
             }
@@ -381,7 +378,7 @@ namespace InitialProject.View
 
         private void RemoveImage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(SelectedImage == null)
+            if (SelectedImage == null)
             {
                 e.CanExecute = false;
             }
@@ -395,7 +392,7 @@ namespace InitialProject.View
         {
             Images.Remove(SelectedImage);
 
-            if(Images.Count == 0)
+            if (Images.Count == 0)
             {
                 textBlockErrorImage0.Visibility = Visibility.Visible;
             }
@@ -408,16 +405,16 @@ namespace InitialProject.View
 
         private void SaveAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if(CheckErrorAllFieldsFilled() == true)
+            if (CheckErrorAllFieldsFilled() == true)
             {
                 MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if(CheckErrorImagesNumber() == false) //
+            else if (CheckErrorImagesNumber() == false) //
             {
                 textBlockErrorImage3.Visibility = Visibility.Visible;
                 tbImage.Focus();
             }
-            else if(accommodationService.IsAccommodationNameExist(AccommodationName) == true)
+            else if (accommodationService.IsAccommodationNameExist(AccommodationName) == true)
             {
                 textBlockErrorAccommodationName1.Visibility = Visibility.Visible;
                 tbAccommodationName.Focus();
@@ -446,16 +443,6 @@ namespace InitialProject.View
             return !(Images.Count <= 0);
         }
 
-        private void DEMO_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void DEMO_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            // DEMO deo aplikacije
-        }
-
         private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -482,37 +469,13 @@ namespace InitialProject.View
         {
             textBlockErrorAccommodationName1.Visibility = Visibility.Hidden;
 
-            if(AccommodationName.Equals(string.Empty) == true)
+            if (AccommodationName.Equals(string.Empty) == true)
             {
                 textBlockErrorAccommodationName0.Visibility = Visibility.Visible;
             }
             else
             {
                 textBlockErrorAccommodationName0.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private void CheckErrorCountry(object sender, TextChangedEventArgs e)
-        {
-            if(Country.Equals(string.Empty) == true)
-            {
-                textBlockErrorCountry.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                textBlockErrorCountry.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private void CheckErrorCity(object sender, TextChangedEventArgs e)
-        {
-            if (City.Equals(string.Empty) == true)
-            {
-                textBlockErrorCity.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                textBlockErrorCity.Visibility = Visibility.Hidden;
             }
         }
 
@@ -530,7 +493,7 @@ namespace InitialProject.View
 
         private void CheckErrorMaxGuests(object sender, TextChangedEventArgs e)
         {
-            if(MaxGuestsCheck.Equals(string.Empty) == true)
+            if (MaxGuestsCheck.Equals(string.Empty) == true)
             {
                 textBlockErrorMaxGuests0.Visibility = Visibility.Visible;
                 textBlockErrorMaxGuests1.Visibility = Visibility.Hidden;
@@ -542,7 +505,7 @@ namespace InitialProject.View
                 int checkOut;
                 bool check = int.TryParse(MaxGuestsCheck, out checkOut);
 
-                if(check == false || checkOut <= 0)
+                if (check == false || checkOut <= 0)
                 {
                     textBlockErrorMaxGuests1.Visibility = Visibility.Visible;
                 }
@@ -556,7 +519,7 @@ namespace InitialProject.View
 
         private void CheckErrorMinDaysReservation(object sender, TextChangedEventArgs e)
         {
-            if(MinDaysReservationCheck.Equals(string.Empty) == true)
+            if (MinDaysReservationCheck.Equals(string.Empty) == true)
             {
                 textBlockErrorMinDaysReservation0.Visibility = Visibility.Visible;
                 textBlockErrorMinDaysReservation1.Visibility = Visibility.Hidden;
@@ -568,7 +531,7 @@ namespace InitialProject.View
                 int checkOut;
                 bool check = int.TryParse(MinDaysReservationCheck, out checkOut);
 
-                if(check == false || checkOut <= 0)
+                if (check == false || checkOut <= 0)
                 {
                     textBlockErrorMinDaysReservation1.Visibility = Visibility.Visible;
                 }
@@ -582,7 +545,7 @@ namespace InitialProject.View
 
         private void CheckErrorLeftCancelationDays(object sender, TextChangedEventArgs e)
         {
-            if(LeftCancelationDaysCheck.Equals(string.Empty) == true)
+            if (LeftCancelationDaysCheck.Equals(string.Empty) == true)
             {
                 textBlockErrorLeftCancelationDays0.Visibility = Visibility.Visible;
                 textBlockErrorLeftCancelationDays1.Visibility = Visibility.Hidden;
@@ -594,7 +557,7 @@ namespace InitialProject.View
                 int checkOut;
                 bool check = int.TryParse(LeftCancelationDaysCheck, out checkOut);
 
-                if(check == false || checkOut <= 0)
+                if (check == false || checkOut <= 0)
                 {
                     textBlockErrorLeftCancelationDays1.Visibility = Visibility.Visible;
                 }
@@ -630,7 +593,7 @@ namespace InitialProject.View
 
         private void labeltbFocus(object sender, MouseButtonEventArgs e)
         {
-            if(e.ClickCount == 1)
+            if (e.ClickCount == 1)
             {
                 var label = (Label)sender;
                 Keyboard.Focus(label.Target);

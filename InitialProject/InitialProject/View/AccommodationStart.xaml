@@ -50,6 +50,8 @@
         <CommandBinding Command="cmd:RoutedCommands.AddNewAccommodation" CanExecute="AddNewAccommodation_CanExecute" Executed="AddNewAccommodation_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.RenovateAccommodation" CanExecute="RenovateAccommodation_CanExecute" Executed="RenovateAccommodation_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.AccommodationStatistics" CanExecute="AccommodationStatistics_CanExecute" Executed="AccommodationStatistics_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.AddTopLocationAccommodation" CanExecute="AddTopLocationAccommodation_CanExecute" Executed="AddTopLocationAccommodation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RemoveWorstLocationAccommodation" CanExecute="RemoveWorstLocationAccommodation_CanExecute" Executed="RemoveWorstLocationAccommodation_Executed"></CommandBinding>
     </Window.CommandBindings>
 
     <Grid>
@@ -159,11 +161,11 @@
                     <ColumnDefinition Width="275" />
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" Content="The most popular location is: " HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="55,0,0,5" FontSize="13"/>
-                <Label Grid.Column="1" Grid.Row="0" Content="-" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Margin="0,0,75,5" FontSize="13"/>
-                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Tip - Add new accommodation at this location" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" FontSize="13"/>
+                <Label Grid.Column="0" Grid.Row="0" Content="The most popular location is: " HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="55,0,0,5" FontSize="14"/>
+                <Label Grid.Column="1" Grid.Row="0" Content="{Binding MostPopularLocation}" HorizontalAlignment="Right" Height="28.62" VerticalAlignment="Bottom" Width="200" Margin="0,0,75,5" FontSize="14" FontWeight="Bold"/>
+                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Tip - Add new accommodation at this location" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" FontSize="14"/>
 
-                <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175">
+                <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175" Command="cmd:RoutedCommands.AddTopLocationAccommodation">
                     <TextBlock TextAlignment="Center" FontSize="14">Add<LineBreak/>(CTRL + K)</TextBlock>
                 </Button>
 
@@ -185,10 +187,10 @@
                     <ColumnDefinition Width="275" />
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" Content="Locations that are not so popular: " HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="55,0,0,5" FontSize="13"/>
-                <Label Grid.Column="1" Grid.Row="0" Content="-" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Margin="0,0,75,5" FontSize="13"/>
-                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Tip - Close all your accommodations at this location" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" FontSize="13"/>
-                <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175">
+                <Label Grid.Column="0" Grid.Row="0" Content="Locations that are not so popular: " HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="55,0,0,5" FontSize="14"/>
+                <Label Grid.Column="1" Grid.Row="0"  Content="{Binding NotPopularLocation}" HorizontalAlignment="Right" Height="28.62" VerticalAlignment="Bottom" Width="200" Margin="0,0,75,5" FontSize="14" FontWeight="Bold"/>
+                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Tip - Close all your accommodations at this location" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" FontSize="14"/>
+                <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="175" Command="cmd:RoutedCommands.RemoveWorstLocationAccommodation">
                     <TextBlock TextAlignment="Center" FontSize="14">Close all<LineBreak/>(CTRL + D)</TextBlock>
                 </Button>
 

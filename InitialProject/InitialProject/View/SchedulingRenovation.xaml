@@ -95,13 +95,13 @@
                 </DatePicker>
                 <Label x:Name="labelErrorDate" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Content="Start date is greater than end date" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="203,0,0,25" FontSize="12" Foreground="Red"/>
 
-                <Label Target="{x:Reference tbDuration}"  Grid.Column="0" Grid.Row="3" Content="Duration:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" FontSize="13"/>
+                <Label Target="{x:Reference tbDuration}"  Grid.Column="0" Grid.Row="3" Content="Duration:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Margin="25,0,0,0" FontSize="13"/>
                 <TextBox x:Name="tbDuration" Grid.Column="1" Grid.Row="3" Text="{Binding Path=DurationCheck, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" FontSize="13" TextChanged="CheckErrorDurationTextChanged"/>
-                <TextBlock x:Name="textBlockErrorDuration0" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="190,0,0,2" FontSize="12" Foreground="Red" TextWrapping="WrapWithOverflow" TextAlignment="Center">
+                <TextBlock x:Name="textBlockErrorDuration0" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" Margin="190,0,0,2" FontSize="12" Foreground="Red" TextWrapping="WrapWithOverflow" TextAlignment="Center">
                     Duration must be number <LineBreak/> greather then 0
                 </TextBlock>
 
-                <TextBlock x:Name="textBlockErrorDuration1" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" MouseLeftButtonUp="labeltbFocus" Margin="190,0,0,2" FontSize="12" Foreground="Red" TextWrapping="WrapWithOverflow" TextAlignment="Center">
+                <TextBlock x:Name="textBlockErrorDuration1" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" Margin="190,0,0,2" FontSize="12" Foreground="Red" TextWrapping="WrapWithOverflow" TextAlignment="Center">
                     Duration must be shorter than the distance between the dates
                 </TextBlock>
 
