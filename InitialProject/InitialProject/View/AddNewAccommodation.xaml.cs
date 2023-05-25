@@ -266,53 +266,10 @@ namespace InitialProject.View
             SetDefaultValue();
         }
 
-        private void SaveAccommodation(object sender, RoutedEventArgs e)
-        {
-            if (CheckErrorAllFieldsFilled() == true)
-            {
-                MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if(CheckErrorImagesNumber() == false)
-            {
-                MessageBox.Show("You must enter at least one accommodation image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                tbImage.Focus();
-            }
-            else if(accommodationService.IsAccommodationNameExist(AccommodationName) == true)
-            {
-                MessageBox.Show("Accommodation with this name already exists.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                Name = string.Empty;
-                tbName.Focus();
-            }
-            else
-            {
-                SaveNewAccommodationDTO saveNewAccommodationDTO = new SaveNewAccommodationDTO(AccommodationName, OwnerUsername, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images);
-
-                accommodationService.SaveNewAccommodation(saveNewAccommodationDTO);
-
-                SetDefaultValue();
-
-                MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                Close();
-            }
-        }
-
-        private bool CheckErrorAllFieldsFilled()
-        {
-            return string.IsNullOrEmpty(AccommodationName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || !MaxGuests.HasValue; // || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
-        }
-
-        private bool CheckErrorImagesNumber()
-        {
-            return !(Images.Count <= 0);
-        }
-
         private void SetDefaultValue()
         {
             LeftCancelationDaysCheck = "1";
-            tbName.Text = string.Empty;
+            tbAccommodationName.Text = string.Empty;
             tbCountry.Text = string.Empty;
             tbCity.Text = string.Empty;
             tbAddress.Text = string.Empty;
@@ -329,7 +286,12 @@ namespace InitialProject.View
             buttonRemoveImage.IsEnabled = false;
         }
 
-        private void ChooseImage(object sender, RoutedEventArgs e)
+        private void ChooseImage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ChooseImage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
 
@@ -343,13 +305,18 @@ namespace InitialProject.View
             }
         }
 
-        private void AddImageToList(object sender, RoutedEventArgs e)
+        private void AddImage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(CheckUrlExists() == false)
+            e.CanExecute = true;
+        }
+
+        private void AddImage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CheckUrlExists() == false)
             {
                 MessageBox.Show("The image with the specified url does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if(CheckImageExist() == false)
+            else if (CheckImageExist() == false)
             {
                 Images.Add(Image.ToString());
             }
@@ -378,9 +345,89 @@ namespace InitialProject.View
             return Images.Any(x => x.Equals(Image) == true);
         }
 
-        private void RemoveImageFromList(object sender, RoutedEventArgs e)
+        private void RemoveImage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (SelectedImage == null)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void RemoveImage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Images.Remove(SelectedImage);
+        }
+
+        private void SaveAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void SaveAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CheckErrorAllFieldsFilled() == true)
+            {
+                MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (CheckErrorImagesNumber() == false)
+            {
+                MessageBox.Show("You must enter at least one accommodation image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                tbImage.Focus();
+            }
+            else if (accommodationService.IsAccommodationNameExist(AccommodationName) == true)
+            {
+                MessageBox.Show("Accommodation with this name already exists.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                Name = string.Empty;
+                tbAccommodationName.Focus();
+            }
+            else
+            {
+                SaveNewAccommodationDTO saveNewAccommodationDTO = new SaveNewAccommodationDTO(AccommodationName, OwnerUsername, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images);
+
+                accommodationService.SaveNewAccommodation(saveNewAccommodationDTO);
+
+                SetDefaultValue();
+
+                MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                Close();
+            }
+        }
+
+        private bool CheckErrorAllFieldsFilled()
+        {
+            return string.IsNullOrEmpty(AccommodationName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || !MaxGuests.HasValue; // || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
+        }
+
+        private bool CheckErrorImagesNumber()
+        {
+            return !(Images.Count <= 0);
+        }
+
+        private void DEMO_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void DEMO_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // DEMO deo aplikacije
+        }
+
+        private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Cancel_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Close();
         }
 
         private void RemoveImageButtonEnable(object sender, SelectionChangedEventArgs e)
@@ -436,6 +483,16 @@ namespace InitialProject.View
             }
         }
 
+        private void SliderLatitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Latitude = Math.Round((decimal)sliderLatitude.Value, 2);
+        }
+
+        private void SliderLongitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Longitude = Math.Round((decimal)sliderLongitude.Value, 2);
+        }
+
         void LoadingRowForDgImages(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
@@ -448,21 +505,6 @@ namespace InitialProject.View
                 var label = (Label)sender;
                 Keyboard.Focus(label.Target);
             }
-        }
-
-        private void SliderLatitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Latitude = Math.Round((decimal)sliderLatitude.Value, 2);
-        }
-
-        private void SliderLongitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Longitude = Math.Round((decimal)sliderLongitude.Value, 2);
-        }
-
-        private void CloseForm(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

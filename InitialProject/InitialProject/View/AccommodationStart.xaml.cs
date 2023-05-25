@@ -272,7 +272,8 @@ namespace InitialProject.View
 
         private void RenovateAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            SchedulingSelectedRenovation window = new SchedulingSelectedRenovation(OwnerUsername, SelectedShowAccommodationDTO.AccommodationName);
+            window.ShowDialog();
         }
 
         private void AccommodationStatistics_CanExecute(object sender, CanExecuteRoutedEventArgs e)
