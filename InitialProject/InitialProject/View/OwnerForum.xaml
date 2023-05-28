@@ -4,10 +4,130 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
-        mc:Ignorable="d"
-        Title="Forum" Height="800" Width="1400"
-        WindowStartupLocation="CenterScreen">
-    <Grid>
         
-    </Grid>
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+
+        mc:Ignorable="d"
+        Title="Forum" Height="819" Width="1416" Icon="../Resources/Images/logo_icon.ico"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerHomePageLogin" CanExecute="OwnerHomePageLogin_CanExecute" Executed="OwnerHomePageLogin_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.AccommodationStart" CanExecute="AccommodationStart_CanExecute" Executed="AccommodationStart_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests" CanExecute="ShowOwnerManageBookingMoveRequests_CanExecute" Executed="ShowOwnerManageBookingMoveRequests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowAndCancellationRenovation" CanExecute="ShowAndCancellationRenovation_CanExecute" Executed="ShowAndCancellationRenovation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RateGuests" CanExecute="RateGuests_CanExecute" Executed="RateGuests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowGuestReviews" CanExecute="ShowGuestReviews_CanExecute" Executed="ShowGuestReviews_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerForum" CanExecute="OwnerForum_CanExecute" Executed="OwnerForum_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Logout" CanExecute="Logout_CanExecute" Executed="Logout_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Notifications" CanExecute="Notifications_CanExecute" Executed="Notifications_Executed"></CommandBinding>
+    </Window.CommandBindings>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+        <Grid>
+
+        <DockPanel Margin="0,0,0,0" VerticalAlignment="Top" Height="25">
+
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch" FontSize="13">
+
+                <Menu.ItemsPanel>
+
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="340" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+
+                </Menu.ItemsPanel>
+
+                <MenuItem Grid.Column="0" Header="_Home (F1)" Command="cmd:RoutedCommands.OwnerHomePageLogin"/>
+                <MenuItem Grid.Column="1" Header="_Accommodation (F2)" Command="cmd:RoutedCommands.AccommodationStart"/>
+                <MenuItem Grid.Column="2" Header="_Management of booking move requests (F3)" Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests"/>
+                <MenuItem Grid.Column="3" Header="Reno_vate (F4)" Command="cmd:RoutedCommands.ShowAndCancellationRenovation"/>
+                <MenuItem Grid.Column="4" Header="Ra_te guests (F5)" Command="cmd:RoutedCommands.RateGuests"/>
+                <MenuItem Grid.Column="5" Header="_Guest reviews (F6)" Command="cmd:RoutedCommands.ShowGuestReviews"/>
+                <MenuItem Grid.Column="6" Header="_Forum (F7)" Command="cmd:RoutedCommands.OwnerForum"/>
+                <MenuItem Grid.Column="7" x:Name="usernameAndSuperOwner" HorizontalAlignment="Right" IsEnabled="False"/>
+                <MenuItem Grid.Column="8" Header="_Logout (F8)" Command="cmd:RoutedCommands.Logout"/>
+                <MenuItem Grid.Column="9" x:Name="notifications" Header="_Notifications (F9)" Command="cmd:RoutedCommands.Notifications">
+                    <MenuItem x:Name="rateGuestsNotifications" Command="cmd:RoutedCommands.RateGuests"/>
+                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations" IsEnabled="False"/>
+                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList"/>
+                </MenuItem>
+
+            </Menu>
+
+        </DockPanel>
+
+        <DockPanel VerticalAlignment="Top" Height="55" Margin="25,25,0,0">
+
+            <Label Content="Forum topics" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,0" FontSize="24" Width="Auto"/>
+
+        </DockPanel>
+
+            <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="1335" Margin="25,105,0,50">
+
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,-45,0,0" Width="1335">
+
+                    <ItemsControl Visibility="Visible" x:Name="forumsList">
+
+                        <ItemsControl.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <Grid>
+
+                                    <GroupBox Margin="0,45,0,0" Padding="0,0,0,25">
+
+                                        <Grid>
+
+                                            <Label Content="#" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,0,0" FontSize="24" FontWeight="Bold"/>
+                                            <Label Content="{Binding ForumId}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="43,24,0,0" FontSize="24" FontWeight="Bold"/>
+
+                                            <TextBlock Text="{Binding Closed}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,31,0,0" FontSize="20"/>
+
+                                            <TextBlock Text="{Binding Location}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" FontSize="24"/>
+
+                                            <TextBlock Text="{Binding CreatorUsername}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,90,0,0" FontSize="16"/>
+
+                                            <TextBlock Text="{Binding Question}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="25,120,0,0" FontSize="14"/>
+
+                                            <TextBlock Text="{Binding Useful}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1185,31,0,0" FontSize="20"/>
+
+                                            <Button x:Name="buttonReadMore" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Margin="0,170,25,0">
+                                                <TextBlock TextAlignment="Center" FontSize="14">Read more<LineBreak/>(CTRL + R)</TextBlock>
+                                            </Button>
+
+                                        </Grid>
+
+                                    </GroupBox>
+
+                                </Grid>
+
+                            </DataTemplate>
+
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+
+                </StackPanel>
+
+            </DockPanel>
+
+        </Grid>
+    
+    </ScrollViewer>
+
 </Window>
