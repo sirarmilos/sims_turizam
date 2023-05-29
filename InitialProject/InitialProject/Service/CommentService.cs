@@ -1,4 +1,5 @@
 ﻿using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,16 @@ namespace InitialProject.Service
         public CommentService()
         {
             commentRepository = Injector.Injector.CreateInstance<ICommentRepository>();
+        }
+
+        public List<OwnerComment> FindOwnerComments(int forumId)
+        {
+            return commentRepository.FindOwnerComments(forumId);
+        }
+
+        public List<Guest1Comment> FindGuestComments(int forumId)
+        {
+            return commentRepository.FindGuestComments(forumId);
         }
     }
 }

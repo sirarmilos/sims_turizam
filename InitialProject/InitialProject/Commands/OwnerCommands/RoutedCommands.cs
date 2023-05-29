@@ -348,5 +348,38 @@ namespace InitialProject.Commands.OwnerCommands
                 new KeyGesture(Key.D, ModifierKeys.Control)
             }
         );
+
+        public static readonly RoutedUICommand ReadMore = new RoutedUICommand
+        (
+            "Read more",
+            "ReadMore",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.R, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand Close = new RoutedUICommand
+        (
+            "Close",
+            "Close",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.Escape)
+            }
+        );
+
+        public static readonly RoutedUICommand AddComment = new RoutedUICommand
+        (
+            "Add comment",
+            "AddComment",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.R, ModifierKeys.Control)
+            }
+        );
     }
 }

@@ -1,4 +1,6 @@
-﻿using InitialProject.DTO;
+﻿using GalaSoft.MvvmLight.Command;
+using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace InitialProject.View
@@ -29,6 +32,12 @@ namespace InitialProject.View
             set;
         }
 
+        public List<ShowOwnerForumsDTO> ShowOwnerForumsDTOs
+        {
+            get;
+            set;
+        }
+
         public List<string> UnreadCancelledReservations
         {
             get;
@@ -36,6 +45,12 @@ namespace InitialProject.View
         }
 
         public List<CancelledReservationsNotificationDTO> UnreadCancelledReservationsToDelete
+        {
+            get;
+            set;
+        }
+
+        public ShowOwnerForumsDTO SelectedShowOwnerForum
         {
             get;
             set;
@@ -168,9 +183,9 @@ namespace InitialProject.View
 
             SetMenu(ownerHeader);
 
-            List<ShowOwnerForumsDTO> showOwnerForumsDTOs = forumService.FindForums();
+            ShowOwnerForumsDTOs = forumService.FindForums();
 
-            forumsList.ItemsSource = showOwnerForumsDTOs;
+            ReadMoreCommand = new RelayCommand<ShowOwnerForumsDTO>(ReadMore);
         }
 
         private void SetMenu(string ownerHeader)
@@ -199,6 +214,61 @@ namespace InitialProject.View
         private void SetDefaultValue()
         {
 
+        }
+
+        private void ReadMore_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if(SelectedShowOwnerForum == null)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void ReadMore_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            /* if(string.IsNullOrEmpty(SelectedShowOwnerForum.Closed) == true)
+            {
+                OwnerForumActiveTopic window = new OwnerForumActiveTopic();
+                window.Show();
+                Close();
+            }
+            else
+            {
+                OwnerForumClosedTopic window = new OwnerForumClosedTopic();
+                window.Show();
+                Close();
+            }*/
+        }
+
+        public ICommand ReadMoreCommand
+        {
+            get;
+            set;
+        }
+
+        private void ReadMore(ShowOwnerForumsDTO showOwnerForumsDTO)
+        {
+            if (string.IsNullOrEmpty(showOwnerForumsDTO.Closed) == true)
+            {
+                OwnerForumActiveTopic window = new OwnerForumActiveTopic(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
+                window.Show();
+                Close();
+            }
+            else
+            {
+                OwnerForumClosedTopic window = new OwnerForumClosedTopic(showOwnerForumsDTO);
+                window.Show();
+                Close();
+            }
+        }
+
+        private void SelectedShowOwnerForumChange(object sender, RoutedEventArgs e)
+        {
+            // SelectedShowOwnerForum.ForumId = 
         }
     }
 }

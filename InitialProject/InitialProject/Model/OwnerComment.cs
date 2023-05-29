@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace InitialProject.Model
 {
@@ -20,23 +21,27 @@ namespace InitialProject.Model
             IsStillOwner = isStillOwner;
         }
 
-        public string[] ToCSV()
+        public override string[] ToCSV()
         {
             string[] csvValues = { CommentId.ToString(), Forum.ForumId.ToString(), CommenterUsername, CommenterType, Answer, "x", "x", IsStillOwner.ToString() };
             return csvValues;
         }
 
-        public void FromCSV(string[] values)
+        public override void FromCSV(string[] values)
         {
             // return if the file was empty
-            if (string.IsNullOrWhiteSpace(values[0])) return;
+            if(string.IsNullOrWhiteSpace(values[0])) return;
 
             CommentId = Convert.ToInt32(values[0]);
             Forum = new Forum() { ForumId = Convert.ToInt32(values[1]) };
             CommenterUsername = values[2];
             CommenterType = values[3];
             Answer = values[4];
-            IsStillOwner = Convert.ToBoolean(values[7]);
+
+            if(values[7].Equals("x") == false)
+            {
+                IsStillOwner = Convert.ToBoolean(values[7]);
+            }
         }
     }
 }
