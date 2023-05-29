@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InitialProject.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,11 @@ namespace InitialProject.View
     public partial class OwnerForumClosedTopic : Window
     {
         public OwnerForumClosedTopic()
+        {
+            InitializeComponent();
+        }
+
+        public OwnerForumClosedTopic(ShowOwnerForumsDTO showOwnerForumsDTO)
         {
             InitializeComponent();
         }

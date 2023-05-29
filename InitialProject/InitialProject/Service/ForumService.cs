@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace InitialProject.Service
 {
@@ -18,6 +19,8 @@ namespace InitialProject.Service
         private readonly UserService userService;
 
         private readonly CanceledReservationService canceledReservationService;
+
+        private readonly CommentService commentService;
 
         public string Owner
         {
@@ -34,6 +37,7 @@ namespace InitialProject.Service
             rateGuestsService = new RateGuestsService(Owner);
             userService = new UserService();
             canceledReservationService = new CanceledReservationService();
+            commentService = new CommentService();
         }
 
         public int FindNumberOfUnratedGuests(string ownerUsername)
@@ -63,6 +67,29 @@ namespace InitialProject.Service
             }
 
             return showOwnerForumsDTOs;
+        }
+
+        public List<ShowOwnerForumCommentsDTO> FindComments(int forumId)
+        {
+            List<ShowOwnerForumCommentsDTO> showOwnerForumCommentsDTOs = new List<ShowOwnerForumCommentsDTO>();
+
+            List<OwnerComment> ownerComments = commentService.FindOwnerComments(forumId);
+
+            List<Guest1Comment> guestComments = commentService.FindGuestComments(forumId);
+
+            foreach(OwnerComment temporaryOwnerComment in ownerComments.ToList())
+            {
+                showOwnerForumCommentsDTOs.Add(new ShowOwnerForumCommentsDTO(temporaryOwnerComment));
+            }
+
+            foreach (Guest1Comment temporaryGuestComment in guestComments.ToList())
+            {
+                showOwnerForumCommentsDTOs.Add(new ShowOwnerForumCommentsDTO(temporaryGuestComment));
+            }
+
+            showOwnerForumCommentsDTOs = showOwnerForumCommentsDTOs.OrderBy(x => x.CommentId).ToList();
+
+            return showOwnerForumCommentsDTOs;
         }
     }
 }

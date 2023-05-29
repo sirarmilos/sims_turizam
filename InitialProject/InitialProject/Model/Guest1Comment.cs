@@ -23,13 +23,13 @@ namespace InitialProject.Model
             NumberOfReports = numberOfReports;
         }
 
-        public string[] ToCSV()
+        public override string[] ToCSV()
         {
             string[] csvValues = { CommentId.ToString(), Forum.ForumId.ToString(), CommenterUsername, CommenterType, Answer, Visited.ToString(), NumberOfReports.ToString(), "x" };
             return csvValues;
         }
 
-        public void FromCSV(string[] values)
+        public override void FromCSV(string[] values)
         {
             // return if the file was empty
             if (string.IsNullOrWhiteSpace(values[0])) return;
@@ -39,8 +39,12 @@ namespace InitialProject.Model
             CommenterUsername = values[2];
             CommenterType = values[3];
             Answer = values[4];
-            Visited = Convert.ToBoolean(values[5]);
-            NumberOfReports = Convert.ToInt32(values[6]);
+
+            if (values[5].Equals("x") == false && values[6].Equals("x") == false)
+            {
+                Visited = Convert.ToBoolean(values[5]);
+                NumberOfReports = Convert.ToInt32(values[6]);
+            }    
         }
     }
 }

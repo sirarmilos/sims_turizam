@@ -33,13 +33,13 @@ namespace InitialProject.Model
             Answer = answer;
         }
 
-        public string[] ToCSV()
+        public virtual string[] ToCSV()
         {
             string[] csvValues = { CommentId.ToString(), Forum.ForumId.ToString(), CommenterUsername, CommenterType, Answer };
             return csvValues;
         }
 
-        public void FromCSV(string[] values)
+        public virtual void FromCSV(string[] values)
         {
             // return if the file was empty
             if (string.IsNullOrWhiteSpace(values[0])) return;
