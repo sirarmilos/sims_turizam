@@ -9,12 +9,14 @@ namespace InitialProject.IRepository
 {
     public interface ICommentRepository
     {
-        List<OwnerComment> FindAllOwnerComments();
+        List<Comment> FindAll();
 
-        List<Guest1Comment> FindAllGuestComments();
+        List<Comment> FindComments(int forumId);
 
-        List<OwnerComment> FindOwnerComments(int forumId);
+        void Add(string commenterUsername, string answer, int forumId);
 
-        List<Guest1Comment> FindGuestComments(int forumId);
+        void Save(List<Comment> allComments);
+
+        int NextId();
     }
 }

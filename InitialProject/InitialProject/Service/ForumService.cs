@@ -89,18 +89,11 @@ namespace InitialProject.Service
         {
             List<ShowOwnerForumCommentsDTO> showOwnerForumCommentsDTOs = new List<ShowOwnerForumCommentsDTO>();
 
-            List<OwnerComment> ownerComments = commentService.FindOwnerComments(forumId);
+            List<Comment> allComments = commentService.FindComments(forumId);
 
-            List<Guest1Comment> guestComments = commentService.FindGuestComments(forumId);
-
-            foreach(OwnerComment temporaryOwnerComment in ownerComments.ToList())
+            foreach(Comment temporaryComment in allComments.ToList())
             {
-                showOwnerForumCommentsDTOs.Add(new ShowOwnerForumCommentsDTO(temporaryOwnerComment));
-            }
-
-            foreach (Guest1Comment temporaryGuestComment in guestComments.ToList())
-            {
-                showOwnerForumCommentsDTOs.Add(new ShowOwnerForumCommentsDTO(temporaryGuestComment));
+                showOwnerForumCommentsDTOs.Add(new ShowOwnerForumCommentsDTO(temporaryComment));
             }
 
             showOwnerForumCommentsDTOs = showOwnerForumCommentsDTOs.OrderBy(x => x.CommentId).ToList();
@@ -146,5 +139,9 @@ namespace InitialProject.Service
             return userService.IsSuperGuest(guest1Username);
         }
 
+        public void AddOwnerComment(string commenterUsername, string answer, int forumId)
+        {
+            commentService.AddOwnerComment(commenterUsername, answer, forumId);
+        }
     }
 }

@@ -1,3 +1,5 @@
-1|1|Owner1|owner|Etiam eget urna leo. Vestibulum urna nisl, scelerisque ac sem sit amet, ornare fringilla lectus. Suspendisse eleifend ligula sem, congue auctor justo varius non. Nunc vitae felis quis arcu mattis blandit. Aenean eleifend id est ac efficitur. Fusce a fermentum libero. Proin luctus neque in magna ultrices, molestie posuere nisi mattis. Praesent massa purus, dignissim id ullamcorper non, placerat id enim. In semper sapien ut enim ullamcorper, non convallis erat tincidunt. Phasellus scelerisque lorem ut neque mollis ultricies. Ut diam lacus, cursus eget dolor vitae, hendrerit pulvinar tellus. Proin laoreet quis sapien id pretium. Phasellus sodales suscipit justo, a iaculis.|x|x|True
-2|1|Owner2|owner|askfljaskflsakfkasfklasfkjsjklfakslkalffklasklfaskfklsakjfl|x|x|False
-3|1|Guest11|guest|gsdfsf|True|0|x
+1|1|Owner1|owner|Etiam eget urna leo. Vestibulum urna nisl, scelerisque ac sem sit amet, ornare fringilla lectus. Suspendisse eleifend ligula sem, congue auctor justo varius non. Nunc vitae felis quis arcu mattis blandit. Aenean eleifend id est ac efficitur. Fusce a fermentum libero. Proin luctus neque in magna ultrices, molestie posuere nisi mattis. Praesent massa purus, dignissim id ullamcorper non, placerat id enim. In semper sapien ut enim ullamcorper, non convallis erat tincidunt. Phasellus scelerisque lorem ut neque mollis ultricies. Ut diam lacus, cursus eget dolor vitae, hendrerit pulvinar tellus. Proin laoreet quis sapien id pretium. Phasellus sodales suscipit justo, a iaculis.|True|False|-1
+2|1|Owner2|owner|askfljaskflsakfkasfklasfkjsjklfakslkalffklasklfaskfklsakjfl|False|False|-1
+3|1|Guest11|guest|gsdfsf|False|True|0
+4|1|Guest12|guest|bdsfasfasdasdasd|False|False|1
+5|1|Owner1|owner|asdasdassdfasdasdasd|True|False|-1

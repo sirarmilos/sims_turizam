@@ -18,14 +18,14 @@ namespace InitialProject.Service
             commentRepository = Injector.Injector.CreateInstance<ICommentRepository>();
         }
 
-        public List<OwnerComment> FindOwnerComments(int forumId)
+        public List<Comment> FindComments(int forumId)
         {
-            return commentRepository.FindOwnerComments(forumId);
+            return commentRepository.FindComments(forumId);
         }
 
-        public List<Guest1Comment> FindGuestComments(int forumId)
+        public void AddOwnerComment(string commenterUsername, string answer, int forumId)
         {
-            return commentRepository.FindGuestComments(forumId);
+            commentRepository.Add(commenterUsername, answer, forumId);
         }
     }
 }

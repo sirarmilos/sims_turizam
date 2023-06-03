@@ -18,59 +18,56 @@ namespace InitialProject.Repository
 
         private readonly Serializer<Comment> commentSerializer;
 
-        private readonly Serializer<OwnerComment> ownerCommentSerializer;
-
-        private readonly Serializer<Guest1Comment> guestCommentSerializer;
-
         private List<Comment> comments;
-
-        private List<OwnerComment> ownerComments;
-
-        private List<Guest1Comment> guestComments;
 
         public CommentRepository()
         {
             commentSerializer = new Serializer<Comment>();
-            ownerCommentSerializer = new Serializer<OwnerComment>();
-            guestCommentSerializer = new Serializer<Guest1Comment>();
         }
 
-        public List<OwnerComment> FindAllOwnerComments()
+        public List<Comment> FindAll()
         {
             forumRepository = new ForumRepository();
 
-            ownerComments = ownerCommentSerializer.FromCSV(FilePathComment);
+            comments = commentSerializer.FromCSV(FilePathComment);
 
-            foreach (OwnerComment temporaryOwnerComment in ownerComments.ToList())
+            foreach(Comment temporaryComment in comments.ToList())
             {
-                temporaryOwnerComment.Forum = forumRepository.FindById(temporaryOwnerComment.Forum.ForumId);
+                temporaryComment.Forum = forumRepository.FindById(temporaryComment.Forum.ForumId);
             }
 
-            return ownerComments;
+            return comments;
         }
 
-        public List<Guest1Comment> FindAllGuestComments()
+        public List<Comment> FindComments(int forumId)
+        {
+            return FindAll().ToList().FindAll(x => x.Forum.ForumId == forumId);
+        }
+
+        public void Add(string commenterUsername, string answer, int forumId)
         {
             forumRepository = new ForumRepository();
 
-            guestComments = guestCommentSerializer.FromCSV(FilePathComment);
+            Comment ownerComment = new Comment(NextId(), forumRepository.FindById(forumId), commenterUsername, "owner", answer, true, false, -1);
 
-            foreach (Guest1Comment temporaryGuestComment in guestComments.ToList())
+            List<Comment> allComments = FindAll();
+            allComments.Add(ownerComment);
+            Save(allComments);
+        }
+
+        public void Save(List<Comment> allComments)
+        {
+            commentSerializer.ToCSV(FilePathComment, allComments);
+        }
+
+        public int NextId()
+        {
+            if (FindAll().Count < 1)
             {
-                temporaryGuestComment.Forum = forumRepository.FindById(temporaryGuestComment.Forum.ForumId);
+                return 1;
             }
 
-            return guestComments;
-        }
-
-        public List<OwnerComment> FindOwnerComments(int forumId)
-        {
-            return FindAllOwnerComments().ToList().FindAll(x => x.CommenterType.Equals("owner") == true && x.Forum.ForumId == forumId);
-        }
-
-        public List<Guest1Comment> FindGuestComments(int forumId)
-        {
-            return FindAllGuestComments().ToList().FindAll(x => x.CommenterType.Equals("guest") == true && x.Forum.ForumId == forumId);
+            return FindAll().Max(x => x.CommentId) + 1;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace InitialProject.Model
     {
         public int Guest1ReportId { get; set; }
 
-        public Guest1Comment Guest1Comment { get; set; }
+        public Comment Guest1Comment { get; set; }
 
         public string ReportMaker { get; set; }
 
@@ -22,7 +22,7 @@ namespace InitialProject.Model
 
         }
 
-        public Guest1Report(int guest1ReportId, Guest1Comment guest1Comment, string reportMaker)
+        public Guest1Report(int guest1ReportId, Comment guest1Comment, string reportMaker)
         {
             Guest1ReportId = guest1ReportId;
             Guest1Comment = guest1Comment;
@@ -41,7 +41,7 @@ namespace InitialProject.Model
             if (string.IsNullOrWhiteSpace(values[0])) return;
 
             Guest1ReportId = Convert.ToInt32(values[0]);
-            Guest1Comment = new Guest1Comment() { CommentId = Convert.ToInt32(values[1]) };
+            Guest1Comment = new Comment() { CommentId = Convert.ToInt32(values[1]) };
             ReportMaker = values[2];
         }
     }
