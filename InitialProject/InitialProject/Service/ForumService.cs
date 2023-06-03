@@ -1,8 +1,11 @@
 ﻿using InitialProject.DTO;
 using InitialProject.IRepository;
 using InitialProject.Model;
+using InitialProject.Repository;
+using InitialProject.View;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,8 +26,18 @@ namespace InitialProject.Service
         private readonly CommentService commentService;
 
         private readonly Guest1ReportService guest1ReportService;
+        
+        private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
+
+        private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
 
         public string Owner
+        {
+            get;
+            set;
+        }
+
+        public string Guest1
         {
             get;
             set;
@@ -33,6 +46,7 @@ namespace InitialProject.Service
         public ForumService(string username)
         {
             Owner = username;
+            Guest1 = username;
 
             forumRepository = Injector.Injector.CreateInstance<IForumRepository>();
 
@@ -41,6 +55,8 @@ namespace InitialProject.Service
             canceledReservationService = new CanceledReservationService();
             commentService = new CommentService();
             guest1ReportService = new Guest1ReportService();
+            reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
+            forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
         }
 
         public int FindNumberOfUnratedGuests(string ownerUsername)
@@ -86,6 +102,44 @@ namespace InitialProject.Service
             showOwnerForumCommentsDTOs = showOwnerForumCommentsDTOs.OrderBy(x => x.CommentId).ToList();
 
             return showOwnerForumCommentsDTOs;
+        }
+
+        public void CreateForum(CreateForumDTO createForumDTO)
+        {
+            createForumDTO = ParseCreateForumDTOInput(createForumDTO);
+
+            Forum forum = new Forum(
+                forumRepository.NextId(),
+                createForumDTO.Guest1Username, 
+                new ForumLocationDTO {City = createForumDTO.City, Country = createForumDTO.Country}, 
+                createForumDTO.Question, 
+                false, 
+                false);
+
+            forumRepository.Add(forum);
+
+            forumNotificationsToOwnerService.CreateOwnersNotification(forum);
+        }
+
+        private CreateForumDTO ParseCreateForumDTOInput(CreateForumDTO input)
+        {
+            input.City = input.City.Trim();
+            input.Country = input.Country.Trim();
+
+            input.City = char.ToUpper(input.City[0]) + input.City.Substring(1);
+            input.Country = char.ToUpper(input.Country[0]) + input.Country.Substring(1);
+
+            return input;
+        }
+
+        public bool Guest1HasNotification()
+        {
+            return reservationReschedulingRequestService.Guest1HasNotification(Guest1);
+        }
+
+        public bool IsSuperGuest(string guest1Username)
+        {
+            return userService.IsSuperGuest(guest1Username);
         }
 
         public void AddOwnerComment(string commenterUsername, string answer, int forumId)

@@ -126,6 +126,11 @@ namespace InitialProject.Service
             return allAccommodations;
         }
 
+        public List<Accommodation> FindAll()
+        {
+            return accommodationRepository.FindAll();
+        }
+
         private bool IsCountryContained(List<Accommodation> allAccommodations, string country, out List<Accommodation> countryResults)
         {
             if (!string.IsNullOrWhiteSpace(country))

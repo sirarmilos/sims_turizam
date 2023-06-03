@@ -31,5 +31,27 @@ namespace InitialProject.Repository
         {
             return FindAll().ToList().Find(x => x.ForumId == forumId);
         }
+
+        public void Save(List<Forum> allForums)
+        {
+            forumSerializer.ToCSV(FilePathForum, allForums);
+        }
+
+        public void Add(Forum forum)
+        {
+            List<Forum> allForums = FindAll();
+            allForums.Add(forum);
+            Save(allForums);
+        }
+
+        public int NextId()
+        {
+            if (FindAll().Count < 1)
+            {
+                return 1;
+            }
+
+            return FindAll().Max(x => x.ForumId) + 1;
+        }
     }
 }
