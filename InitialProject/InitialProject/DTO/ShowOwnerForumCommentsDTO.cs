@@ -28,44 +28,42 @@ namespace InitialProject.DTO
 
         }
         
-        public ShowOwnerForumCommentsDTO(OwnerComment ownerComment)
+        public ShowOwnerForumCommentsDTO(Comment comment)
         {
-            CommentId = ownerComment.CommentId;
-            CommenterUsername = ownerComment.CommenterUsername;
-            CommenterType = ownerComment.CommenterType;
-            Answer = ownerComment.Answer;
-            Visited = string.Empty;
-            NumberOfReports = string.Empty;
+            CommentId = comment.CommentId;
+            CommenterUsername = comment.CommenterUsername;
+            CommenterType = comment.CommenterType;
+            Answer = comment.Answer;
 
-            if(ownerComment.IsStillOwner == true)
+            if(CommenterType.Equals("owner") == true)
             {
-                IsStillOwner = "Accommodation owner at this location";
+                Visited = string.Empty;
+                NumberOfReports = string.Empty;
+
+                if(comment.IsStillOwner == true)
+                {
+                    IsStillOwner = "Accommodation owner at this location";
+                }
+                else
+                {
+                    IsStillOwner = "Was Owner of the accommodation at this location";
+                }
             }
             else
             {
-                IsStillOwner = "Was Owner of the accommodation at this location";
+                if(comment.Visited == true)
+                {
+                    Visited = "Visited this location";
+                    NumberOfReports = string.Empty;
+                }
+                else
+                {
+                    Visited = "Not visited this location";
+                    NumberOfReports = "Number user reports: " + comment.NumberOfReports.ToString();
+                }
+
+                IsStillOwner = string.Empty;
             }
-        }
-
-        public ShowOwnerForumCommentsDTO(Guest1Comment guestComment)
-        {
-            CommentId = guestComment.CommentId;
-            CommenterUsername = guestComment.CommenterUsername;
-            CommenterType = guestComment.CommenterType;
-            Answer = guestComment.Answer;
-
-            if(guestComment.Visited == true)
-            {
-                Visited = "Visited this location";
-            }
-            else
-            {
-                Visited = "Not visited this location";
-            }
-
-            NumberOfReports = "Number user reports: " + guestComment.NumberOfReports.ToString();
-
-            IsStillOwner = string.Empty;
         }
     }
 }
