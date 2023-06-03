@@ -25,6 +25,8 @@ namespace InitialProject.Service
 
         private readonly CommentService commentService;
 
+        private readonly Guest1ReportService guest1ReportService;
+        
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
         private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
@@ -52,6 +54,7 @@ namespace InitialProject.Service
             userService = new UserService();
             canceledReservationService = new CanceledReservationService();
             commentService = new CommentService();
+            guest1ReportService = new Guest1ReportService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
             forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
         }
@@ -142,6 +145,11 @@ namespace InitialProject.Service
         public void AddOwnerComment(string commenterUsername, string answer, int forumId)
         {
             commentService.AddOwnerComment(commenterUsername, answer, forumId);
+        }
+
+        public bool ReportGuest(int commentId, string ownerUsername)
+        {
+            return guest1ReportService.ReportGuest(commentId, ownerUsername);
         }
     }
 }

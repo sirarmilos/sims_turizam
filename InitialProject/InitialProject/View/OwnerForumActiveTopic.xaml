@@ -81,9 +81,9 @@
         <DockPanel VerticalAlignment="Top" Height="130" Margin="0,25,0,0" HorizontalAlignment="Center">
 
             <Label Content="Forum  #" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,25,0,0" FontSize="24" Width="Auto"></Label>
-            <Label Content="{Binding ShowOwnerForumsDTO.ForumId}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-10,25,0,0" FontSize="24" Width="Auto"/>
+            <Label Content="{Binding ShowOwnerForumsDTO.ForumId}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-10,24,0,0" FontSize="24" Width="Auto"/>
 
-            <Label Content="{Binding ShowOwnerForumsDTO.Location}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-140,65,0,0" FontSize="24" Width="Auto"/>
+            <Label Content="{Binding ShowOwnerForumsDTO.Location}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-145,65,0,0" FontSize="24" Width="Auto"/>
 
         </DockPanel>
 
@@ -122,8 +122,15 @@
                     <TextBlock Text="{Binding OwnerUsernameShow}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="25,18,25,25" FontSize="16"/>
                     <TextBlock Text="(owner)" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="27,43,25,25" FontSize="16"/>
 
-                    <TextBox x:Name="tbComment" Text="{Binding Path=Comment, Mode=OneWayToSource}" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="985" Margin="125,25,0,0" FontSize="13"/>
+                    <TextBox x:Name="tbComment" Text="{Binding Path=CommentCheck, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="985" Margin="125,25,0,0" TextChanged="CheckErrorComment" FontSize="13"/>
 
+                    <TextBlock x:Name="textBlockErrorComment0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,36,245,0" FontSize="12" Foreground="Red" TextAlignment="Center">
+                    *
+                    </TextBlock>
+
+                    <TextBlock x:Name="textBlockErrorComment1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,235,0" FontSize="12" Foreground="Red">
+                    Comment must contain a minimum of 20 characters
+                    </TextBlock>
 
                     <Button x:Name="buttonAddComment" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.AddComment" Margin="0,28,25,0">
                         <TextBlock TextAlignment="Center" FontSize="14">Add comment<LineBreak/>(CTRL + R)</TextBlock>
@@ -146,7 +153,7 @@
 
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Width="1190">
 
-                    <ItemsControl Visibility="Visible" ItemsSource="{Binding ShowOwnerForumCommentsDTOs}">
+                    <ItemsControl x:Name="itemsControlShowOwnerForumComments" Visibility="Visible" ItemsSource="{Binding ShowOwnerForumCommentsDTOs}">
 
                         <ItemsControl.ItemTemplate>
 
@@ -176,7 +183,7 @@
                                         <TextBlock.Style>
 
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="Text" Value="{Binding NumberOfReports}"/>
+                                                <Setter Property="Text" Value="{Binding NumberOfReports, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                 <Setter Property="Visibility" Value="Visible" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding NumberOfReports, Converter={StaticResource NumberOfUserReportVisibility}}" Value="Hidden">
@@ -186,14 +193,10 @@
                                             </Style>
 
                                         </TextBlock.Style>
-                                        
+
                                     </TextBlock>
 
-                                    <!--<Button x:Name="buttonReport1" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="75" Margin="0,47,25,0">
-                                        <TextBlock TextAlignment="Center" FontSize="14">Report<LineBreak/>(CTRL + R)</TextBlock>
-                                    </Button>-->
-
-                                    <Button Tag="{Binding Answer}" x:Name="buttonReport" Click="ReportGuest" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="75" Margin="0,47,25,0" CommandParameter="{Binding}" Command="{Binding DataContext.ReportCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}">
+                                    <Button x:Name="buttonReport" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="75" Margin="0,47,25,0" CommandParameter="{Binding}" Command="{Binding DataContext.ReportCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}">
                                         <TextBlock TextAlignment="Center" FontSize="14">Report<LineBreak/>(CTRL + R)</TextBlock>
                                         <Button.Style>
                                             <Style TargetType="Button">

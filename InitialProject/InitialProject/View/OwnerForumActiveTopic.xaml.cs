@@ -1,4 +1,6 @@
-﻿using InitialProject.DTO;
+﻿using GalaSoft.MvvmLight.Command;
+using InitialProject.DTO;
+using InitialProject.Model;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -63,6 +66,18 @@ namespace InitialProject.View
         }
 
         public string Comment
+        {
+            get;
+            set;
+        }
+
+        public string CommentCheck
+        {
+            get;
+            set;
+        }
+
+        public int ForumId
         {
             get;
             set;
@@ -194,6 +209,10 @@ namespace InitialProject.View
             SetDefaultValue(showOwnerForumsDTO);
 
             SetMenu(ownerHeader);
+
+            textBlockErrorComment1.Visibility = Visibility.Hidden;
+
+            ReportCommand = new RelayCommand<ShowOwnerForumCommentsDTO>(Report);
         }
 
         private void SetMenu(string ownerHeader)
@@ -221,13 +240,15 @@ namespace InitialProject.View
 
         private void SetDefaultValue(ShowOwnerForumsDTO showOwnerForumsDTO)
         {
+            ForumId = showOwnerForumsDTO.ForumId;
+
             showOwnerForumsDTO.CreatorUsername = showOwnerForumsDTO.CreatorUsername.Substring(0, showOwnerForumsDTO.CreatorUsername.Length - 7) + ":";
 
             ShowOwnerForumsDTO = showOwnerForumsDTO;
 
             OwnerUsernameShow = OwnerUsername + ":";
 
-            ShowOwnerForumCommentsDTOs = forumService.FindComments(showOwnerForumsDTO.ForumId);
+            ShowOwnerForumCommentsDTOs = forumService.FindComments(ForumId);
         }
 
         private void AddComment_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -237,7 +258,19 @@ namespace InitialProject.View
 
         private void AddComment_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            forumService.AddOwnerComment(OwnerUsername, Comment, ShowOwnerForumsDTO.ForumId);
+            if(string.IsNullOrEmpty(Comment) == false)
+            {
+                forumService.AddOwnerComment(OwnerUsername, Comment, ShowOwnerForumsDTO.ForumId);
+
+                MessageBox.Show("Comment successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                Comment = string.Empty;
+                tbComment.Text = string.Empty;
+                tbComment.Focus();
+
+                ShowOwnerForumCommentsDTOs = forumService.FindComments(ForumId);
+                itemsControlShowOwnerForumComments.ItemsSource = ShowOwnerForumCommentsDTOs;
+            }
         }
 
         private void Close_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -247,13 +280,51 @@ namespace InitialProject.View
 
         private void Close_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
         }
 
-        private void ReportGuest(object sender, RoutedEventArgs e)
+        public ICommand ReportCommand { get; set; }
+
+        private void Report(ShowOwnerForumCommentsDTO showOwnerForumCommentsDTO)
         {
-            string answer = ((Button)sender).Tag as string;
-            MessageBox.Show(answer.ToString());
+            if(forumService.ReportGuest(showOwnerForumCommentsDTO.CommentId, OwnerUsername) == true)
+            {
+                MessageBox.Show("Guest is reported.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Guest is already reported.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            ShowOwnerForumCommentsDTOs = forumService.FindComments(ForumId);
+            itemsControlShowOwnerForumComments.ItemsSource = ShowOwnerForumCommentsDTOs;
+        }
+
+        private void CheckErrorComment(object sender, TextChangedEventArgs e)
+        {
+            if(CommentCheck.Equals(string.Empty) == true)
+            {
+                Comment = string.Empty;
+                textBlockErrorComment0.Visibility = Visibility.Visible;
+                textBlockErrorComment1.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                textBlockErrorComment0.Visibility = Visibility.Hidden;
+
+                if(CommentCheck.Length <= 20)
+                {
+                    Comment = string.Empty;
+                    textBlockErrorComment1.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    textBlockErrorComment1.Visibility = Visibility.Hidden;
+                    Comment = CommentCheck;
+                }
+            }
         }
     }
 
