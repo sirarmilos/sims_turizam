@@ -14,6 +14,7 @@
     <Window.Resources>
 
         <local:ReportVisibility x:Key="ReportVisibility" />
+        <local:NumberOfUserReportVisibility x:Key="NumberOfUserReportVisibility" />
 
     </Window.Resources>
 
@@ -151,7 +152,7 @@
 
                             <DataTemplate>
 
-                                <Grid>
+                                <Grid Margin="0,0,0,20">
 
                                     <TextBlock Text="{Binding CommenterUsername}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="16"/>
                                     <TextBlock Text="{Binding CommenterType}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,20,25,25" FontSize="16"/>
@@ -170,23 +171,36 @@
 
                                     <TextBlock Text="{Binding Visited}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="950,5,0,0" FontSize="13"/>
 
-                                    <TextBlock Text="{Binding NumberOfReports}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="950,50,0,0" FontSize="13"/>
+                                    <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="950,50,0,0" FontSize="13">
 
-                                    <Button x:Name="buttonReport1" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="75" Margin="0,47,25,0">
+                                        <TextBlock.Style>
+
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{Binding NumberOfReports}"/>
+                                                <Setter Property="Visibility" Value="Visible" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding NumberOfReports, Converter={StaticResource NumberOfUserReportVisibility}}" Value="Hidden">
+                                                        <Setter Property="Visibility" Value="Hidden" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+
+                                        </TextBlock.Style>
+                                        
+                                    </TextBlock>
+
+                                    <!--<Button x:Name="buttonReport1" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="75" Margin="0,47,25,0">
                                         <TextBlock TextAlignment="Center" FontSize="14">Report<LineBreak/>(CTRL + R)</TextBlock>
-                                    </Button>
+                                    </Button>-->
 
-                                    <Button x:Name="buttonReport" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="75" Margin="0,47,25,0" CommandParameter="{Binding}" Command="{Binding DataContext.ReportCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}">
+                                    <Button Tag="{Binding Answer}" x:Name="buttonReport" Click="ReportGuest" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="75" Margin="0,47,25,0" CommandParameter="{Binding}" Command="{Binding DataContext.ReportCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}">
                                         <TextBlock TextAlignment="Center" FontSize="14">Report<LineBreak/>(CTRL + R)</TextBlock>
                                         <Button.Style>
                                             <Style TargetType="Button">
                                                 <Setter Property="Visibility" Value="Visible" />
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding EndDate, Converter={StaticResource ReportVisibility}, ConverterParameter=Past}" Value="Collapsed">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding StartDate, Converter={StaticResource ReportVisibility}, ConverterParameter=Past}" Value="Collapsed">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    <DataTrigger Binding="{Binding Visited, Converter={StaticResource ReportVisibility}}" Value="Hidden">
+                                                        <Setter Property="Visibility" Value="Hidden" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>

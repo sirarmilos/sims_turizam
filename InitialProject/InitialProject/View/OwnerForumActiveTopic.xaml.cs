@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace InitialProject.View
 {
@@ -55,6 +57,12 @@ namespace InitialProject.View
         }
 
         public List<ShowOwnerForumCommentsDTO> ShowOwnerForumCommentsDTOs
+        {
+            get;
+            set;
+        }
+
+        public string Comment
         {
             get;
             set;
@@ -229,7 +237,7 @@ namespace InitialProject.View
 
         private void AddComment_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            forumService.AddOwnerComment(OwnerUsername, Comment, ShowOwnerForumsDTO.ForumId);
         }
 
         private void Close_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -241,28 +249,48 @@ namespace InitialProject.View
         {
 
         }
+
+        private void ReportGuest(object sender, RoutedEventArgs e)
+        {
+            string answer = ((Button)sender).Tag as string;
+            MessageBox.Show(answer.ToString());
+        }
     }
 
     public class ReportVisibility : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is DateTime dateTime)
+            if(value is string visited)
             {
-                if (parameter is string parameterValue)
+                if(visited.Equals("Not visited this location") == true)
                 {
-                    if (parameterValue == "Past")
-                    {
-                        return dateTime < DateTime.Now ? Visibility.Collapsed : Visibility.Visible;
-                    }
-                    else if (parameterValue == "Future")
-                    {
-                        return dateTime > DateTime.Now ? Visibility.Collapsed : Visibility.Visible;
-                    }
+                    return Visibility.Visible;
                 }
             }
 
-            return Visibility.Visible;
+            return Visibility.Hidden;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class NumberOfUserReportVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string numberOfUserReport)
+            {
+                if(numberOfUserReport.Equals(string.Empty) == false)
+                {
+                    return Visibility.Visible;
+                }
+            }
+
+            return Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

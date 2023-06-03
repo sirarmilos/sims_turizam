@@ -19,27 +19,36 @@ namespace InitialProject.Model
 
         public string Answer { get; set; }
 
+        public bool IsStillOwner { get; set; }
+
+        public bool Visited { get; set; }
+
+        public int NumberOfReports { get; set; }
+
         public Comment()
         {
 
         }
 
-        public Comment(int commentId, Forum forum, string commenterUsername, string commenterType, string answer)
+        public Comment(int commentId, Forum forum, string commenterUsername, string commenterType, string answer, bool isStillOwner, bool visited, int numberOfReports)
         {
             CommentId = commentId;
             Forum = forum;
             CommenterUsername = commenterUsername;
             CommenterType = commenterType;
             Answer = answer;
+            IsStillOwner = isStillOwner;
+            Visited = visited;
+            NumberOfReports = numberOfReports;
         }
 
-        public virtual string[] ToCSV()
+        public string[] ToCSV()
         {
-            string[] csvValues = { CommentId.ToString(), Forum.ForumId.ToString(), CommenterUsername, CommenterType, Answer };
+            string[] csvValues = { CommentId.ToString(), Forum.ForumId.ToString(), CommenterUsername, CommenterType, Answer, IsStillOwner.ToString(), Visited.ToString(), NumberOfReports.ToString() };
             return csvValues;
         }
 
-        public virtual void FromCSV(string[] values)
+        public void FromCSV(string[] values)
         {
             // return if the file was empty
             if (string.IsNullOrWhiteSpace(values[0])) return;
@@ -49,6 +58,9 @@ namespace InitialProject.Model
             CommenterUsername = values[2];
             CommenterType = values[3];
             Answer = values[4];
+            IsStillOwner = Convert.ToBoolean(values[5]);
+            Visited = Convert.ToBoolean(values[6]);
+            NumberOfReports = Convert.ToInt32(values[7]);
         }
     }
 }
