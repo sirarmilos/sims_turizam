@@ -1,39 +1,37 @@
-﻿using InitialProject.Model;
+﻿using InitialProject.DTO;
+using InitialProject.IRepository;
+using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.AccessControl;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
-using System.Diagnostics;
-using GalaSoft.MvvmLight.Command;
-using InitialProject.Service;
-using InitialProject.DTO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace InitialProject.View
 {
-    public partial class SearchAndShowAccommodations : Page, INotifyPropertyChanged
+    public partial class Guest1CreateForum : Page
     {
-        AccommodationService accommodationService;
-        public Accommodation Accommodation { get; set; }
-
-        private string accommodationName;
-        private string country;
-        private string city;
-        private int? maxGuests;
-        private int? minDaysReservation;
-        private int leftCancelationDays;
-        private string image;
-        private List<string> images;
+        private readonly ForumService forumService;
         private string guest1;
+        private string city;
+        private string country;
+        private string question;
 
         public string Guest1
         {
@@ -44,29 +42,12 @@ namespace InitialProject.View
             }
         }
 
-        public string Image
+        public string City
         {
-            get { return image; }
+            get { return city; }
             set
             {
-                image = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public List<string> Images
-        {
-            get;
-            set;
-        }
-
-        public string AccommodationName
-        {
-            get { return accommodationName; }
-            set
-            {
-                accommodationName = value;
-                OnPropertyChanged(nameof(AccommodationName));
+                city = value;
             }
         }
 
@@ -76,93 +57,19 @@ namespace InitialProject.View
             set
             {
                 country = value;
-                OnPropertyChanged(nameof(Country));
-
             }
         }
 
-        public string City
+        public string Question
         {
-            get { return city; }
+            get { return question; }
             set
             {
-                city = value;
-                OnPropertyChanged(nameof(City));
+                question = value;
             }
         }
 
-        public int? MaxGuests
-        {
-            get { return maxGuests; }
-            set
-            {
-                maxGuests = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int? MinDaysReservation
-        {
-            get { return minDaysReservation; }
-            set
-            {
-                minDaysReservation = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        private string type;
-        public string Type
-        {
-            get { return type; }
-            set
-            {
-                if (value != type)
-                {
-                    type = value;
-                    OnPropertyChanged(nameof(Type));
-
-                    if (value == "System.Windows.Controls.ComboBoxItem: All Types")
-                    {
-                        type = "";
-                    }
-                    else if (value == "System.Windows.Controls.ComboBoxItem: Apartment")
-                    {
-                        type = "Apartment";
-                    }
-                    else if (value == "System.Windows.Controls.ComboBoxItem: Home")
-                    {
-                        type = "Home";
-                    }
-                    else if (value == "System.Windows.Controls.ComboBoxItem: Hut")
-                    {
-                        type = "Hut";
-                    }
-                }
-            }
-        }
-
-
-
-
-        public ICommand SeeAvailabilityCommand { get; set; }
-
-        private void AllowOnlyCharacters(object sender, TextCompositionEventArgs e)
-        {
-            if (!char.IsLetter(e.Text, 0) && !char.IsWhiteSpace(e.Text, 0))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void AllowOnlyDigits(object sender, TextCompositionEventArgs e)
-        {
-            if (!char.IsDigit(e.Text, 0))
-            {
-                e.Handled = true;
-            }
-        }
+        public string Caller { get; set; }
 
         private bool notification;
         public bool Notification
@@ -188,96 +95,107 @@ namespace InitialProject.View
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public SearchAndShowAccommodations(string username, Page page)
+        public Guest1CreateForum(string guest1, Page page)
         {
             InitializeComponent();
 
-            FirstSearchWindow.Visibility = Visibility.Visible;
-            SecondSearchWindow.Visibility = Visibility.Collapsed;
+            Guest1 = guest1;
 
-            Guest1 = username;
             DataContext = this;
-            accommodationService = new AccommodationService(Guest1);
+
+            forumService = new ForumService(Guest1);
 
             SetUsernameHeader();
 
-            Images = new List<string>();
-            SeeAvailabilityCommand = new RelayCommand<Accommodation>(SeeAvailability);
-
             SetComboBoxes(page);
 
-            if (page is AccommodationReservation accommodationReservationPage)
-            {
-                FirstSearchWindow.Visibility = Visibility.Collapsed;
+        }
 
-                SecondSearchWindow.Visibility = Visibility.Visible;
+        private void CreateForum(object sender, RoutedEventArgs e)
+        {
+            ErrorMessage.Visibility = Visibility.Collapsed;
+
+            if (!IsInputValid())
+                return;
+
+            CreateForumDTO createForumDTO = new CreateForumDTO(Guest1, City, Country, Question);
+
+            forumService.CreateForum(createForumDTO);
+
+            FirstWindow.Visibility = Visibility.Collapsed;
+            SecondWindow.Visibility = Visibility.Visible;
+            SuccessMessage.Text = "The forum has been successfully created.";
+        }
+
+        private bool IsInputValid()
+        {
+            if (string.IsNullOrWhiteSpace(City))
+            {
+                ErrorMessage.Text = "You have forgotten to input the city name.";
+                ErrorMessage.Visibility = Visibility.Visible;
+                return false;
             }
 
+            if (string.IsNullOrWhiteSpace(Country))
+            {
+                ErrorMessage.Text = "You have forgotten to input the country name.";
+                ErrorMessage.Visibility = Visibility.Visible;
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Question))
+            {
+                ErrorMessage.Text = "You have forgotten to write question.";
+                ErrorMessage.Visibility = Visibility.Visible;
+                return false;
+            }
+
+            return true;
+        }
+
+        private void AllowOnlyLetters(object sender, TextCompositionEventArgs e)
+        {
+            foreach (char c in e.Text)
+            {
+                if (!char.IsLetter(c))
+                {
+                    e.Handled = true; 
+                    break;
+                }
+            }
         }
 
         private void SetUsernameHeader()
         {
-            Notification = accommodationService.Guest1HasNotification();
+            Notification = forumService.Guest1HasNotification();
             CheckNotification();
             usernameAndSuperGuest.Text = $"{Guest1}";
             superGuest.Text = $"{CheckSuperType()}";
+        }
+
+        public void ReturnBackToCaller(object sender, RoutedEventArgs e)
+        {
+            if (Caller.Equals("Guest1Requests"))
+                GoToGuest1Requests(sender, e);
+            else
+                GoToShowGuest1Notifications(sender,e);
         }
 
         private string CheckSuperType()
         {
             string superType = string.Empty;
 
-            if (accommodationService.IsSuperGuest(Guest1))
+            if (forumService.IsSuperGuest(Guest1))
             {
-                superType = "(Super guest)";
+                superType = " (Super guest)";
             }
 
             return superType;
         }
 
-
-        private void Search(object sender, RoutedEventArgs e)
+        void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
         {
-            FirstSearchWindow.Visibility = Visibility.Collapsed;
-
-            SecondSearchWindow.Visibility = Visibility.Visible;
-
-            if ((MaxGuests != null) && (MaxGuests == 0))
-            {
-                SuggestedDatesMessage.Text = "You can't use zero as number of guests.";
-                ListAccommodations.Visibility = Visibility.Collapsed;
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-                ListAccommodations.ItemsSource = null;
-
-                return;
-            }
-
-            SearchAndShowAccommodationDTO searchShowAndAccommodationDTO =
-                new SearchAndShowAccommodationDTO(AccommodationName, Country, City, Type, MaxGuests, MinDaysReservation);
-
-            List<Accommodation> searchResults = accommodationService.FindAll(searchShowAndAccommodationDTO);
-
-            if (searchResults == null)
-            {
-                ListAccommodations.ItemsSource = null;
-                SuggestedDatesMessage.Text = "No accommodation satisfies your requirements.";
-                ListAccommodations.Visibility = Visibility.Collapsed;
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-
-                return;
-            }
-
-            ListAccommodations.ItemsSource = new ObservableCollection<Accommodation>(searchResults);
-
-            ListAccommodations.Visibility = Visibility.Visible;
-            SuggestedDatesMessage.Visibility = Visibility.Collapsed;
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
         private bool comboBoxClicked = false;
@@ -288,8 +206,6 @@ namespace InitialProject.View
             comboBoxClicked = true;
         }
 
-
-        public string SelectedCreateReviewCBItem { get; set;} // za azurnu verziju comboboxova
         private void CBCreateReviewDropDownClosed(object sender, EventArgs e)
         {
             if (comboBoxClicked && itemClicked)
@@ -299,17 +215,14 @@ namespace InitialProject.View
 
                 if (selectedItem.Content.ToString() == "Create review")
                 {
-                    SelectedCreateReviewCBItem = selectedItem.Content.ToString();
                     GoToCreateReview(sender, null);
                 }
                 else if (selectedItem.Content.ToString() == "Reviews")
                 {
-                    SelectedCreateReviewCBItem = selectedItem.Content.ToString();
                     GoToShowOwnerReviews(sender, null);
                 }
                 else if (selectedItem.Content.ToString() == "Requests")
                 {
-                    SelectedCreateReviewCBItem = selectedItem.Content.ToString();
                     GoToGuest1Requests(sender, null);
                 }
             }
@@ -327,7 +240,7 @@ namespace InitialProject.View
 
                 if (selectedItem.Content.ToString() == "Super-guest")
                 {
-                    GoToShowSuperGuest(sender, null);
+                    GoToSearchAndShowAccommodations(sender, null);
                 }
                 else if (selectedItem.Content.ToString() == "Logout")
                 {
@@ -344,9 +257,9 @@ namespace InitialProject.View
             itemClicked = true;
         }
 
-        private void SeeAvailability(Accommodation accommodation)
+        private void CreateRequest(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new AccommodationReservation(accommodation, Guest1, this));
+            GoToShowReservations(sender, e);
         }
 
         private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
@@ -362,16 +275,6 @@ namespace InitialProject.View
         private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
-        }
-        private void GoToForum(object sender, RoutedEventArgs e)
-        {
-            NavigationService?.Navigate(new Guest1CreateForum(Guest1, this));
-        }
-
-
-        private void GoToShowSuperGuest(object sender, RoutedEventArgs e)
-        {
-            NavigationService?.Navigate(new ShowSuperGuest(Guest1, this));
         }
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)
@@ -532,8 +435,32 @@ namespace InitialProject.View
                 }
             }
         }
-
-
     }
 
+    public class CityValidation
+    {
+        private const string ApiKey = "bfcf0b9b893d5b26c5b91d629dc741d3";
+        private const string BaseUrl = "http://api.openweathermap.org/data/2.5/weather";
+
+        public async Task<bool> ValidateCity(string city, string country)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string requestUrl = $"{BaseUrl}?q={city},{country}&appid={ApiKey}";
+
+                HttpResponseMessage response = await client.GetAsync(requestUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Grad i država su validni
+                    return true;
+                }
+                else
+                {
+                    // Greška ili grad/država ne postoje
+                    return false;
+                }
+            }
+        }
+    }
 }
