@@ -27,5 +27,15 @@ namespace InitialProject.Service
         {
             commentRepository.Add(commenterUsername, answer, forumId);
         }
+
+        public Comment FindById(int commentId)
+        {
+            return commentRepository.FindById(commentId);
+        }
+
+        public void AddReportNumber(int commentId)
+        {
+            commentRepository.AddReportNumber(commentId);
+        }
     }
 }

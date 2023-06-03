@@ -18,5 +18,9 @@ namespace InitialProject.IRepository
         void Save(List<Comment> allComments);
 
         int NextId();
+
+        Comment FindById(int commentId);
+
+        void AddReportNumber(int commentId);
     }
 }

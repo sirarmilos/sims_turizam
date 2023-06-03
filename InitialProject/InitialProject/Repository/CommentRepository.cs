@@ -69,5 +69,17 @@ namespace InitialProject.Repository
 
             return FindAll().Max(x => x.CommentId) + 1;
         }
+
+        public Comment FindById(int commentId)
+        {
+            return FindAll().ToList().Find(x => x.CommentId == commentId);
+        }
+
+        public void AddReportNumber(int commentId)
+        {
+            List<Comment> allComments = FindAll();
+            allComments.ToList().Where(x => x.CommentId == commentId).SetValue(x => x.NumberOfReports += 1);
+            Save(allComments);
+        }
     }
 }
