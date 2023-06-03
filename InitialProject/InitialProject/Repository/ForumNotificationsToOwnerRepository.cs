@@ -37,5 +37,28 @@ namespace InitialProject.Repository
 
             return forumNotificationsToOwners;
         }
+
+        public void Save(List<ForumNotificationsToOwner> allForumNotificationsToOwner)
+        {
+            forumNotificationsToOwnerSerializer.ToCSV(FilePathForumNotificationsToOwner, allForumNotificationsToOwner);
+        }
+
+        public void Add(Forum forum, string ownerUsername)
+        {
+            List<ForumNotificationsToOwner> allForumNotificationsToOwner = FindAll();
+            ForumNotificationsToOwner forumNotificationToOwner = new ForumNotificationsToOwner(NextId(), forum, ownerUsername, false);
+            allForumNotificationsToOwner.Add(forumNotificationToOwner);
+            Save(allForumNotificationsToOwner);
+        }
+
+        public int NextId()
+        {
+            if (FindAll().Count < 1)
+            {
+                return 1;
+            }
+
+            return FindAll().Max(x => x.ForumNotificationsToOwnerId) + 1;
+        }
     }
 }

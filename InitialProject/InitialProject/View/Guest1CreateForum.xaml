@@ -1,0 +1,136 @@
+﻿<Page x:Class="InitialProject.View.Guest1CreateForum"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+
+Background="White"
+    mc:Ignorable="d"
+        Title="Create Forum" d:DesignHeight="684" d:DesignWidth="838">
+
+
+
+
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="0,2,15,0">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="https://img001.prntscr.com/file/img001/AboPt71lRn6VPLBmk3xMmA.png" Width="88" Height="50" Margin="0,0,0,0" />
+            </StackPanel>
+
+            <Grid HorizontalAlignment="Right">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0" />
+                <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
+
+
+                <StackPanel Grid.Column="1" Orientation="Vertical">
+                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="22" />
+                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" FontSize="20"  FontWeight="Bold" Height="28" />
+                </StackPanel>
+
+            </Grid>
+
+        </DockPanel>
+
+
+        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Width="834" Height="67" Margin="4,0,4,0">
+
+
+            <Button Content="Home" Click="GoToSearchAndShowAccommodations" Width="70" Height="50" Margin="10,0,8,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC"/>
+
+            <Button Content="Reservations" Click="GoToShowReservations"  Width="140" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" BorderBrush="#FFACACAC">
+                <Button.Background>
+                    <SolidColorBrush Color="#FFF0F0F0"/>
+                </Button.Background>
+            </Button>
+
+            <ComboBox x:Name="CBCreateReview" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBCreateReviewDropDownClosed" FontSize="20" FontWeight="Bold" Width="160" Height="50" Margin="9,0,9,0" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBoxItem Content="Create review" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Reviews" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Requests" PreviewMouseDown="CBItemPreviewMouseDown" />
+            </ComboBox>
+
+
+            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
+                <StackPanel>
+                    <TextBlock Text="Whenever" HorizontalAlignment="Center" Height="22" Margin="0,0,0,0" VerticalAlignment="Top" />
+                    <TextBlock Text="Wherever" Height="23" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                </StackPanel>
+            </Button>
+
+            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC" />
+
+            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+                <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Logout" PreviewMouseDown="CBItemPreviewMouseDown" />
+            </ComboBox>
+
+        </DockPanel>
+
+
+        <StackPanel Margin="60,0,60,20">
+            <!-- margina skroz dole je 20 -->
+            <Label Content="Create Forum" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
+
+
+            <Border BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" MinHeight="200" Width="684">
+
+                <StackPanel>
+                    
+                    <Grid x:Name="FirstWindow" Visibility="Visible">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100" />
+                            <RowDefinition MinHeight="130" Height="Auto"/>
+                            <RowDefinition Height="100" />
+                        </Grid.RowDefinitions>
+
+                        <Label HorizontalAlignment="Left" Content="City" Grid.Row="0" VerticalAlignment="Top" FontWeight="Bold" Margin="160,20,0,0" FontSize="24" Width="110" />
+                        <TextBox FontWeight="Bold" Grid.Row="0" PreviewTextInput="AllowOnlyLetters"  Width="227" Height="38" HorizontalAlignment="Left" Text="{Binding Path=City,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" VerticalAlignment="Bottom" FontSize="20" Margin="73,0,0,0" />
+
+                        <Label HorizontalAlignment="Right" Content="Country" VerticalAlignment="Top"  Grid.Row="0" FontSize="24" FontWeight="Bold"  Margin="0,20,115,0"   Width="122"   />
+                        <TextBox FontWeight="Bold" Grid.Row="0" PreviewTextInput="AllowOnlyLetters"  Width="227" Height="38" HorizontalAlignment="Right" Text="{Binding Path=Country,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" VerticalAlignment="Bottom" FontSize="20" Margin="0,0,73,0" />
+
+
+                        <StackPanel Grid.Row="1">
+                            <StackPanel Orientation="Horizontal" Margin="0,50,0,15"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock FontSize="24" FontWeight="Bold" Text="{Binding Guest1}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,10,0" />
+                                <Border BorderBrush="Gray" BorderThickness="2" MinHeight="35" Height="Auto" Margin="0,0,00,0">
+                                    <TextBox Width="432" Text="{Binding Question}" Height="Auto" TextWrapping="Wrap" FontSize="20" BorderBrush="Transparent" BorderThickness="0" />
+                                </Border>
+                            </StackPanel>
+
+                            <TextBlock x:Name="ErrorMessage" Visibility="Visible" TextAlignment="Center"  Foreground="Red" FontSize="24" FontWeight="Bold" Text="" TextWrapping="Wrap" Width="657" MinHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,0"/>
+                        </StackPanel>
+                        
+                        <Button HorizontalAlignment="Left" Grid.Row="2" FontSize="24" FontWeight="Bold" Height="55" Width="177" Content="Back" Click="ReturnBackToCaller" VerticalAlignment="Center" Margin="30,0,0,0"/>
+                        <Button HorizontalAlignment="Right"  Grid.Row="2" FontSize="24" FontWeight="Bold" Height="55" Width="177" Content="Create Forum" Click="CreateForum" VerticalAlignment="Center" Margin="0,0,30,0"/>
+
+                    </Grid>
+
+                    <StackPanel x:Name="SecondWindow" Visibility="Collapsed">
+                        <TextBlock x:Name="SuccessMessage" TextAlignment="Center"  Foreground="Green" FontSize="24" FontWeight="Bold" Grid.Row="1" Text="Nesto" TextWrapping="Wrap" Width="657" MinHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,30,0,0"/>
+
+                        <Button HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Height="55" Width="177" Content="Forum" Click="ReturnBackToCaller" VerticalAlignment="Center" Margin="0,20,0,0"/>
+
+                    </StackPanel>
+                    
+                </StackPanel>
+                
+            </Border>
+
+            
+
+
+        </StackPanel>
+        
+        
+    </DockPanel>
+
+
+</Page>

@@ -12,5 +12,11 @@ namespace InitialProject.IRepository
         List<Forum> FindAll();
 
         Forum FindById(int forumId);
+
+        void Save(List<Forum> allForums);
+
+        void Add(Forum forum);
+
+        int NextId();
     }
 }
