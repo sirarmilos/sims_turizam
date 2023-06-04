@@ -81,5 +81,10 @@ namespace InitialProject.Repository
             allComments.ToList().Where(x => x.CommentId == commentId).SetValue(x => x.NumberOfReports += 1);
             Save(allComments);
         }
+
+        public bool IsOwnerStillOwner(int forumId, string ownerUsername)
+        {
+            return FindComments(forumId).ToList().Exists(x => x.CommenterType.Equals("owner") == true && x.CommenterUsername.Equals(ownerUsername) == true && x.IsStillOwner == false);
+        }
     }
 }

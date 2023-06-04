@@ -1,4 +1,5 @@
-﻿using InitialProject.IRepository;
+﻿using InitialProject.DTO;
+using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Repository;
 using System;
@@ -36,6 +37,11 @@ namespace InitialProject.Service
         public void AddReportNumber(int commentId)
         {
             commentRepository.AddReportNumber(commentId);
+        }
+
+        public bool IsOwnerStillOwner(int forumId, string ownerUsername)
+        { 
+            return commentRepository.IsOwnerStillOwner(forumId, ownerUsername);
         }
     }
 }

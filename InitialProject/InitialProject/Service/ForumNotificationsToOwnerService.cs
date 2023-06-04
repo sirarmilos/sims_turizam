@@ -14,17 +14,17 @@ namespace InitialProject.Service
     {
         private readonly IForumNotificationsToOwnerRepository forumNotificationsToOwnerRepository;
 
-        private readonly AccommodationService accommodationService;
+        private AccommodationService accommodationService;
 
         public ForumNotificationsToOwnerService()
         {
             forumNotificationsToOwnerRepository = Injector.Injector.CreateInstance<IForumNotificationsToOwnerRepository>();
-
-            accommodationService = new AccommodationService();
         }
     
         public void CreateOwnersNotification(Forum forum)
         {
+            accommodationService = new AccommodationService();
+
             List<Accommodation> allAccommodations = accommodationService.FindAll();
             List<string> eligibleOwners = new List<string>();
 
@@ -45,6 +45,28 @@ namespace InitialProject.Service
             }
 
             eligibleOwners.ForEach(ownerUsername => forumNotificationsToOwnerRepository.Add(forum, ownerUsername));
+        }
+
+        public int FindNumberOfNewForums(string ownerUsername)
+        {
+            List<ForumNotificationsToOwner> allForumNotificationsToOwners = forumNotificationsToOwnerRepository.FindNotifications(ownerUsername);
+
+            List<int> forumsId = new List<int>();
+
+            foreach(ForumNotificationsToOwner temporaryForumNotificationsToOwner in allForumNotificationsToOwners.ToList())
+            {
+                if(forumsId.Contains(temporaryForumNotificationsToOwner.Forum.ForumId) == false)
+                {
+                    forumsId.Add(temporaryForumNotificationsToOwner.Forum.ForumId);
+                }
+            }
+
+            return forumsId.Count;
+        }
+
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            forumNotificationsToOwnerRepository.MarkAsReadNotificationsForums(ownerUsername);
         }
     }
 }

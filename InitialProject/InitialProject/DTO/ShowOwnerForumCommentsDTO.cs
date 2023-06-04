@@ -46,7 +46,7 @@ namespace InitialProject.DTO
                 }
                 else
                 {
-                    IsStillOwner = "Was Owner of the accommodation at this location";
+                    IsStillOwner = "Was owner at this location";
                 }
             }
             else
