@@ -28,6 +28,8 @@ namespace InitialProject.Service
 
         private readonly CanceledReservationService canceledReservationService;
 
+        private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
+
         private string owner;
 
         public string Owner
@@ -52,6 +54,7 @@ namespace InitialProject.Service
             reservationService = new ReservationService(Owner);
             userService = new UserService();
             canceledReservationService = new CanceledReservationService();
+            forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
         }
 
         public RenovationService()
@@ -231,6 +234,16 @@ namespace InitialProject.Service
         public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
         {
             canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
+        }
+
+        public int FindNumberOfNewForums(string ownerUsername)
+        {
+            return forumNotificationsToOwnerService.FindNumberOfNewForums(ownerUsername);
+        }
+
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
         }
     }
 }

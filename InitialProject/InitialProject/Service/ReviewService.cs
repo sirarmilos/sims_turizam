@@ -34,6 +34,8 @@ namespace InitialProject.Service
 
         private readonly CanceledReservationService canceledReservationService;
 
+        private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
+
         private string owner;
         private string guest1;
 
@@ -67,6 +69,7 @@ namespace InitialProject.Service
             renovationRecommendationService = new RenovationRecommendationService();
             accommodationService = new AccommodationService();
             canceledReservationService = new CanceledReservationService();
+            forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
 
 
             reviewRepository = Injector.Injector.CreateInstance<IReviewRepository>();
@@ -336,6 +339,16 @@ namespace InitialProject.Service
         public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
         {
             canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
+        }
+
+        public int FindNumberOfNewForums(string ownerUsername)
+        {
+            return forumNotificationsToOwnerService.FindNumberOfNewForums(ownerUsername);
+        }
+
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
         }
     }
 }

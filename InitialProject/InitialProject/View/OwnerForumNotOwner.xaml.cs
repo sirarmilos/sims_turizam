@@ -1,9 +1,9 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using InitialProject.DTO;
-using InitialProject.Model;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,15 +14,14 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace InitialProject.View
 {
     /// <summary>
-    /// Interaction logic for OwnerForum.xaml
+    /// Interaction logic for OwnerForumNotOwner.xaml
     /// </summary>
-    public partial class OwnerForum : Window
+    public partial class OwnerForumNotOwner : Window
     {
         private readonly ForumService forumService;
 
@@ -32,7 +31,7 @@ namespace InitialProject.View
             set;
         }
 
-        public List<ShowOwnerForumsDTO> ShowOwnerForumsDTOs
+        public string OwnerUsernameShow
         {
             get;
             set;
@@ -50,7 +49,19 @@ namespace InitialProject.View
             set;
         }
 
-        public ShowOwnerForumsDTO SelectedShowOwnerForum
+        public ShowOwnerForumsDTO ShowOwnerForumsDTO
+        {
+            get;
+            set;
+        }
+
+        public List<ShowOwnerForumCommentsDTO> ShowOwnerForumCommentsDTOs
+        {
+            get;
+            set;
+        }
+
+        public int ForumId
         {
             get;
             set;
@@ -170,7 +181,7 @@ namespace InitialProject.View
             forumService.MarkAsReadNotificationsForums(OwnerUsername);
         }
 
-        public OwnerForum(string ownerUsername, string ownerHeader)
+        public OwnerForumNotOwner(string ownerUsername, string ownerHeader, ShowOwnerForumsDTO showOwnerForumsDTO)
         {
             InitializeComponent();
 
@@ -180,13 +191,11 @@ namespace InitialProject.View
 
             forumService = new ForumService(OwnerUsername);
 
-            SetDefaultValue();
+            SetDefaultValue(showOwnerForumsDTO);
 
             SetMenu(ownerHeader);
 
-            ShowOwnerForumsDTOs = forumService.FindForums();
-
-            ReadMoreCommand = new RelayCommand<ShowOwnerForumsDTO>(ReadMore);
+            ReportCommand = new RelayCommand<ShowOwnerForumCommentsDTO>(Report);
         }
 
         private void SetMenu(string ownerHeader)
@@ -214,74 +223,46 @@ namespace InitialProject.View
             forumNotifications.Header = "Number of new forums: " + forumService.FindNumberOfNewForums(OwnerUsername) + ".";
         }
 
-        private void SetDefaultValue()
+        private void SetDefaultValue(ShowOwnerForumsDTO showOwnerForumsDTO)
         {
+            ForumId = showOwnerForumsDTO.ForumId;
 
+            showOwnerForumsDTO.CreatorUsername = showOwnerForumsDTO.CreatorUsername.Substring(0, showOwnerForumsDTO.CreatorUsername.Length - 7) + ":";
+
+            ShowOwnerForumsDTO = showOwnerForumsDTO;
+
+            OwnerUsernameShow = OwnerUsername + ":";
+
+            ShowOwnerForumCommentsDTOs = forumService.FindComments(ForumId);
         }
 
-        private void ReadMore_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void Close_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(SelectedShowOwnerForum == null)
+            e.CanExecute = true;
+        }
+
+        private void Close_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OwnerForum window = new OwnerForum(OwnerUsername, usernameAndSuperOwner.Header.ToString());
+            window.Show();
+            Close();
+        }
+
+        public ICommand ReportCommand { get; set; }
+
+        private void Report(ShowOwnerForumCommentsDTO showOwnerForumCommentsDTO)
+        {
+            if (forumService.ReportGuest(showOwnerForumCommentsDTO.CommentId, OwnerUsername) == true)
             {
-                e.CanExecute = false;
+                MessageBox.Show("Guest is reported.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                e.CanExecute = true;
+                MessageBox.Show("Guest is already reported.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
 
-        private void ReadMore_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            /* if(string.IsNullOrEmpty(SelectedShowOwnerForum.Closed) == true)
-            {
-                OwnerForumActiveTopic window = new OwnerForumActiveTopic();
-                window.Show();
-                Close();
-            }
-            else
-            {
-                OwnerForumClosedTopic window = new OwnerForumClosedTopic();
-                window.Show();
-                Close();
-            }*/
-        }
-
-        public ICommand ReadMoreCommand
-        {
-            get;
-            set;
-        }
-
-        private void ReadMore(ShowOwnerForumsDTO showOwnerForumsDTO)
-        {
-            if (string.IsNullOrEmpty(showOwnerForumsDTO.Closed) == true)
-            {
-                if(forumService.IsOwnerStillOwner(showOwnerForumsDTO.ForumId, OwnerUsername) == false)
-                {
-                    OwnerForumActiveTopic window = new OwnerForumActiveTopic(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
-                    window.Show();
-                    Close();
-                }
-                else
-                {
-                    OwnerForumNotOwner window = new OwnerForumNotOwner(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
-                    window.Show();
-                    Close();
-                }
-
-            }
-            else
-            {
-                OwnerForumClosedTopic window = new OwnerForumClosedTopic(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
-                window.Show();
-                Close();
-            }
-        }
-
-        private void SelectedShowOwnerForumChange(object sender, RoutedEventArgs e)
-        {
-            // SelectedShowOwnerForum.ForumId = 
+            ShowOwnerForumCommentsDTOs = forumService.FindComments(ForumId);
+            itemsControlShowOwnerForumComments.ItemsSource = ShowOwnerForumCommentsDTOs;
         }
     }
 }

@@ -151,5 +151,20 @@ namespace InitialProject.Service
         {
             return guest1ReportService.ReportGuest(commentId, ownerUsername);
         }
+
+        public bool IsOwnerStillOwner(int forumId, string ownerUsername)
+        {
+            return commentService.IsOwnerStillOwner(forumId, ownerUsername);
+        }
+
+        public int FindNumberOfNewForums(string ownerUsername)
+        {
+            return forumNotificationsToOwnerService.FindNumberOfNewForums(ownerUsername);
+        }
+
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
+        }
     }
 }

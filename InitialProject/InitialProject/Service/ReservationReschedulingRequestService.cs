@@ -27,6 +27,8 @@ namespace InitialProject.Service
 
         private readonly CanceledReservationService canceledReservationService;
 
+        private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
+
         public List<BusyReservation> BusyReservations
         {
             get;
@@ -59,6 +61,7 @@ namespace InitialProject.Service
         {
             reservationReschedulingRequestRepository = Injector.Injector.CreateInstance<IReservationReschedulingRequestRepository>();
             //reservationReschedulingRequestRepository = new ReservationReschedulingRequestRepository();
+            forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
 
         }
 
@@ -72,6 +75,7 @@ namespace InitialProject.Service
             rateGuestsService = new RateGuestsService(Owner);
             userService = new UserService();
             canceledReservationService = new CanceledReservationService();
+            forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
 
             BusyReservations = new List<BusyReservation>();
         }
@@ -368,6 +372,16 @@ namespace InitialProject.Service
         public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
         {
             canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
+        }
+
+        public int FindNumberOfNewForums(string ownerUsername)
+        {
+            return forumNotificationsToOwnerService.FindNumberOfNewForums(ownerUsername);
+        }
+
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
         }
     }
 }

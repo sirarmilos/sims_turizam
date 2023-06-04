@@ -24,14 +24,17 @@ namespace InitialProject.Service
 
         private CanceledReservationService canceledReservationService;
 
+        private ForumNotificationsToOwnerService forumNotificationsToOwnerService;
+
         public UserService()
         {
             userRepository = Injector.Injector.CreateInstance<IUserRepository>();
             canceledReservationService = new CanceledReservationService();
+            forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
 
             //userRepository = new UserRepository();  
 
-             //rateGuestsService = new RateGuestsService(Owner);
+            //rateGuestsService = new RateGuestsService(Owner);
         }
 
         public void Update(string owner, string superType)
@@ -144,6 +147,14 @@ namespace InitialProject.Service
             return userRepository.FindByUsername(username);
         }
 
+        public int FindNumberOfNewForums(string ownerUsername)
+        {
+            return forumNotificationsToOwnerService.FindNumberOfNewForums(ownerUsername);
+        }
 
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
+        }
     }
 }

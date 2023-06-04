@@ -60,5 +60,17 @@ namespace InitialProject.Repository
 
             return FindAll().Max(x => x.ForumNotificationsToOwnerId) + 1;
         }
+
+        public List<ForumNotificationsToOwner> FindNotifications(string ownerUsername)
+        {
+            return FindAll().ToList().FindAll(x => x.OwnerUsername == ownerUsername && x.ViewedByOwner == false);
+        }
+
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            List<ForumNotificationsToOwner> allForumNotificationsToOwners = FindAll();
+            allForumNotificationsToOwners.ToList().Where(x => x.OwnerUsername.Equals(ownerUsername) == true && x.ViewedByOwner == false).ToList().SetValue(x => x.ViewedByOwner = true);
+            Save(allForumNotificationsToOwners);
+        }
     }
 }

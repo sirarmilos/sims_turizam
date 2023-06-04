@@ -72,6 +72,7 @@
                     <MenuItem x:Name="rateGuestsNotifications" Command="cmd:RoutedCommands.RateGuests"/>
                     <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations" IsEnabled="False"/>
                     <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList"/>
+                    <MenuItem x:Name="forumNotifications" Command="cmd:RoutedCommands.OwnerForum"/>
                 </MenuItem>
 
             </Menu>

@@ -22,5 +22,7 @@ namespace InitialProject.IRepository
         Comment FindById(int commentId);
 
         void AddReportNumber(int commentId);
+
+        bool IsOwnerStillOwner(int forumId, string ownerUsername);
     }
 }

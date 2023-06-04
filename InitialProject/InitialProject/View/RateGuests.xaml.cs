@@ -274,6 +274,7 @@ namespace InitialProject.View
             GlobalOwnerClass.NotificationRead = true;
             notifications.IsSubmenuOpen = true;
             rateGuestsNotifications.Focus();
+            rateGuestsService.MarkAsReadNotificationsForums(OwnerUsername);
         }
 
         public RateGuests(string ownerUsername, string ownerHeader)
@@ -316,6 +317,8 @@ namespace InitialProject.View
                     UnreadCancelledReservations.Add(temporaryCanceledReservationsNotificationDTO.AccommodationName + ": " + temporaryCanceledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCanceledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
                 }
             }
+
+            forumNotifications.Header = "Number of new forums: " + rateGuestsService.FindNumberOfNewForums(OwnerUsername) + ".";
         }
 
         private void SetDefaultValue()
