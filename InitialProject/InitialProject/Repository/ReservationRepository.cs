@@ -49,7 +49,7 @@ namespace InitialProject.Repository
 
         public List<Reservation> FindByOwnerUsername(string ownerUsername)
         {
-            return FindAll().ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+            return FindAll().ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(ownerUsername) == true && x.Accommodation.Removed == false);
         }
 
         public Reservation FindById(int reservationId)
@@ -117,7 +117,7 @@ namespace InitialProject.Repository
 
         public List<Reservation> FindByAccommodationId(int accommodationId)
         {
-            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId && x.Accommodation.Removed == false);
         }
 
         public int FindAccommodationReservationCountByYear(int accommodationId, int year)

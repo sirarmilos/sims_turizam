@@ -43,5 +43,20 @@ namespace InitialProject.Service
         { 
             return commentRepository.IsOwnerStillOwner(forumId, ownerUsername);
         }
+
+        public bool CheckComments(int forumId)
+        {
+            return CheckOwnerComments(forumId) && CheckGuest1Coments(forumId);
+        }
+
+        public bool CheckOwnerComments(int forumId)
+        {
+            return commentRepository.CountOwnerComments(forumId) >= 10;
+        }
+
+        public bool CheckGuest1Coments(int forumId)
+        {
+            return commentRepository.CountGuest1Comments(forumId) >= 20;
+        }
     }
 }

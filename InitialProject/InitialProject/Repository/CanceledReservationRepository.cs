@@ -77,7 +77,7 @@ namespace InitialProject.Repository
 
         public List<CanceledReservation> FindByAccommodationId(int accommodationId)
         {
-            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId && x.Accommodation.Removed == false);
         }
 
         public int FindAccommodationCanceledReservationCountByYear(int accommodationId, int year)

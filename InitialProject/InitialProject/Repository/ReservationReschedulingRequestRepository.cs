@@ -53,7 +53,7 @@ namespace InitialProject.Repository
 
         public List<ReservationReschedulingRequest> FindPendingRequestsByOwnerUsername(string ownerUsername)
         {
-            return FindRequestByOwnerUsername(ownerUsername).ToList().FindAll(x => x.Status.Equals("pending") == true);
+            return FindRequestByOwnerUsername(ownerUsername).ToList().FindAll(x => x.Status.Equals("pending") == true && x.Reservation.Accommodation.Removed == false);
         }
 
         public ReservationReschedulingRequest FindPendingRequestByReservationId(int reservationId, string ownerUsername)
@@ -140,7 +140,7 @@ namespace InitialProject.Repository
 
         public List<ReservationReschedulingRequest> FindByAccommodationId(int accommodationId)
         {
-            return FindAll().ToList().FindAll(x => x.Reservation.Accommodation.Id == accommodationId);
+            return FindAll().ToList().FindAll(x => x.Reservation.Accommodation.Id == accommodationId && x.Reservation.Accommodation.Removed == false);
         }
 
         public int FindAccommodationRescheduledReservationCountByYear(int accommodationId, int year)

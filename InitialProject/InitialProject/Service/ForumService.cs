@@ -166,5 +166,18 @@ namespace InitialProject.Service
         {
             forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
         }
+
+        public void CheckIsUseful(int forumId)
+        {
+            bool checkIsUseful = forumRepository.CheckIsUseful(forumId);
+
+            if(checkIsUseful == false)
+            {
+                if(commentService.CheckComments(forumId) == true)
+                {
+                    forumRepository.MakeUseful(forumId);
+                }
+            }
+        }
     }
 }

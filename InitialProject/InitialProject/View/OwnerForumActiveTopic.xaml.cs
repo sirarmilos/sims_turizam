@@ -265,6 +265,8 @@ namespace InitialProject.View
             {
                 forumService.AddOwnerComment(OwnerUsername, Comment, ShowOwnerForumsDTO.ForumId);
 
+                forumService.CheckIsUseful(ShowOwnerForumsDTO.ForumId);
+
                 MessageBox.Show("Comment successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 Comment = string.Empty;

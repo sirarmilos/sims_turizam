@@ -86,5 +86,15 @@ namespace InitialProject.Repository
         {
             return FindComments(forumId).ToList().Exists(x => x.CommenterType.Equals("owner") == true && x.CommenterUsername.Equals(ownerUsername) == true && x.IsStillOwner == false);
         }
+
+        public int CountOwnerComments(int forumId)
+        {
+            return FindComments(forumId).ToList().FindAll(x => x.CommenterType.Equals("owner") == true).Count;
+        }
+
+        public int CountGuest1Comments(int forumId)
+        {
+            return FindComments(forumId).ToList().FindAll(x => x.CommenterType.Equals("guest") == true && x.Visited == true).Count;
+        }
     }
 }
