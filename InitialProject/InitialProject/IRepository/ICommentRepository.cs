@@ -24,5 +24,9 @@ namespace InitialProject.IRepository
         void AddReportNumber(int commentId);
 
         bool IsOwnerStillOwner(int forumId, string ownerUsername);
+
+        int CountOwnerComments(int forumId);
+
+        int CountGuest1Comments(int forumId);
     }
 }

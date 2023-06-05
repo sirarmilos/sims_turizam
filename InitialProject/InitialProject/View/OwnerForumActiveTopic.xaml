@@ -102,7 +102,7 @@
 
         <DockPanel VerticalAlignment="Top" MinHeight="80" Margin="120,180,0,0" HorizontalAlignment="Left" Width="1000">
 
-            <GroupBox Margin="0,0,0,0">
+            <Border Margin="0,0,0,0" BorderBrush="Gray" BorderThickness="0.2">
 
                 <Grid>
 
@@ -110,7 +110,7 @@
 
                 </Grid>
 
-            </GroupBox>
+            </Border>
 
         </DockPanel>
 
@@ -165,7 +165,7 @@
                                     <TextBlock Text="{Binding CommenterUsername}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="16"/>
                                     <TextBlock Text="{Binding CommenterType}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,20,25,25" FontSize="16"/>
 
-                                    <GroupBox HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="825" Margin="100,0,0,0">
+                                    <Border HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="825" Margin="100,0,0,0" BorderBrush="Gray" BorderThickness="0.2">
 
                                         <Grid>
 
@@ -173,7 +173,7 @@
 
                                         </Grid>
 
-                                    </GroupBox>
+                                    </Border>
 
                                     <TextBlock Text="{Binding IsStillOwner}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="950,5,0,0" FontSize="13"/>
 

@@ -106,7 +106,7 @@ namespace InitialProject.Model
             // unosi sa zarezima i onda ih ovde odvajam
 
             RecentlyRenovated = Convert.ToBoolean(values[9]);
-            Removed = Convert.ToBoolean(values[9]);
+            Removed = Convert.ToBoolean(values[10]);
         }
 
     }

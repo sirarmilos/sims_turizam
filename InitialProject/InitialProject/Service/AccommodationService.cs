@@ -665,7 +665,7 @@ namespace InitialProject.Service
 
                 if(isAlreadyAdded == false)
                 {
-                    TopAndWorstLocationDTO topLocationDTO = new TopAndWorstLocationDTO(temporaryAccommodation.Location, totalBusyPercentage);
+                    TopAndWorstLocationDTO topLocationDTO = new TopAndWorstLocationDTO(temporaryAccommodation.Location, totalBusyPercentage); //
                     topLocationDTOs.Add(topLocationDTO);
                 }
             }

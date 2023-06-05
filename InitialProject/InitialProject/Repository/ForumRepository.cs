@@ -53,5 +53,17 @@ namespace InitialProject.Repository
 
             return FindAll().Max(x => x.ForumId) + 1;
         }
+
+        public bool CheckIsUseful(int forumId)
+        {
+            return FindById(forumId).IsUseful == true;
+        }
+
+        public void MakeUseful(int forumId)
+        {
+            List<Forum> allForums = FindAll();
+            allForums.ToList().Where(x => x.ForumId == forumId).ToList().SetValue(x => x.IsUseful = true);
+            Save(allForums);
+        }
     }
 }
