@@ -27,13 +27,13 @@ namespace InitialProject.View
     {
         public static Tour tour { get; set; }
 
-        public static Tour tourFiltered { get; set; }
+  //      public static Tour tourFiltered { get; set; }
 
-        public static ObservableCollection<Tour> tourAgeStats { get; set; }
+   //     public static ObservableCollection<Tour> tourAgeStats { get; set; }
 
-        public ObservableCollection<int> ageCount { get; set; }
+ //       public ObservableCollection<int> ageCount { get; set; }
 
-        private ObservableCollection<double> voucherPercentage;
+ //       private ObservableCollection<double> voucherPercentage;
 
         private readonly TourGuidenceService tourGuidenceService;
 
@@ -42,6 +42,10 @@ namespace InitialProject.View
        // private readonly TourRepository tourRepository;
 
         private readonly VoucherService voucherService;
+
+        private readonly GuideService guideService;
+
+        private readonly UserService userService;
 
         private string guide;
 
@@ -54,47 +58,62 @@ namespace InitialProject.View
             }
         }
 
+        private string type;
 
-        public string WithVoucher
+        public string Type
         {
-            get { return voucherPercentage[0].ToString(); }
+            get { return type; }
+            set
+            {
+                type = value;
+            }
         }
 
-        public string WithoutVoucher
-        {
-            get { return voucherPercentage[1].ToString(); }
-        }
 
-        public string Under18
-        {
-            get { return ageCount[0].ToString(); }
-        }
+        /*   public string WithVoucher
+           {
+               get { return voucherPercentage[0].ToString(); }
+           }
 
-        public string From18To50
-        {
-            get { return ageCount[1].ToString(); }
-        }
+           public string WithoutVoucher
+           {
+               get { return voucherPercentage[1].ToString(); }
+           }
 
-        public string Above50
-        {
-            get { return ageCount[2].ToString(); }
-        }
+           public string Under18
+           {
+               get { return ageCount[0].ToString(); }
+           }
+
+           public string From18To50
+           {
+               get { return ageCount[1].ToString(); }
+           }
+
+           public string Above50
+           {
+               get { return ageCount[2].ToString(); }
+           }*/
 
         public GuideStart(string username)
         {
             InitializeComponent();
             DataContext = this;
             Guide = username;
+            guideService = new GuideService();
             voucherService = new VoucherService();
             tourGuidenceService = new TourGuidenceService();
             tourService = new TourService();
-            tour = tourGuidenceService.FindMostVisitedAllTime();
+            userService = new UserService();
+     //       tour = tourGuidenceService.FindMostVisitedAllTime();
             int year = 2021;
-            tourFiltered = tourGuidenceService.FindMostVisitedByYear(year);
+          //  tourFiltered = tourGuidenceService.FindMostVisitedByYear(year);
             //tourAgeStats = tourRepository.GetById(3);
-            tourAgeStats = new ObservableCollection<Tour>(tourService.FindAll());
+         //   tourAgeStats = new ObservableCollection<Tour>(tourService.FindAll());
             //ageCount = new ObservableCollection<int>(tourRepository.GetGuestNumber(tourAgeStats.Id));
-           // voucherPercentage = new ObservableCollection<double>(/*tourRepository.GetVoucherPercentage(tourAgeStats.Id)*/);
+            // voucherPercentage = new ObservableCollection<double>(/*tourRepository.GetVoucherPercentage(tourAgeStats.Id)*/);
+            guideService.LoadGuideType(Guide);
+            Type = userService.FindSuperTypeByOwnerName(Guide);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -140,13 +159,13 @@ namespace InitialProject.View
 
         private void DisplayStatistics(int id)
         {
-            voucherPercentage = new ObservableCollection<double>(voucherService.GetVoucherPercentage(id));
-            ageCount = new ObservableCollection<int>(tourService.FindGuestNumber(id, Guide));
-            OnPropertyChanged(nameof(WithVoucher));
+          //  voucherPercentage = new ObservableCollection<double>(voucherService.GetVoucherPercentage(id));
+         //   ageCount = new ObservableCollection<int>(tourService.FindGuestNumber(id, Guide));
+         /*   OnPropertyChanged(nameof(WithVoucher));
             OnPropertyChanged(nameof(WithoutVoucher));
             OnPropertyChanged(nameof(Under18));
             OnPropertyChanged(nameof(From18To50));
-            OnPropertyChanged(nameof(Above50));
+            OnPropertyChanged(nameof(Above50));*/
         }
 
         private void GoToShowReviews(object sender, RoutedEventArgs e)
@@ -189,6 +208,27 @@ namespace InitialProject.View
         private void GoToRequestStatistics(object sender, RoutedEventArgs e)
         {
             SearchAndShowRequestStatistics window = new SearchAndShowRequestStatistics(Guide);
+            window.Show();
+        }
+
+        private void GoToQuitJob(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to quit your job?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes && guideService.Resign(Guide) == true)
+            {
+                tourGuidenceService.UpdateCancelledFieldFutureTours(Guide);
+
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+        }
+
+        private void GoToCancelFutureTours(object sender, RoutedEventArgs e)
+        {
+            FutureTours window = new FutureTours();
             window.Show();
         }
 

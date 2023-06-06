@@ -26,17 +26,21 @@ namespace InitialProject.Service
             TourReservationService tourReservationService = new TourReservationService();
             UserRepository userRepository = new UserRepository();
             List<Voucher> vouchers = voucherRepository.FindAll();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+            string guide = tourGuidenceRepository.FindGuide(guidenceId);
+            
 
             foreach (Model.TourReservation reservation in tourReservationService.FindAll())
             {
                 if (reservation.tourGuidenceId == guidenceId)
                 {
                     User guest = userRepository.FindByUsername(reservation.userId);
-                    Voucher v = new Voucher(voucherRepository.NextId(), guest, VoucherType.TOURCANCELATION, DateTime.Now.AddYears(1), false);
+                    Voucher v = new Voucher(voucherRepository.NextId(), guest, VoucherType.TOURCANCELATION, DateTime.Now.AddYears(1), false, guide);
                     vouchers.Add(v);
+                    voucherRepository.Save(vouchers);
                 }
             }
-            voucherRepository.Save(vouchers);
+            
         }
 
         public List<double> GetVoucherPercentage(int tourId)
@@ -74,6 +78,31 @@ namespace InitialProject.Service
                 retVal[1] = Math.Round((1 - (withVoucher / count)) * 100, 2);
             } 
             return retVal;
+        }
+
+        public void CreateForGuideResignation(int guidenceId, string guideUsername)
+        {
+            TourReservationService tourReservationService = new TourReservationService();
+            UserRepository userRepository = new UserRepository();
+            List<Voucher> vouchers = voucherRepository.FindAll();
+
+            foreach(Voucher v in vouchers)
+            {
+                if (v.Guide.Equals(guideUsername))
+                    v.Guide = "ALL";
+            }
+
+            foreach (Model.TourReservation reservation in tourReservationService.FindAll())
+            {
+                if (reservation.tourGuidenceId == guidenceId)
+                {
+                    User guest = userRepository.FindByUsername(reservation.userId);
+                    Voucher v = new Voucher(voucherRepository.NextId(), guest, VoucherType.GUIDERESIGNATION, DateTime.Now.AddYears(2), false, "ALL");
+                    vouchers.Add(v);
+                    voucherRepository.Save(vouchers);
+                }
+            }
+
         }
     }
 }

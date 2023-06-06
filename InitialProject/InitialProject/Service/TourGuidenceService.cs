@@ -352,6 +352,36 @@ namespace InitialProject.Service
             return tourGuidenceRepository.FindByTourAndDate(tour,dateTime);
         }
 
+        public void UpdateCancelledFieldFutureTours(string username)
+        {
+            VoucherService voucherService = new VoucherService();
+            List<TourGuidence> tourGuidences = tourGuidenceRepository.FindGuideAll(username);
+
+            foreach(TourGuidence tg in tourGuidences)
+            {
+                if (tg.StartTime > DateTime.Now && tg.Cancelled==false)
+                {
+                    UpdateCancelledField(tg.Id);
+                    voucherService.CreateForGuideResignation(tg.Id, username);
+                }
+                
+            }
+        }
+
+        public List<TourGuidence> FindGuideAllInLastYear(string guideUsername)
+        {
+            List<TourGuidence> guidences =  tourGuidenceRepository.FindGuideAll(guideUsername);
+            List<TourGuidence> filteredGuidences = new List<TourGuidence>();
+            foreach(TourGuidence tg in guidences)
+            {
+                if(tg.StartTime >= DateTime.Now.AddYears(-1) && tg.Started == true && tg.Finished == true)
+                {
+                    filteredGuidences.Add(tg);
+                }
+            }
+            return filteredGuidences;       
+        }
+
     }
 
 }
