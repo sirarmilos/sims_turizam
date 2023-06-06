@@ -45,7 +45,7 @@ namespace InitialProject.Repository
 
         public List<Renovation> FindByOwnerUsername(string ownerUsername)
         {
-            return FindAll().ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+            return FindAll().ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(ownerUsername) == true && x.Accommodation.Removed == false);
         }
 
         public Renovation FindById(int renovationId)

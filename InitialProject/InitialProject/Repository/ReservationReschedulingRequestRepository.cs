@@ -64,14 +64,14 @@ namespace InitialProject.Repository
         public void UpdateRequestToSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest, string status, string comment)
         {
             List<ReservationReschedulingRequest> allReservationReschedulingRequests = FindAll();
-            allReservationReschedulingRequests.Where(x => x.Reservation.ReservationId == selectedBookingMoveRequest.ReservationId).SetValue(x => x.Status = status).SetValue(x => x.Comment = comment);
+            allReservationReschedulingRequests.Where(x => x.Reservation.ReservationId == selectedBookingMoveRequest.ReservationId && x.Reservation.Accommodation.Removed == false).SetValue(x => x.Status = status).SetValue(x => x.Comment = comment);
             Save(allReservationReschedulingRequests);
         }
 
         public void RemoveRequestByReservationId(int reservationId)
         {
             List<ReservationReschedulingRequest> allReservationReschedulingRequests = FindAll();
-            allReservationReschedulingRequests.Remove(allReservationReschedulingRequests.Find(x => x.Reservation.ReservationId == reservationId));
+            allReservationReschedulingRequests.Remove(allReservationReschedulingRequests.Find(x => x.Reservation.ReservationId == reservationId && x.Reservation.Accommodation.Removed == false));
             Save(allReservationReschedulingRequests);
         }
 

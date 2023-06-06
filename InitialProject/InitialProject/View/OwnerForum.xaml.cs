@@ -50,12 +50,6 @@ namespace InitialProject.View
             set;
         }
 
-        public ShowOwnerForumsDTO SelectedShowOwnerForum
-        {
-            get;
-            set;
-        }
-
         private void OwnerHomePageLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -170,6 +164,12 @@ namespace InitialProject.View
             forumService.MarkAsReadNotificationsForums(OwnerUsername);
         }
 
+        public ICommand ReadMoreCommand
+        {
+            get;
+            set;
+        }
+
         public OwnerForum(string ownerUsername, string ownerHeader)
         {
             InitializeComponent();
@@ -185,8 +185,6 @@ namespace InitialProject.View
             SetMenu(ownerHeader);
 
             ShowOwnerForumsDTOs = forumService.FindForums();
-
-            ReadMoreCommand = new RelayCommand<ShowOwnerForumsDTO>(ReadMore);
         }
 
         private void SetMenu(string ownerHeader)
@@ -216,41 +214,7 @@ namespace InitialProject.View
 
         private void SetDefaultValue()
         {
-
-        }
-
-        private void ReadMore_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if(SelectedShowOwnerForum == null)
-            {
-                e.CanExecute = false;
-            }
-            else
-            {
-                e.CanExecute = true;
-            }
-        }
-
-        private void ReadMore_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            /* if(string.IsNullOrEmpty(SelectedShowOwnerForum.Closed) == true)
-            {
-                OwnerForumActiveTopic window = new OwnerForumActiveTopic();
-                window.Show();
-                Close();
-            }
-            else
-            {
-                OwnerForumClosedTopic window = new OwnerForumClosedTopic();
-                window.Show();
-                Close();
-            }*/
-        }
-
-        public ICommand ReadMoreCommand
-        {
-            get;
-            set;
+            ReadMoreCommand = new RelayCommand<ShowOwnerForumsDTO>(ReadMore);
         }
 
         private void ReadMore(ShowOwnerForumsDTO showOwnerForumsDTO)
@@ -277,11 +241,6 @@ namespace InitialProject.View
                 window.Show();
                 Close();
             }
-        }
-
-        private void SelectedShowOwnerForumChange(object sender, RoutedEventArgs e)
-        {
-            // SelectedShowOwnerForum.ForumId = 
         }
     }
 }
