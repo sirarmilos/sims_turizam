@@ -49,7 +49,7 @@ namespace InitialProject.Repository
 
         public List<Reservation> FindByOwnerUsername(string ownerUsername)
         {
-            return FindAll().ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+            return FindAll().ToList().FindAll(x => x.Accommodation.OwnerUsername.Equals(ownerUsername) == true && x.Accommodation.Removed == false);
         }
 
         public Reservation FindById(int reservationId)
@@ -65,14 +65,14 @@ namespace InitialProject.Repository
         public void UpdateDatesToSelectedBookingMoveRequest(OwnerBookingMoveRequestsDTO selectedBookingMoveRequest)
         {
             List<Reservation> allReservations = FindAll();
-            allReservations.Where(x => x.ReservationId == selectedBookingMoveRequest.ReservationId).SetValue(x => x.StartDate = selectedBookingMoveRequest.NewStartDate).ToList().SetValue(x => x.EndDate = selectedBookingMoveRequest.NewEndDate);
+            allReservations.Where(x => x.ReservationId == selectedBookingMoveRequest.ReservationId && x.Accommodation.Removed == false).SetValue(x => x.StartDate = selectedBookingMoveRequest.NewStartDate).ToList().SetValue(x => x.EndDate = selectedBookingMoveRequest.NewEndDate);
             SaveReservations(allReservations);
         }
 
         public void RemoveById(int reservationId, int cancelledReservationId)
         {
             List<Reservation> allReservations = FindAll();
-            allReservations.Remove(allReservations.Find(x => x.ReservationId == cancelledReservationId && x.ReservationId != reservationId));
+            allReservations.Remove(allReservations.Find(x => x.ReservationId == cancelledReservationId && x.ReservationId != reservationId && x.Accommodation.Removed == false));
             SaveReservations(allReservations);
         }
 
@@ -117,7 +117,7 @@ namespace InitialProject.Repository
 
         public List<Reservation> FindByAccommodationId(int accommodationId)
         {
-            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId && x.Accommodation.Removed == false);
         }
 
         public int FindAccommodationReservationCountByYear(int accommodationId, int year)

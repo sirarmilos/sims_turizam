@@ -168,6 +168,7 @@ namespace InitialProject.View
             GlobalOwnerClass.NotificationRead = true;
             notifications.IsSubmenuOpen = true;
             rateGuestsNotifications.Focus();
+            reviewService.MarkAsReadNotificationsForums(OwnerUsername);
         }
 
         public ShowGuestReviews(string ownerUsername, string ownerHeader)
@@ -208,6 +209,8 @@ namespace InitialProject.View
                     UnreadCancelledReservations.Add(temporaryCanceledReservationsNotificationDTO.AccommodationName + ": " + temporaryCanceledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCanceledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
                 }
             }
+
+            forumNotifications.Header = "Number of new forums: " + reviewService.FindNumberOfNewForums(OwnerUsername) + ".";
         }
 
         private void PDFReport_CanExecute(object sender, CanExecuteRoutedEventArgs e)

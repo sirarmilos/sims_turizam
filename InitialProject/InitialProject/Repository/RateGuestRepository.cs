@@ -53,12 +53,12 @@ namespace InitialProject.Repository
 
         public RateGuest FindOwnerRateGuestByReservationId(string ownerUsername, int reservationId)
         {
-            return FindByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+            return FindByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId); // && x => x.Reservation.Accommodation.Removed == false
         }
 
         public void Add(RateGuest rateGuest)
         {
-            List<RateGuest> allRateGuests = FindAll();
+            List<RateGuest> allRateGuests = FindAll(); // FindAll().ToList().FindAll(x => x.Reservation.Accommodation.Removed == false);
             allRateGuests.Add(rateGuest);
             Save(allRateGuests);
         }

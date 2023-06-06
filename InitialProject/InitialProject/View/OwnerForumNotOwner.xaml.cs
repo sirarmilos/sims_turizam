@@ -3,6 +3,7 @@ using InitialProject.DTO;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,9 +19,9 @@ using System.Windows.Shapes;
 namespace InitialProject.View
 {
     /// <summary>
-    /// Interaction logic for OwnerForumClosedTopic.xaml
+    /// Interaction logic for OwnerForumNotOwner.xaml
     /// </summary>
-    public partial class OwnerForumClosedTopic : Window
+    public partial class OwnerForumNotOwner : Window
     {
         private readonly ForumService forumService;
 
@@ -182,7 +183,7 @@ namespace InitialProject.View
 
         public ICommand ReportCommand { get; set; }
 
-        public OwnerForumClosedTopic(string ownerUsername, string ownerHeader, ShowOwnerForumsDTO showOwnerForumsDTO)
+        public OwnerForumNotOwner(string ownerUsername, string ownerHeader, ShowOwnerForumsDTO showOwnerForumsDTO)
         {
             InitializeComponent();
 

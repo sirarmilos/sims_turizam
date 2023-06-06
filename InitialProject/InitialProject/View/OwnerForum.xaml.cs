@@ -50,12 +50,6 @@ namespace InitialProject.View
             set;
         }
 
-        public ShowOwnerForumsDTO SelectedShowOwnerForum
-        {
-            get;
-            set;
-        }
-
         private void OwnerHomePageLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -167,6 +161,13 @@ namespace InitialProject.View
             GlobalOwnerClass.NotificationRead = true;
             notifications.IsSubmenuOpen = true;
             rateGuestsNotifications.Focus();
+            forumService.MarkAsReadNotificationsForums(OwnerUsername);
+        }
+
+        public ICommand ReadMoreCommand
+        {
+            get;
+            set;
         }
 
         public OwnerForum(string ownerUsername, string ownerHeader)
@@ -184,8 +185,6 @@ namespace InitialProject.View
             SetMenu(ownerHeader);
 
             ShowOwnerForumsDTOs = forumService.FindForums();
-
-            ReadMoreCommand = new RelayCommand<ShowOwnerForumsDTO>(ReadMore);
         }
 
         private void SetMenu(string ownerHeader)
@@ -209,66 +208,39 @@ namespace InitialProject.View
                     UnreadCancelledReservations.Add(temporaryCanceledReservationsNotificationDTO.AccommodationName + ": " + temporaryCanceledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCanceledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
                 }
             }
+
+            forumNotifications.Header = "Number of new forums: " + forumService.FindNumberOfNewForums(OwnerUsername) + ".";
         }
 
         private void SetDefaultValue()
         {
-
-        }
-
-        private void ReadMore_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if(SelectedShowOwnerForum == null)
-            {
-                e.CanExecute = false;
-            }
-            else
-            {
-                e.CanExecute = true;
-            }
-        }
-
-        private void ReadMore_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            /* if(string.IsNullOrEmpty(SelectedShowOwnerForum.Closed) == true)
-            {
-                OwnerForumActiveTopic window = new OwnerForumActiveTopic();
-                window.Show();
-                Close();
-            }
-            else
-            {
-                OwnerForumClosedTopic window = new OwnerForumClosedTopic();
-                window.Show();
-                Close();
-            }*/
-        }
-
-        public ICommand ReadMoreCommand
-        {
-            get;
-            set;
+            ReadMoreCommand = new RelayCommand<ShowOwnerForumsDTO>(ReadMore);
         }
 
         private void ReadMore(ShowOwnerForumsDTO showOwnerForumsDTO)
         {
             if (string.IsNullOrEmpty(showOwnerForumsDTO.Closed) == true)
             {
-                OwnerForumActiveTopic window = new OwnerForumActiveTopic(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
-                window.Show();
-                Close();
+                if(forumService.IsOwnerStillOwner(showOwnerForumsDTO.ForumId, OwnerUsername) == false)
+                {
+                    OwnerForumActiveTopic window = new OwnerForumActiveTopic(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
+                    window.Show();
+                    Close();
+                }
+                else
+                {
+                    OwnerForumNotOwner window = new OwnerForumNotOwner(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
+                    window.Show();
+                    Close();
+                }
+
             }
             else
             {
-                OwnerForumClosedTopic window = new OwnerForumClosedTopic(showOwnerForumsDTO);
+                OwnerForumClosedTopic window = new OwnerForumClosedTopic(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
                 window.Show();
                 Close();
             }
-        }
-
-        private void SelectedShowOwnerForumChange(object sender, RoutedEventArgs e)
-        {
-            // SelectedShowOwnerForum.ForumId = 
         }
     }
 }

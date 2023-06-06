@@ -84,5 +84,31 @@ namespace InitialProject.Repository
             allComments.Add(guest1Comment);
             Save(allComments);
         }
+        public Comment FindById(int commentId)
+        {
+            return FindAll().ToList().Find(x => x.CommentId == commentId);
+        }
+
+        public void AddReportNumber(int commentId)
+        {
+            List<Comment> allComments = FindAll();
+            allComments.ToList().Where(x => x.CommentId == commentId).SetValue(x => x.NumberOfReports += 1);
+            Save(allComments);
+        }
+
+        public bool IsOwnerStillOwner(int forumId, string ownerUsername)
+        {
+            return FindComments(forumId).ToList().Exists(x => x.CommenterType.Equals("owner") == true && x.CommenterUsername.Equals(ownerUsername) == true && x.IsStillOwner == false);
+        }
+
+        public int CountOwnerComments(int forumId)
+        {
+            return FindComments(forumId).ToList().FindAll(x => x.CommenterType.Equals("owner") == true).Count;
+        }
+
+        public int CountGuest1Comments(int forumId)
+        {
+            return FindComments(forumId).ToList().FindAll(x => x.CommenterType.Equals("guest") == true && x.Visited == true).Count;
+        }
     }
 }

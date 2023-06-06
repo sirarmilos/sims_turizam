@@ -13,6 +13,10 @@ namespace InitialProject.IRepository
 
         void Add(Forum forum, string ownerUsername);
         int NextId();
+
+        List<ForumNotificationsToOwner> FindNotifications(string ownerUsername);
+
+        void MarkAsReadNotificationsForums(string ownerUsername);
     }
 
 }

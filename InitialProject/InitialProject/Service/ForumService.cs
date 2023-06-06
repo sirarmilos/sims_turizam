@@ -25,6 +25,8 @@ namespace InitialProject.Service
 
         private readonly CommentService commentService;
 
+        private readonly Guest1ReportService guest1ReportService;
+        
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
         private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
@@ -52,6 +54,7 @@ namespace InitialProject.Service
             userService = new UserService();
             canceledReservationService = new CanceledReservationService();
             commentService = new CommentService();
+            guest1ReportService = new Guest1ReportService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
             forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
         }
@@ -179,5 +182,37 @@ namespace InitialProject.Service
             commentService.AddGuest1Comment(commenterUsername, answer, forumId);
         }
 
+        public bool ReportGuest(int commentId, string ownerUsername)
+        {
+            return guest1ReportService.ReportGuest(commentId, ownerUsername);
+        }
+
+        public bool IsOwnerStillOwner(int forumId, string ownerUsername)
+        {
+            return commentService.IsOwnerStillOwner(forumId, ownerUsername);
+        }
+
+        public int FindNumberOfNewForums(string ownerUsername)
+        {
+            return forumNotificationsToOwnerService.FindNumberOfNewForums(ownerUsername);
+        }
+
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
+        }
+
+        public void CheckIsUseful(int forumId)
+        {
+            bool checkIsUseful = forumRepository.CheckIsUseful(forumId);
+
+            if(checkIsUseful == false)
+            {
+                if(commentService.CheckComments(forumId) == true)
+                {
+                    forumRepository.MakeUseful(forumId);
+                }
+            }
+        }
     }
 }

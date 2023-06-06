@@ -18,5 +18,9 @@ namespace InitialProject.IRepository
         void Add(Forum forum);
 
         int NextId();
+
+        bool CheckIsUseful(int forumId);
+
+        void MakeUseful(int forumId);
     }
 }

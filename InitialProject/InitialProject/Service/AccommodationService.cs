@@ -34,6 +34,8 @@ namespace InitialProject.Service
 
         private readonly RenovationRecommendationService renovationRecommendationService;
 
+        private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
+
         public Dictionary<int, string> months = new Dictionary<int, string>()
         {
             { 1, "January" },
@@ -67,6 +69,7 @@ namespace InitialProject.Service
             locationService = new LocationService();
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
             canceledReservationService = new CanceledReservationService();
+            forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
         }
 
         public AccommodationService(string username)
@@ -80,6 +83,7 @@ namespace InitialProject.Service
             reservationService = new ReservationService(username);
             canceledReservationService = new CanceledReservationService();
             renovationRecommendationService = new RenovationRecommendationService();
+            forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
 
             Guest1 = username;
         }
@@ -661,7 +665,7 @@ namespace InitialProject.Service
 
                 if(isAlreadyAdded == false)
                 {
-                    TopAndWorstLocationDTO topLocationDTO = new TopAndWorstLocationDTO(temporaryAccommodation.Location, totalBusyPercentage);
+                    TopAndWorstLocationDTO topLocationDTO = new TopAndWorstLocationDTO(temporaryAccommodation.Location, totalBusyPercentage); //
                     topLocationDTOs.Add(topLocationDTO);
                 }
             }
@@ -763,6 +767,16 @@ namespace InitialProject.Service
             string city = worstLocation.Location.Split(", ")[1];
 
             accommodationRepository.Remove(country, city);
+        }
+
+        public int FindNumberOfNewForums(string ownerUsername)
+        {
+            return forumNotificationsToOwnerService.FindNumberOfNewForums(ownerUsername);
+        }
+
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
         }
     }
 }
