@@ -51,7 +51,7 @@ namespace InitialProject.Repository
 
         public Review FindOwnerReviewByReservationId(string ownerUsername, int reservationId)
         {
-            return FindByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+            return FindByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId && x.Reservation.Accommodation.Removed == false);
         }
 
         public List<Review> FindReviewsByGuest1Username(string guest1Username)

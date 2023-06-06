@@ -123,7 +123,7 @@ namespace InitialProject.Repository
 
         public List<Accommodation> FindByOwnerUsername(string ownerUsername)
         {
-            return FindAll().ToList().FindAll(x => x.OwnerUsername.Equals(ownerUsername) == true);
+            return FindAll().ToList().FindAll(x => x.OwnerUsername.Equals(ownerUsername) == true && x.Removed == false);
         }
 
         public void Remove(string country, string city)

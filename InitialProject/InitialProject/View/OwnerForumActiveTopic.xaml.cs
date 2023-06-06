@@ -197,6 +197,8 @@ namespace InitialProject.View
             forumService.MarkAsReadNotificationsForums(OwnerUsername);
         }
 
+        public ICommand ReportCommand { get; set; }
+
         public OwnerForumActiveTopic(string ownerUsername, string ownerHeader, ShowOwnerForumsDTO showOwnerForumsDTO)
         {
             InitializeComponent();
@@ -212,8 +214,6 @@ namespace InitialProject.View
             SetMenu(ownerHeader);
 
             textBlockErrorComment1.Visibility = Visibility.Hidden;
-
-            ReportCommand = new RelayCommand<ShowOwnerForumCommentsDTO>(Report);
         }
 
         private void SetMenu(string ownerHeader)
@@ -252,6 +252,8 @@ namespace InitialProject.View
             OwnerUsernameShow = OwnerUsername + ":";
 
             ShowOwnerForumCommentsDTOs = forumService.FindComments(ForumId);
+
+            ReportCommand = new RelayCommand<ShowOwnerForumCommentsDTO>(Report);
         }
 
         private void AddComment_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -289,8 +291,6 @@ namespace InitialProject.View
             window.Show();
             Close();
         }
-
-        public ICommand ReportCommand { get; set; }
 
         private void Report(ShowOwnerForumCommentsDTO showOwnerForumCommentsDTO)
         {
