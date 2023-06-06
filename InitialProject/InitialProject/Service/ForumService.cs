@@ -214,5 +214,16 @@ namespace InitialProject.Service
                 }
             }
         }
+
+        public void CloseForum(int forumId)
+        {
+            forumRepository.CloseForum(forumId);
+        }
+
+        public bool CheckIsForumClosed(int forumId)
+        {
+            return forumRepository.IsClosed(forumId);
+        }
+
     }
 }

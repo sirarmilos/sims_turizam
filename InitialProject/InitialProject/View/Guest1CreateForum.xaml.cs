@@ -175,10 +175,7 @@ namespace InitialProject.View
 
         public void ReturnBackToCaller(object sender, RoutedEventArgs e)
         {
-            if (Caller.Equals("Guest1Requests"))
-                GoToGuest1Requests(sender, e); 
-            else
-                GoToShowGuest1Notifications(sender,e);
+            GoToForum(sender,e);
         }
 
         private string CheckSuperType()
@@ -271,6 +268,11 @@ namespace InitialProject.View
         //{
         //    NavigationService?.Navigate(new Guest1Start(Guest1, this));
         //}
+
+        private void GoToForum(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1Forum(Guest1, this));
+        }
 
         private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
         {

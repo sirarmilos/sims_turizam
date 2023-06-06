@@ -21,6 +21,8 @@ using System.Windows.Threading;
 using System.ComponentModel;
 using GalaSoft.MvvmLight.Command;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
+using System.Xml.Linq;
 
 namespace InitialProject.View
 {
@@ -118,6 +120,8 @@ namespace InitialProject.View
             SetComboBoxes(page);
 
             SetUsernameHeader();
+
+            CheckWindowModeVisibilty();
         }
 
 
@@ -132,35 +136,59 @@ namespace InitialProject.View
             ShowGuest1ForumCommentsDTOs = forumService.FindGuest1ForumComments(showGuest1ForumsDTO.ForumId);
         }
 
-        private void AddComment_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void AddComment(object sender, RoutedEventArgs e)
         {
             forumService.AddGuest1Comment(Guest1, Comment, ShowGuest1ForumsDTO.ForumId);
+
+            forumService.CheckIsUseful(ShowGuest1ForumsDTO.ForumId);
+
+            ShowGuest1ForumCommentsDTOs = forumService.FindGuest1ForumComments(ShowGuest1ForumsDTO.ForumId);
+
+            ShowGuest1ForumCommentsDTOsItems.ItemsSource = ShowGuest1ForumCommentsDTOs;
+
+            tbComment.Text = string.Empty;
+            tbComment.Focus();
         }
 
-        private void Close_Executed(object sender, ExecutedRoutedEventArgs e) // ostao close
+        private void CloseForum(object sender, RoutedEventArgs e) 
         {
+            forumService.CloseForum(ShowGuest1ForumsDTO.ForumId);
 
+            CheckWindowModeVisibilty();
         }
-
-        private void ReportGuest(object sender, RoutedEventArgs e) // ostao report
+        
+        private void CheckWindowModeVisibilty()
         {
-            string answer = ((Button)sender).Tag as string;
-            MessageBox.Show(answer.ToString());
+            if (forumService.CheckIsForumClosed(ShowGuest1ForumsDTO.ForumId)) // mode: closed forum
+            {
+                AddCommentGrid.Visibility = Visibility.Collapsed;
+                ForumIsClosedMessage.Visibility = Visibility.Visible;
+                OneButtonMode.Visibility = Visibility.Visible;
+                TwoButtonsMode.Visibility = Visibility.Collapsed;
+
+                return;
+            }
+
+            if (!(Guest1+":").Equals(ShowGuest1ForumsDTO.CreatorUsername)) // mode: opened forum, but not creator
+            {
+                AddCommentGrid.Visibility = Visibility.Visible;
+                ForumIsClosedMessage.Visibility = Visibility.Collapsed;
+                OneButtonMode.Visibility = Visibility.Visible;
+                TwoButtonsMode.Visibility = Visibility.Collapsed;
+            }
+            else // mode: opened forum and creator
+            {
+                AddCommentGrid.Visibility = Visibility.Visible;
+                ForumIsClosedMessage.Visibility = Visibility.Collapsed;
+                OneButtonMode.Visibility = Visibility.Collapsed;
+                TwoButtonsMode.Visibility = Visibility.Visible;
+            }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        private void BackToCaller(object sender, RoutedEventArgs e)
+        {
+            GoToForum(sender, e);
+        }
 
         private void SetUsernameHeader()
         {
@@ -421,5 +449,6 @@ namespace InitialProject.View
                 }
             }
         }
+
     }
 }

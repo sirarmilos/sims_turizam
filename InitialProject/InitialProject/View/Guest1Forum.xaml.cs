@@ -17,31 +17,7 @@ namespace InitialProject.View
     {
         private readonly ForumService forumService;
 
-        public string OwnerUsername
-        {
-            get;
-            set;
-        }
-
         public List<ShowGuest1ForumsDTO> ShowGuest1ForumsDTOs
-        {
-            get;
-            set;
-        }
-
-        public List<string> UnreadCancelledReservations
-        {
-            get;
-            set;
-        }
-
-        public List<CancelledReservationsNotificationDTO> UnreadCancelledReservationsToDelete
-        {
-            get;
-            set;
-        }
-
-        public ShowGuest1ForumsDTO SelectedShowOwnerForum
         {
             get;
             set;
@@ -52,9 +28,6 @@ namespace InitialProject.View
             get;
             set;
         }
-
-
-
 
         private string guest1;
         public string Guest1
@@ -116,81 +89,17 @@ namespace InitialProject.View
 
             Guest1 = username;
 
-
             forumService = new ForumService(Guest1);
 
-            SetDefaultValue();
-
-            //SetMenu(ownerHeader);
-
-            //ShowOwnerForumsDTOs = forumService.FindForums();
             ShowGuest1ForumsDTOs = forumService.FindGuest1Forums();
 
             ReadMoreCommand = new RelayCommand<ShowGuest1ForumsDTO>(ReadMore);
 
-
-
             SetUsernameHeader();
 
             SetComboBoxes(page);
-
         }
 
-        //private void SetMenu(string ownerHeader)
-        //{
-        //    //usernameAndSuperOwner.Header = ownerHeader;
-
-        //    //rateGuestsNotifications.Header = "Number of unrated guests: " + forumService.FindNumberOfUnratedGuests(OwnerUsername) + ".";
-
-        //    UnreadCancelledReservations = new List<string>();
-
-        //    UnreadCancelledReservationsToDelete = forumService.FindUnreadCancelledReservations(OwnerUsername);
-
-        //    if (UnreadCancelledReservationsToDelete.Count == 0)
-        //    {
-        //        UnreadCancelledReservations.Add("There are no new canceled reservations");
-        //    }
-        //    else
-        //    {
-        //        foreach (CancelledReservationsNotificationDTO temporaryCanceledReservationsNotificationDTO in UnreadCancelledReservationsToDelete.ToList())
-        //        {
-        //            UnreadCancelledReservations.Add(temporaryCanceledReservationsNotificationDTO.AccommodationName + ": " + temporaryCanceledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCanceledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
-        //        }
-        //    }
-        //}
-
-        private void SetDefaultValue()
-        {
-
-        }
-
-        private void ReadMore_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if(SelectedShowOwnerForum == null)
-            {
-                e.CanExecute = false;
-            }
-            else
-            {
-                e.CanExecute = true;
-            }
-        }
-
-        private void ReadMore_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            /* if(string.IsNullOrEmpty(SelectedShowOwnerForum.Closed) == true)
-            {
-                OwnerForumActiveTopic window = new OwnerForumActiveTopic();
-                window.Show();
-                Close();
-            }
-            else
-            {
-                OwnerForumClosedTopic window = new OwnerForumClosedTopic();
-                window.Show();
-                Close();
-            }*/
-        }
 
         public ICommand ReadMoreCommand
         {
@@ -203,29 +112,7 @@ namespace InitialProject.View
             ShowGuest1ForumsDTO = showGuest1ForumsDTO;
 
             GoToForumPreview(null, null);
-
-            //if (string.IsNullOrEmpty(showGuest1ForumsDTO.Closed) == true)
-            //{
-            //OwnerForumActiveTopic window = new OwnerForumActiveTopic(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
-            //window.Show();
-            //}
-            //else
-            //{
-            //OwnerForumClosedTopic window = new OwnerForumClosedTopic(showOwnerForumsDTO);
-            //window.Show();
-            //}
         }
-
-        private void SelectedShowOwnerForumChange(object sender, RoutedEventArgs e)
-        {
-            // SelectedShowOwnerForum.ForumId = 
-        }
-
-
-
-
-
-
 
 
 
@@ -316,6 +203,11 @@ namespace InitialProject.View
             NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
         }
 
+        private void GoToForum(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1Forum(Guest1, this));
+        }
+
         //private void GoToGuest1Start(object sender, RoutedEventArgs e)
         //{
         //    NavigationService?.Navigate(new Guest1Start(Guest1, this));
@@ -326,10 +218,12 @@ namespace InitialProject.View
             NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
         }
 
-        private void GoToForum(object sender, RoutedEventArgs e)
+        
+        private void GoToGuest1CreateForum(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new Guest1Forum(Guest1, this));
+            NavigationService?.Navigate(new Guest1CreateForum(Guest1, this));
         }
+
 
         private void GoToForumPreview(object sender, RoutedEventArgs e)
         {

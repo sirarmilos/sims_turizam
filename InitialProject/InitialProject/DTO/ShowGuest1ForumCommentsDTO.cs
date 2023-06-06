@@ -50,6 +50,7 @@ namespace InitialProject.DTO
             }
             else
             {
+                CommenterType = "guest";
                 if(comment.Visited == true)
                 {
                     Visited = "visited";

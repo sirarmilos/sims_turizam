@@ -1,4 +1,5 @@
-﻿using InitialProject.DTO;
+﻿using InitialProject.Dto;
+using InitialProject.DTO;
 using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -130,9 +132,26 @@ namespace InitialProject.Repository
             return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.StartDate.Year == year || x.EndDate.Year == year);
         }
 
-        public bool HasGuest1MadeAnyReservation(string username)
+        public bool HasGuest1MadeAnyReservationAtThisLocation(string username, ForumLocationDTO location)
         {
-            return FindGuest1Reservations(username).Any();
+            List<Reservation> guest1Reservations = FindGuest1Reservations(username);
+
+            string oneWordReservationAccommodationCity;
+            string oneWordReservationAccommodationCountry;
+            string oneWordForumCity = Regex.Replace(location.City, @"\s+", " ");
+            string oneWordForumCountry = Regex.Replace(location.Country, @"\s+", " ");
+
+            foreach (var reservation in guest1Reservations)
+            {
+                oneWordReservationAccommodationCity = Regex.Replace(reservation.Accommodation.Location.City, @"\s+", " ");
+                oneWordReservationAccommodationCountry = Regex.Replace(reservation.Accommodation.Location.Country, @"\s+", " ");
+
+                if (oneWordReservationAccommodationCity.Equals(oneWordForumCity, StringComparison.OrdinalIgnoreCase)
+                    && oneWordReservationAccommodationCountry.Equals(oneWordForumCountry, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+
+            return false;
         }
     }
 }

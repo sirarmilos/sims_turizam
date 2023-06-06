@@ -48,7 +48,7 @@ namespace InitialProject.DesignData
 
             for (int i = 0; i < 4; i++)
             {
-                ShowGuest1ForumCommentsDTO tmp = new ShowGuest1ForumCommentsDTO(12, Guest1, "guest", "bravoooo", "visited", "0", "owner");
+                ShowGuest1ForumCommentsDTO tmp = new ShowGuest1ForumCommentsDTO(12, Guest1, "guest", "bravoooo", "visited", "0");
                 ShowGuest1ForumCommentsDTOs.Add(tmp);
             }
         }

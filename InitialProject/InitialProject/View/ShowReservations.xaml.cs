@@ -358,6 +358,11 @@ namespace InitialProject.View
             NavigationService?.Navigate(new ShowGuest1Notifications(Guest1, this));
         }
 
+        private void GoToForum(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1Forum(Guest1, this));
+        }
+
         private void GoToLogout(object sender, RoutedEventArgs e)
         {
             Window currentWindow = Window.GetWindow(this);

@@ -78,7 +78,9 @@ namespace InitialProject.Repository
 
             reservationRepository = new ReservationRepository();
 
-            Comment guest1Comment = new Comment(NextId(), forumRepository.FindById(forumId), commenterUsername, "guest1", answer, false, reservationRepository.HasGuest1MadeAnyReservation(commenterUsername), 0);
+            Forum forum = forumRepository.FindById(forumId);
+
+            Comment guest1Comment = new Comment(NextId(), forum, commenterUsername, "guest1", answer, false, reservationRepository.HasGuest1MadeAnyReservationAtThisLocation(commenterUsername, forum.ForumLocationDTO), 0);
 
             List<Comment> allComments = FindAll();
             allComments.Add(guest1Comment);
