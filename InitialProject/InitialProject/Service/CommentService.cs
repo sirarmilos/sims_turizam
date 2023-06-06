@@ -27,5 +27,10 @@ namespace InitialProject.Service
         {
             commentRepository.Add(commenterUsername, answer, forumId);
         }
+
+        public void AddGuest1Comment(string commenterUsername, string answer, int forumId)
+        {
+            commentRepository.AddGuest1Comment(commenterUsername, answer, forumId); 
+        }
     }
 }

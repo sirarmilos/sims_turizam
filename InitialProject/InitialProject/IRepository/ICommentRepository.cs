@@ -18,5 +18,8 @@ namespace InitialProject.IRepository
         void Save(List<Comment> allComments);
 
         int NextId();
+
+        void AddGuest1Comment(string commenterUsername, string answer, int forumId);
+
     }
 }

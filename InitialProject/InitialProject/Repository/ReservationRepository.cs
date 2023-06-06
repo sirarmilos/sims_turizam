@@ -129,5 +129,10 @@ namespace InitialProject.Repository
         {
             return FindByAccommodationId(accommodationId).ToList().FindAll(x => x.StartDate.Year == year || x.EndDate.Year == year);
         }
+
+        public bool HasGuest1MadeAnyReservation(string username)
+        {
+            return FindGuest1Reservations(username).Any();
+        }
     }
 }

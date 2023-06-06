@@ -10,10 +10,13 @@
         Title="Accommodation Reservation" d:DesignHeight="684" d:DesignWidth="838">
 
 
+    <!--
     <Page.DataContext>
         <designData:AccommodationReservationDesignData />
     </Page.DataContext>
 
+
+     x:Name="ListAccommodations" ItemsSource = "{Binding ListAccommodations}" -->
 
     <DockPanel>
 

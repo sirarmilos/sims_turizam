@@ -143,5 +143,41 @@ namespace InitialProject.Service
         {
             commentService.AddOwnerComment(commenterUsername, answer, forumId);
         }
+
+        public List<ShowGuest1ForumsDTO> FindGuest1Forums() // 
+        {
+            List<Forum> forums = forumRepository.FindAll();
+            List<ShowGuest1ForumsDTO> showGuest1ForumsDTOs = new List<ShowGuest1ForumsDTO>();
+
+            foreach (Forum forum in forums.ToList())
+            {
+                ShowGuest1ForumsDTO showGuest1ForumsDTO = new ShowGuest1ForumsDTO(forum);
+                showGuest1ForumsDTOs.Add(showGuest1ForumsDTO);
+            }
+
+            return showGuest1ForumsDTOs;
+        }
+
+        public List<ShowGuest1ForumCommentsDTO> FindGuest1ForumComments(int forumId) //
+        {
+            List<ShowGuest1ForumCommentsDTO> showGuest1ForumCommentsDTOs = new List<ShowGuest1ForumCommentsDTO>();
+
+            List<Comment> allComments = commentService.FindComments(forumId);
+
+            foreach (Comment temporaryComment in allComments.ToList())
+            {
+                showGuest1ForumCommentsDTOs.Add(new ShowGuest1ForumCommentsDTO(temporaryComment));
+            }
+
+            showGuest1ForumCommentsDTOs = showGuest1ForumCommentsDTOs.OrderBy(x => x.CommentId).ToList();
+
+            return showGuest1ForumCommentsDTOs;
+        }
+
+        public void AddGuest1Comment(string commenterUsername, string answer, int forumId)
+        {
+            commentService.AddGuest1Comment(commenterUsername, answer, forumId);
+        }
+
     }
 }

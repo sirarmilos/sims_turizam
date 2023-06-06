@@ -14,6 +14,8 @@ namespace InitialProject.Repository
     {
         private ForumRepository forumRepository;
 
+        private ReservationRepository reservationRepository;
+
         private const string FilePathComment = "../../../Resources/Data/comments.csv";
 
         private readonly Serializer<Comment> commentSerializer;
@@ -68,6 +70,19 @@ namespace InitialProject.Repository
             }
 
             return FindAll().Max(x => x.CommentId) + 1;
+        }
+
+        public void AddGuest1Comment(string commenterUsername, string answer, int forumId)
+        {
+            forumRepository = new ForumRepository();
+
+            reservationRepository = new ReservationRepository();
+
+            Comment guest1Comment = new Comment(NextId(), forumRepository.FindById(forumId), commenterUsername, "guest1", answer, false, reservationRepository.HasGuest1MadeAnyReservation(commenterUsername), 0);
+
+            List<Comment> allComments = FindAll();
+            allComments.Add(guest1Comment);
+            Save(allComments);
         }
     }
 }

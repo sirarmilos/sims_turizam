@@ -176,7 +176,7 @@ namespace InitialProject.View
         public void ReturnBackToCaller(object sender, RoutedEventArgs e)
         {
             if (Caller.Equals("Guest1Requests"))
-                GoToGuest1Requests(sender, e);
+                GoToGuest1Requests(sender, e); 
             else
                 GoToShowGuest1Notifications(sender,e);
         }
