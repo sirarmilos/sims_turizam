@@ -356,6 +356,21 @@ namespace InitialProject.Service
 
         }
 
+        public List<TourRequest> FindAllComplexRequestPending()
+        {
+            List<TourRequest> requests = new List<TourRequest>();
+            List<TourRequest> complex_requests = new List<TourRequest>();
+            requests = tourRequestRepository.FindAll();
+            foreach(TourRequest tr in requests)
+            {
+                if (tr.Status.Equals("pending") && tr.ComplexTourId != 0)
+                    complex_requests.Add(tr);
+            }
+
+            return complex_requests;
+
+        }
+
 
     }
 }

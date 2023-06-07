@@ -382,6 +382,40 @@ namespace InitialProject.Service
             return filteredGuidences;       
         }
 
+        static List<DateTime> GenerateRandomDates(DateTime start, DateTime end, int count)
+        {
+            var rnd = new Random();
+            var range = end - start;
+            var randomDates = new List<DateTime>();
+
+            for (int i = 0; i < count; i++)
+            {
+                var randTimeSpan = new TimeSpan((long)(rnd.NextDouble() * range.Ticks));
+                randomDates.Add(start + randTimeSpan);
+            }
+
+            return randomDates;
+        }
+
+        public List<DateTime> RecommendDateForComplexTour(string guideUsername, DateTime start, DateTime end)
+        {
+            int counter = 0;
+            List<DateTime> retVal = new List<DateTime>();
+            for(int i=0; i<1000; i++)
+            {
+                var randomDates = GenerateRandomDates(start, end, 1);
+                DateTime rndDate = randomDates.FirstOrDefault();
+                if (CheckIfGuideIsFreeInPeriod(guideUsername, rndDate))
+                {
+                    retVal.Add(rndDate);
+                    counter++;
+                    if (counter == 5)
+                        break;
+                }
+            }
+            return retVal;
+        }
+
     }
 
 }

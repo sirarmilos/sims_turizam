@@ -232,5 +232,11 @@ namespace InitialProject.View
             window.Show();
         }
 
+        private void GoToComplexRequests(object sender, RoutedEventArgs e)
+        {
+            ShowComplexTourRequests window = new ShowComplexTourRequests(Guide);
+            window.Show();
+        }
+
     }
 }

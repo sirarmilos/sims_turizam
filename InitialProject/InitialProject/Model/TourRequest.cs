@@ -27,9 +27,11 @@ namespace InitialProject.Model
 
         public string Status { get; set; }  
 
+        public int ComplexTourId { get; set; }
+
         public TourRequest() { }
 
-        public TourRequest(int id, User user, Location location, string description, Language language, int guestNumber, DateTime startDate, DateTime endDate, DateTime creationDate, string status)
+        public TourRequest(int id, User user, Location location, string description, Language language, int guestNumber, DateTime startDate, DateTime endDate, DateTime creationDate, string status, int complexTourId)
         {
             Id = id;
             User = user;
@@ -41,6 +43,7 @@ namespace InitialProject.Model
             EndDate = endDate;
             CreationDate = creationDate;
             Status = status;
+            ComplexTourId = complexTourId;
         }
 
         public void FromCSV(string[] values)
@@ -62,11 +65,13 @@ namespace InitialProject.Model
             CreationDate = Convert.ToDateTime(values[8]);
 
             Status = Convert.ToString(values[9]);
+
+            ComplexTourId = Convert.ToInt32(values[10]);
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), User.Username, Location.Id.ToString(), Description, Language.ToString(), GuestNumber.ToString(), StartDate.Date.ToString(), EndDate.Date.ToString(), CreationDate.Date.ToString(), Status };
+            string[] csvValues = { Id.ToString(), User.Username, Location.Id.ToString(), Description, Language.ToString(), GuestNumber.ToString(), StartDate.Date.ToString(), EndDate.Date.ToString(), CreationDate.Date.ToString(), Status, ComplexTourId.ToString() };
             return csvValues;
         }
     }

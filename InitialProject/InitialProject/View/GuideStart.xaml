@@ -40,6 +40,7 @@
                     <MenuItem Header="Request statistics" Margin="0,5,0,0" Click="GoToRequestStatistics"/>
                     <MenuItem Header="Quit Your Job" Margin="0,5,0,0" Click="GoToQuitJob"/>
                     <MenuItem Header="Cancel future tours" Margin="0,5,0,0" Click="GoToCancelFutureTours"/>
+                    <MenuItem Header="Complex Requests" Margin="0,5,0,0" Click="GoToComplexRequests"/>
                 </StackPanel>
                 <Grid>
                     <Button Content="LOG OUT" HorizontalAlignment="Left" Margin="82,272,0,-261" Click="GoToLogout" Width="80" RenderTransformOrigin="0.472,-5.709"/>

@@ -49,6 +49,8 @@ namespace InitialProject.View
             Guide = username;
             WelcomeText = "WELCOME, " + Guide;
             dgStart1.ItemsSource = tourGuidenceService.FindAllForToday(Guide);
+            WizardWindow window = new WizardWindow();
+            window.Show();
         }
 
         private void GoToLogout(object sender, RoutedEventArgs e)
