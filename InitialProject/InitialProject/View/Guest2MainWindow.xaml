@@ -36,7 +36,7 @@
         <Button x:Name="TourRequestStatisticsButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1000,211,0,0" VerticalAlignment="Top" Height="91" Width="261" FontSize="20" Click="TourRequestStatisticsButton_Click">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrRequestStats}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="ComplexTourRequestButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1261,211,0,0" VerticalAlignment="Top" Height="91" Width="227" FontSize="20">
+        <Button x:Name="ComplexTourRequestButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1261,211,0,0" VerticalAlignment="Top" Height="91" Width="227" FontSize="20" Click="ComplexTourRequestButton_Click">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrComplexTourRequest}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         <Button x:Name="ComplexTourDisplayButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1488,211,0,0" VerticalAlignment="Top" Height="91" Width="217" FontSize="20">

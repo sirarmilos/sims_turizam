@@ -384,6 +384,10 @@ namespace InitialProject.Service
 
         }
 
+        public void SaveList(List<TourRequest> tourRequests)
+        {
+            tourRequestRepository.SaveList(tourRequests);
+        }
 
 
     }

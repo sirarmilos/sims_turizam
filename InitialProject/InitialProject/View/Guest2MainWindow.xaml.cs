@@ -271,5 +271,18 @@ namespace InitialProject.View
 
             currentlySelected = TourRequestStatisticsButton;
         }
+
+        private void ComplexTourRequestButton_Click(object sender, RoutedEventArgs e)
+        {
+            Guest2ComplexTourRequestCreation guest2ComplexTourRequestCreation = new Guest2ComplexTourRequestCreation(Username);
+            mainFrame.Content= guest2ComplexTourRequestCreation;
+
+            PaintButtons();
+
+            ComplexTourRequestButton.Background = Brushes.LightGray;
+            ComplexTourRequestButton.Foreground = Brushes.Black;
+
+            currentlySelected = ComplexTourRequestButton;
+        }
     }
 }

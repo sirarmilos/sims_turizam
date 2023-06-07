@@ -3,8 +3,8 @@ using InitialProject.Model;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -22,13 +22,17 @@ using System.Windows.Shapes;
 namespace InitialProject.View
 {
     /// <summary>
-    /// Interaction logic for Guest2TourRequestCreation.xaml
+    /// Interaction logic for Guest2ComplexTourRequestCreation.xaml
     /// </summary>
-    public partial class Guest2TourRequestCreation : Page
+    public partial class Guest2ComplexTourRequestCreation : Page
     {
         private readonly TourRequestService tourRequestService = new TourRequestService();
         private readonly LocationService locationService = new LocationService();
         private readonly UserService userService = new UserService();
+
+        private List<TourRequest> tourRequests;
+
+        public ObservableCollection<TourRequest> requests;
 
         private string Username;
 
@@ -46,7 +50,7 @@ namespace InitialProject.View
             get { return city; }
             set
             {
-                if(string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(Description) || string.IsNullOrEmpty(MaxGuests))
+                if (string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(Description) || string.IsNullOrEmpty(MaxGuests))
                 {
                     createRequestButton.IsEnabled = false;
                 }
@@ -136,7 +140,7 @@ namespace InitialProject.View
                     createRequestButton.IsEnabled = false;
                 }
 
-                if(string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Description))
+                if (string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Description))
                 {
                     createRequestButton.IsEnabled = false;
                 }
@@ -174,7 +178,7 @@ namespace InitialProject.View
             get { return endDate; }
             set
             {
-                if(StartDate>value)
+                if (StartDate > value)
                 {
                     createRequestButton.IsEnabled = false;
                     datePickerWarningLabel.Visibility = Visibility.Visible;
@@ -198,17 +202,18 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public Guest2TourRequestCreation(string Username)
+        public Guest2ComplexTourRequestCreation(string username)
         {
             InitializeComponent();
-            InitializeCbLang();
-            this.Username = Username;
+            this.Username = username;
             DataContext = this;
+
+            tourRequests = new List<TourRequest>();
+            InitializeCbLang();
+            requests = new ObservableCollection<TourRequest>();
 
             StartDate = DateTime.Now;
             EndDate = DateTime.Now;
-
-            createRequestButton.IsEnabled = false;
         }
 
         public void InitializeCbLang()
@@ -224,7 +229,7 @@ namespace InitialProject.View
         {
             TourRequest tourRequest = new TourRequest();
 
-            LocationDto locationDto = new LocationDto(City,Country,"",0,0);
+            LocationDto locationDto = new LocationDto(City, Country, "", 0, 0);
             Location location = locationService.Save(locationDto);
             User user = userService.FindByUsername(Username);
 
@@ -237,12 +242,25 @@ namespace InitialProject.View
             tourRequest.EndDate = EndDate;
             tourRequest.Status = "pending";
             tourRequest.CreationDate = DateTime.Now;
-            tourRequest.ComplexTourRequestId = 0;
+            tourRequest.ComplexTourRequestId = 2;
 
-            bool result = tourRequestService.SaveTourRequest(tourRequest);
+            requests.Add(tourRequest);
 
-            Guest2DisplayRequestedTours guest2DisplayRequestedTours = new Guest2DisplayRequestedTours(Username);
-            //NavigationService.Navigate(guest2DisplayRequestedTours);
+            lista.ItemsSource = requests;
+
+
+            description = "";
+            maxGuests = "";
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now;
+            City = "";
+            Country = "";
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            tourRequestService.SaveList(requests.ToList());
+            requests.Clear();
 
         }
     }

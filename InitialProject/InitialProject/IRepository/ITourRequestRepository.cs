@@ -32,5 +32,7 @@ namespace InitialProject.IRepository
         List<TourRequest> FindAllByUser(string username);
 
         void Invalidate();
+
+        void SaveList(List<TourRequest> tourRequests);
     }
 }

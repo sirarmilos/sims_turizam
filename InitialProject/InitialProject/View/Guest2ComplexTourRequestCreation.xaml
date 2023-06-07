@@ -1,0 +1,42 @@
+﻿<Page x:Class="InitialProject.View.Guest2ComplexTourRequestCreation"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:InitialProject.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="630" d:DesignWidth="1494"
+      Title="Guest2ComplexTourRequestCreation">
+
+    <Grid Background="{DynamicResource BackGrid}">
+        <Frame NavigationUIVisibility="Hidden" Content=""/>
+        <GroupBox Foreground="{DynamicResource TextColor}" Header="{DynamicResource StrTourRequest}" Height="604" Margin="11,13,813,13" FontSize="20">
+            <Grid Margin="10,0,-2,0">
+                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrCountry1}" HorizontalAlignment="Left" Margin="23,41,0,0" VerticalAlignment="Top" FontSize="24"/>
+                <TextBox Text="{Binding Path=Country, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="23,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="277" FontSize="28"/>
+                <Label Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="23,156,0,0" VerticalAlignment="Top" FontSize="24">
+                    <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrCity1}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" RenderTransformOrigin="-0.018,0.439"/>
+                </Label>
+                <TextBox HorizontalAlignment="Left" Margin="23,203,0,0" TextWrapping="Wrap" Text="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="277" FontSize="28"/>
+                <TextBox HorizontalAlignment="Left" Margin="23,338,0,0" TextWrapping="Wrap" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="277" Height="112"/>
+                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrDescription1}" HorizontalAlignment="Left" Margin="23,291,0,0" VerticalAlignment="Top" FontSize="24"/>
+                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrLanguage1}" HorizontalAlignment="Left" Margin="365,41,0,0" VerticalAlignment="Top" FontSize="24"/>
+                <ComboBox x:Name="cbLanguage" SelectedItem="{Binding Languagee}" HorizontalAlignment="Left" Margin="361,86,0,0" VerticalAlignment="Top" Width="277" FontSize="28"/>
+                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrGuestsForTours}" HorizontalAlignment="Left" Margin="361,161,0,0" VerticalAlignment="Top" FontSize="24"/>
+                <TextBox HorizontalAlignment="Left" Margin="358,203,0,0" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="277" FontSize="28"/>
+                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrFrom}" HorizontalAlignment="Left" Margin="365,314,0,0" VerticalAlignment="Top" FontSize="24"/>
+                <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrTo}" HorizontalAlignment="Left" Margin="521,314,0,0" VerticalAlignment="Top" FontSize="24" RenderTransformOrigin="-0.139,0.069"/>
+                <DatePicker SelectedDate="{Binding StartDate}" HorizontalAlignment="Left" Margin="350,380,0,0" VerticalAlignment="Top" Width="134"/>
+                <DatePicker SelectedDate="{Binding EndDate}" HorizontalAlignment="Left" Margin="514,380,0,0" VerticalAlignment="Top" Width="134"/>
+                <Button x:Name="createRequestButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" Content="{DynamicResource StrCreateRequest}" HorizontalAlignment="Center" Margin="0,479,0,0" VerticalAlignment="Top" FontSize="28" Height="81" Width="216" Click="CreateTourRequest"/>
+                <Label x:Name="maxGuestsWarning" Visibility="Hidden" Foreground="Red" Content="{DynamicResource StrMaxGuestWarning}" HorizontalAlignment="Left" Margin="422,247,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="datePickerWarningLabel" Visibility="Hidden" Content="{DynamicResource StrDateRange}" Foreground="Red" HorizontalAlignment="Left" Margin="440,420,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </GroupBox>
+        <DataGrid x:Name="lista" Margin="712,10,50,119"/>
+        <Button Content="Finnish" HorizontalAlignment="Left" Margin="952,539,0,0" VerticalAlignment="Top" Height="60" Width="252" Click="Button_Click"/>
+
+
+
+    </Grid>
+</Page>
