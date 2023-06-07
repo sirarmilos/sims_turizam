@@ -263,6 +263,11 @@ namespace InitialProject.View
             NavigationService?.Navigate(new CreateReview(Guest1, this));
         }
 
+        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
+        }
+
         private void GoToForum(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new Guest1Forum(Guest1, this));

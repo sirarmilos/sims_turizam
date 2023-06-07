@@ -294,6 +294,11 @@ namespace InitialProject.View
             NavigationService?.Navigate(new Guest1Requests(Guest1, this));
         }
 
+        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
+        }
+
         private void GoToShowGuest1Notifications(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new ShowGuest1Notifications(Guest1, this));

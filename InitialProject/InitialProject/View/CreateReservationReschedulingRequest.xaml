@@ -53,10 +53,10 @@
             </ComboBox>
 
 
-            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
+            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Click="GoToAnywhereAnytime" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
                 <StackPanel>
-                    <TextBlock Text="Whenever" HorizontalAlignment="Center" Height="22" Margin="0,0,0,0" VerticalAlignment="Top" />
-                    <TextBlock Text="Wherever" Height="23" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                    <TextBlock Text="Anywhere" HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Top" />
+                    <TextBlock Text="Anytime" Height="Auto" Margin="0,-8,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 </StackPanel>
             </Button>
 

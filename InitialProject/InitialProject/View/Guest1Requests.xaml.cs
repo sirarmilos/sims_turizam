@@ -271,6 +271,11 @@ namespace InitialProject.View
             GoToShowReservations(sender, e);
         }
 
+        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
+        }
+
         private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
