@@ -102,11 +102,11 @@ namespace InitialProject.View
                 }
                 if (type.Equals("guide") == true)
                 {
-                    GuideStart window = new GuideStart(Username);
+                    /*GuideStart window = new GuideStart(Username);
                     window.Show();
-                    Close();
+                    Close();*/
 
-                   /* TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+                    TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
                     if (tg != null)
                     {
                         GuideStart2 window1 = new GuideStart2(Username, tg);
@@ -118,7 +118,7 @@ namespace InitialProject.View
                         GuideStart1 window2 = new GuideStart1(Username);
                         window2.Show();
                         Close();
-                    }*/
+                    }
                     
                 }
                 if (type.Equals("guest2") == true)

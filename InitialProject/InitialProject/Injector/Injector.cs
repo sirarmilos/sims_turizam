@@ -60,6 +60,8 @@ namespace InitialProject.Injector
                 { typeof(IVoucherRepository), new VoucherRepository() },
                 {typeof(ITourRequestRepository), new TourRequestRepository() },
                 { typeof(ITourNotificationsRepository), new TourNotificationsRepository() },
+                { typeof(IGuideRepository), new GuideRepository() },
+                { typeof(IComplexTourRepository), new ComplexTourRepository() },
             };
 
 

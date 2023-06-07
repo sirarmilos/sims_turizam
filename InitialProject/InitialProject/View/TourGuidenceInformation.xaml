@@ -90,10 +90,10 @@
                         <TextBlock HorizontalAlignment="Left" Margin="28,250,0,0" TextWrapping="Wrap" Text="Duration" VerticalAlignment="Top"/>
 
 
-                        <TextBlock HorizontalAlignment="Left" Margin="242,40,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.TourName}" VerticalAlignment="Top" Width="96" TextAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="242,110,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Language}" VerticalAlignment="Top" Width="96" TextAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="242,180,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.MaxGuests}" VerticalAlignment="Top" Width="96" TextAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="242,250,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Duration}" VerticalAlignment="Top" Width="96" TextAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="242,40,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.TourName}" VerticalAlignment="Top" Width="88" TextAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="242,110,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Language}" VerticalAlignment="Top" Width="88" TextAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="242,180,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.MaxGuests}" VerticalAlignment="Top" Width="88" TextAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="242,250,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Duration}" VerticalAlignment="Top" Width="88" TextAlignment="Center"/>
 
                         <Border BorderBrush="Black" BorderThickness="1" Margin="242,180,40,104" />
                         <Border BorderBrush="Black" BorderThickness="1" Margin="242,110,40,174"/>
@@ -138,15 +138,15 @@
                         <TextBlock HorizontalAlignment="Left" Margin="28,250,0,0" TextWrapping="Wrap" Text="Latitude and Longitude" VerticalAlignment="Top"/>
 
 
-                        <TextBlock HorizontalAlignment="Left" Margin="242,40,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Location.Country}" VerticalAlignment="Top" Width="96" TextAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="242,110,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Location.City}" VerticalAlignment="Top" Width="96" TextAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="242,180,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Location.Address}" VerticalAlignment="Top" Width="96" TextAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="242,250,0,0" TextWrapping="Wrap" Text="{Binding LatAndLong}" VerticalAlignment="Top" Width="96" TextAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="242,40,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Location.Country}" VerticalAlignment="Top" Width="108" TextAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="242,110,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Location.City}" VerticalAlignment="Top" Width="108" TextAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="242,180,0,0" TextWrapping="Wrap" Text="{Binding TourGuidence.Tour.Location.Address}" VerticalAlignment="Top" Width="108" TextAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="242,250,0,0" TextWrapping="Wrap" Text="{Binding LatAndLong}" VerticalAlignment="Top" Width="108" TextAlignment="Center"/>
 
-                        <Border BorderBrush="Black" BorderThickness="1" Margin="242,180,40,104" />
-                        <Border BorderBrush="Black" BorderThickness="1" Margin="242,110,40,174"/>
-                        <Border BorderBrush="Black" BorderThickness="1" Margin="242,250,40,34"/>
-                        <Border BorderBrush="Black" BorderThickness="1" Margin="242,40,40,244" />
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="242,180,20,104" />
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="242,110,20,174"/>
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="242,250,20,34"/>
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="242,40,20,244" />
 
                         <!-- Grid content goes here -->
                     </Grid>

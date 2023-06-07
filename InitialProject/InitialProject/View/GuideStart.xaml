@@ -38,13 +38,16 @@
                     <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
                     <MenuItem Header="Create Tour Request Statics" Margin="0,5,0,0" Click="GoToCreateTourRequestStats"/>
                     <MenuItem Header="Request statistics" Margin="0,5,0,0" Click="GoToRequestStatistics"/>
+                    <MenuItem Header="Quit Your Job" Margin="0,5,0,0" Click="GoToQuitJob"/>
+                    <MenuItem Header="Cancel future tours" Margin="0,5,0,0" Click="GoToCancelFutureTours"/>
+                    <MenuItem Header="Complex Requests" Margin="0,5,0,0" Click="GoToComplexRequests"/>
                 </StackPanel>
                 <Grid>
-                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
+                    <Button Content="LOG OUT" HorizontalAlignment="Left" Margin="82,272,0,-261" Click="GoToLogout" Width="80" RenderTransformOrigin="0.472,-5.709"/>
                 </Grid>
             </StackPanel>
         </Border>
-        
+
 
         <!-- Main content -->
         <Grid Grid.Column="1">
@@ -92,6 +95,9 @@
                     <ToolTip>This is a button. Click it to perform an action.</ToolTip>
                 </Button.ToolTip>
             </Button>
+            <Label Content="TIP: " HorizontalAlignment="Left" Margin="877,75,0,0" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="914,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Text="{Binding Type}" Width="144"/>
+
 
         </Grid>
 

@@ -25,18 +25,17 @@ namespace InitialProject.Repository
         {
 
             voucherSerializer = new Serializer<Voucher>();
-            vouchers = voucherSerializer.FromCSV(FilePathVoucher);
+            //vouchers = voucherSerializer.FromCSV(FilePathVoucher);
 
         }
 
         public int NextId()
         {
-            vouchers = voucherSerializer.FromCSV(FilePathVoucher);
-            if (vouchers.Count < 1)
+            if (FindAll().Count < 1)
             {
                 return 1;
             }
-            return vouchers.Max(c => c.Id) + 1;
+            return FindAll().Max(c => c.Id) + 1;
         }
 
         public void Save(List<Voucher> vouchers)
@@ -46,6 +45,15 @@ namespace InitialProject.Repository
 
         public List<Voucher> FindAll()
         {
+            UserRepository userRepository = new UserRepository();
+
+            vouchers = voucherSerializer.FromCSV(FilePathVoucher);
+
+            foreach (Voucher temporaryVouchers in vouchers.ToList())
+            {
+                temporaryVouchers.user = userRepository.FindByUsername(temporaryVouchers.user.Username);
+            }
+
             return vouchers;
         }
     }
