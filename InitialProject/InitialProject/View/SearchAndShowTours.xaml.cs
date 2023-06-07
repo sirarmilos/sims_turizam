@@ -147,8 +147,8 @@ namespace InitialProject.View
                 {
                     TourDisplayDTO tour = new TourDisplayDTO();
                     tour = (TourDisplayDTO)listTours.SelectedItems[0];
-                    TourReservation tourReservation = new TourReservation(tour,username);
-                    tourReservation.Show();
+                    //TourReservation tourReservation = new TourReservation(tour,username);
+                    //tourReservation.Show();
                 }
             }
             catch

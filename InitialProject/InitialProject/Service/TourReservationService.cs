@@ -191,5 +191,10 @@ namespace InitialProject.Service
             return keyValuePairs;
 
         }
+
+        public void UpdateIsUsedForVoucher(int id)
+        {
+            tourReservationRepository.UpdateIsUsedForVoucher(id);
+        }
     }
 }

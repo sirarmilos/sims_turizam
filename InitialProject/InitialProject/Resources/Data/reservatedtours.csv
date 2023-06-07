@@ -1,10 +1,15 @@
-Guest21|1|False, True, False|3|True|0|1
-Guest22|1|False, False, False|4|False|1|2
-Guest22|3|False, False, False|4|False|0|5
-Guest23|3|False, False, False|3|False|0|6
-Guest22|5|False, False|4|False|0|8
-Guest23|5|False, False|3|False|0|9
-Guest21|9|False, True, False|3|True|4|10
-Guest22|9|False, False, False|4|False|0|11
-Guest23|9|False, False, False|3|False|3|12
-Guest23|8|False, False|3|False|0|12
+Guest21|1|False, True, False|3|True|0|1|True
+Guest22|1|False, False, False|4|False|1|2|False
+Guest22|3|False, False, False|4|False|0|5|False
+Guest23|3|False, False, False|3|False|0|6|False
+Guest22|5|False, False|4|False|0|8|False
+Guest23|5|False, False|3|False|0|9|False
+Guest21|9|False, True, False|3|True|4|10|False
+Guest22|9|False, False, False|4|False|0|11|False
+Guest23|9|False, False, False|3|False|3|14|False
+Guest23|8|False, False|3|False|0|12|False
+Guest21|7|False, True|12|True|0|15|True
+Guest21|7|False, True|12|True|0|16|True
+Guest21|7|False, True|12|True|0|17|True
+Guest21|7|False, True|12|True|0|18|True
+Guest21|7|False, True|12|True|0|19|False

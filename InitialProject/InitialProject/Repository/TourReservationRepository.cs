@@ -51,5 +51,22 @@ namespace InitialProject.Repository
             return FindAll().Max(x => x.Id) + 1;
         }
 
+
+        public void UpdateIsUsedForVoucher(int id)
+        {
+            tourReservations = FindAll();
+
+            foreach(TourReservation tourReservation in tourReservations)
+            {
+                if(tourReservation.Id==id)
+                {
+                    tourReservation.IsUsedForVoucher = true;
+                }
+            }
+
+            Save(tourReservations);
+
+        }
+
     }
 }

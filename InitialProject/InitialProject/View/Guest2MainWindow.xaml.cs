@@ -1,4 +1,5 @@
 ﻿using InitialProject.Dto;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,9 @@ namespace InitialProject.View
             ToursButton.Foreground = Brushes.Black;
 
             currentlySelected = ToursButton;
+
+            VoucherService voucherService = new VoucherService();
+            voucherService.AddNewVoucher(username);
 
         }
 

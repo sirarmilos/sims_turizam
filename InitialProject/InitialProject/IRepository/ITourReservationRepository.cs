@@ -16,5 +16,7 @@ namespace InitialProject.IRepository
         void Save(List<TourReservation> tourReservations);
 
         int NextId();
+
+        void UpdateIsUsedForVoucher(int id);
     }
 }
