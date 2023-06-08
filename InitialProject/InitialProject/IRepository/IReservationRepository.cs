@@ -42,5 +42,7 @@ namespace InitialProject.IRepository
         int FindAccommodationReservationCountByYear(int accommodationId, int year);
 
         List<Reservation> FindAccommodationReservationsByYear(int accommodationId, int year);
+
+        bool IsFutureReservationExistByLocationId(int locationId, string ownerUsername);
     }
 }

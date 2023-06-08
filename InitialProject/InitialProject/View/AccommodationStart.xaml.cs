@@ -196,13 +196,6 @@ namespace InitialProject.View
             SetDefaultValue();
 
             SetMenu();
-
-            ShowAccommodationDTOs = accommodationService.FindOwnerAccommodations(OwnerUsername);
-
-            dgAccommodations.ItemsSource = ShowAccommodationDTOs;
-
-            MostPopularLocation = accommodationService.FindTopLocation();
-            NotPopularLocation = accommodationService.FindWorstLocation();
         }
 
         private void SetMenu()
@@ -232,11 +225,23 @@ namespace InitialProject.View
 
         private void SetDefaultValue()
         {
-            ShowAccommodationDTOs = new ObservableCollection<ShowAccommodationDTO>();
             SelectedShowAccommodationDTO = null;
 
             buttonRenovate.IsEnabled = false;
             buttonStatistics.IsEnabled = false;
+
+            ShowAccommodationDTOs = accommodationService.FindOwnerAccommodations(OwnerUsername);
+            dgAccommodations.ItemsSource = ShowAccommodationDTOs;
+
+            MostPopularLocation = accommodationService.FindTopLocation();
+            labelMostPopularLocation.Content = MostPopularLocation;
+            NotPopularLocation = accommodationService.FindWorstLocation(OwnerUsername);
+            labelNotPopularLocation.Content = NotPopularLocation;
+
+            if(MostPopularLocation.Equals(NotPopularLocation) == true)
+            {
+                labelNotPopularLocation.Content = "-";
+            }
         }
 
         private string CheckSuperType()
@@ -260,6 +265,8 @@ namespace InitialProject.View
         {
             InitialProject.View.AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
             window.ShowDialog();
+
+            SetDefaultValue();
         }
 
         private void ButtonsEnable(object sender, SelectionChangedEventArgs e)
@@ -317,37 +324,47 @@ namespace InitialProject.View
 
         private void AddTopLocationAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(MostPopularLocation == "-")
-            {
-                e.CanExecute = false;
-            }
-            else
-            {
-                e.CanExecute = true;
-            }
+            e.CanExecute = true;
         }
 
         private void AddTopLocationAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            AddTopLocationAccommodation window = new AddTopLocationAccommodation(OwnerUsername, MostPopularLocation);
-            window.ShowDialog();
+            if(MostPopularLocation.Equals("-") == true)
+            {
+                MessageBox.Show("None of your accommodation locations are the worst.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                AddTopLocationAccommodation window = new AddTopLocationAccommodation(OwnerUsername, MostPopularLocation);
+                window.ShowDialog();
+
+                SetDefaultValue();
+            }
         }
 
         private void RemoveWorstLocationAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(NotPopularLocation == "-")
-            {
-                e.CanExecute = false;
-            }
-            else
-            {
-                e.CanExecute = true;
-            }
+            e.CanExecute = true;
         }
 
         private void RemoveWorstLocationAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            accommodationService.RemoveWorstLocations();
+            bool canRemove = accommodationService.RemoveWorstLocations(OwnerUsername);
+
+            if(canRemove == true)
+            {
+                SetDefaultValue();
+
+                MessageBox.Show("Accommodations at this location have been successfully deleted.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if(NotPopularLocation.Equals("-") == true)
+            {
+                MessageBox.Show("None of your accommodation locations are the worst.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("It is not possible to delete the accommodation because there are scheduled bookings or renovations in the future.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         void LoadingRowForDgAccommodations(object sender, DataGridRowEventArgs e)

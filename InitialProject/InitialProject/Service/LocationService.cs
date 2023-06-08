@@ -47,5 +47,21 @@ namespace InitialProject.Service
             return locationRepository.FindAll();
         }
 
+        public List<int> FindIdByCountryAndCity(TopAndWorstLocationDTO worstLocationDTOToRemove)
+        {
+            string country = worstLocationDTOToRemove.Location.Split(", ")[0];
+            string city = worstLocationDTOToRemove.Location.Split(", ")[1];
+
+            List<Location> locations = FindAll().ToList().FindAll(x => x.Country.Equals(country) == true && x.City.Equals(city) == true);
+
+            List<int> ids = new List<int>();
+
+            foreach(Location temporaryLocation in locations.ToList())
+            {
+                ids.Add(temporaryLocation.Id);
+            }
+
+            return ids;
+        }
     }
 }
