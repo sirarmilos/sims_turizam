@@ -57,6 +57,18 @@ namespace InitialProject.View
             set;
         }
 
+        public string MostPopularLocation
+        {
+            get;
+            set;
+        }
+
+        public string NotPopularLocation
+        {
+            get;
+            set;
+        }
+
         private void OwnerHomePageLogin_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -168,6 +180,7 @@ namespace InitialProject.View
             GlobalOwnerClass.NotificationRead = true;
             notifications.IsSubmenuOpen = true;
             rateGuestsNotifications.Focus();
+            accommodationService.MarkAsReadNotificationsForums(OwnerUsername);
         }
 
         public AccommodationStart(string ownerUsername)
@@ -183,10 +196,6 @@ namespace InitialProject.View
             SetDefaultValue();
 
             SetMenu();
-
-            ShowAccommodationDTOs = accommodationService.FindOwnerAccommodations(OwnerUsername);
-
-            dgAccommodations.ItemsSource = ShowAccommodationDTOs;
         }
 
         private void SetMenu()
@@ -210,15 +219,29 @@ namespace InitialProject.View
                     UnreadCancelledReservations.Add(temporaryCanceledReservationsNotificationDTO.AccommodationName + ": " + temporaryCanceledReservationsNotificationDTO.ReservationStartDate.ToShortDateString() + " - " + temporaryCanceledReservationsNotificationDTO.ReservationEndDate.ToShortDateString());
                 }
             }
+
+            forumNotifications.Header = "Number of new forums: " + accommodationService.FindNumberOfNewForums(OwnerUsername) + ".";
         }
 
         private void SetDefaultValue()
         {
-            ShowAccommodationDTOs = new ObservableCollection<ShowAccommodationDTO>();
             SelectedShowAccommodationDTO = null;
 
             buttonRenovate.IsEnabled = false;
             buttonStatistics.IsEnabled = false;
+
+            ShowAccommodationDTOs = accommodationService.FindOwnerAccommodations(OwnerUsername);
+            dgAccommodations.ItemsSource = ShowAccommodationDTOs;
+
+            MostPopularLocation = accommodationService.FindTopLocation();
+            labelMostPopularLocation.Content = MostPopularLocation;
+            NotPopularLocation = accommodationService.FindWorstLocation(OwnerUsername);
+            labelNotPopularLocation.Content = NotPopularLocation;
+
+            if(MostPopularLocation.Equals(NotPopularLocation) == true)
+            {
+                labelNotPopularLocation.Content = "-";
+            }
         }
 
         private string CheckSuperType()
@@ -242,6 +265,8 @@ namespace InitialProject.View
         {
             InitialProject.View.AddNewAccommodation window = new AddNewAccommodation(OwnerUsername);
             window.ShowDialog();
+
+            SetDefaultValue();
         }
 
         private void ButtonsEnable(object sender, SelectionChangedEventArgs e)
@@ -272,7 +297,8 @@ namespace InitialProject.View
 
         private void RenovateAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
+            SchedulingSelectedRenovation window = new SchedulingSelectedRenovation(OwnerUsername, SelectedShowAccommodationDTO.AccommodationName);
+            window.ShowDialog();
         }
 
         private void AccommodationStatistics_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -294,6 +320,51 @@ namespace InitialProject.View
             InitialProject.View.AccommodationStatistics window = new AccommodationStatistics(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showStatisticsAccommodationDTO);
             window.Show();
             Close();
+        }
+
+        private void AddTopLocationAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void AddTopLocationAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(MostPopularLocation.Equals("-") == true)
+            {
+                MessageBox.Show("None of your accommodation locations are the worst.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                AddTopLocationAccommodation window = new AddTopLocationAccommodation(OwnerUsername, MostPopularLocation);
+                window.ShowDialog();
+
+                SetDefaultValue();
+            }
+        }
+
+        private void RemoveWorstLocationAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void RemoveWorstLocationAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            bool canRemove = accommodationService.RemoveWorstLocations(OwnerUsername);
+
+            if(canRemove == true)
+            {
+                SetDefaultValue();
+
+                MessageBox.Show("Accommodations at this location have been successfully deleted.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if(NotPopularLocation.Equals("-") == true)
+            {
+                MessageBox.Show("None of your accommodation locations are the worst.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("It is not possible to delete the accommodation because there are scheduled bookings or renovations in the future.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         void LoadingRowForDgAccommodations(object sender, DataGridRowEventArgs e)

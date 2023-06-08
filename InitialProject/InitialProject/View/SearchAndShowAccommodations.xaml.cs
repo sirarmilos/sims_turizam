@@ -264,7 +264,9 @@ namespace InitialProject.View
 
             List<Accommodation> searchResults = accommodationService.FindAll(searchShowAndAccommodationDTO);
 
-            if (searchResults == null)
+            FilterOutRemoved(ref searchResults);
+
+            if (searchResults == null || searchResults.Count == 0)
             {
                 ListAccommodations.ItemsSource = null;
                 SuggestedDatesMessage.Text = "No accommodation satisfies your requirements.";
@@ -278,6 +280,21 @@ namespace InitialProject.View
 
             ListAccommodations.Visibility = Visibility.Visible;
             SuggestedDatesMessage.Visibility = Visibility.Collapsed;
+        }
+
+        private void FilterOutRemoved(ref List<Accommodation> searchResults)
+        {
+            List<Accommodation> resultsToKeep = new List<Accommodation>();
+
+            if (searchResults == null) return;
+
+            foreach (var result in searchResults)
+            {
+                if (result.Removed != true)
+                    resultsToKeep.Add(result);
+            }
+
+            searchResults = resultsToKeep;
         }
 
         private bool comboBoxClicked = false;
@@ -305,7 +322,10 @@ namespace InitialProject.View
                 else if (selectedItem.Content.ToString() == "Reviews")
                 {
                     SelectedCreateReviewCBItem = selectedItem.Content.ToString();
-                    GoToShowOwnerReviews(sender, null);
+
+                    NavigationService?.Navigate(new Guest1GenerateReport(Guest1, this));
+
+                    //GoToShowOwnerReviews(sender, null);
                 }
                 else if (selectedItem.Content.ToString() == "Requests")
                 {
@@ -363,11 +383,22 @@ namespace InitialProject.View
         {
             NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
         }
+        private void GoToForum(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1Forum(Guest1, this));
+        }
+
 
         private void GoToShowSuperGuest(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new ShowSuperGuest(Guest1, this));
         }
+
+        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
+        }
+        
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)
         {
@@ -527,6 +558,7 @@ namespace InitialProject.View
                 }
             }
         }
+
 
     }
 

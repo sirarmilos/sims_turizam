@@ -187,6 +187,11 @@ namespace InitialProject.View
             NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
         }
 
+        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
+        }
+
         //private void GoToGuest1Start(object sender, RoutedEventArgs e)
         //{
         //    NavigationService?.Navigate(new Guest1Start(Guest1, this));

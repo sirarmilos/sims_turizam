@@ -25,5 +25,7 @@ namespace InitialProject.IRepository
         int NextId();
 
         void Add(Renovation renovation);
+
+        bool IsFutureRenovationExistByLocationId(int locationId, string ownerUsername);
     }
 }

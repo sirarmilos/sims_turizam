@@ -39,5 +39,7 @@ namespace InitialProject.IRepository
         List<Renovation> FindAllRenovations();
 
         List<Accommodation> FindByOwnerUsername(string ownerUsername);
+
+        void Remove(string country, string city);
     }
 }

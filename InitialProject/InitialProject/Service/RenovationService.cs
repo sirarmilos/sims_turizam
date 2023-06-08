@@ -28,6 +28,8 @@ namespace InitialProject.Service
 
         private readonly CanceledReservationService canceledReservationService;
 
+        private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
+
         private string owner;
 
         public string Owner
@@ -52,6 +54,7 @@ namespace InitialProject.Service
             reservationService = new ReservationService(Owner);
             userService = new UserService();
             canceledReservationService = new CanceledReservationService();
+            forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
         }
 
         public RenovationService()
@@ -59,7 +62,7 @@ namespace InitialProject.Service
             renovationRepository = Injector.Injector.CreateInstance<IRenovationRepository>();
             //renovationRepository = new RenovationRepository();
 
-            accommodationService = new AccommodationService();
+            // accommodationService = new AccommodationService();
             canceledReservationService = new CanceledReservationService();
         }
 
@@ -191,6 +194,13 @@ namespace InitialProject.Service
             return dateCheckSlotStartDate || dateCheckSlotEndDate;
         }
 
+        public Renovation CreateRenovationToAdd(string accommodationName, DateTime startDate, DateTime endDate, string description)
+        {
+            Renovation renovation = new Renovation(FindNextId(), FindAccommodationByAccommodationName(accommodationName), startDate, endDate, description);
+
+            return renovation;
+        }
+
         public int FindNextId()
         {
             return renovationRepository.NextId();
@@ -224,6 +234,26 @@ namespace InitialProject.Service
         public void MarkAsReadNotificationsCancelledReservations(List<CancelledReservationsNotificationDTO> unreadCancelledReservations)
         {
             canceledReservationService.MarkAsReadNotificationsCancelledReservations(unreadCancelledReservations);
+        }
+
+        public int FindNumberOfNewForums(string ownerUsername)
+        {
+            return forumNotificationsToOwnerService.FindNumberOfNewForums(ownerUsername);
+        }
+
+        public void MarkAsReadNotificationsForums(string ownerUsername)
+        {
+            forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
+        }
+
+        public List<Renovation> FindAllRenovationByAccommodationId(int id)
+        {
+            return FindAllRenovations().Where(x => x.Accommodation.Id == id).ToList();
+        }
+        
+        public bool CheckFutureRenovations(int locationId, string ownerUsername)
+        {
+            return renovationRepository.IsFutureRenovationExistByLocationId(locationId, ownerUsername);
         }
     }
 }
