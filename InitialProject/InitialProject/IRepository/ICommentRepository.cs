@@ -30,5 +30,7 @@ namespace InitialProject.IRepository
         int CountOwnerComments(int forumId);
 
         int CountGuest1Comments(int forumId);
+
+        void CheckIsStillOwner(string country, string city);
     }
 }

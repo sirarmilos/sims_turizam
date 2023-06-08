@@ -62,5 +62,10 @@ namespace InitialProject.Service
         {
             return commentRepository.CountGuest1Comments(forumId) >= 20;
         }
+
+        public void CheckIsStillOwner(string country, string city)
+        {
+            commentRepository.CheckIsStillOwner(country, city);
+        }
     }
 }
