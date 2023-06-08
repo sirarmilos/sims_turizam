@@ -38,6 +38,8 @@ namespace InitialProject.Service
 
         private readonly RenovationService renovationService;
 
+        private readonly CommentService commentService;
+
         public Dictionary<int, string> months = new Dictionary<int, string>()
         {
             { 1, "January" },
@@ -73,6 +75,7 @@ namespace InitialProject.Service
             canceledReservationService = new CanceledReservationService();
             forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
             renovationService = new RenovationService();
+            commentService = new CommentService();
         }
 
         public AccommodationService(string username)
@@ -88,6 +91,7 @@ namespace InitialProject.Service
             renovationRecommendationService = new RenovationRecommendationService();
             forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
             renovationService = new RenovationService(username);
+            commentService = new CommentService();
 
             Guest1 = username;
         }
@@ -788,7 +792,7 @@ namespace InitialProject.Service
             return worstLocationDTOs;
         }
 
-        public bool RemoveWorstLocations(string ownerUsername)
+        public bool RemoveWorstLocations(string ownerUsername, string mostPopularLocation)
         {
             List<Accommodation> allAccommodations = accommodationRepository.FindAll();
 
@@ -796,7 +800,7 @@ namespace InitialProject.Service
 
             List<TopAndWorstLocationDTO> worstLocationDTOsToRemove = FindAllToRemove(worstLocationDTOs, ownerUsername);
 
-            return RemoveWorst(worstLocationDTOsToRemove);
+            return RemoveWorst(worstLocationDTOsToRemove, mostPopularLocation);
         }
 
         public List<TopAndWorstLocationDTO> FindAllToRemove(List<TopAndWorstLocationDTO> worstLocationDTOs, string ownerUsername)
@@ -829,7 +833,7 @@ namespace InitialProject.Service
             return renovationService.CheckFutureRenovations(locationId, ownerUsername);
         }
 
-        public bool RemoveWorst(List<TopAndWorstLocationDTO> worstLocationDTOs)
+        public bool RemoveWorst(List<TopAndWorstLocationDTO> worstLocationDTOs, string mostPopularLocation)
         {
             TopAndWorstLocationDTO worstLocation = worstLocationDTOs.MinBy(x => x.TotalBusyPercentage);
 
@@ -838,7 +842,13 @@ namespace InitialProject.Service
                 string country = worstLocation.Location.Split(", ")[0];
                 string city = worstLocation.Location.Split(", ")[1];
 
+                if (country.Equals(mostPopularLocation.Split(", ")[0]) == true && city.Equals(mostPopularLocation.Split(", ")[1]) == true)
+                {
+                    return false;
+                }
+
                 accommodationRepository.Remove(country, city);
+                commentService.CheckIsStillOwner(country, city);
 
                 return true;
             }
