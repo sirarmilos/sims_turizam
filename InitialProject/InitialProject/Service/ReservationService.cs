@@ -444,5 +444,10 @@ namespace InitialProject.Service
         {
             return reservationRepository.FindAccommodationReservationsByYear(accommodationId, year);
         }
+
+        public bool CheckFutureReservations(int locationId, string ownerUsername)
+        {
+            return reservationRepository.IsFutureReservationExistByLocationId(locationId, ownerUsername);
+        }
     }
 }

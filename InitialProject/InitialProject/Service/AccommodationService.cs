@@ -36,6 +36,8 @@ namespace InitialProject.Service
 
         private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
 
+        private readonly RenovationService renovationService;
+
         public Dictionary<int, string> months = new Dictionary<int, string>()
         {
             { 1, "January" },
@@ -70,6 +72,7 @@ namespace InitialProject.Service
             reservationReschedulingRequestService = new ReservationReschedulingRequestService();
             canceledReservationService = new CanceledReservationService();
             forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
+            renovationService = new RenovationService();
         }
 
         public AccommodationService(string username)
@@ -84,6 +87,7 @@ namespace InitialProject.Service
             canceledReservationService = new CanceledReservationService();
             renovationRecommendationService = new RenovationRecommendationService();
             forumNotificationsToOwnerService = new ForumNotificationsToOwnerService();
+            renovationService = new RenovationService(username);
 
             Guest1 = username;
         }
@@ -646,27 +650,29 @@ namespace InitialProject.Service
         {
             List<Accommodation> allAccommodations = accommodationRepository.FindAll();
 
-            List<TopAndWorstLocationDTO> topLocationDTOs = FindAllLocations(allAccommodations);
+            List<TopAndWorstLocationDTO> topLocationDTOs = FindAllLocationsToTopLocation(allAccommodations);
 
             return TopLocationCheck(topLocationDTOs);
         }
 
-        public List<TopAndWorstLocationDTO> FindAllLocations(List<Accommodation> allAccommodations)
+        public List<TopAndWorstLocationDTO> FindAllLocationsToTopLocation(List<Accommodation> allAccommodations)
         {
             List<TopAndWorstLocationDTO> topLocationDTOs = new List<TopAndWorstLocationDTO>();
 
             foreach(Accommodation temporaryAccommodation in allAccommodations.ToList())
             {
-                decimal totalBusyPercentage = FindLocationTotalBusyPercentage(temporaryAccommodation.Id, 2022, 2024);
-
-                string location = temporaryAccommodation.Location.Country + ", " + temporaryAccommodation.Location.City;
-
-                bool isAlreadyAdded = topLocationDTOs.ToList().Exists(x => x.Location.Equals(location) == true);
-
-                if(isAlreadyAdded == false)
+                if(temporaryAccommodation.Removed == false)
                 {
-                    TopAndWorstLocationDTO topLocationDTO = new TopAndWorstLocationDTO(temporaryAccommodation.Location, totalBusyPercentage); //
-                    topLocationDTOs.Add(topLocationDTO);
+                    string location = temporaryAccommodation.Location.Country + ", " + temporaryAccommodation.Location.City;
+
+                    bool isAlreadyAdded = topLocationDTOs.ToList().Exists(x => x.Location.Equals(location) == true);
+
+                    if (isAlreadyAdded == false)
+                    {
+                        decimal totalBusyPercentage = FindLocationTotalBusyPercentage(temporaryAccommodation.Id, 2022, 2024);
+                        TopAndWorstLocationDTO topLocationDTO = new TopAndWorstLocationDTO(temporaryAccommodation.Location, totalBusyPercentage); //
+                        topLocationDTOs.Add(topLocationDTO);
+                    }
                 }
             }
 
@@ -739,34 +745,105 @@ namespace InitialProject.Service
             return topLocation.Location.ToString();
         }
 
-        public string FindWorstLocation()
+        public string FindWorstLocation(string ownerUsername)
         {
             List<Accommodation> allAccommodations = accommodationRepository.FindAll();
 
-            List<TopAndWorstLocationDTO> worstLocationDTOs = FindAllLocations(allAccommodations);
+            List<TopAndWorstLocationDTO> worstLocationDTOs = FindAllLocationsToWorstLocation(allAccommodations, ownerUsername);
 
-            TopAndWorstLocationDTO worstLocation = worstLocationDTOs.MinBy(x => x.TotalBusyPercentage);
+            if (worstLocationDTOs.Count > 0)
+            {
+                TopAndWorstLocationDTO worstLocation = worstLocationDTOs.MinBy(x => x.TotalBusyPercentage);
 
-            return worstLocation.Location.ToString();
+                return worstLocation.Location.ToString();
+            }
+
+            return "-";
         }
 
-        public void RemoveWorstLocations()
+        public List<TopAndWorstLocationDTO> FindAllLocationsToWorstLocation(List<Accommodation> allAccommodations, string ownerUsername)
+        {
+            List<TopAndWorstLocationDTO> worstLocationDTOs = new List<TopAndWorstLocationDTO>();
+
+            foreach (Accommodation temporaryAccommodation in allAccommodations.ToList())
+            {
+                if(temporaryAccommodation.OwnerUsername.Equals(ownerUsername) == true)
+                {
+                    if(temporaryAccommodation.Removed == false)
+                    {
+                        string location = temporaryAccommodation.Location.Country + ", " + temporaryAccommodation.Location.City;
+
+                        bool isAlreadyAdded = worstLocationDTOs.ToList().Exists(x => x.Location.Equals(location) == true);
+
+                        if(isAlreadyAdded == false)
+                        {
+                            decimal totalBusyPercentage = FindLocationTotalBusyPercentage(temporaryAccommodation.Id, 2022, 2024);
+                            TopAndWorstLocationDTO worstLocationDTO = new TopAndWorstLocationDTO(temporaryAccommodation.Location, totalBusyPercentage); //
+                            worstLocationDTOs.Add(worstLocationDTO);
+                        }
+                    }
+                }
+            }
+
+            return worstLocationDTOs;
+        }
+
+        public bool RemoveWorstLocations(string ownerUsername)
         {
             List<Accommodation> allAccommodations = accommodationRepository.FindAll();
 
-            List<TopAndWorstLocationDTO> worstLocationDTOs = FindAllLocations(allAccommodations);
+            List<TopAndWorstLocationDTO> worstLocationDTOs = FindAllLocationsToWorstLocation(allAccommodations, ownerUsername);
 
-            RemoveWorst(worstLocationDTOs);
+            List<TopAndWorstLocationDTO> worstLocationDTOsToRemove = FindAllToRemove(worstLocationDTOs, ownerUsername);
+
+            return RemoveWorst(worstLocationDTOsToRemove);
         }
 
-        public void RemoveWorst(List<TopAndWorstLocationDTO> worstLocationDTOs)
+        public List<TopAndWorstLocationDTO> FindAllToRemove(List<TopAndWorstLocationDTO> worstLocationDTOs, string ownerUsername)
+        {
+            List<TopAndWorstLocationDTO> worstLocationDTOsToRemove = new List<TopAndWorstLocationDTO>();
+
+            foreach(TopAndWorstLocationDTO temporaryworstLocationDTOToRemove in worstLocationDTOs.ToList())
+            {
+                List<int> locationIds = locationService.FindIdByCountryAndCity(temporaryworstLocationDTOToRemove);
+
+                foreach(int temporaryLocationId in locationIds.ToList())
+                {
+                    if(CheckFutureReservations(temporaryLocationId, ownerUsername) == false && CheckFutureRenovations(temporaryLocationId, ownerUsername) == false)
+                    {
+                        worstLocationDTOsToRemove.Add(temporaryworstLocationDTOToRemove);
+                    }
+                }
+            }
+
+            return worstLocationDTOsToRemove;
+        }
+
+        public bool CheckFutureReservations(int locationId, string ownerUsername)
+        {
+            return reservationService.CheckFutureReservations(locationId, ownerUsername);
+        }
+
+        public bool CheckFutureRenovations(int locationId, string ownerUsername)
+        {
+            return renovationService.CheckFutureRenovations(locationId, ownerUsername);
+        }
+
+        public bool RemoveWorst(List<TopAndWorstLocationDTO> worstLocationDTOs)
         {
             TopAndWorstLocationDTO worstLocation = worstLocationDTOs.MinBy(x => x.TotalBusyPercentage);
 
-            string country = worstLocation.Location.Split(", ")[0];
-            string city = worstLocation.Location.Split(", ")[1];
+            if(worstLocation != null)
+            {
+                string country = worstLocation.Location.Split(", ")[0];
+                string city = worstLocation.Location.Split(", ")[1];
 
-            accommodationRepository.Remove(country, city);
+                accommodationRepository.Remove(country, city);
+
+                return true;
+            }
+
+            return false;
         }
 
         public int FindNumberOfNewForums(string ownerUsername)
