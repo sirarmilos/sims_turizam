@@ -444,5 +444,11 @@ namespace InitialProject.Service
         {
             return reservationRepository.FindAccommodationReservationsByYear(accommodationId, year);
         }
+
+        public int FindNumberOfGuest1Reservations(string guest1Username)
+        {
+            return reservationRepository.FindNumberOfGuest1Reservations(guest1Username);
+        }
     }
+
 }

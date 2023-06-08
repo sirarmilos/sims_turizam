@@ -153,5 +153,11 @@ namespace InitialProject.Repository
 
             return false;
         }
+
+        public int FindNumberOfGuest1Reservations(string guest1Username)
+        {
+            return FindAll().Count;
+        }
+
     }
 }

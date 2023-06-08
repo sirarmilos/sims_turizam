@@ -100,7 +100,7 @@
                                 <StackPanel>
                                     <TextBlock Visibility="Collapsed" Margin="0,10,0,0" x:Name="SuggestedDatesMessage" Grid.Column="1" TextAlignment="Center"  Foreground="{Binding LabelColor}" FontSize="24" FontWeight="Bold" Text="Poruka poruka" TextWrapping="Wrap" Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-                                    <Grid x:Name="FirstWindow" Visibility="Collapsed">
+                                    <Grid x:Name="FirstWindow" Visibility="Visible">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="100" />
                                             <RowDefinition Height="90" />
@@ -126,7 +126,7 @@
                                         <Button Grid.Row="4" Content="Back" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="GoToSearchAndShowAccommodations" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
                                     </Grid>
 
-                                    <Grid x:Name="SecondWindow" Visibility="Visible">
+                                    <Grid x:Name="SecondWindow" Visibility="Collapsed">
                                         <Grid.RowDefinitions>
                                             <RowDefinition  Height="Auto" />
                                             <RowDefinition Height="100" />

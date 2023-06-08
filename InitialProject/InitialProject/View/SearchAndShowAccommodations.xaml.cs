@@ -305,7 +305,10 @@ namespace InitialProject.View
                 else if (selectedItem.Content.ToString() == "Reviews")
                 {
                     SelectedCreateReviewCBItem = selectedItem.Content.ToString();
-                    GoToShowOwnerReviews(sender, null);
+
+                    NavigationService?.Navigate(new Guest1GenerateReport(Guest1, this));
+
+                    //GoToShowOwnerReviews(sender, null);
                 }
                 else if (selectedItem.Content.ToString() == "Requests")
                 {
