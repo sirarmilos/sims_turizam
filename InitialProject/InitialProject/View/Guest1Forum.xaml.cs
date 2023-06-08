@@ -4,9 +4,11 @@ using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -391,6 +393,23 @@ namespace InitialProject.View
                     CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
                 }
             }
+        }
+    }
+
+    public class EmptyStringToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string stringValue = value as string;
+            if (string.IsNullOrEmpty(stringValue))
+                return Visibility.Collapsed;
+            else
+                return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
         }
     }
 }

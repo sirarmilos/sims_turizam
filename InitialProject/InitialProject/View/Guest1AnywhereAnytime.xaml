@@ -186,7 +186,7 @@
                         <ItemsControl Visibility="Visible" Grid.Column="1" x:Name="ListAccommodations" Margin="10,4,0,0">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderBrush="Gray" BorderThickness="2" Margin="0,0,20,10" Height="233" Width="478">
+                                    <Border BorderBrush="Gray" BorderThickness="2" Margin="0,0,20,9" Height="233" Width="478">
                                         <!-- margina izmedju kartica je 20 -->
                                         <Grid>
 

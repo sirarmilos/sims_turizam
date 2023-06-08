@@ -238,7 +238,7 @@ namespace InitialProject.View
 
                 Search(null,null);
 
-                SetMessageShow("We have offered you the first available period.", Visibility.Visible);
+                SetMessageShow("We have offered you first available period(s).", Visibility.Visible);
             }
 
             GuestNumberTB1.Visibility = Visibility.Collapsed;

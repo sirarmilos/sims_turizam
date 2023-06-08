@@ -151,7 +151,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-                <ComboBox Grid.Row="0" Width="Auto" FontWeight="Bold" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,17,60,0" Height="33">
+                <ComboBox Grid.Row="0" Width="Auto" FontWeight="Bold" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,17,52,0" Height="33">
                     <ComboBoxItem Content="All" PreviewMouseDown="ShowAllRequests"/>
                     <ComboBoxItem Content="Rejected" PreviewMouseDown="ShowAllRejectedRequests"/>
                     <ComboBoxItem Content="Pending" PreviewMouseDown="ShowAllPendingRequests"/>

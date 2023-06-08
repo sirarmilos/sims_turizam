@@ -107,7 +107,7 @@
 
 
                     <Button Grid.Column="1" Grid.Row="1" FontSize="24" FontWeight="Bold" Content="Create request" Click="Create" Margin="160,256,347,654" Background="#FF43E1FF" Foreground="White" Width="177" Height="55"/>
-                    <Label Grid.Row="1"  Content="Start date" FontSize="24" FontWeight="Bold"  Margin="12,70,552,859" Width="120" Height="36" Grid.Column="1"   />
+                    <Label Grid.Row="1"  Content="Start date" FontSize="24" FontWeight="Bold"  Margin="10,73,553,856" Height="36" Grid.Column="1"   />
                     <Label Grid.Column="1" Content="New date" FontSize="24" FontWeight="Bold"  Margin="148,26,416,903" Height="36" Width="120" Grid.Row="1"   />
                     <Label Grid.Row="1" Content="End date" FontSize="24" FontWeight="Bold"  Margin="10,130,564,798" Width="110" Height="37" Grid.Column="1"  />
                     <Image Grid.Column="0" Grid.Row="1"  Source="https://freepngimg.com/thumb/web_design/24684-5-right-arrow-transparent-picture.png" Margin="283,107,12,823" RenderTransformOrigin="0.5,0.5" Width="35" Height="35" />
