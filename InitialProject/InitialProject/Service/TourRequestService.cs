@@ -396,12 +396,31 @@ namespace InitialProject.Service
             requests = tourRequestRepository.FindAll();
             foreach(TourRequest tr in requests)
             {
-                if (tr.Status.Equals("pending") && tr.ComplexTourId != 0)
+                if (tr.Status.Equals("pending") && tr.ComplexTourRequestId != 0)
                     complex_requests.Add(tr);
             }
 
             return complex_requests;
+        }
 
+        public Dictionary<int, List<TourRequest>> GetComplexTourRequests(string username)
+        {
+            Dictionary<int, List<TourRequest>> result = new Dictionary<int, List<TourRequest>>();
+
+            foreach (TourRequest tourRequest in tourRequestRepository.FindAll())
+            {
+                if (tourRequest.ComplexTourRequestId != 0)
+                {
+                    if (!result.ContainsKey(tourRequest.ComplexTourRequestId))
+                    {
+                        result[tourRequest.ComplexTourRequestId] = new List<TourRequest>();
+                    }
+
+                    result[tourRequest.ComplexTourRequestId].Add(tourRequest);
+                }
+            }
+
+            return result;
         }
 
 

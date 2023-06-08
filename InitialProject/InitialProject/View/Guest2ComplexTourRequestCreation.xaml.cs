@@ -243,6 +243,7 @@ namespace InitialProject.View
             tourRequest.Status = "pending";
             tourRequest.CreationDate = DateTime.Now;
             tourRequest.ComplexTourRequestId = 2;
+            tourRequest.AcceptedDate = "";
 
             requests.Add(tourRequest);
 
@@ -255,6 +256,7 @@ namespace InitialProject.View
             EndDate = DateTime.Now;
             City = "";
             Country = "";
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

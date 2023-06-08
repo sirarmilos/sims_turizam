@@ -43,7 +43,7 @@ namespace InitialProject.View
             DataContext = this;
             Guide = guideUsername;
             tourRequestService = new TourRequestService();
-            complexGrid.ItemsSource = tourRequestService.FindAllComplexRequestPending().Where(x => x.ComplexTourId != 0);
+            complexGrid.ItemsSource = tourRequestService.FindAllComplexRequestPending().Where(x => x.ComplexTourRequestId != 0);
         }
 
 

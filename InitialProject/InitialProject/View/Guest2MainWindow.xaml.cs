@@ -223,6 +223,18 @@ namespace InitialProject.View
             TourRequestCreationButton.Background = buttonColor;
             TourRequestCreationButton.Foreground = textColor;
 
+            TourRequestDisplayButton.Background = buttonColor;
+            TourRequestDisplayButton.Foreground = textColor;
+
+            TourRequestStatisticsButton.Background = buttonColor;
+            TourRequestStatisticsButton.Foreground = textColor;
+
+            ComplexTourRequestButton.Background = buttonColor;
+            ComplexTourRequestButton.Foreground = textColor;
+
+            ComplexTourDisplayButton.Background = buttonColor;
+            ComplexTourDisplayButton.Foreground = textColor;
+
 
         }
 
@@ -287,6 +299,19 @@ namespace InitialProject.View
             ComplexTourRequestButton.Foreground = Brushes.Black;
 
             currentlySelected = ComplexTourRequestButton;
+        }
+
+        private void ComplexTourDisplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            Guest2ComplexTourDisplay guest2ComplexTourDisplay = new Guest2ComplexTourDisplay(Username);
+            mainFrame.Content = guest2ComplexTourDisplay;
+
+            PaintButtons();
+
+            ComplexTourDisplayButton.Background = Brushes.LightGray;
+            ComplexTourDisplayButton.Foreground = Brushes.Black;
+
+            currentlySelected = ComplexTourDisplayButton;
         }
     }
 }

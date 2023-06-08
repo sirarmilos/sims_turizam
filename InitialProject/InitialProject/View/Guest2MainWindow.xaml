@@ -12,7 +12,9 @@
         <Button  Grid.Row="1" HorizontalAlignment="Left" Height="95" VerticalAlignment="Top" Width="150"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Margin="212,80,0,0" RenderTransformOrigin="-1.26,1.432" Click="LogoClick">
             <Image Source="../Resources/Images/logo.png" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Width="150" Height="95"/>
         </Button>
-        <Frame Content="{Binding Page,Mode=OneWay}" NavigationUIVisibility="Hidden" x:Name="mainFrame" Margin="211,317,215,60"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Frame Content="{Binding Page,Mode=OneWay}" NavigationUIVisibility="Hidden" x:Name="mainFrame" Margin="211,317,215,60"/>
+        </ScrollViewer>
         <Button x:Name="NotificationsButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}"  Content="{DynamicResource StrNotifications}" HorizontalAlignment="Left" Margin="1174,108
                 ,0,0" VerticalAlignment="Top" FontSize="14" Width="100" Height="71.1" FontWeight="Bold" Click="NotificationsButton_Click"/>
         <Button x:Name="ProfileButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrProfile}" HorizontalAlignment="Left" Margin="1314,108,0,0" VerticalAlignment="Top" Height="72" Width="211" FontSize="20" FontWeight="Bold" Click="ProfilePage"/>
@@ -39,7 +41,7 @@
         <Button x:Name="ComplexTourRequestButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1261,211,0,0" VerticalAlignment="Top" Height="91" Width="227" FontSize="20" Click="ComplexTourRequestButton_Click">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrComplexTourRequest}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="ComplexTourDisplayButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1488,211,0,0" VerticalAlignment="Top" Height="91" Width="217" FontSize="20">
+        <Button x:Name="ComplexTourDisplayButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1488,211,0,0" VerticalAlignment="Top" Height="91" Width="217" FontSize="20" Click="ComplexTourDisplayButton_Click">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrComplexTourDisplay}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         <Rectangle Stroke="{DynamicResource TextColor}" HorizontalAlignment="Center" Height="44" Margin="0,973,0,0"  VerticalAlignment="Top" Width="1920"/>

@@ -72,6 +72,8 @@ namespace InitialProject.View
                 dataGrid.AutoGenerateColumns = false;
                 dataGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
                 dataGrid.SelectionMode = DataGridSelectionMode.Single;
+                dataGrid.Foreground = (Brush)FindResource("TextColor");
+                dataGrid.Background = (Brush)FindResource("BackGrid");
                 
 
                 dataGrid.SetBinding(DataGrid.ItemsSourceProperty, new Binding("tourAttendanceDTOs") { Mode = BindingMode.OneWay });
@@ -146,7 +148,7 @@ namespace InitialProject.View
                 cellStyle.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center));
                 cellStyle.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.Bold));
                 cellStyle.Setters.Add(new Setter(TextBlock.FontSizeProperty, 14.0));
-                //cellStyle.Setters.Add(new Setter(TextBlock.VerticalAlignmentProperty,VerticalAlignment.Center));
+                cellStyle.Setters.Add(new Setter(TextBlock.VerticalAlignmentProperty,VerticalAlignment.Center));
 
              
 
@@ -156,14 +158,14 @@ namespace InitialProject.View
                 }
 
 
-                dataGrid.Background = Brushes.White;
+                //dataGrid.Background = Brushes.White;
 
-                dataGrid.BorderThickness = new Thickness(1);
-                dataGrid.BorderBrush = Brushes.Gray;
-                dataGrid.Margin = new Thickness(30,0,0,0);
+               // dataGrid.BorderThickness = new Thickness(1);
+                //dataGrid.BorderBrush = Brushes.Gray;
+               // dataGrid.Margin = new Thickness(30,0,0,0);
 
-                dataGrid.ColumnHeaderStyle = new Style(typeof(DataGridColumnHeader));
-                dataGrid.ColumnHeaderStyle.Setters.Add(new Setter(Control.BackgroundProperty, Brushes.LightGray));
+                //dataGrid.ColumnHeaderStyle = new Style(typeof(DataGridColumnHeader));
+               // dataGrid.ColumnHeaderStyle.Setters.Add(new Setter(Control.BackgroundProperty, Brushes.LightGray));
 
 
                 StackPanel innerStackPanel = new StackPanel();

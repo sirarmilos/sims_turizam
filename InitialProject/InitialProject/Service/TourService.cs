@@ -26,14 +26,55 @@ namespace InitialProject.Service
         }
 
 
+        public List<TourGuidence> GetSuperGuideTours()
+        {
+            UserService userService = new UserService();
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+
+            List<TourGuidence> tourGuidences = new List<TourGuidence>();    
+
+            foreach(TourGuidence tourGuidence in tourGuidenceService.FindAll())
+            {
+                if (userService.FindByUsername(tourGuidence.Tour.GuideUsername).SuperType.Equals("super"))
+                {
+                    tourGuidences.Add(tourGuidence);
+                }
+            }
+
+            return tourGuidences;
+        }
+
+        public List<TourGuidence> GetNonSuperGuideTours()
+        {
+            UserService userService = new UserService();
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+
+            List<TourGuidence> tourGuidences = new List<TourGuidence>();
+
+            foreach (TourGuidence tourGuidence in tourGuidenceService.FindAll())
+            {
+                if (!userService.FindByUsername(tourGuidence.Tour.GuideUsername).SuperType.Equals("super"))
+                {
+                    tourGuidences.Add(tourGuidence);
+                }
+            }
+
+            return tourGuidences;
+        }
+
         public List<TourDisplayDTO> GetToursForDisplay()
         {
             List<TourDisplayDTO> tourDisplayDTOs = new List<TourDisplayDTO>();
             TourGuidenceService tourGuidanceService = new TourGuidenceService();
-            TourKeyPointService tourKeyPointService = new TourKeyPointService();    
+            TourKeyPointService tourKeyPointService = new TourKeyPointService();
 
 
-            foreach (TourGuidence tourGuidence in tourGuidanceService.FindAll())
+            List<TourGuidence> tourGuidencesSuperGuide = GetSuperGuideTours();
+            List<TourGuidence> tourGuidencesNonSuperGuide = GetNonSuperGuideTours();
+            List<TourGuidence> tourGuidences = tourGuidencesSuperGuide.Concat(tourGuidencesNonSuperGuide).ToList();
+
+
+            foreach (TourGuidence tourGuidence in tourGuidences)
             {
                 TourDisplayDTO tourDisplayDTO = new TourDisplayDTO();
 
