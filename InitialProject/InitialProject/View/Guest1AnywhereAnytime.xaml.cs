@@ -292,6 +292,8 @@ namespace InitialProject.View
 
             Accommodations = accommodationService.FindAll(searchShowAndAccommodationDTO);
 
+            FilterOutRemoved();
+
             if (Accommodations == null)
             {
                 ListAccommodations.ItemsSource = null;
@@ -309,9 +311,23 @@ namespace InitialProject.View
 
             if (IsSearchDatePickersInputValid())
                 FilterAccommodations();
-            else
-                return;
 
+
+        }
+
+        private void FilterOutRemoved()
+        {
+            List<Accommodation> resultsToKeep = new List<Accommodation>();
+
+            if (Accommodations == null) return;
+
+            foreach (var result in Accommodations)
+            {
+                if (result.Removed != true)
+                    resultsToKeep.Add(result);
+            }
+
+            Accommodations = resultsToKeep;
         }
 
         private bool AreRequiredFieldsFilled()

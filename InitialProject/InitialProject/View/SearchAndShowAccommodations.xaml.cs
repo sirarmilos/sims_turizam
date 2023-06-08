@@ -264,7 +264,9 @@ namespace InitialProject.View
 
             List<Accommodation> searchResults = accommodationService.FindAll(searchShowAndAccommodationDTO);
 
-            if (searchResults == null)
+            FilterOutRemoved(ref searchResults);
+
+            if (searchResults == null || searchResults.Count == 0)
             {
                 ListAccommodations.ItemsSource = null;
                 SuggestedDatesMessage.Text = "No accommodation satisfies your requirements.";
@@ -278,6 +280,21 @@ namespace InitialProject.View
 
             ListAccommodations.Visibility = Visibility.Visible;
             SuggestedDatesMessage.Visibility = Visibility.Collapsed;
+        }
+
+        private void FilterOutRemoved(ref List<Accommodation> searchResults)
+        {
+            List<Accommodation> resultsToKeep = new List<Accommodation>();
+
+            if (searchResults == null) return;
+
+            foreach (var result in searchResults)
+            {
+                if (result.Removed != true)
+                    resultsToKeep.Add(result);
+            }
+
+            searchResults = resultsToKeep;
         }
 
         private bool comboBoxClicked = false;

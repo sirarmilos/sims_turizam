@@ -245,5 +245,10 @@ namespace InitialProject.Service
         {
             forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
         }
+
+        public List<Renovation> FindAllRenovationByAccommodationId(int id)
+        {
+            return FindAllRenovations().Where(x => x.Accommodation.Id == id).ToList();
+        }
     }
 }
