@@ -62,7 +62,7 @@ namespace InitialProject.Service
             renovationRepository = Injector.Injector.CreateInstance<IRenovationRepository>();
             //renovationRepository = new RenovationRepository();
 
-            accommodationService = new AccommodationService();
+            // accommodationService = new AccommodationService();
             canceledReservationService = new CanceledReservationService();
         }
 
@@ -249,6 +249,11 @@ namespace InitialProject.Service
         public List<Renovation> FindAllRenovationByAccommodationId(int id)
         {
             return FindAllRenovations().Where(x => x.Accommodation.Id == id).ToList();
+        }
+        
+        public bool CheckFutureRenovations(int locationId, string ownerUsername)
+        {
+            return renovationRepository.IsFutureRenovationExistByLocationId(locationId, ownerUsername);
         }
     }
 }

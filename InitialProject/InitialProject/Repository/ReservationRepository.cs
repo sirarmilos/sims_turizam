@@ -159,5 +159,9 @@ namespace InitialProject.Repository
             return FindAll().Count;
         }
 
+        public bool IsFutureReservationExistByLocationId(int locationId, string ownerUsername)
+        {
+            return FindAll().ToList().Exists(x => x.Accommodation.Location.Id == locationId && (x.StartDate.Subtract(DateTime.Now).Days > 0) == true && x.Accommodation.OwnerUsername.Equals(ownerUsername) == true);
+        }
     }
 }

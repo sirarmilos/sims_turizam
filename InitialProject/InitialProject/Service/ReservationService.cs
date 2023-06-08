@@ -473,6 +473,11 @@ namespace InitialProject.Service
         {
             return reservationRepository.FindNumberOfGuest1Reservations(guest1Username);
         }
+
+        public bool CheckFutureReservations(int locationId, string ownerUsername)
+        {
+            return reservationRepository.IsFutureReservationExistByLocationId(locationId, ownerUsername);
+        }
     }
 
 }
