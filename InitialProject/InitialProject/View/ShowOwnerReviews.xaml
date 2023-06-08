@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
       Background="White"
-        Title="Show owner reviews" Width="1400" Height="684"
+        Title="Show owner reviews" d:DesignHeight="684" d:DesignWidth="838"
         >
+    <!--    Width="1400" Height="684" -->
 
     <Grid>
 

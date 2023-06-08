@@ -1,13 +1,11 @@
 ﻿using InitialProject.DTO;
-using InitialProject.IRepository;
 using InitialProject.Model;
-using InitialProject.Repository;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
-using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,57 +17,49 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Windows.Threading;
+using System.ComponentModel;
+using GalaSoft.MvvmLight.Command;
+using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
+using System.Xml.Linq;
 
 namespace InitialProject.View
 {
-    public partial class Guest1CreateForum : Page
+
+    public partial class Guest1ForumPreview : Page
     {
         private readonly ForumService forumService;
-        private string guest1;
-        private string city;
-        private string country;
-        private string question;
 
         public string Guest1
         {
-            get { return guest1; }
-            set
-            {
-                guest1 = value;
-            }
+            get;
+            set;
         }
 
-        public string City
+        public string Guest1UsernameShow
         {
-            get { return city; }
-            set
-            {
-                city = value;
-            }
+            get;
+            set;
         }
 
-        public string Country
+        public ShowGuest1ForumsDTO ShowGuest1ForumsDTO
         {
-            get { return country; }
-            set
-            {
-                country = value;
-            }
+            get;
+            set;
         }
 
-        public string Question
+        public List<ShowGuest1ForumCommentsDTO> ShowGuest1ForumCommentsDTOs
         {
-            get { return question; }
-            set
-            {
-                question = value;
-            }
+            get;
+            set;
         }
 
-        public string Caller { get; set; }
+        public string Comment
+        {
+            get;
+            set;
+        }
 
         private bool notification;
         public bool Notification
@@ -78,6 +68,17 @@ namespace InitialProject.View
             set
             {
                 notification = value;
+            }
+        }
+
+        private Brush _labelColor;
+        public Brush LabelColor
+        {
+            get { return _labelColor; }
+            set
+            {
+                _labelColor = value;
+                OnPropertyChanged(nameof(LabelColor));
             }
         }
 
@@ -95,74 +96,98 @@ namespace InitialProject.View
             }
         }
 
-        public Guest1CreateForum(string guest1, Page page)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public Guest1ForumPreview(string username, Page page)
         {
             InitializeComponent();
 
-            Guest1 = guest1;
+            this.DataContext = this;
 
-            DataContext = this;
+            Guest1 = username;
 
             forumService = new ForumService(Guest1);
 
-            SetUsernameHeader();
+            Guest1Forum guest1Forum = (Guest1Forum)page;
+
+            SetDefaultValue(guest1Forum.ShowGuest1ForumsDTO);
 
             SetComboBoxes(page);
 
+            SetUsernameHeader();
+
+            CheckWindowModeVisibilty();
         }
 
-        private void CreateForum(object sender, RoutedEventArgs e)
-        {
-            ErrorMessage.Visibility = Visibility.Collapsed;
 
-            if (!IsInputValid())
+        private void SetDefaultValue(ShowGuest1ForumsDTO showGuest1ForumsDTO)
+        {
+            showGuest1ForumsDTO.CreatorUsername = showGuest1ForumsDTO.CreatorUsername.Substring(0, showGuest1ForumsDTO.CreatorUsername.Length - 7) + ":";
+
+            ShowGuest1ForumsDTO = showGuest1ForumsDTO;
+
+            Guest1UsernameShow = Guest1 + ":";
+
+            ShowGuest1ForumCommentsDTOs = forumService.FindGuest1ForumComments(showGuest1ForumsDTO.ForumId);
+        }
+
+        private void AddComment(object sender, RoutedEventArgs e)
+        {
+            forumService.AddGuest1Comment(Guest1, Comment, ShowGuest1ForumsDTO.ForumId);
+
+            forumService.CheckIsUseful(ShowGuest1ForumsDTO.ForumId);
+
+            ShowGuest1ForumCommentsDTOs = forumService.FindGuest1ForumComments(ShowGuest1ForumsDTO.ForumId);
+
+            ShowGuest1ForumCommentsDTOsItems.ItemsSource = ShowGuest1ForumCommentsDTOs;
+
+            tbComment.Text = string.Empty;
+            tbComment.Focus();
+        }
+
+        private void CloseForum(object sender, RoutedEventArgs e) 
+        {
+            forumService.CloseForum(ShowGuest1ForumsDTO.ForumId);
+
+            CheckWindowModeVisibilty();
+        }
+        
+        private void CheckWindowModeVisibilty()
+        {
+            if (forumService.CheckIsForumClosed(ShowGuest1ForumsDTO.ForumId)) // mode: closed forum
+            {
+                AddCommentGrid.Visibility = Visibility.Collapsed;
+                ForumIsClosedMessage.Visibility = Visibility.Visible;
+                OneButtonMode.Visibility = Visibility.Visible;
+                TwoButtonsMode.Visibility = Visibility.Collapsed;
+
                 return;
+            }
 
-            CreateForumDTO createForumDTO = new CreateForumDTO(Guest1, City, Country, Question);
-
-            forumService.CreateForum(createForumDTO);
-
-            FirstWindow.Visibility = Visibility.Collapsed;
-            SecondWindow.Visibility = Visibility.Visible;
-            SuccessMessage.Text = "The forum has been successfully created.";
+            if (!(Guest1+":").Equals(ShowGuest1ForumsDTO.CreatorUsername)) // mode: opened forum, but not creator
+            {
+                AddCommentGrid.Visibility = Visibility.Visible;
+                ForumIsClosedMessage.Visibility = Visibility.Collapsed;
+                OneButtonMode.Visibility = Visibility.Visible;
+                TwoButtonsMode.Visibility = Visibility.Collapsed;
+            }
+            else // mode: opened forum and creator
+            {
+                AddCommentGrid.Visibility = Visibility.Visible;
+                ForumIsClosedMessage.Visibility = Visibility.Collapsed;
+                OneButtonMode.Visibility = Visibility.Collapsed;
+                TwoButtonsMode.Visibility = Visibility.Visible;
+            }
         }
 
-        private bool IsInputValid()
+        private void BackToCaller(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(City))
-            {
-                ErrorMessage.Text = "You have forgotten to input the city name.";
-                ErrorMessage.Visibility = Visibility.Visible;
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(Country))
-            {
-                ErrorMessage.Text = "You have forgotten to input the country name.";
-                ErrorMessage.Visibility = Visibility.Visible;
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(Question))
-            {
-                ErrorMessage.Text = "You have forgotten to write question.";
-                ErrorMessage.Visibility = Visibility.Visible;
-                return false;
-            }
-
-            return true;
-        }
-
-        private void AllowOnlyLetters(object sender, TextCompositionEventArgs e)
-        {
-            foreach (char c in e.Text)
-            {
-                if (!char.IsLetter(c))
-                {
-                    e.Handled = true; 
-                    break;
-                }
-            }
+            GoToForum(sender, e);
         }
 
         private void SetUsernameHeader()
@@ -173,27 +198,19 @@ namespace InitialProject.View
             superGuest.Text = $"{CheckSuperType()}";
         }
 
-        public void ReturnBackToCaller(object sender, RoutedEventArgs e)
-        {
-            GoToForum(sender,e);
-        }
-
         private string CheckSuperType()
         {
             string superType = string.Empty;
 
             if (forumService.IsSuperGuest(Guest1))
             {
-                superType = " (Super guest)";
+                superType = "(Super guest)";
             }
 
             return superType;
         }
 
-        void LoadingRowForDgBookingMoveRequests(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
+
 
         private bool comboBoxClicked = false;
         private bool itemClicked = false;
@@ -254,11 +271,6 @@ namespace InitialProject.View
             itemClicked = true;
         }
 
-        private void CreateRequest(object sender, RoutedEventArgs e)
-        {
-            GoToShowReservations(sender, e);
-        }
-
         private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
@@ -269,14 +281,19 @@ namespace InitialProject.View
         //    NavigationService?.Navigate(new Guest1Start(Guest1, this));
         //}
 
-        private void GoToForum(object sender, RoutedEventArgs e)
-        {
-            NavigationService?.Navigate(new Guest1Forum(Guest1, this));
-        }
-
         private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
+        }
+
+        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
+        }
+
+        private void GoToForum(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1Forum(Guest1, this));
         }
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)
@@ -292,11 +309,6 @@ namespace InitialProject.View
         private void GoToGuest1Requests(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new Guest1Requests(Guest1, this));
-        }
-
-        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
-        {
-            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
         }
 
         private void GoToShowGuest1Notifications(object sender, RoutedEventArgs e)
@@ -442,32 +454,6 @@ namespace InitialProject.View
                 }
             }
         }
-    }
 
-    public class CityValidation
-    {
-        private const string ApiKey = "bfcf0b9b893d5b26c5b91d629dc741d3";
-        private const string BaseUrl = "http://api.openweathermap.org/data/2.5/weather";
-
-        public async Task<bool> ValidateCity(string city, string country)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                string requestUrl = $"{BaseUrl}?q={city},{country}&appid={ApiKey}";
-
-                HttpResponseMessage response = await client.GetAsync(requestUrl);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    // Grad i država su validni
-                    return true;
-                }
-                else
-                {
-                    // Greška ili grad/država ne postoje
-                    return false;
-                }
-            }
-        }
     }
 }

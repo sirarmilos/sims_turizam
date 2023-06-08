@@ -163,6 +163,12 @@ namespace InitialProject.View
             }
         }
 
+        public Page Page
+        {
+            get;
+            set;
+        }
+
         public ICommand PreviousImageCommand { get; private set; }
         public ICommand NextImageCommand { get; private set; }
 
@@ -203,6 +209,45 @@ namespace InitialProject.View
             SetComboBoxes(page);
 
             SetMessageShow("", Visibility.Collapsed);
+
+            if (page is Guest1AnywhereAnytime)
+            {
+                LoadAnytimeAnywhereReservationWindow((Guest1AnywhereAnytime)page);
+            }
+
+            Page = page;    
+        }
+
+        private void LoadAnytimeAnywhereReservationWindow(Guest1AnywhereAnytime guest1AnywhereAnytime)
+        {
+            GuestsNumber = (int)guest1AnywhereAnytime.MaxGuests;
+            ActualReservationDays = (int)guest1AnywhereAnytime.ReservationDays;
+            CalendarReservationDays = (int)guest1AnywhereAnytime.ReservationDays;
+
+            if (guest1AnywhereAnytime.StartDatePicker != null || guest1AnywhereAnytime.EndDatePicker != null)
+            {
+                StartDatePicker.SelectedDate = guest1AnywhereAnytime.StartDatePicker;
+                EndDatePicker.SelectedDate = guest1AnywhereAnytime.EndDatePicker;
+
+                Search(null,null);
+            }
+            else
+            {
+                StartDatePicker.SelectedDate = DateTime.Today.AddDays(1);
+                EndDatePicker.SelectedDate = StartDatePicker.SelectedDate.Value.AddDays(30);
+
+                Search(null,null);
+
+                SetMessageShow("We have offered you first available period(s).", Visibility.Visible);
+            }
+
+            GuestNumberTB1.Visibility = Visibility.Collapsed;
+            GuestNumberTB2.Visibility = Visibility.Collapsed;
+            GuestNumberTB3.Visibility = Visibility.Collapsed;
+            GuestNumberAndReservationDaysTB.Visibility = Visibility.Visible;
+
+            //Search();
+
         }
 
         private void SetImagePreviewer()
@@ -255,6 +300,13 @@ namespace InitialProject.View
             OnPropertyChanged(nameof(CurrentImage));
         }
 
+        private void Back(object sender, RoutedEventArgs e)
+        {
+            if (Page is Guest1AnywhereAnytime)
+                GoToAnywhereAnytime(sender, e);
+            else
+                BackToFirstWindow(sender, e);   
+        }
         public void BackToFirstWindow(object sender, RoutedEventArgs e)
         {
             SecondWindow.Visibility = Visibility.Collapsed;
@@ -479,7 +531,7 @@ namespace InitialProject.View
                 }
             }
 
-            SetMessageShow("You can only select available dates from the list above.", Visibility.Visible);
+            SetMessageShow("You can only select available dates from the list bellow.", Visibility.Visible);
             return false;
         }
 
@@ -542,6 +594,11 @@ namespace InitialProject.View
             itemClicked = true;
         }
 
+        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
+        }
+
         private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
@@ -551,6 +608,11 @@ namespace InitialProject.View
         //{
         //    NavigationService?.Navigate(new Guest1Start(Guest1, this));
         //}
+
+        private void GoToForum(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1Forum(Guest1, this));
+        }
 
         private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
         {
@@ -715,6 +777,7 @@ namespace InitialProject.View
                 }
             }
         }
+
 
     }
 }

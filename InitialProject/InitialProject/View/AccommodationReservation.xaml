@@ -10,10 +10,13 @@
         Title="Accommodation Reservation" d:DesignHeight="684" d:DesignWidth="838">
 
 
+    <!--
     <Page.DataContext>
         <designData:AccommodationReservationDesignData />
     </Page.DataContext>
 
+
+     x:Name="ListAccommodations" ItemsSource = "{Binding ListAccommodations}" -->
 
     <DockPanel>
 
@@ -59,14 +62,14 @@
             </ComboBox>
 
 
-            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
+            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Click="GoToAnywhereAnytime" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
                 <StackPanel>
-                    <TextBlock Text="Whenever" HorizontalAlignment="Center" Height="22" Margin="0,0,0,0" VerticalAlignment="Top" />
-                    <TextBlock Text="Wherever" Height="23" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                    <TextBlock Text="Anywhere" HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Top" />
+                    <TextBlock Text="Anytime" Height="Auto" Margin="0,-8,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 </StackPanel>
             </Button>
 
-            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC" />
+            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Click="GoToForum" Background="#FFF0F0F0" BorderBrush="#FFACACAC" />
 
             <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
                 <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
@@ -93,11 +96,11 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="1">
-                            <Border Visibility="Visible" BorderBrush="Gray" Grid.Column="1"  BorderThickness="2" VerticalAlignment="Top" MinHeight="475" Margin="0,4,10,0">
+                            <Border Visibility="Visible" BorderBrush="Gray" Grid.Column="1"  BorderThickness="2" VerticalAlignment="Top" MinHeight="475" Height="Auto" Margin="0,4,10,0">
                                 <StackPanel>
                                     <TextBlock Visibility="Collapsed" Margin="0,10,0,0" x:Name="SuggestedDatesMessage" Grid.Column="1" TextAlignment="Center"  Foreground="{Binding LabelColor}" FontSize="24" FontWeight="Bold" Text="Poruka poruka" TextWrapping="Wrap" Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-                                    <Grid x:Name="FirstWindow">
+                                    <Grid x:Name="FirstWindow" Visibility="Visible">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="100" />
                                             <RowDefinition Height="90" />
@@ -125,18 +128,19 @@
 
                                     <Grid x:Name="SecondWindow" Visibility="Collapsed">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition  Height="Auto" />
                                             <RowDefinition Height="100" />
                                             <RowDefinition Height="90" />
-                                            <RowDefinition Height="90" />
+                                            <RowDefinition Height="Auto" />
                                             <RowDefinition Height="80" />
                                             <RowDefinition Height="100" />
 
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Grid.Row="0" Text="Available Dates" Height="35" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,5,0,35"  />
-                                        <ListBox Grid.Row="0" x:Name="DateSlotsListBox" Height="Auto" Width="Auto" Margin="10,0,10,0" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-
+                                        <StackPanel Grid.Row="0">
+                                            <TextBlock Text="Available Dates" Height="35" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,5,0,0"  />
+                                            <ListBox  x:Name="DateSlotsListBox" Height="Auto" Width="Auto" Margin="10,0,10,0" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                                        </StackPanel>
                                         <TextBlock Grid.Row="1" Text="Start Date" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" FontSize="24" FontWeight="Bold" Margin="0,8,0,0"  />
                                         <DatePicker Grid.Row="1" FontSize="20" FontWeight="Bold" x:Name="ReservationStartDatePicker" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" Width="200" Margin="0,43,0,0"/>
                                         <TextBlock Grid.Row="1" Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"  />
@@ -145,16 +149,27 @@
                                         <DatePicker Grid.Row="2" FontSize="20" FontWeight="Bold" x:Name="ReservationEndDatePicker" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,33,0,0" Height="30" Width="200"/>
                                         <TextBlock Grid.Row="2" Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"  />
 
-                                        <TextBlock Grid.Row="3" Text="Guests number" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,2,0,0" />
-                                        <TextBox Grid.Row="3" PreviewTextInput="AllowOnlyDigits" FontSize="20" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding GuestsNumber,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" Height="30" Width="280" Margin="0,38,0,0"/>
-                                        <TextBlock Grid.Row="3" Text="required" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,64,0,0" Grid.RowSpan="2"  />
+                                        <TextBlock Grid.Row="3" Visibility="Visible" x:Name="GuestNumberTB1" Text="Guests number" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,2,0,0" />
+                                        <TextBox Grid.Row="3" Visibility="Visible"  x:Name="GuestNumberTB2" PreviewTextInput="AllowOnlyDigits" FontSize="20" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding GuestsNumber,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" Height="30" Width="280" Margin="0,38,0,0"/>
+                                        <TextBlock Grid.Row="3" Visibility="Visible" x:Name="GuestNumberTB3" Text="required" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,64,0,0" Grid.RowSpan="1"  />
+
+                                        <TextBlock Grid.Row="3" Visibility="Collapsed" x:Name="GuestNumberAndReservationDaysTB" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0,2,0,0">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} guests &amp; {1} days">
+                                                    <Binding Path="GuestsNumber" />
+                                                    <Binding Path="ActualReservationDays" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+
+
 
                                         <Button Grid.Row="4" Content="Book" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="CreateReservation" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
 
-                                        <Button Grid.Row="5" Content="Back" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="BackToFirstWindow" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
+                                        <Button Grid.Row="5" Content="Back" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="Back" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
                                     </Grid>
 
-                                    <Button x:Name="MyReservationsButton" Visibility="Collapsed" Grid.Row="5" Content="My Reservations" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="GoToShowReservations" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>    
+                                    <Button x:Name="MyReservationsButton" Visibility="Collapsed" Grid.Row="5" Content="My Reservations" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="GoToShowReservations" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
                                 </StackPanel>
                                 
                             </Border>

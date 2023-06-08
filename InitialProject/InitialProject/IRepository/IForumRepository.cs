@@ -22,5 +22,9 @@ namespace InitialProject.IRepository
         bool CheckIsUseful(int forumId);
 
         void MakeUseful(int forumId);
+
+        void CloseForum(int forumId);
+
+        bool IsClosed(int forumId);
     }
 }

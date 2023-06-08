@@ -65,5 +65,17 @@ namespace InitialProject.Repository
             allForums.ToList().Where(x => x.ForumId == forumId).ToList().SetValue(x => x.IsUseful = true);
             Save(allForums);
         }
+
+        public void CloseForum(int forumId)
+        {
+            List<Forum> allForums = FindAll();
+            allForums.ToList().Where(x => x.ForumId == forumId).ToList().SetValue(x => x.Closed = true);
+            Save(allForums);
+        }
+
+        public bool IsClosed(int forumId)
+        {
+            return FindById(forumId).Closed;
+        }
     }
 }

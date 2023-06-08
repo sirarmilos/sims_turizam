@@ -7,10 +7,12 @@
         mc:Ignorable="d"
         WindowStyle="None"
         Title="MainWindow"
-        Width="1400" Height="800"
+        Width="838" Height="684"
         WindowStartupLocation ="CenterScreen">
-    <!--    Width="838" Height="684" -->
-    
+    <!--    Width="1400" Height="800" Create review-->
+    <!-- Height="819" Width="1416"  Siki-->
+    <!-- Height="684" Width="838"   Moje-->
+
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"></Frame>
     </Grid>

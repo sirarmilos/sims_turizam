@@ -9,9 +9,6 @@ Background="White"
     mc:Ignorable="d"
         Title="Create Forum" d:DesignHeight="684" d:DesignWidth="838">
 
-
-
-
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Margin="0,2,15,0">
             <StackPanel Orientation="Horizontal">
@@ -57,14 +54,14 @@ Background="White"
             </ComboBox>
 
 
-            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
+            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Click="GoToAnywhereAnytime" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
                 <StackPanel>
-                    <TextBlock Text="Whenever" HorizontalAlignment="Center" Height="22" Margin="0,0,0,0" VerticalAlignment="Top" />
-                    <TextBlock Text="Wherever" Height="23" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                    <TextBlock Text="Anywhere" HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Top" />
+                    <TextBlock Text="Anytime" Height="Auto" Margin="0,-8,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 </StackPanel>
             </Button>
 
-            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC" />
+            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" Click="GoToForum" BorderBrush="#FFACACAC" />
 
             <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
                 <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
@@ -91,10 +88,10 @@ Background="White"
                         </Grid.RowDefinitions>
 
                         <Label HorizontalAlignment="Left" Content="City" Grid.Row="0" VerticalAlignment="Top" FontWeight="Bold" Margin="160,20,0,0" FontSize="24" Width="110" />
-                        <TextBox FontWeight="Bold" Grid.Row="0" PreviewTextInput="AllowOnlyLetters"  Width="227" Height="38" HorizontalAlignment="Left" Text="{Binding Path=City,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" VerticalAlignment="Bottom" FontSize="20" Margin="73,0,0,0" />
+                        <TextBox FontWeight="Bold" Grid.Row="0" PreviewTextInput="AllowOnlyLetters"  Width="227" Height="30" HorizontalAlignment="Left" Text="{Binding Path=City,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" VerticalAlignment="Bottom" FontSize="20" Margin="73,0,0,10" />
 
                         <Label HorizontalAlignment="Right" Content="Country" VerticalAlignment="Top"  Grid.Row="0" FontSize="24" FontWeight="Bold"  Margin="0,20,115,0"   Width="122"   />
-                        <TextBox FontWeight="Bold" Grid.Row="0" PreviewTextInput="AllowOnlyLetters"  Width="227" Height="38" HorizontalAlignment="Right" Text="{Binding Path=Country,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" VerticalAlignment="Bottom" FontSize="20" Margin="0,0,73,0" />
+                        <TextBox FontWeight="Bold" Grid.Row="0" PreviewTextInput="AllowOnlyLetters"  Width="227" Height="30" HorizontalAlignment="Right" Text="{Binding Path=Country,TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{x:Null}" VerticalAlignment="Bottom" FontSize="20" Margin="0,0,73,10" />
 
 
                         <StackPanel Grid.Row="1">

@@ -43,6 +43,10 @@ namespace InitialProject.IRepository
 
         List<Reservation> FindAccommodationReservationsByYear(int accommodationId, int year);
 
+        bool HasGuest1MadeAnyReservationAtThisLocation(string username, ForumLocationDTO location);
+
+        int FindNumberOfGuest1Reservations(string guest1Username);
+        
         bool IsFutureReservationExistByLocationId(int locationId, string ownerUsername);
     }
 }

@@ -17,10 +17,11 @@ using System.Diagnostics;
 using GalaSoft.MvvmLight.Command;
 using InitialProject.Service;
 using InitialProject.DTO;
+using System.DirectoryServices;
 
 namespace InitialProject.View
 {
-    public partial class SearchAndShowAccommodations : Page, INotifyPropertyChanged
+    public partial class Guest1AnywhereAnytime : Page, INotifyPropertyChanged
     {
         AccommodationService accommodationService;
         public Accommodation Accommodation { get; set; }
@@ -29,7 +30,7 @@ namespace InitialProject.View
         private string country;
         private string city;
         private int? maxGuests;
-        private int? minDaysReservation;
+        private int? reservationDays;
         private int leftCancelationDays;
         private string image;
         private List<string> images;
@@ -60,37 +61,6 @@ namespace InitialProject.View
             set;
         }
 
-        public string AccommodationName
-        {
-            get { return accommodationName; }
-            set
-            {
-                accommodationName = value;
-                OnPropertyChanged(nameof(AccommodationName));
-            }
-        }
-
-        public string Country
-        {
-            get { return country; }
-            set
-            {
-                country = value;
-                OnPropertyChanged(nameof(Country));
-
-            }
-        }
-
-        public string City
-        {
-            get { return city; }
-            set
-            {
-                city = value;
-                OnPropertyChanged(nameof(City));
-            }
-        }
-
         public int? MaxGuests
         {
             get { return maxGuests; }
@@ -101,45 +71,106 @@ namespace InitialProject.View
             }
         }
 
-        public int? MinDaysReservation
+        public int? ReservationDays
         {
-            get { return minDaysReservation; }
+            get { return reservationDays; }
             set
             {
-                minDaysReservation = value;
+                reservationDays = value;
                 OnPropertyChanged();
             }
         }
 
 
-        private string type;
-        public string Type
+
+
+
+
+        private DateTime startDate;
+        private DateTime endDate;
+        public DateTime StartDate
         {
-            get { return type; }
+            get { return startDate; }
             set
             {
-                if (value != type)
-                {
-                    type = value;
-                    OnPropertyChanged(nameof(Type));
+                startDate = value;
+                OnPropertyChanged();
+            }
+        }
 
-                    if (value == "System.Windows.Controls.ComboBoxItem: All Types")
-                    {
-                        type = "";
-                    }
-                    else if (value == "System.Windows.Controls.ComboBoxItem: Apartment")
-                    {
-                        type = "Apartment";
-                    }
-                    else if (value == "System.Windows.Controls.ComboBoxItem: Home")
-                    {
-                        type = "Home";
-                    }
-                    else if (value == "System.Windows.Controls.ComboBoxItem: Hut")
-                    {
-                        type = "Hut";
-                    }
-                }
+        public DateTime EndDate
+        {
+            get { return endDate; }
+            set
+            {
+                endDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<Accommodation> Accommodations
+        {
+            get;
+            set;
+        }
+
+        private List<DateSlot> freeDateSlots;
+        public List<DateSlot> FreeDateSlots
+        {
+            get { return freeDateSlots; }
+            set
+            {
+                freeDateSlots = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? startDatePicker;
+        public DateTime? StartDatePicker
+        {
+            get { return startDatePicker; }
+            set
+            {
+                startDatePicker = value;
+
+                OnPropertyChanged(nameof(StartDatePicker));
+
+                
+                //// Ažurirajte vrednost EndDatePicker na istu vrednost kao StartDatePicker
+                //Izlaz = Ulaz;
+            }
+        }
+
+        //private DateTime? jokerIzlaz;
+        //public DateTime? JokerIzlaz
+        //{
+        //    get { return jokerIzlaz; }
+        //    set
+        //    {
+        //        jokerIzlaz = value;
+        //        StartDatePicker.SelectedDate = value;
+
+        //        OnPropertyChanged(nameof(Joker));
+
+
+        //        //// Ažurirajte vrednost EndDatePicker na istu vrednost kao StartDatePicker
+        //        //Izlaz = Ulaz;
+        //    }
+        //}
+
+        private DateTime? endDatePicker;
+        public DateTime? EndDatePicker
+        {
+            get { return endDatePicker; }
+            set
+            {
+                endDatePicker = value;
+
+
+                OnPropertyChanged(nameof(EndDatePicker));
+
+                //// Ažurirajte vrednost EndDatePicker na istu vrednost kao StartDatePicker
+                //Izlaz = Ulaz;
             }
         }
 
@@ -195,7 +226,7 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public SearchAndShowAccommodations(string username, Page page)
+        public Guest1AnywhereAnytime(string username, Page page)
         {
             InitializeComponent();
 
@@ -219,6 +250,10 @@ namespace InitialProject.View
 
                 SecondSearchWindow.Visibility = Visibility.Visible;
             }
+
+
+
+            FreeDateSlots = new List<DateSlot>();
 
         }
 
@@ -249,24 +284,17 @@ namespace InitialProject.View
 
             SecondSearchWindow.Visibility = Visibility.Visible;
 
-            if ((MaxGuests != null) && (MaxGuests == 0))
-            {
-                SuggestedDatesMessage.Text = "You can't use zero as number of guests.";
-                ListAccommodations.Visibility = Visibility.Collapsed;
-                SuggestedDatesMessage.Visibility = Visibility.Visible;
-                ListAccommodations.ItemsSource = null;
+            if (!AreRequiredFieldsFilled()) return;
 
-                return;
-            }
 
             SearchAndShowAccommodationDTO searchShowAndAccommodationDTO =
-                new SearchAndShowAccommodationDTO(AccommodationName, Country, City, Type, MaxGuests, MinDaysReservation);
+                new SearchAndShowAccommodationDTO("", "", "", "", MaxGuests, ReservationDays);
 
-            List<Accommodation> searchResults = accommodationService.FindAll(searchShowAndAccommodationDTO);
+            Accommodations = accommodationService.FindAll(searchShowAndAccommodationDTO);
 
-            FilterOutRemoved(ref searchResults);
+            FilterOutRemoved();
 
-            if (searchResults == null || searchResults.Count == 0)
+            if (Accommodations == null)
             {
                 ListAccommodations.ItemsSource = null;
                 SuggestedDatesMessage.Text = "No accommodation satisfies your requirements.";
@@ -276,26 +304,176 @@ namespace InitialProject.View
                 return;
             }
 
-            ListAccommodations.ItemsSource = new ObservableCollection<Accommodation>(searchResults);
-
+            ListAccommodations.ItemsSource = new ObservableCollection<Accommodation>(Accommodations);
             ListAccommodations.Visibility = Visibility.Visible;
             SuggestedDatesMessage.Visibility = Visibility.Collapsed;
+
+
+            if (IsSearchDatePickersInputValid())
+                FilterAccommodations();
+
+
         }
 
-        private void FilterOutRemoved(ref List<Accommodation> searchResults)
+        private void FilterOutRemoved()
         {
             List<Accommodation> resultsToKeep = new List<Accommodation>();
 
-            if (searchResults == null) return;
+            if (Accommodations == null) return;
 
-            foreach (var result in searchResults)
+            foreach (var result in Accommodations)
             {
                 if (result.Removed != true)
                     resultsToKeep.Add(result);
             }
 
-            searchResults = resultsToKeep;
+            Accommodations = resultsToKeep;
         }
+
+        private bool AreRequiredFieldsFilled()
+        {
+            if ((MaxGuests != null) && (MaxGuests == 0))
+            {
+                SuggestedDatesMessage.Text = "You can't use zero as number of guests.";
+                ListAccommodations.Visibility = Visibility.Collapsed;
+                SuggestedDatesMessage.Visibility = Visibility.Visible;
+                ListAccommodations.ItemsSource = null;
+
+                return false;
+            }
+
+            if (MaxGuests == null)
+            {
+                SuggestedDatesMessage.Text = "You need to input number of guests.";
+                ListAccommodations.Visibility = Visibility.Collapsed;
+                SuggestedDatesMessage.Visibility = Visibility.Visible;
+                ListAccommodations.ItemsSource = null;
+
+                return false;
+            }
+
+            if (ReservationDays == null)
+            {
+                SuggestedDatesMessage.Text = "You need to input number of reservation days.";
+                ListAccommodations.Visibility = Visibility.Collapsed;
+                SuggestedDatesMessage.Visibility = Visibility.Visible;
+                ListAccommodations.ItemsSource = null;
+
+                return false;
+            }
+
+            return true;
+        }
+
+
+        // filtriranje uz odabran raspon datuma
+        private void FilterAccommodations()
+        {
+
+            //SuggestedDatesMessage.Text = "";
+            //SuggestedDatesMessage.Visibility = Visibility.Collapsed;
+
+            foreach (var accommodation in Accommodations)
+            {
+                FreeDateSlots = FindAvailable(accommodation);
+                if ((FreeDateSlots == null) || (FreeDateSlots.Count == 0))
+                {
+                    Accommodations.Remove(accommodation);
+                }
+
+                if (Accommodations.Count == 0)
+                    break;
+            }
+
+            ListAccommodations.ItemsSource = new ObservableCollection<Accommodation>(Accommodations);
+            ListAccommodations.Visibility = Visibility.Visible;
+            SuggestedDatesMessage.Visibility = Visibility.Collapsed;
+        }
+
+        private List<DateSlot> FindAvailable(Accommodation accommodation)
+        {
+            FreeDateSlots.Clear();
+
+            FreeDateSlots = accommodationService.FindAvailableDateSlots(FreeDateSlots, accommodation, StartDate, EndDate, (int)ReservationDays);
+
+            return FreeDateSlots;
+        }
+
+
+
+        private bool IsSearchDatePickersInputValid()
+        {
+            if (StartDatePicker == null && EndDatePicker == null) return false;
+
+            if ((StartDatePicker != null && EndDatePicker == null) ||
+                (StartDatePicker == null && EndDatePicker != null))
+            {
+                SuggestedDatesMessage.Text = "You can't choose only one date. Try again.";
+                ListAccommodations.Visibility = Visibility.Collapsed;
+                SuggestedDatesMessage.Visibility = Visibility.Visible;
+                ListAccommodations.ItemsSource = null;
+
+                return false;
+            }
+
+            StartDate = (DateTime)StartDatePicker;
+            EndDate = (DateTime)EndDatePicker;
+
+            if (StartDate.Date < DateTime.Now.Date || EndDate.Date < DateTime.Now.Date)
+            {
+                //SetMessageShow("You can't choose dates from the past. Try again.", Visibility.Visible);
+                SuggestedDatesMessage.Text = "You can't choose dates from the past. Try again.";
+                ListAccommodations.Visibility = Visibility.Collapsed;
+                SuggestedDatesMessage.Visibility = Visibility.Visible;
+                ListAccommodations.ItemsSource = null;
+
+                return false;
+            }
+
+            //if (CalendarReservationDays == 0 && ActualReservationDays == 0 || ActualReservationDays < 0)
+            //{
+            //    SetMessageShow("Invalid number of reservation days. Try again.", Visibility.Visible);
+            //    return false;
+            //}
+
+            //if (ActualReservationDays < Accommodation.MinDaysReservation)
+            //{
+            //    SetMessageShow($"Number of reservation days couldn't be less than minimal days of reservation which is: {Accommodation.MinDaysReservation}. Try again.", Visibility.Visible);
+            //    return false;
+            //}
+
+            if (StartDate > EndDate)
+            {
+                //SetMessageShow("Start date is greater than end date. Try again.", Visibility.Visible);
+                SuggestedDatesMessage.Text = "Start date is greater than end date. Try again.";
+                ListAccommodations.Visibility = Visibility.Collapsed;
+                SuggestedDatesMessage.Visibility = Visibility.Visible;
+                ListAccommodations.ItemsSource = null;
+
+                return false;
+            }
+
+            if (StartDate.AddDays((double)ReservationDays) > EndDate)
+            {
+                //SetMessageShow("Number of reservation days couldn't be more than selected dates. Try again.", Visibility.Visible);
+                SuggestedDatesMessage.Text = "Number of reservation days couldn't be more than selected dates. Try again.";
+                ListAccommodations.Visibility = Visibility.Collapsed;
+                SuggestedDatesMessage.Visibility = Visibility.Visible;
+                ListAccommodations.ItemsSource = null;
+
+                return false;
+            }
+
+            return true;
+        }
+
+
+
+
+
+
+
+
 
         private bool comboBoxClicked = false;
         private bool itemClicked = false;
@@ -322,10 +500,7 @@ namespace InitialProject.View
                 else if (selectedItem.Content.ToString() == "Reviews")
                 {
                     SelectedCreateReviewCBItem = selectedItem.Content.ToString();
-
-                    NavigationService?.Navigate(new Guest1GenerateReport(Guest1, this));
-
-                    //GoToShowOwnerReviews(sender, null);
+                    GoToShowOwnerReviews(sender, null);
                 }
                 else if (selectedItem.Content.ToString() == "Requests")
                 {
@@ -388,17 +563,15 @@ namespace InitialProject.View
             NavigationService?.Navigate(new Guest1Forum(Guest1, this));
         }
 
+        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
+        }
 
         private void GoToShowSuperGuest(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new ShowSuperGuest(Guest1, this));
         }
-
-        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
-        {
-            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
-        }
-        
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)
         {

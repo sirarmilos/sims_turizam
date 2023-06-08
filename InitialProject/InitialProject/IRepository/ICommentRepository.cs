@@ -19,6 +19,8 @@ namespace InitialProject.IRepository
 
         int NextId();
 
+        void AddGuest1Comment(string commenterUsername, string answer, int forumId);
+
         Comment FindById(int commentId);
 
         void AddReportNumber(int commentId);

@@ -22,6 +22,8 @@ namespace InitialProject.Service
 
         private readonly ReservationReschedulingRequestService reservationReschedulingRequestService;
 
+        private RenovationService renovationService;
+
         private UserService userService;
 
         private SuperGuestService superGuestService;
@@ -249,6 +251,9 @@ namespace InitialProject.Service
 
             List<Reservation> accommodationReservations = reservationRepository.FindAllByAccommodation(accommodation.Id);
 
+            // add renovations as reservations
+            AddRenovationsAsReservations(ref accommodationReservations, accommodation);
+
             if (accommodationReservations.Count > 0)
             {
                 accommodationReservations.Sort((r1, r2) => r1.StartDate.CompareTo(r2.StartDate));
@@ -272,6 +277,25 @@ namespace InitialProject.Service
             FindDateSlotsAmongReservations(accommodationReservations, freeDateSlots, StartDate, EndDate, calendarReservationDays);
 
             return freeDateSlots;
+        }
+
+        private void AddRenovationsAsReservations(ref List<Reservation> reservations, Accommodation accommodation)
+        {
+            renovationService = new RenovationService();
+
+            List<Renovation> allRenovations = renovationService.FindAllRenovationByAccommodationId(accommodation.Id);
+
+            if (allRenovations.Count == 0 || allRenovations == null) return;
+
+            foreach (Renovation renovation in allRenovations)
+            {
+                Reservation reservation = new Reservation();
+
+                reservation.StartDate = renovation.StartDate;
+                reservation.EndDate = renovation.EndDate;  
+
+                reservations.Add(reservation);
+            }
         }
 
         private void FindDateSlotsAmongReservations(
@@ -445,9 +469,15 @@ namespace InitialProject.Service
             return reservationRepository.FindAccommodationReservationsByYear(accommodationId, year);
         }
 
+        public int FindNumberOfGuest1Reservations(string guest1Username)
+        {
+            return reservationRepository.FindNumberOfGuest1Reservations(guest1Username);
+        }
+
         public bool CheckFutureReservations(int locationId, string ownerUsername)
         {
             return reservationRepository.IsFutureReservationExistByLocationId(locationId, ownerUsername);
         }
     }
+
 }

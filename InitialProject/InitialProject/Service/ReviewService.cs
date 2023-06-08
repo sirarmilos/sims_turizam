@@ -350,5 +350,57 @@ namespace InitialProject.Service
         {
             forumNotificationsToOwnerService.MarkAsReadNotificationsForums(ownerUsername);
         }
+
+
+        public List<Guest1PDFReportDTO> FindGuest1PDFReportDTOs() //
+        {
+            List<ShowOwnerReviewsDTO> showOwnerReviewsDTOs = FindAllOwnerReviews();
+
+            List<Guest1PDFReportDTO> guest1PDFReportDTOs = new List<Guest1PDFReportDTO>();  
+
+            List<string> ownersUsernames = new List<string>();
+
+            foreach (ShowOwnerReviewsDTO showOwnerReviewsDTO in showOwnerReviewsDTOs)
+                if (!ownersUsernames.Contains(showOwnerReviewsDTO.OwnerUsername)) 
+                    ownersUsernames.Add(showOwnerReviewsDTO.OwnerUsername);
+
+            foreach (string ownerUsername in ownersUsernames)
+            {
+                Guest1PDFReportDTO guest1PDFReport = new Guest1PDFReportDTO();
+                
+                foreach (ShowOwnerReviewsDTO showOwnerReviewsDTO in showOwnerReviewsDTOs)
+                {
+                    if (showOwnerReviewsDTO.OwnerUsername.Equals(ownerUsername))
+                    {
+                        guest1PDFReport.NumberOfReservations++;
+                        guest1PDFReport.CleanlinessAverage += showOwnerReviewsDTO.Cleanliness;
+                        guest1PDFReport.FollowRulesAverage += showOwnerReviewsDTO.FollowRules;
+                        guest1PDFReport.BehaviorAverage += showOwnerReviewsDTO.Behavior;
+                        guest1PDFReport.CommunicativenessAverage += showOwnerReviewsDTO.Communicativeness;
+                    }
+                }
+
+                guest1PDFReport.OwnerUsername = ownerUsername;
+
+                guest1PDFReport.CleanlinessAverage /= guest1PDFReport.NumberOfReservations;
+                guest1PDFReport.FollowRulesAverage /= guest1PDFReport.NumberOfReservations;
+                guest1PDFReport.BehaviorAverage /= guest1PDFReport.NumberOfReservations;
+                guest1PDFReport.CleanlinessAverage /= guest1PDFReport.NumberOfReservations;
+                guest1PDFReport.CommunicativenessAverage /= guest1PDFReport.NumberOfReservations;
+
+                guest1PDFReport.AllAverage =
+                    (guest1PDFReport.CleanlinessAverage + guest1PDFReport.FollowRulesAverage + guest1PDFReport.BehaviorAverage + guest1PDFReport.CleanlinessAverage) / 4;
+
+                guest1PDFReportDTOs.Add(guest1PDFReport);
+            }
+
+            return guest1PDFReportDTOs;
+        }
+
+        public int FindNumberOfGuest1Reservations(string guest1Username)
+        {
+            return reservationService.FindNumberOfGuest1Reservations(guest1Username);
+        }
+
     }
 }
