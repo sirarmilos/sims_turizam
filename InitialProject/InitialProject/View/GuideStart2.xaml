@@ -80,7 +80,7 @@
 
             <!-- Button: Mark Reached Key Points (Bottom-Right) -->
             <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,216,215">
-                <Button Content="Mark Reached Key Points" FontSize="15"/>
+                <Button Content="Mark Reached Key Points" FontSize="15" Click="GoToMarkReachedKeyPoints"/>
             </Border>
 
         </Grid>

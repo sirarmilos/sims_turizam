@@ -35,6 +35,12 @@ namespace InitialProject.View
             set { BackButton.IsEnabled = value; }
         }
 
+        public bool IsNextButtonEnabled
+        {
+            get { return NextButton.IsEnabled; }
+            set { NextButton.IsEnabled = value; }
+        }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             Back?.Invoke(this, e);
@@ -47,7 +53,7 @@ namespace InitialProject.View
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Cancel?.Invoke(this, e);
+            Window.GetWindow(this)?.Close();
         }
     }
 }
