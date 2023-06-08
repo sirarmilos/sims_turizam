@@ -1,6 +1,7 @@
 ﻿using InitialProject.IRepository;
 using InitialProject.Model;
 using InitialProject.Serializer;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +57,18 @@ namespace InitialProject.Repository
             tourRequestSerializer.ToCSV(FilePathTourRequests, requests);
         }
 
+        public void SaveList(List<TourRequest> tourRequests)
+        {
+            int complexId = NextComplexId();
+
+            foreach (TourRequest tourRequest in tourRequests)
+            {
+                tourRequest.Id = NextId();
+                tourRequest.ComplexTourRequestId = complexId;
+                Save(tourRequest);
+            }
+        }
+
         public void Save(TourRequest tourRequest)
         {
             requests = FindAll();
@@ -71,6 +84,15 @@ namespace InitialProject.Repository
                 return 1;
             }
             return FindAll().Max(c => c.Id) + 1;
+        }
+
+        public int NextComplexId()
+        {
+            if (FindAll().Count < 1)
+            {
+                return 1;
+            }
+            return FindAll().Max(c => c.ComplexTourRequestId) + 1;
         }
 
 

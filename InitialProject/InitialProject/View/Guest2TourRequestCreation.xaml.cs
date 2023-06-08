@@ -237,6 +237,8 @@ namespace InitialProject.View
             tourRequest.EndDate = EndDate;
             tourRequest.Status = "pending";
             tourRequest.CreationDate = DateTime.Now;
+            tourRequest.ComplexTourRequestId = 0;
+            tourRequest.AcceptedDate = "";
 
             bool result = tourRequestService.SaveTourRequest(tourRequest);
 

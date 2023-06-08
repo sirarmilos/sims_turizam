@@ -21,36 +21,13 @@ namespace InitialProject.Repository
 
         private const string FilePathAccommodation = "../../../Resources/Data/accommodations.csv";
 
-        private const string FilePathLocation = "../../../Resources/Data/locations.csv";
-
         private readonly Serializer<Accommodation> accommodationSerializer;
 
-        private readonly Serializer<Location> locationSerializer;
-
         private List<Accommodation> accommodations;
-
-        private List<Location> locations;
 
         public AccommodationRepository()
         {
             accommodationSerializer = new Serializer<Accommodation>();
-            accommodations = accommodationSerializer.FromCSV(FilePathAccommodation);
-            locationSerializer = new Serializer<Location>();
-            locations = locationSerializer.FromCSV(FilePathLocation);
-
-            foreach (Accommodation accommodation in accommodations)
-            {
-                if (locations == null)
-                    break;
-                foreach (Location location in locations)
-                {
-                    if (location.Id == accommodation.Location.Id)
-                    {
-                        accommodation.Location = location;
-                        break;
-                    }
-                }
-            }
         }
 
         public List<Accommodation> FindAll()
@@ -81,7 +58,7 @@ namespace InitialProject.Repository
 
         public bool IsAccommodationExist(string accommodationName)
         {
-            return FindAll().Exists(x => x.AccommodationName.Equals(accommodationName) == true);
+            return FindAll().Exists(x => x.AccommodationName.Equals(accommodationName) == true && x.Removed == false);
         }
 
         public int NextId()
@@ -146,7 +123,14 @@ namespace InitialProject.Repository
 
         public List<Accommodation> FindByOwnerUsername(string ownerUsername)
         {
-            return FindAll().ToList().FindAll(x => x.OwnerUsername.Equals(ownerUsername) == true);
+            return FindAll().ToList().FindAll(x => x.OwnerUsername.Equals(ownerUsername) == true && x.Removed == false);
+        }
+
+        public void Remove(string country, string city)
+        {
+            List<Accommodation> allAccommodations = FindAll();
+            allAccommodations.ToList().Where(x => x.Location.Country.Equals(country) == true && x.Location.City.Equals(city) == true && x.Removed == false).SetValue(x => x.Removed = true);
+            Save(allAccommodations);
         }
     }
 }

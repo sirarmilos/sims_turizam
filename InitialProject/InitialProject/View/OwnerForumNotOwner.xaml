@@ -1,0 +1,188 @@
+﻿<Window x:Class="InitialProject.View.OwnerForumNotOwner"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InitialProject.View"
+        
+        xmlns:cmd="clr-namespace:InitialProject.Commands.OwnerCommands"
+
+        mc:Ignorable="d"
+        Title="Forum" Height="819" Width="1416" Icon="../Resources/Images/logo_icon.ico"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+
+        <local:NumberOfUserReportVisibility x:Key="NumberOfUserReportVisibility" />
+
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerHomePageLogin" CanExecute="OwnerHomePageLogin_CanExecute" Executed="OwnerHomePageLogin_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.AccommodationStart" CanExecute="AccommodationStart_CanExecute" Executed="AccommodationStart_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests" CanExecute="ShowOwnerManageBookingMoveRequests_CanExecute" Executed="ShowOwnerManageBookingMoveRequests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowAndCancellationRenovation" CanExecute="ShowAndCancellationRenovation_CanExecute" Executed="ShowAndCancellationRenovation_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.RateGuests" CanExecute="RateGuests_CanExecute" Executed="RateGuests_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.ShowGuestReviews" CanExecute="ShowGuestReviews_CanExecute" Executed="ShowGuestReviews_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.OwnerForum" CanExecute="OwnerForum_CanExecute" Executed="OwnerForum_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Logout" CanExecute="Logout_CanExecute" Executed="Logout_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Notifications" CanExecute="Notifications_CanExecute" Executed="Notifications_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.Close" CanExecute="Close_CanExecute" Executed="Close_Executed"></CommandBinding>
+    </Window.CommandBindings>
+
+    <Grid>
+
+        <DockPanel Margin="0,0,0,0" VerticalAlignment="Top" Height="25">
+
+            <Menu x:Name="menuOwner" DockPanel.Dock ="Top" HorizontalAlignment="Stretch" FontSize="13">
+
+                <Menu.ItemsPanel>
+
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="340" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+
+                </Menu.ItemsPanel>
+
+                <MenuItem Grid.Column="0" Header="_Home (F1)" Command="cmd:RoutedCommands.OwnerHomePageLogin"/>
+                <MenuItem Grid.Column="1" Header="_Accommodation (F2)" Command="cmd:RoutedCommands.AccommodationStart"/>
+                <MenuItem Grid.Column="2" Header="_Management of booking move requests (F3)" Command="cmd:RoutedCommands.ShowOwnerManageBookingMoveRequests"/>
+                <MenuItem Grid.Column="3" Header="Reno_vate (F4)" Command="cmd:RoutedCommands.ShowAndCancellationRenovation"/>
+                <MenuItem Grid.Column="4" Header="Ra_te guests (F5)" Command="cmd:RoutedCommands.RateGuests"/>
+                <MenuItem Grid.Column="5" Header="_Guest reviews (F6)" Command="cmd:RoutedCommands.ShowGuestReviews"/>
+                <MenuItem Grid.Column="6" Header="_Forum (F7)" Command="cmd:RoutedCommands.OwnerForum"/>
+                <MenuItem Grid.Column="7" x:Name="usernameAndSuperOwner" HorizontalAlignment="Right" IsEnabled="False"/>
+                <MenuItem Grid.Column="8" Header="_Logout (F8)" Command="cmd:RoutedCommands.Logout"/>
+                <MenuItem Grid.Column="9" x:Name="notifications" Header="_Notifications (F9)" Command="cmd:RoutedCommands.Notifications">
+                    <MenuItem x:Name="rateGuestsNotifications" Command="cmd:RoutedCommands.RateGuests"/>
+                    <MenuItem x:Name="cancelledReservationsNotifications" Header="Cancelled reservations" IsEnabled="False"/>
+                    <ItemsControl ItemsSource="{Binding UnreadCancelledReservations}" x:Name="cancelledReservationsNotificationsList"/>
+                    <MenuItem x:Name="forumNotifications" Command="cmd:RoutedCommands.OwnerForum"/>
+                </MenuItem>
+
+            </Menu>
+
+        </DockPanel>
+
+        <DockPanel VerticalAlignment="Top" Height="130" Margin="0,25,0,0" HorizontalAlignment="Center">
+
+            <Label Content="Forum  #" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,25,0,0" FontSize="24" Width="Auto"></Label>
+            <Label Content="{Binding ShowOwnerForumsDTO.ForumId}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-10,24,0,0" FontSize="24" Width="Auto"/>
+
+            <Label Content="{Binding ShowOwnerForumsDTO.Location}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-145,65,0,0" FontSize="24" Width="Auto"/>
+
+        </DockPanel>
+
+        <DockPanel VerticalAlignment="Top" Margin="25,160,0,0" HorizontalAlignment="Left" Width="95">
+
+            <TextBlock Text="{Binding ShowOwnerForumsDTO.CreatorUsername}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Margin="5,25,25,25" FontSize="16"/>
+
+        </DockPanel>
+
+        <DockPanel VerticalAlignment="Top" Margin="25,180,0,0" HorizontalAlignment="Left" Width="95">
+
+            <TextBlock Text="(guest)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Margin="10,30,25,25" FontSize="16"/>
+
+        </DockPanel>
+
+        <DockPanel VerticalAlignment="Top" MinHeight="80" Margin="120,180,0,0" HorizontalAlignment="Left" Width="1000">
+
+            <Border Margin="0,0,0,0" BorderBrush="Gray" BorderThickness="0.2">
+
+                <Grid>
+
+                    <TextBlock Text="{Binding ShowOwnerForumsDTO.Question}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="25,25,25,25" FontSize="13"/>
+
+                </Grid>
+
+            </Border>
+
+        </DockPanel>
+
+        <DockPanel VerticalAlignment="Bottom" Height="100" Margin="25,0,0,0" HorizontalAlignment="Left" Width="1350">
+
+            <Button x:Name="buttonClose" HorizontalAlignment="Right" Height="50" VerticalAlignment="Bottom" Width="175" Command="cmd:RoutedCommands.Close" Margin="0,0,25,50">
+                <TextBlock TextAlignment="Center" FontSize="14">Close<LineBreak/>(ESC)</TextBlock>
+            </Button>
+
+        </DockPanel>
+
+        <DockPanel HorizontalAlignment="Left" Height="288" VerticalAlignment="Top" Width="1215" Margin="185,350,0,50">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Width="1190">
+
+                    <ItemsControl x:Name="itemsControlShowOwnerForumComments" Visibility="Visible" ItemsSource="{Binding ShowOwnerForumCommentsDTOs}">
+
+                        <ItemsControl.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <Grid Margin="0,0,0,20">
+
+                                    <TextBlock Text="{Binding CommenterUsername}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="16"/>
+                                    <TextBlock Text="{Binding CommenterType}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,20,25,25" FontSize="16"/>
+
+                                    <Border HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="825" Margin="100,0,0,0" BorderBrush="Gray" BorderThickness="0.2">
+
+                                        <Grid>
+
+                                            <TextBlock Text="{Binding Answer}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,25,25" FontSize="13"/>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                    <TextBlock Text="{Binding IsStillOwner}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="950,5,0,0" FontSize="13"/>
+
+                                    <TextBlock Text="{Binding Visited}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="950,5,0,0" FontSize="13"/>
+
+                                    <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="950,50,0,0" FontSize="13">
+
+                                        <TextBlock.Style>
+
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{Binding NumberOfReports, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Setter Property="Visibility" Value="Visible" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding NumberOfReports, Converter={StaticResource NumberOfUserReportVisibility}}" Value="Hidden">
+                                                        <Setter Property="Visibility" Value="Hidden" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+
+                                        </TextBlock.Style>
+
+                                    </TextBlock>
+
+                                </Grid>
+
+                            </DataTemplate>
+
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+        </DockPanel>
+
+    </Grid>
+
+</Window>

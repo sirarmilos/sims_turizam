@@ -9,27 +9,27 @@ namespace InitialProject.Model
 {
     public class TourNotifications:ISerializable
     {
-        public Tour Tour { get; set; }  
+        public TourGuidence TourGuidence { get; set; }  
         public bool IsNotified { get; set; }
 
-        public User User { get; set; }  
+        public User User { get; set; }
 
         public TourNotifications() { }
 
-        public TourNotifications(Tour tour) 
+        public TourNotifications(TourGuidence tour) 
         {
-            Tour = tour;
+            TourGuidence = tour;
             IsNotified = false;
         }
 
         public string[] ToCSV()
         {
-            return new string[] { Tour.Id.ToString(), IsNotified.ToString(), User.Username.ToString() };
+            return new string[] { TourGuidence.Id.ToString(), IsNotified.ToString(), User.Username.ToString() };
         }
 
         public void FromCSV(string[] values)
         {
-            Tour = new Tour() { Id = int.Parse(values[0]) };
+            TourGuidence = new TourGuidence() { Id = int.Parse(values[0]) };
             IsNotified = bool.Parse(values[1]);
             User = new User() { Username = values[2] };
         }

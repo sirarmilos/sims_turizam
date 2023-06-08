@@ -37,6 +37,8 @@ namespace InitialProject.View
 
         private List<string> _xLabels;
 
+        private List<string> _xAxisLoc;
+
 
         public string Year
         {
@@ -80,6 +82,20 @@ namespace InitialProject.View
             }
         }
 
+        public List<string> XAxis_Loc
+        {
+            get { return _xAxisLoc; }
+            set
+            {
+                if (_xAxisLoc != value)
+                {
+                    _xAxisLoc = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -97,9 +113,10 @@ namespace InitialProject.View
 
             InitializeComboBoxYears();
             InitializeComboBoxYears1();
-
             InitializePieChart("");
 
+
+            
             SeriesCollection seriesCollection = new SeriesCollection();
             List<string> labels = new List<string>();
             List<int> values = new List<int>();
@@ -111,24 +128,54 @@ namespace InitialProject.View
                 {
                     labels.Add(language.ToString());
                     values.Add(val);
-                };
+                }
             }
 
-            LineSeries lineSeries = new LineSeries
+            XLabels = labels;
+
+            ColumnSeries lineSeries = new ColumnSeries
             {
+
                 Values = new ChartValues<int>(values),
                 DataLabels = true,
             };
 
 
             lineSeries.LabelPoint = point => $"{point.Y}";
-
             seriesCollection.Add(lineSeries);
-
             chartLanguague.Series = seriesCollection;
-            chartLanguague.AxisX.Add(new Axis { Labels = labels });
 
-            UpdateTextBox(Username,"");
+
+
+            Dictionary<string, int> LocationCount = tourRequestService.LocationCount(username);
+
+            SeriesCollection seriesCollection1 = new SeriesCollection();
+            List<string> labels1 = new List<string>();
+            List<int> values1 = new List<int>();
+
+            foreach (KeyValuePair<string,int> keyValuePair in LocationCount)
+            {
+                string formatedString = keyValuePair.Key.Split('_')[0] + ", " + keyValuePair.Key.Split('_')[1];
+                labels1.Add(formatedString);
+                values1.Add(keyValuePair.Value);
+            }
+
+            XAxis_Loc = labels1;
+            ColumnSeries lineSeries1 = new ColumnSeries
+            {
+
+                Values = new ChartValues<int>(values1),
+                DataLabels = true,
+            };
+
+            lineSeries1.LabelPoint = point => $"{point.Y}";
+            seriesCollection1.Add(lineSeries1);
+            chartCountryCity.Series = seriesCollection1;
+
+
+
+
+            UpdateTextBox(Username, "");
 
         }
 

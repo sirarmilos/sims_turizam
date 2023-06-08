@@ -8,6 +8,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace InitialProject.Service
 {
@@ -78,6 +79,98 @@ namespace InitialProject.Service
                 retVal[1] = Math.Round((1 - (withVoucher / count)) * 100, 2);
             } 
             return retVal;
+        
+        }
+
+        public bool CheckForNewVoucher(string username)
+        {
+            TourReservationService tourReservationService = new TourReservationService();
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+
+            int count = 0;
+
+            foreach (TourReservation tourReservation in tourReservationService.FindAll())
+            {
+                if (tourReservation.userId.Equals(username))
+                {
+                    foreach (TourGuidence tourGuidence in tourGuidenceService.FindAll())
+                    {
+                        if (tourGuidence.StartTime >= DateTime.Now.AddYears(-1) && tourGuidence.StartTime <= DateTime.Now && tourReservation.Confirmed == true && tourReservation.IsUsedForVoucher == false && tourGuidence.Id == tourReservation.Id)
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            if (count >= 5)
+                return true;
+
+            return false;
+        }
+
+
+        public void AddNewVoucher(string username)
+        {
+            TourReservationService tourReservationService = new TourReservationService();
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+
+            int count = 0;
+
+            foreach(TourReservation tourReservation in tourReservationService.FindAll())
+            {
+                if (tourReservation.userId.Equals(username))
+                {
+                    foreach (TourGuidence tourGuidence in tourGuidenceService.FindAll())
+                    {
+                        if (tourGuidence.StartTime >= DateTime.Now.AddYears(-1) && tourGuidence.StartTime <= DateTime.Now && tourReservation.Confirmed==true && tourReservation.IsUsedForVoucher==false && tourGuidence.Id==tourReservation.tourGuidenceId)
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            if(count>=5)
+            {
+                int checkCount = 5;
+                foreach (TourReservation tourReservation in tourReservationService.FindAll())
+                {
+                    if (tourReservation.userId.Equals(username))
+                    {
+                        foreach (TourGuidence tourGuidence in tourGuidenceService.FindAll())
+                        {
+                            if (tourGuidence.StartTime >= DateTime.Now.AddYears(-1) && tourGuidence.StartTime <= DateTime.Now && tourReservation.Confirmed == true && tourReservation.IsUsedForVoucher == false && tourGuidence.Id == tourReservation.tourGuidenceId)
+                            {
+                                tourReservationService.UpdateIsUsedForVoucher(tourReservation.Id);
+                                checkCount--;
+
+                                if(checkCount==0)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        if (checkCount == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                List<Voucher> vouchers = voucherRepository.FindAll();
+                UserService userService = new UserService();
+                Voucher voucher = new Voucher();
+                voucher.Id = voucherRepository.NextId();
+                voucher.user = userService.FindByUsername(username);
+                voucher.voucherType = VoucherType.WONVOUCHER;
+                voucher.expirationDate = DateTime.Now.AddMonths(6);
+
+                vouchers.Add(voucher);
+
+                voucherRepository.Save(vouchers);
+            }
+
         }
 
         public void CreateForGuideResignation(int guidenceId, string guideUsername)

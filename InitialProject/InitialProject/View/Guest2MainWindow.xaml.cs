@@ -1,4 +1,5 @@
 ﻿using InitialProject.Dto;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,9 @@ namespace InitialProject.View
             ToursButton.Foreground = Brushes.Black;
 
             currentlySelected = ToursButton;
+
+            VoucherService voucherService = new VoucherService();
+            voucherService.AddNewVoucher(username);
 
         }
 
@@ -219,6 +223,18 @@ namespace InitialProject.View
             TourRequestCreationButton.Background = buttonColor;
             TourRequestCreationButton.Foreground = textColor;
 
+            TourRequestDisplayButton.Background = buttonColor;
+            TourRequestDisplayButton.Foreground = textColor;
+
+            TourRequestStatisticsButton.Background = buttonColor;
+            TourRequestStatisticsButton.Foreground = textColor;
+
+            ComplexTourRequestButton.Background = buttonColor;
+            ComplexTourRequestButton.Foreground = textColor;
+
+            ComplexTourDisplayButton.Background = buttonColor;
+            ComplexTourDisplayButton.Foreground = textColor;
+
 
         }
 
@@ -270,6 +286,32 @@ namespace InitialProject.View
             TourRequestStatisticsButton.Foreground = Brushes.Black;
 
             currentlySelected = TourRequestStatisticsButton;
+        }
+
+        private void ComplexTourRequestButton_Click(object sender, RoutedEventArgs e)
+        {
+            Guest2ComplexTourRequestCreation guest2ComplexTourRequestCreation = new Guest2ComplexTourRequestCreation(Username);
+            mainFrame.Content= guest2ComplexTourRequestCreation;
+
+            PaintButtons();
+
+            ComplexTourRequestButton.Background = Brushes.LightGray;
+            ComplexTourRequestButton.Foreground = Brushes.Black;
+
+            currentlySelected = ComplexTourRequestButton;
+        }
+
+        private void ComplexTourDisplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            Guest2ComplexTourDisplay guest2ComplexTourDisplay = new Guest2ComplexTourDisplay(Username);
+            mainFrame.Content = guest2ComplexTourDisplay;
+
+            PaintButtons();
+
+            ComplexTourDisplayButton.Background = Brushes.LightGray;
+            ComplexTourDisplayButton.Foreground = Brushes.Black;
+
+            currentlySelected = ComplexTourDisplayButton;
         }
     }
 }

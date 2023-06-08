@@ -52,6 +52,7 @@ namespace InitialProject.View
         private int? leftCancelationDays;
         private string image;
 
+        private string maxGuestsCheck;
         private string minDaysReservationCheck;
         private string leftCancelationDaysCheck;
 
@@ -222,6 +223,16 @@ namespace InitialProject.View
             set;
         }
 
+        public string MaxGuestsCheck
+        {
+            get { return maxGuestsCheck; }
+            set
+            {
+                maxGuestsCheck = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string MinDaysReservationCheck
         {
             get { return minDaysReservationCheck; }
@@ -264,26 +275,152 @@ namespace InitialProject.View
             SelectedImage = string.Empty;
 
             SetDefaultValue();
+
+            tbAccommodationName.Focus();
         }
 
-        private void SaveAccommodation(object sender, RoutedEventArgs e)
+        private void SetDefaultValue()
         {
-            if (CheckErrorAllFieldsFilled() == true)
+            LeftCancelationDaysCheck = "1";
+            tbAccommodationName.Text = string.Empty;
+            tbCountry.Text = string.Empty;
+            tbCity.Text = string.Empty;
+            tbAddress.Text = string.Empty;
+            sliderLatitude.Value = 0;
+            sliderLongitude.Value = 0;
+            rbApartment.IsChecked = true;
+            rbHome.IsChecked = false;
+            rbHut.IsChecked = false;
+            tbMaxGuests.Text = string.Empty;
+            tbMinDaysReservation.Text = string.Empty;
+            tbLeftCancelationDays.Text = "1";
+            Images = new ObservableCollection<string>();
+            dgImages.ItemsSource = Images;
+            buttonRemoveImage.IsEnabled = false;
+
+            textBlockErrorAccommodationName1.Visibility = Visibility.Hidden;
+            textBlockErrorMaxGuests1.Visibility = Visibility.Hidden;
+            textBlockErrorMinDaysReservation1.Visibility = Visibility.Hidden;
+            textBlockErrorLeftCancelationDays1.Visibility = Visibility.Hidden;
+            textBlockErrorImage1.Visibility = Visibility.Hidden;
+            textBlockErrorImage2.Visibility = Visibility.Hidden;
+            textBlockErrorImage3.Visibility = Visibility.Hidden;
+        }
+
+        private void ChooseImage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ChooseImage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+
+            bool? response = openFileDialog.ShowDialog();
+
+            if (response == true)
+            {
+                Image = openFileDialog.FileName;
+                tbImage.Text = openFileDialog.FileName;
+                buttonAddImage.Focus();
+            }
+        }
+
+        private void AddImage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if(string.IsNullOrEmpty(tbImage.Text) == true)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void AddImage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(CheckUrlExists() == false)
+            {
+                textBlockErrorImage1.Visibility = Visibility.Visible;
+            }
+            else if(CheckImageExist() == false)
+            {
+                Images.Add(Image.ToString());
+                tbImage.Text = string.Empty;
+                textBlockErrorImage0.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                textBlockErrorImage2.Visibility = Visibility.Visible;
+            }
+
+            tbImage.Focus();
+        }
+
+        private bool CheckUrlExists()
+        {
+            return (Uri.TryCreate(Image.ToString(), UriKind.Absolute, out Uri checkUri) && (checkUri.Scheme == Uri.UriSchemeHttp || checkUri.Scheme == Uri.UriSchemeHttps)) || CheckImageExtension();
+        }
+
+        public bool CheckImageExtension()
+        {
+            if(Image.Length < 5)
+            {
+                return false;
+            }
+
+            string imageExtension = Image.Substring(Image.Length - 4);
+            return (imageExtension.Equals(".png") == true) || (imageExtension.Equals(".jpg") == true) || (imageExtension.Equals(".jpeg") == true) || (imageExtension.Equals(".jpe") == true) || (imageExtension.Equals(".bmp") == true) || (imageExtension.Equals(".gif") == true);
+        }
+
+        private bool CheckImageExist()
+        {
+            return Images.Any(x => x.Equals(Image) == true);
+        }
+
+        private void RemoveImage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if(SelectedImage == null)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void RemoveImage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Images.Remove(SelectedImage);
+
+            if(Images.Count == 0)
+            {
+                textBlockErrorImage0.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void SaveAccommodation_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void SaveAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(CheckErrorAllFieldsFilled() == true)
             {
                 MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if(CheckErrorImagesNumber() == false)
+            else if(CheckErrorImagesNumber() == false) //
             {
-                MessageBox.Show("You must enter at least one accommodation image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
+                textBlockErrorImage3.Visibility = Visibility.Visible;
                 tbImage.Focus();
             }
             else if(accommodationService.IsAccommodationNameExist(AccommodationName) == true)
             {
-                MessageBox.Show("Accommodation with this name already exists.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                Name = string.Empty;
-                tbName.Focus();
+                textBlockErrorAccommodationName1.Visibility = Visibility.Visible;
+                tbAccommodationName.Focus();
             }
             else
             {
@@ -301,7 +438,7 @@ namespace InitialProject.View
 
         private bool CheckErrorAllFieldsFilled()
         {
-            return string.IsNullOrEmpty(AccommodationName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || !MaxGuests.HasValue; // || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
+            return string.IsNullOrEmpty(AccommodationName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || !MaxGuests.HasValue || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
         }
 
         private bool CheckErrorImagesNumber()
@@ -309,78 +446,24 @@ namespace InitialProject.View
             return !(Images.Count <= 0);
         }
 
-        private void SetDefaultValue()
+        private void DEMO_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            LeftCancelationDaysCheck = "1";
-            tbName.Text = string.Empty;
-            tbCountry.Text = string.Empty;
-            tbCity.Text = string.Empty;
-            tbAddress.Text = string.Empty;
-            sliderLatitude.Value = 0;
-            sliderLongitude.Value = 0;
-            rbApartment.IsChecked = true;
-            rbHome.IsChecked = false;
-            rbHut.IsChecked = false;
-            tbMaxGuests.Text = string.Empty;
-            tbMinDaysReservation.Text = string.Empty;
-            tbLeftCancelationDays.Text = "1";
-            Images = new ObservableCollection<string>();
-            dgImages.ItemsSource = Images;
-            buttonRemoveImage.IsEnabled = false;
+            e.CanExecute = true;
         }
 
-        private void ChooseImage(object sender, RoutedEventArgs e)
+        private void DEMO_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-
-            bool? response = openFileDialog.ShowDialog();
-
-            if (response == true)
-            {
-                Image = openFileDialog.FileName;
-                tbImage.Text = openFileDialog.FileName;
-                tbImage.Focus();
-            }
+            // DEMO deo aplikacije
         }
 
-        private void AddImageToList(object sender, RoutedEventArgs e)
+        private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(CheckUrlExists() == false)
-            {
-                MessageBox.Show("The image with the specified url does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if(CheckImageExist() == false)
-            {
-                Images.Add(Image.ToString());
-            }
-            else
-            {
-                MessageBox.Show("You have already added this image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            tbImage.Text = string.Empty;
-            tbImage.Focus();
+            e.CanExecute = true;
         }
 
-        private bool CheckUrlExists()
+        private void Cancel_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            return (Uri.TryCreate(Image.ToString(), UriKind.Absolute, out Uri checkUri) && (checkUri.Scheme == Uri.UriSchemeHttp || checkUri.Scheme == Uri.UriSchemeHttps)) || CheckImageExtension();
-        }
-
-        public bool CheckImageExtension()
-        {
-            string imageExtension = Image.Substring(Image.Length - 4);
-            return (imageExtension.Equals(".png") == true) || (imageExtension.Equals(".jpg") == true) || (imageExtension.Equals(".jpeg") == true) || (imageExtension.Equals(".jpe") == true) || (imageExtension.Equals(".bmp") == true) || (imageExtension.Equals(".gif") == true);
-        }
-
-        private bool CheckImageExist()
-        {
-            return Images.Any(x => x.Equals(Image) == true);
-        }
-
-        private void RemoveImageFromList(object sender, RoutedEventArgs e)
-        {
-            Images.Remove(SelectedImage);
+            Close();
         }
 
         private void RemoveImageButtonEnable(object sender, SelectionChangedEventArgs e)
@@ -395,45 +478,149 @@ namespace InitialProject.View
             }
         }
 
-        private void CheckErrorMinDaysReservation(object sender, TextChangedEventArgs e) //
+        private void CheckErrorAccommodationName(object sender, TextChangedEventArgs e)
         {
-            if (MinDaysReservationCheck.Equals(string.Empty) == false)
-            {
-                int checkOut;
-                bool check = int.TryParse(MinDaysReservationCheck, out checkOut);
+            textBlockErrorAccommodationName1.Visibility = Visibility.Hidden;
 
-                if (check == false || checkOut <= 0)
+            if(AccommodationName.Equals(string.Empty) == true)
+            {
+                textBlockErrorAccommodationName0.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                textBlockErrorAccommodationName0.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void CheckErrorCountry(object sender, TextChangedEventArgs e)
+        {
+            if(Country.Equals(string.Empty) == true)
+            {
+                textBlockErrorCountry.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                textBlockErrorCountry.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void CheckErrorCity(object sender, TextChangedEventArgs e)
+        {
+            if (City.Equals(string.Empty) == true)
+            {
+                textBlockErrorCity.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                textBlockErrorCity.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void CheckErrorAddress(object sender, TextChangedEventArgs e)
+        {
+            if (Address.Equals(string.Empty) == true)
+            {
+                textBlockErrorAddress.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                textBlockErrorAddress.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void CheckErrorMaxGuests(object sender, TextChangedEventArgs e)
+        {
+            if(MaxGuestsCheck.Equals(string.Empty) == true)
+            {
+                textBlockErrorMaxGuests0.Visibility = Visibility.Visible;
+                textBlockErrorMaxGuests1.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                textBlockErrorMaxGuests0.Visibility = Visibility.Hidden;
+
+                int checkOut;
+                bool check = int.TryParse(MaxGuestsCheck, out checkOut);
+
+                if(check == false || checkOut <= 0)
                 {
-                    MessageBox.Show("Minimum number of days for reservation must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    tbMinDaysReservation.Clear();
-                    MinDaysReservationCheck = string.Empty;
+                    textBlockErrorMaxGuests1.Visibility = Visibility.Visible;
                 }
                 else
                 {
+                    textBlockErrorMaxGuests1.Visibility = Visibility.Hidden;
+                    MaxGuests = Convert.ToInt32(MaxGuestsCheck.ToString());
+                }
+            }
+        }
+
+        private void CheckErrorMinDaysReservation(object sender, TextChangedEventArgs e)
+        {
+            if(MinDaysReservationCheck.Equals(string.Empty) == true)
+            {
+                textBlockErrorMinDaysReservation0.Visibility = Visibility.Visible;
+                textBlockErrorMinDaysReservation1.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                textBlockErrorMinDaysReservation0.Visibility = Visibility.Hidden;
+
+                int checkOut;
+                bool check = int.TryParse(MinDaysReservationCheck, out checkOut);
+
+                if(check == false || checkOut <= 0)
+                {
+                    textBlockErrorMinDaysReservation1.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    textBlockErrorMinDaysReservation1.Visibility = Visibility.Hidden;
                     MinDaysReservation = Convert.ToInt32(MinDaysReservationCheck.ToString());
                 }
             }
         }
 
-        private void CheckErrorLeftCancelationDays(object sender, TextChangedEventArgs e) //
+        private void CheckErrorLeftCancelationDays(object sender, TextChangedEventArgs e)
         {
-            if (LeftCancelationDaysCheck.Equals(string.Empty) == false)
+            if(LeftCancelationDaysCheck.Equals(string.Empty) == true)
             {
+                textBlockErrorLeftCancelationDays0.Visibility = Visibility.Visible;
+                textBlockErrorLeftCancelationDays1.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                textBlockErrorLeftCancelationDays0.Visibility = Visibility.Hidden;
+
                 int checkOut;
                 bool check = int.TryParse(LeftCancelationDaysCheck, out checkOut);
 
-                if (check == false || checkOut <= 0)
+                if(check == false || checkOut <= 0)
                 {
-                    MessageBox.Show("Number of days before the reservation until which it is possible to cancel it must be an integer greater than 0.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    tbLeftCancelationDays.Clear();
-                    LeftCancelationDaysCheck = "1";
-                    tbLeftCancelationDays.Text = "1";
+                    textBlockErrorLeftCancelationDays1.Visibility = Visibility.Visible;
                 }
                 else
                 {
+                    textBlockErrorLeftCancelationDays1.Visibility = Visibility.Hidden;
                     LeftCancelationDays = Convert.ToInt32(LeftCancelationDaysCheck.ToString());
                 }
             }
+        }
+
+        private void CheckErrorImage(object sender, TextChangedEventArgs e)
+        {
+            textBlockErrorImage1.Visibility = Visibility.Hidden;
+            textBlockErrorImage2.Visibility = Visibility.Hidden;
+            textBlockErrorImage3.Visibility = Visibility.Hidden;
+        }
+
+        private void SliderLatitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Latitude = Math.Round((decimal)sliderLatitude.Value, 2);
+        }
+
+        private void SliderLongitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Longitude = Math.Round((decimal)sliderLongitude.Value, 2);
         }
 
         void LoadingRowForDgImages(object sender, DataGridRowEventArgs e)
@@ -448,21 +635,6 @@ namespace InitialProject.View
                 var label = (Label)sender;
                 Keyboard.Focus(label.Target);
             }
-        }
-
-        private void SliderLatitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Latitude = Math.Round((decimal)sliderLatitude.Value, 2);
-        }
-
-        private void SliderLongitudeValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Longitude = Math.Round((decimal)sliderLongitude.Value, 2);
-        }
-
-        private void CloseForm(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

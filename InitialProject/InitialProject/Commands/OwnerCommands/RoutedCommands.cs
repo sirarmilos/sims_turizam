@@ -184,7 +184,7 @@ namespace InitialProject.Commands.OwnerCommands
             }
         );
 
-        public static readonly RoutedUICommand ConfirmRejection = new RoutedUICommand // isto kao i komanda DeclineRequest, mozda da koristim kao jednu komandu
+        public static readonly RoutedUICommand ConfirmRejection = new RoutedUICommand
         (
             "Confirm rejectiont",
             "ConfirmRejection",
@@ -194,8 +194,6 @@ namespace InitialProject.Commands.OwnerCommands
                 new KeyGesture(Key.D, ModifierKeys.Control) // J
             }
         );
-
-        // public static readonly RoutedUICommand ConfirmRejection = DeclineRequest;
 
         public static readonly RoutedUICommand Cancel = new RoutedUICommand
         (
@@ -271,6 +269,116 @@ namespace InitialProject.Commands.OwnerCommands
             new InputGestureCollection()
             {
                 new KeyGesture(Key.B, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand SaveAccommodation = new RoutedUICommand
+        (
+            "Save accommodation",
+            "SaveAccommodation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.M, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand DEMO = new RoutedUICommand
+        (
+            "DEMO",
+            "DEMO",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.D, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand AddImage = new RoutedUICommand
+        (
+            "Add image",
+            "AddImage",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.I, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand RemoveImage = new RoutedUICommand
+        (
+            "Remove image",
+            "RemoveImage",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.R, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand ChooseImage = new RoutedUICommand
+        (
+            "Choose image",
+            "ChooseImage",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.P, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand AddTopLocationAccommodation = new RoutedUICommand
+        (
+            "Add top location accommodation",
+            "AddTopLocationAccommodation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.K, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand RemoveWorstLocationAccommodation = new RoutedUICommand
+        (
+            "Remove worst location accommodation",
+            "RemoveWorstLocationAccommodation",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.D, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand ReadMore = new RoutedUICommand
+        (
+            "Read more",
+            "ReadMore",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.R, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand Close = new RoutedUICommand
+        (
+            "Close",
+            "Close",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.Escape)
+            }
+        );
+
+        public static readonly RoutedUICommand AddComment = new RoutedUICommand
+        (
+            "Add comment",
+            "AddComment",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.R, ModifierKeys.Control)
             }
         );
     }

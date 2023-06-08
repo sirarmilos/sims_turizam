@@ -23,7 +23,6 @@ namespace InitialProject.Repository
         public ReviewRepository()
         {
             reviewSerializer = new Serializer<Review>();
-            //reviews = reviewSerializer.FromCSV(FilePathReview); 
         }
 
         public List<Review> FindAll()
@@ -52,7 +51,7 @@ namespace InitialProject.Repository
 
         public Review FindOwnerReviewByReservationId(string ownerUsername, int reservationId)
         {
-            return FindByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId);
+            return FindByOwnerUsername(ownerUsername).ToList().Find(x => x.Reservation.ReservationId == reservationId && x.Reservation.Accommodation.Removed == false);
         }
 
         public List<Review> FindReviewsByGuest1Username(string guest1Username)

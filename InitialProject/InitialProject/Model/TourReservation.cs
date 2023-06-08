@@ -18,8 +18,9 @@ namespace InitialProject.Model
         public int numberOfGuests { get; set; }
         public Boolean Confirmed { get; set; }
         public int VoucherId { get; set; }
-
         public int Id { get; set; }
+
+        public Boolean IsUsedForVoucher { get; set; }
 
         public TourReservation() { }
 
@@ -42,6 +43,7 @@ namespace InitialProject.Model
             Confirmed = confirmed;
             VoucherId = voucherId;
             Id = id;
+            IsUsedForVoucher = false;
         }
 
         public string[] ToCSV()
@@ -57,7 +59,7 @@ namespace InitialProject.Model
             boolToString = boolToString.Substring(0, boolToString.Length - 2);
 
 
-            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), boolToString.ToString(), numberOfGuests.ToString(), Confirmed.ToString(), VoucherId.ToString(), Id.ToString() };
+            string[] csvValues = { userId.ToString(), tourGuidenceId.ToString(), boolToString.ToString(), numberOfGuests.ToString(), Confirmed.ToString(), VoucherId.ToString(), Id.ToString() , IsUsedForVoucher.ToString()};
             return csvValues;
         }
 
@@ -87,6 +89,8 @@ namespace InitialProject.Model
             VoucherId = Convert.ToInt32(values[5]);
 
             Id = Convert.ToInt32(values[6]);
+
+            IsUsedForVoucher = Convert.ToBoolean(values[7]);
         }
 
 

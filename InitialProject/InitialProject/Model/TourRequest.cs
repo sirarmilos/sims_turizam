@@ -27,11 +27,13 @@ namespace InitialProject.Model
 
         public string Status { get; set; }  
 
-        public int ComplexTourId { get; set; }
+        public int ComplexTourRequestId { get; set; }
+
+        public string AcceptedDate { get; set; }
 
         public TourRequest() { }
 
-        public TourRequest(int id, User user, Location location, string description, Language language, int guestNumber, DateTime startDate, DateTime endDate, DateTime creationDate, string status, int complexTourId)
+        public TourRequest(int id, User user, Location location, string description, Language language, int guestNumber, DateTime startDate, DateTime endDate, DateTime creationDate, string status, int complexTourRequestId, string acceptedDate)
         {
             Id = id;
             User = user;
@@ -43,7 +45,8 @@ namespace InitialProject.Model
             EndDate = endDate;
             CreationDate = creationDate;
             Status = status;
-            ComplexTourId = complexTourId;
+            ComplexTourRequestId = complexTourRequestId;
+            AcceptedDate = acceptedDate;
         }
 
         public void FromCSV(string[] values)
@@ -66,12 +69,14 @@ namespace InitialProject.Model
 
             Status = Convert.ToString(values[9]);
 
-            ComplexTourId = Convert.ToInt32(values[10]);
+            ComplexTourRequestId = Convert.ToInt32(values[10]);
+
+            AcceptedDate = values[11];
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), User.Username, Location.Id.ToString(), Description, Language.ToString(), GuestNumber.ToString(), StartDate.Date.ToString(), EndDate.Date.ToString(), CreationDate.Date.ToString(), Status, ComplexTourId.ToString() };
+            string[] csvValues = { Id.ToString(), User.Username, Location.Id.ToString(), Description, Language.ToString(), GuestNumber.ToString(), StartDate.Date.ToString(), EndDate.Date.ToString(), CreationDate.Date.ToString(), Status, ComplexTourRequestId.ToString(), AcceptedDate.ToString() };
             return csvValues;
         }
     }

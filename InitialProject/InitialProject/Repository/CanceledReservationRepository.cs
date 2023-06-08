@@ -21,8 +21,6 @@ namespace InitialProject.Repository
         public CanceledReservationRepository()
         {
             canceledReservationsSerializer = new Serializer<CanceledReservation>();
-
-            accommodationRepository = new AccommodationRepository();
         }
         public void Save(CanceledReservation canceledReservation)
         {
@@ -79,7 +77,7 @@ namespace InitialProject.Repository
 
         public List<CanceledReservation> FindByAccommodationId(int accommodationId)
         {
-            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId);
+            return FindAll().ToList().FindAll(x => x.Accommodation.Id == accommodationId && x.Accommodation.Removed == false);
         }
 
         public int FindAccommodationCanceledReservationCountByYear(int accommodationId, int year)

@@ -338,22 +338,55 @@ namespace InitialProject.Service
 
             foreach(TourRequest tourRequest in GetByUser(username))
             {
-
-                if (string.IsNullOrEmpty(year))
+                if (tourRequest.Status.Equals("accepted"))
                 {
-                    count++;
-                    average += tourRequest.GuestNumber;
-                }
+                    if (string.IsNullOrEmpty(year))
+                    {
+                        count++;
+                        average += tourRequest.GuestNumber;
+                    }
 
-                else if(tourRequest.StartDate.Year.ToString().Equals(year))
-                {
-                    count++;
-                    average += tourRequest.GuestNumber;
+                    else if (tourRequest.StartDate.Year.ToString().Equals(year))
+                    {
+                        count++;
+                        average += tourRequest.GuestNumber;
+                    }
                 }
             }
 
             return  Math.Round(average/count,2);
 
+        }
+
+        public Dictionary<string, int> LocationCount(string username)
+        {
+            Dictionary<string, int> locationCounts = new Dictionary<string, int>();
+
+            LocationService locationService = new LocationService();
+
+            List<Location> locations = locationService.FindAll();
+
+            foreach(TourRequest tourRequest in tourRequestRepository.FindAllByUser(username))
+            {
+                string key = tourRequest.Location.Country + "_" + tourRequest.Location.City;
+
+                if (locationCounts.ContainsKey(key))
+                {
+                    locationCounts[key]++;
+                }
+                else
+                {
+                    locationCounts[key] = 1;
+                } 
+            }
+
+            return locationCounts;
+
+        }
+
+        public void SaveList(List<TourRequest> tourRequests)
+        {
+            tourRequestRepository.SaveList(tourRequests);
         }
 
         public List<TourRequest> FindAllComplexRequestPending()
@@ -363,12 +396,31 @@ namespace InitialProject.Service
             requests = tourRequestRepository.FindAll();
             foreach(TourRequest tr in requests)
             {
-                if (tr.Status.Equals("pending") && tr.ComplexTourId != 0)
+                if (tr.Status.Equals("pending") && tr.ComplexTourRequestId != 0)
                     complex_requests.Add(tr);
             }
 
             return complex_requests;
+        }
 
+        public Dictionary<int, List<TourRequest>> GetComplexTourRequests(string username)
+        {
+            Dictionary<int, List<TourRequest>> result = new Dictionary<int, List<TourRequest>>();
+
+            foreach (TourRequest tourRequest in tourRequestRepository.FindAll())
+            {
+                if (tourRequest.ComplexTourRequestId != 0)
+                {
+                    if (!result.ContainsKey(tourRequest.ComplexTourRequestId))
+                    {
+                        result[tourRequest.ComplexTourRequestId] = new List<TourRequest>();
+                    }
+
+                    result[tourRequest.ComplexTourRequestId].Add(tourRequest);
+                }
+            }
+
+            return result;
         }
 
 
