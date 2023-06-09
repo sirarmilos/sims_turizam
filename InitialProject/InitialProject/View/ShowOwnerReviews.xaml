@@ -5,58 +5,189 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-      Background="White"
-        Title="Show owner reviews" d:DesignHeight="684" d:DesignWidth="838"
-        >
-    <!--    Width="1400" Height="684" -->
+        Background="White"
+      
+              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+      
+      xmlns:designData="clr-namespace:InitialProject.DesignData"
+      
+        Title="My Reviews" d:DesignHeight="684" d:DesignWidth="838">
+    <Page.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFE1DDDD" />
+        </Style>
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="#FFE1DDDD" />
+        </Style>
+        <local:DateTimeToVisibilityConverter x:Key="DateTimeToVisibilityConverter" />
 
-    <Grid>
+    </Page.Resources>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="25" />
-            <RowDefinition Height="55" />
-            <RowDefinition Height="425" />
-            <RowDefinition Height="270" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1400" />
-        </Grid.ColumnDefinitions>
 
-        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
 
-            
-            
-            <Menu DockPanel.Dock ="Top">
-                <MenuItem Header="Search and show accommodations" Click="GoToSearchAndShowAccommodations"/>
-                <MenuItem Header="Create Review" Click="GoToCreateReview"/>
-                <MenuItem Header="My reservations" Click="GoToShowReservations"/>
-                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
-                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
-                <MenuItem x:Name="usernameAndSuperGuest" IsEnabled="False"/>
-                <MenuItem Header="Logout" Click="GoToLogout"/>
-            </Menu>
+
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="0,2,15,0">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="https://img001.prntscr.com/file/img001/AboPt71lRn6VPLBmk3xMmA.png" Width="88" Height="50" Margin="0,0,0,0" />
+            </StackPanel>
+
+            <Grid HorizontalAlignment="Right">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0" />
+                <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
+
+                <StackPanel Grid.Column="1" Orientation="Vertical">
+                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="22" />
+                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" FontSize="20"  FontWeight="Bold" Height="28" />
+                </StackPanel>
+
+            </Grid>
 
         </DockPanel>
 
-        <Label x:Name="labelAListOfAllOwnerReviews" Grid.Column="0" Grid.Row="1" Content="A list of all owner reviews" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="280" Margin="25,0,0,423" Grid.RowSpan="2"/>
 
-        <DataGrid x:Name="dgShowOwnerReviews" LoadingRow="LoadingRowForDgShowOwnerReviews" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding ShowOwnerReviewsDTOs, Mode=OneWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" HorizontalAlignment="Center" Height="400" VerticalAlignment="Bottom" Width="1350">
+        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Width="834" Height="67" Margin="4,0,4,0">
 
-            <DataGrid.Columns>
 
-                <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="150"/>
-                <DataGridTextColumn Header="Owner username" Binding="{Binding OwnerUsername}" Width="*"/>
-                <DataGridTextColumn Header="Cleanliness" Binding="{Binding Cleanliness}" Width="*"/>
-                <DataGridTextColumn Header="Follow Rules" Binding="{Binding FollowRules}" Width="*"/>
-                <DataGridTextColumn Header="Behavior" Binding="{Binding Behavior}" Width="*"/>
-                <DataGridTextColumn Header="Type of Payment" Binding="{Binding TypePayment}" Width="*"/>
-                <DataGridTextColumn Header="Communicativeness" Binding="{Binding Communicativeness}" Width="*"/>
-                <DataGridTextColumn Header="Comment" Binding="{Binding Comment}" Width="*"/>
+            <Button Content="Home" Click="GoToSearchAndShowAccommodations" Width="70" Height="50" Margin="10,0,8,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC"/>
 
-            </DataGrid.Columns>
+            <Button Content="Reservations" Click="GoToShowReservations"  Width="140" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" BorderBrush="#FFACACAC">
+                <Button.Background>
+                    <SolidColorBrush Color="#FFF0F0F0"/>
+                </Button.Background>
+            </Button>
 
-        </DataGrid>
+            <ComboBox x:Name="CBCreateReview" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBCreateReviewDropDownClosed" FontSize="20" FontWeight="Bold" Width="160" Height="50" Margin="9,0,9,0" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBoxItem Content="Create review" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Reviews" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Requests" PreviewMouseDown="CBItemPreviewMouseDown" />
+            </ComboBox>
 
-    </Grid>
 
+            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Click="GoToAnywhereAnytime" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
+                <StackPanel>
+                    <TextBlock Text="Anywhere" HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Top" />
+                    <TextBlock Text="Anytime" Height="Auto" Margin="0,-8,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                </StackPanel>
+            </Button>
+
+            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" Click="GoToForum" BorderBrush="#FFACACAC" />
+
+            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+                <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Logout" PreviewMouseDown="CBItemPreviewMouseDown" />
+            </ComboBox>
+
+        </DockPanel>
+
+
+
+
+
+        <ScrollViewer >
+            <StackPanel Margin="0,0,0,20">
+                <!-- margina skroz dole je 20 -->
+                <Label Content="My Reviews" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
+
+                <Border x:Name="ValidationBorder" Visibility="Collapsed" BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="Auto" Width="684">
+                    <TextBlock x:Name="ValidationMessage" Grid.Column="1" TextAlignment="Center"  Foreground="{Binding LabelColor}" FontSize="24" FontWeight="Bold" Text="" TextWrapping="Wrap" Width="Auto" Height="Auto" HorizontalAlignment="Center" Margin="0,10,0,10" />
+                </Border>
+
+                <Border x:Name="FirstWindow" Visibility="Visible" BorderBrush="Gray" BorderThickness="2" Margin="14,20,14,0" Height="460" Width="Auto">
+                    <Grid Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="190" />
+                            <RowDefinition Height="190" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Visibility="Collapsed" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto">
+
+                            <TextBlock x:Name="FilePathTB" Visibility="Collapsed" Text="" Foreground="Black" TextAlignment="Center" FontSize="20" FontWeight="Bold" VerticalAlignment="Bottom" Margin="0,10,0,0" HorizontalAlignment="Center" Grid.Row="0" Width="650" TextWrapping="Wrap" Height="Auto"   />
+                            <TextBlock x:Name="ErrorTB" Visibility="Collapsed" Text="" Foreground="Red" TextAlignment="Center" FontSize="20" FontWeight="Bold" VerticalAlignment="Bottom" Margin="0,10,0,0" HorizontalAlignment="Center" Grid.Row="0" Width="650" TextWrapping="Wrap" Height="Auto"   />
+
+                        </StackPanel>
+
+                        
+                        <lvc:CartesianChart x:Name="firstChart" Series="{Binding SeriesCollectionReservation}"  Grid.Row="0"  Margin="10,3,18,0" Height="Auto" Width="Auto" FontWeight="Bold"  FontSize="20">
+
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis x:Name="labelXAxisReviewsFirstChart" FontSize="20" FontWeight="Bold" Labels="{Binding ChartPeriodTime}"></lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Number of reviews" FontSize="20" FontWeight="Bold" MinValue="0"></lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+
+                        </lvc:CartesianChart>
+
+
+
+                        <Button Grid.Row="2" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Width="212" Height="55" VerticalAlignment="Top" Content="Generate report  " Click="GoToGuest1GenerateReport" Margin="0,0,0,0"/>
+
+
+                    </Grid>
+
+                </Border>
+
+
+                <ItemsControl ItemsSource="{Binding ShowOwnerReviewsDTOs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="220" Width="780">
+                                <!-- margina izmedju kartica je 20 -->
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="85" />
+                                        <RowDefinition Height="100" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="230"/>
+                                        <ColumnDefinition Width="551"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding Image}" Margin="0,33,4,0" HorizontalAlignment="Center" VerticalAlignment="Center"  MaxHeight="130" Height="Auto" MaxWidth="190" Width="Auto"/>
+
+                                    <TextBlock  Grid.Column="1" Grid.Row="0" Text="{Binding AccommodationName}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="28" />
+
+
+                                    <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                                        <StackPanel Orientation="Vertical" Margin="0,0,15,0">
+                                            <TextBlock HorizontalAlignment="Center" Text="Cleanliness" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="20" />
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding Cleanliness}" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="20" />
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Vertical" Margin="0,0,15,0" >
+                                            <TextBlock HorizontalAlignment="Center" Text="Behavior" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="20" />
+                                            <TextBlock    HorizontalAlignment="Center" Text="{Binding Behavior}" Margin="0,0,0,0"  TextWrapping="Wrap" FontWeight="Bold" FontSize="20" />
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Vertical" Margin="0,0,15,0">
+                                            <TextBlock Text="Follow rules" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="20" />
+                                            <TextBlock  HorizontalAlignment="Center"  Text="{Binding FollowRules}" Margin="0,0,0,0"  TextWrapping="Wrap" FontWeight="Bold" FontSize="20" />
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Vertical" Margin="0,0,15,0">
+                                            <TextBlock Text="Communicativeness" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="20" />
+                                            <TextBlock  HorizontalAlignment="Center"  Text="{Binding Communicativeness}" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="20" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </Page>
+

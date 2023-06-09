@@ -165,7 +165,7 @@ namespace InitialProject.View
 
                 if (selectedItem.Content.ToString() == "Super-guest")
                 {
-                    GoToSearchAndShowAccommodations(sender, null);
+                    GoToShowSuperguest(sender, null);
                 }
                 else if (selectedItem.Content.ToString() == "Logout")
                 {
@@ -200,6 +200,11 @@ namespace InitialProject.View
         private void GoToSearchAndShowAccommodations(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
+        }
+
+        private void GoToShowSuperguest(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new ShowSuperGuest(Guest1, this));
         }
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)

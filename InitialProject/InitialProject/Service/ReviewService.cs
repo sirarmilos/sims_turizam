@@ -163,6 +163,9 @@ namespace InitialProject.Service
                 if (rateGuest != null)
                 {
                     ShowOwnerReviewsDTO showOwnerReviewsDTO = new ShowOwnerReviewsDTO(rateGuest);
+
+                    showOwnerReviewsDTO.Image = temporaryReview.Reservation.Accommodation.Images[0]; //
+
                     showOwnerReviewsDTOs.Add(showOwnerReviewsDTO);
                 }
             }
@@ -402,5 +405,91 @@ namespace InitialProject.Service
             return reservationService.FindNumberOfGuest1Reservations(guest1Username);
         }
 
+
+
+
+        public List<int> FindNumberOfRatesInLastYearPerMonth(string guest1Username)
+        {
+            List<int> numberOfRatesInLastYear = Enumerable.Repeat(0, 12).ToList();
+
+            List<Reservation> allGuest1Reservations = reservationService.FindGuest1Reservations(guest1Username);
+
+            if (allGuest1Reservations.Count == 0 || allGuest1Reservations == null) return numberOfRatesInLastYear;  
+
+            foreach (Reservation reservation in allGuest1Reservations)
+            {
+                RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(reservation.ReservationId);
+
+                if (rateGuest != null)
+                {
+                    // increment selected month
+                    IncrementNumberOfMonthRatesByReservationEndDate(ref numberOfRatesInLastYear, reservation);
+                }
+            }
+
+            return numberOfRatesInLastYear;
+        }
+
+        private void IncrementNumberOfMonthRatesByReservationEndDate(ref List<int> numberOfRatesInLastYear, Reservation reservation)
+        {
+            numberOfRatesInLastYear[reservation.EndDate.Month - 1] += 1;
+        }
+
+        public List<double> FindAvgRateInLastYearPerMonth(string guest1Username)
+        {
+            List<double> numberOfAvgRateInLastYear = Enumerable.Repeat(0.0, 12).ToList();
+
+            List<Reservation> allGuest1Reservations = reservationService.FindGuest1Reservations(guest1Username);
+
+            if (allGuest1Reservations.Count == 0 || allGuest1Reservations == null) return numberOfAvgRateInLastYear;
+
+
+            List<double> sumOfAvgRateInLastYearPerMonth = Enumerable.Repeat(0.0, 12).ToList();
+
+            List<int> numberOfRatesPerMonth = Enumerable.Repeat(0, 12).ToList();
+
+            foreach (Reservation reservation in allGuest1Reservations)
+            {
+                RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(reservation.ReservationId);
+
+                if (rateGuest != null)
+                {
+                    // first we need to sum all rates per month, then to divide
+                    CalculateSumOfRatesPerMonth(ref sumOfAvgRateInLastYearPerMonth, ref numberOfRatesPerMonth, reservation, rateGuest);
+                }
+            }
+
+            CalculateAverageRatePerMonth(ref numberOfAvgRateInLastYear, ref sumOfAvgRateInLastYearPerMonth, ref numberOfRatesPerMonth);
+
+            return numberOfAvgRateInLastYear;
+        }
+
+        private void CalculateSumOfRatesPerMonth(ref List<double> sumOfAvgRateInLastYearPerMonth, ref List<int> numberOfRatesPerMonth, Reservation reservation, RateGuest rateGuest)
+        {
+            numberOfRatesPerMonth[reservation.EndDate.Month - 1]++;
+
+            double currentAvgRateSum = sumOfAvgRateInLastYearPerMonth[reservation.EndDate.Month - 1];
+
+            double rateGuestAvgRate = CalculateRateGuestAvgRate(rateGuest);
+
+            sumOfAvgRateInLastYearPerMonth[reservation.EndDate.Month - 1] = rateGuestAvgRate + currentAvgRateSum; 
+        }
+
+        private double CalculateRateGuestAvgRate(RateGuest rateGuest)
+        {
+            return (rateGuest.FollowRules + rateGuest.Cleanliness + rateGuest.Communicativeness + rateGuest.Behavior) / 4;
+        }
+
+        private void CalculateAverageRatePerMonth(ref List<double> numberOfAvgRateInLastYear, ref List<double> sumOfAvgRateInLastYearPerMonth, ref List<int> numberOfRatesPerMonth)
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                if (sumOfAvgRateInLastYearPerMonth[i] != 0.0)
+                    numberOfAvgRateInLastYear[i] = sumOfAvgRateInLastYearPerMonth[i] / numberOfRatesPerMonth[i];
+            }
+        }
+
     }
+
+
 }

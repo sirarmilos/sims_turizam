@@ -399,8 +399,6 @@ namespace InitialProject.View
             return FreeDateSlots;
         }
 
-
-
         private bool IsSearchDatePickersInputValid()
         {
             if (StartDatePicker == null && EndDatePicker == null) return false;

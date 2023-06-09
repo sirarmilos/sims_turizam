@@ -25,6 +25,8 @@ namespace InitialProject.DTO
 
         public string Comment { get; set; }
 
+        public string Image { get; set; }
+
         public ShowOwnerReviewsDTO()
         {
 
