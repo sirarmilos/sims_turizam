@@ -112,5 +112,12 @@ namespace InitialProject.Repository
         {
             return FindComments(forumId).ToList().FindAll(x => x.CommenterType.Equals("guest") == true && x.Visited == true).Count;
         }
+
+        public void CheckIsStillOwner(string country, string city)
+        {
+            List<Comment> allComments = FindAll();
+            allComments.ToList().Where(x => x.Forum.ForumLocationDTO.Country.Equals(country) == true && x.Forum.ForumLocationDTO.City.Equals(city) == true && x.CommenterType.Equals("owner") == true).ToList().SetValue(x => x.IsStillOwner = false);
+            Save(allComments);
+        }
     }
 }
