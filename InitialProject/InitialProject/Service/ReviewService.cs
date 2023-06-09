@@ -156,22 +156,27 @@ namespace InitialProject.Service
         {
             List<ShowOwnerReviewsDTO> showOwnerReviewsDTOs = new List<ShowOwnerReviewsDTO>();
 
-            foreach (Review temporaryReview in guest1Reviews.ToList())
+            Parallel.ForEach(guest1Reviews, temporaryReview =>
             {
                 RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(temporaryReview.Reservation.ReservationId);
 
                 if (rateGuest != null)
                 {
-                    ShowOwnerReviewsDTO showOwnerReviewsDTO = new ShowOwnerReviewsDTO(rateGuest);
+                    ShowOwnerReviewsDTO showOwnerReviewsDTO = new ShowOwnerReviewsDTO(rateGuest)
+                    {
+                        Image = temporaryReview.Reservation.Accommodation.Images[0]
+                    };
 
-                    showOwnerReviewsDTO.Image = temporaryReview.Reservation.Accommodation.Images[0]; //
-
-                    showOwnerReviewsDTOs.Add(showOwnerReviewsDTO);
+                    lock (showOwnerReviewsDTOs)
+                    {
+                        showOwnerReviewsDTOs.Add(showOwnerReviewsDTO);
+                    }
                 }
-            }
+            });
 
             return showOwnerReviewsDTOs;
         }
+
 
         public bool IsSuperGuest(string guest1Username)
         {
@@ -422,10 +427,18 @@ namespace InitialProject.Service
 
                 if (rateGuest != null)
                 {
-                    // increment selected month
-                    IncrementNumberOfMonthRatesByReservationEndDate(ref numberOfRatesInLastYear, reservation);
+                    DateTime endDate = rateGuest.Reservation.EndDate;
+                    DateTime currentDate = DateTime.Now;
+                    DateTime oneYearAgo = currentDate.AddYears(-1);
+
+                    if (endDate >= oneYearAgo && endDate <= currentDate)
+                    {
+                        // increment selected month
+                        IncrementNumberOfMonthRatesByReservationEndDate(ref numberOfRatesInLastYear, reservation);
+                    }
                 }
             }
+
 
             return numberOfRatesInLastYear;
         }
@@ -454,8 +467,15 @@ namespace InitialProject.Service
 
                 if (rateGuest != null)
                 {
-                    // first we need to sum all rates per month, then to divide
-                    CalculateSumOfRatesPerMonth(ref sumOfAvgRateInLastYearPerMonth, ref numberOfRatesPerMonth, reservation, rateGuest);
+                    DateTime endDate = rateGuest.Reservation.EndDate;
+                    DateTime currentDate = DateTime.Now;
+                    DateTime oneYearAgo = currentDate.AddYears(-1);
+
+                    if (endDate >= oneYearAgo && endDate <= currentDate)
+                    {
+                        // first we need to sum all rates per month, then to divide
+                        CalculateSumOfRatesPerMonth(ref sumOfAvgRateInLastYearPerMonth, ref numberOfRatesPerMonth, reservation, rateGuest);
+                    }
                 }
             }
 

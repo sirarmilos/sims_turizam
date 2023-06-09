@@ -79,18 +79,21 @@ namespace InitialProject.View
 
             ShowOwnerReviewsDTOs = new List<ShowOwnerReviewsDTO>();
 
-            ShowOwnerReviewsDTOs = reviewService.FindAllOwnerReviews();
+            // charts
+            SetFirstChart(); // sporo
+
+            SetSecondChart(); // sporo
+
+            ShowOwnerReviewsDTOs = reviewService.FindAllOwnerReviews(); // sporo
 
             SetUsernameHeader();
 
             SetComboBoxes(page);
-
-            // charts
-            SetFirstChart();
         }
 
         public List<string> ChartPeriodTime { get; set; }
         public SeriesCollection SeriesCollectionNumberOfReviewsPerMonth { get; set; }
+
 
 
         public void SetFirstChart()
@@ -110,6 +113,27 @@ namespace InitialProject.View
 
             labelXAxisReviewsFirstChart.Labels = ChartPeriodTime;
             firstChart.Series = SeriesCollectionNumberOfReviewsPerMonth;
+        }
+
+        public SeriesCollection ScatterReviewsAverage { get; set; }
+        public void SetSecondChart()
+        {
+            // Set periods
+            ChartPeriodTime = new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+            ScatterReviewsAverage = new SeriesCollection
+            {
+                new ScatterSeries
+                {
+                    Title = "Average of reviews",
+                    DataLabels = true,
+                    // Values = new ChartValues<int>(reviewService.FindNumberOfRatesInLastYearPerMonth(Guest1))
+                    Values = new ChartValues<double>(reviewService.FindAvgRateInLastYearPerMonth(Guest1))
+                }
+            };
+
+            labelXAxisReviewsSecondChart.Labels = ChartPeriodTime;
+            secondChart.Series = ScatterReviewsAverage;
         }
 
 
