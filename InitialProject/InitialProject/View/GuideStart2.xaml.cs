@@ -95,5 +95,12 @@ namespace InitialProject.View
                 Close();
             }
         }
+
+        private void GoToMarkReachedKeyPoints(object sender, RoutedEventArgs e)
+        {
+            GuideMarkKeyPoints window = new GuideMarkKeyPoints(TourGuidence, Guide);
+            window.Show();
+            Close();
+        }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using InitialProject.Model;
 using InitialProject.Service;
+using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using PdfiumViewer;
 
 namespace InitialProject.View
 {
@@ -49,8 +55,6 @@ namespace InitialProject.View
             Guide = username;
             WelcomeText = "WELCOME, " + Guide;
             dgStart1.ItemsSource = tourGuidenceService.FindAllForToday(Guide);
-            WizardWindow window = new WizardWindow();
-            window.Show();
         }
 
         private void GoToLogout(object sender, RoutedEventArgs e)
@@ -114,6 +118,33 @@ namespace InitialProject.View
                 window.Show();
                 Close();
             }
+        }
+
+        private void PdfClick(object sender, RoutedEventArgs e)
+        {
+            // Create a new PDF document
+            Document document = new Document();
+
+            string path = @"C:\\Users\\PC\\Documents\\GitHub\\sims_turizam\\InitialProject\\InitialProject\\Resources\\Images\\test.pdf";
+            // Create a new PDF writer
+            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(path, FileMode.Create));
+            // Open the PDF document
+            document.Open();
+            // Add a new paragraph to the document
+            document.Add(new iTextSharp.text.Paragraph("Hello World"));
+            // Close the PDF document
+            document.Close();
+
+            MessageBox.Show("PDF Created!");
+
+
+        }
+
+        private void GoToAddNewTour(object sender, RoutedEventArgs e)
+        {
+            GuideCreateNewTour window = new GuideCreateNewTour(Guide);
+            window.Show();
+            Close();
         }
 
 

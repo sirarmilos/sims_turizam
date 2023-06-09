@@ -240,7 +240,8 @@ namespace InitialProject.View
 
             if(MostPopularLocation.Equals(NotPopularLocation) == true)
             {
-                labelNotPopularLocation.Content = "-";
+                NotPopularLocation = "-";
+                labelNotPopularLocation.Content = NotPopularLocation;
             }
         }
 
@@ -349,21 +350,17 @@ namespace InitialProject.View
 
         private void RemoveWorstLocationAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            bool canRemove = accommodationService.RemoveWorstLocations(OwnerUsername);
+            bool canRemove = accommodationService.RemoveWorstLocations(OwnerUsername, MostPopularLocation);
 
             if(canRemove == true)
             {
-                SetDefaultValue();
-
                 MessageBox.Show("Accommodations at this location have been successfully deleted.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else if(NotPopularLocation.Equals("-") == true)
-            {
-                MessageBox.Show("None of your accommodation locations are the worst.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                SetDefaultValue();
             }
             else
             {
-                MessageBox.Show("It is not possible to delete the accommodation because there are scheduled bookings or renovations in the future.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("It is not possible to delete the accommodation because there are scheduled bookings or renovations in the future or there is no worst location.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

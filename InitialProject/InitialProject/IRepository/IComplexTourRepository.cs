@@ -14,5 +14,9 @@ namespace InitialProject.IRepository
         void Save(List<ComplexTour> tours);
 
         int NextId();
+
+        ComplexTour FindById(int id);
+
+        bool CheckIfGuideAcceptedPartOfComplex(int complexId, string guideUsername);
     }
 }

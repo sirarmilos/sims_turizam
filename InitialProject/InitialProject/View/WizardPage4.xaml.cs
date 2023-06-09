@@ -23,6 +23,7 @@ namespace InitialProject.View
         public WizardPage4()
         {
             InitializeComponent();
+            Footer.IsNextButtonEnabled = false;
         }
 
         private void Footer_Back(object sender, RoutedEventArgs e)
@@ -40,6 +41,7 @@ namespace InitialProject.View
         private void Footer_Cancel(object sender, RoutedEventArgs e)
         {
             // Cancel the wizard and close the window
+            
         }
     }
 }

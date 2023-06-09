@@ -1,6 +1,7 @@
 ﻿using InitialProject.Dto;
 using InitialProject.Model;
 using InitialProject.Repository;
+using InitialProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -527,6 +528,38 @@ namespace InitialProject.View
                     tourKeyPointRepository.SaveToFile(tourKeyPoint);
                 }
             }
+
+            if (TourRequest.ComplexTourRequestId != 0)
+            {
+                ComplexTourRepository complexTourRepository = new ComplexTourRepository();
+                TourRequestService tourRequestService = new TourRequestService();
+                ComplexTour ct = complexTourRepository.FindById(TourRequest.ComplexTourRequestId);
+                List<ComplexTour> listComplex = complexTourRepository.FindAll();
+                if (ct == null)
+                {
+                    List<Tour> tours = new List<Tour>();
+                    tours.Add(tour);
+                    ComplexTour complexTour = new ComplexTour(TourRequest.ComplexTourRequestId, tours, false);
+                    listComplex.Add(complexTour);
+                    complexTourRepository.Save(listComplex);
+                }
+                else
+                {
+                    foreach(ComplexTour complexTour in listComplex)
+                    {
+                        if(complexTour.Id == ct.Id)
+                        {
+                            complexTour.Tour.Add(tour);
+                            break;
+                        }
+                    }
+                    complexTourRepository.Save(listComplex);
+                }
+                if (tourRequestService.CheckIfLastRequestInComplex(TourRequest)){
+                    complexTourRepository.UpdateApprovedField(TourRequest.ComplexTourRequestId);
+                }
+            }
+
         }
 
         private void AddDateToList(object sender, RoutedEventArgs e)

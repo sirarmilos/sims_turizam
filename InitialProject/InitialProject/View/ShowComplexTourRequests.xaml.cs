@@ -1,5 +1,6 @@
 ﻿using InitialProject.Dto;
 using InitialProject.Model;
+using InitialProject.Repository;
 using InitialProject.Service;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,8 @@ namespace InitialProject.View
             }
         }
 
+        public TourRequest TourRequest { get; set; }
+
         public ShowComplexTourRequests(string guideUsername)
         {
             InitializeComponent();
@@ -58,12 +61,29 @@ namespace InitialProject.View
         {
             TourRequest selectedItem = (TourRequest)complexGrid.SelectedItem;
 
+            ComplexTourRepository complexTourRepository = new ComplexTourRepository();
+            if (!complexTourRepository.CheckIfGuideAcceptedPartOfComplex(selectedItem.ComplexTourRequestId, Guide))
+            {
+                MessageBox.Show("Guide already accepted some parts of this request");
+                return;
+            }
+
             TourGuidenceService tourGuidenceService = new TourGuidenceService();
             List<DateTime> dates = tourGuidenceService.RecommendDateForComplexTour(Guide, selectedItem.StartDate, selectedItem.EndDate);
 
             suggestedDates.ItemsSource = dates;
+            TourRequest = selectedItem;
         }
 
-   
+        private void ChooseDate(object sender, RoutedEventArgs e)
+        {
+
+            DateTime selectedDate = (DateTime)suggestedDates.SelectedItem;
+            TourRequestService tourRequestService = new TourRequestService();
+            tourRequestService.UpdateAcceptedDate(TourRequest, selectedDate);
+            AddNewTour window = new AddNewTour(Guide, TourRequest, selectedDate);
+            this.Close();
+            window.Show();
+        }
     }
 }

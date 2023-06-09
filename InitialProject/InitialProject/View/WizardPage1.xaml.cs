@@ -41,6 +41,7 @@ namespace InitialProject.View
         private void Footer_Cancel(object sender, RoutedEventArgs e)
         {
             // Cancel the wizard and close the window
+            
         }
 
     }

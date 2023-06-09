@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pdf="clr-namespace:PdfiumViewer;assembly=PdfiumViewer"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
         Title="Home Page" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
+    
     
     <Window.Resources>
         <Style TargetType="ToolTip">
@@ -16,6 +18,7 @@
             <!-- Add more setters for other properties as needed -->
         </Style>
     </Window.Resources>
+    
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -25,6 +28,8 @@
             <!-- Main content column -->
         </Grid.ColumnDefinitions>
 
+        
+
         <!-- Menu -->
         <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0">
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
@@ -32,10 +37,11 @@
                 <StackPanel>
                     <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
                     <MenuItem Header="Profile" Margin="0,5,0,0"/>
-                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToAddNewTour"/>
                     <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
                     <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
                     <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
+                    <MenuItem Header="PDF" Margin="0,5,0,0" Click="PdfClick"/>
                 </StackPanel>
                 <Grid>
                     <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
