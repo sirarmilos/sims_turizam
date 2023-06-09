@@ -138,6 +138,8 @@ namespace InitialProject.View
 
         private void AddComment(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(Comment)) return; // todo: ispisi poruku greske
+
             forumService.AddGuest1Comment(Guest1, Comment, ShowGuest1ForumsDTO.ForumId);
 
             forumService.CheckIsUseful(ShowGuest1ForumsDTO.ForumId);

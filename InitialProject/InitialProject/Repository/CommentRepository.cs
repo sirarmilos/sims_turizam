@@ -110,7 +110,7 @@ namespace InitialProject.Repository
 
         public int CountGuest1Comments(int forumId)
         {
-            return FindComments(forumId).ToList().FindAll(x => x.CommenterType.Equals("guest") == true && x.Visited == true).Count;
+            return FindComments(forumId).ToList().FindAll(x => x.CommenterType.Equals("guest1") == true && x.Visited == true).Count;
         }
 
         public void CheckIsStillOwner(string country, string city)
