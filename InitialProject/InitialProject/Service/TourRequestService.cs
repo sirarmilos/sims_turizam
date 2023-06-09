@@ -423,6 +423,32 @@ namespace InitialProject.Service
             return result;
         }
 
+        public void UpdateAcceptedDate(TourRequest tourRequest, DateTime selectedDate)
+        {
+            List<TourRequest> requests = tourRequestRepository.FindAll();
+            foreach (TourRequest tr in requests)
+            {
+                if (tr.Id == tourRequest.Id)
+                {
+                    tr.AcceptedDate = selectedDate.ToString();
+                    tr.Status = "accepted";
+                    break;
+                }
+            }
 
+            tourRequestRepository.Save(requests);
+
+        }
+
+        public bool CheckIfLastRequestInComplex(TourRequest request)
+        {
+            List<TourRequest> tourRequests = tourRequestRepository.FindAll();
+            foreach(TourRequest tr in tourRequests)
+            {
+                if (tr.ComplexTourRequestId == request.ComplexTourRequestId && (tr.Status.Equals("pending") || tr.Status.Equals("invalid")))
+                    return false;
+            }
+            return true;
+        }
     }
 }

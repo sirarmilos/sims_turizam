@@ -64,6 +64,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Column="1" Content="ACCEPT" HorizontalAlignment="Left" Margin="115,55,0,0" VerticalAlignment="Top" Width="89" Click="Button_Click"/>
+        <Button Content="choose date" HorizontalAlignment="Left" Margin="345,227,0,0" Grid.Row="2" VerticalAlignment="Top" Height="40" Width="139" Click="ChooseDate"/>
 
 
 
