@@ -5,136 +5,427 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-      Background="White"
-        Title="Create Review" Width="1400" Height="800">
-    <!--    Width="838" Height="684" -->
+        Background="White"
+      
+      xmlns:designData="clr-namespace:InitialProject.DesignData"
+      
+        Title="My Reviews" d:DesignHeight="684" d:DesignWidth="838">
     <Page.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFE1DDDD" />
+        </Style>
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="#FFE1DDDD" />
+        </Style>
+        <local:DateTimeToVisibilityConverter x:Key="DateTimeToVisibilityConverter" />
+        <local:RadioButtonConverter x:Key="RadioButtonConverter" />
+
     </Page.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="55" />
-            <RowDefinition Height="225" />
-            <RowDefinition Height="390" />
-            <RowDefinition Height="180" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="225" />
-            <ColumnDefinition Width="950" />
-            <ColumnDefinition Width="225" />
-        </Grid.ColumnDefinitions>
-
-        <DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
 
 
-            <Menu DockPanel.Dock ="Top">
-                <MenuItem Header="Search and show accommodations" Click="GoToSearchAndShowAccommodations"/>
-                <MenuItem Header="My reservations" Click="GoToShowReservations"/>
-                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
-                <MenuItem x:Name="usernameAndSuperGuest" IsEnabled="False"/>
-                <MenuItem Header="Logout" Click="GoToLogout"/>
-                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
-            </Menu>
-        </DockPanel>
 
-        <Label x:Name="labelAListOfAllAccommodationsYouCanRate" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="A list of all accommodations you can rate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,50,0,0" Width="330" Height="30" Grid.RowSpan="2"/>
 
-        <DataGrid x:Name="dgCreateReview" LoadingRow="LoadingRowForDgCreateReview" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding CreateReviewDTOs, Mode=OneWay}" SelectedItem="{Binding Path=SelectedAccommodation, Mode=TwoWay}" SelectionChanged="RateButtonEnable" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="25,25,25,0" Height="200">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Accommodation name" Binding="{Binding AccommodationName}" Width="150"/>
-                <DataGridTextColumn Header="Create review deadline" Binding="{Binding Deadline}" Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+    <DockPanel>
 
-        <GroupBox Grid.Row="3" Header="Rate accommodation" Grid.ColumnSpan="2" Margin="28,10,197,170" Grid.RowSpan="2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="85" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="75" />
-                </Grid.RowDefinitions>
+        <DockPanel DockPanel.Dock="Top" Margin="0,2,15,0">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="https://img001.prntscr.com/file/img001/AboPt71lRn6VPLBmk3xMmA.png" Width="88" Height="50" Margin="0,0,0,0" />
+            </StackPanel>
+
+            <Grid HorizontalAlignment="Right">
+
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="27" />
-                    <ColumnDefinition Width="173"/>
-                    <ColumnDefinition Width="690" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Label x:Name="labelCleanliness"  Grid.Column="0" Grid.Row="1" Content="Cleanliness:" HorizontalAlignment="Left" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="tbCleanliness" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding ElementName=sliderCleanliness, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" IsReadOnly="True" Width="50" Margin="640,0,0,10"/>
-                <Slider Grid.Column="2" Grid.Row="1" x:Name="sliderCleanliness" HorizontalAlignment="Left" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderCleanlinessValueChange" Width="200"/>
+                <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0" />
+                <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
 
-                <Label x:Name="labelStaff" Grid.Column="0" Grid.Row="2" Content="Staff:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="tbStaff" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Text="{Binding ElementName=sliderStaff, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="50" IsReadOnly="True" Margin="640,0,0,10"/>
-                <Slider Grid.Column="2" Grid.Row="2" x:Name="sliderStaff" HorizontalAlignment="Left" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderStaffValueChange" Width="200"/>
-
-                <Label x:Name="labelComfort" Grid.Column="0" Grid.Row="3" Content="Comfort:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="tbComfort" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Text="{Binding ElementName=sliderComfort, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="50" IsReadOnly="True" Margin="640,0,0,10"/>
-                <Slider Grid.Column="2" Grid.Row="3" x:Name="sliderComfort" HorizontalAlignment="Left" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderComfortValueChange" Width="200"/>
-
-                <Label x:Name="labelValueForMoney" Grid.Column="0" Grid.Row="4" Content="Value for Money:" HorizontalAlignment="Center" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="0,5,0,0" Width="150" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="tbValueForMoney" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" Text="{Binding ElementName=sliderValueForMoney, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="50" IsReadOnly="True" Margin="640,1,0,64"/>
-                <Slider Grid.Column="2" Grid.Row="4" x:Name="sliderValueForMoney" HorizontalAlignment="Left" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderValueForMoneyValueChange" Width="200" Margin="0,10,0,45"/>
-
-                <Label x:Name="labelComment" Grid.Column="0" Grid.Row="6" Content="Comment:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="25,0,0,0" Width="150" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="tbComment" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Path=Comment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="274" Height="75" Grid.ColumnSpan="2" Margin="87,0,0,0"/>
-
-                <CheckBox Content="Do you want to create renovation recommendation?" Grid.Column="2" Margin="316,31,14,2" Grid.Row="4" x:Name="renovationCheckBox" />
-
-                <GroupBox Grid.Column="2" Header="Renovation Recommendation" Margin="316,44,-14,-35" Grid.RowSpan="3" Grid.Row="4" Visibility="{Binding IsChecked, ElementName=renovationCheckBox, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="60"/>
-                            <RowDefinition Height="100"/>
-                        </Grid.RowDefinitions>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="84"/>
-                            <ColumnDefinition Width="180"/>
-                            <ColumnDefinition Width="110"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Label x:Name="labelRenovationRecommendationLevel" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Level:"  MouseLeftButtonUp="labeltbFocus" Width="Auto" Height="Auto"/>
-                        <Slider Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="sliderRenovationRecommendationLevel" Minimum="1" Maximum="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="1" Foreground="Blue" ValueChanged="SliderRenovationRecommendationLevelValueChange" Width="144"/>
-                        <TextBox x:Name="tbRenovationRecommendationLevel" Margin="0" HorizontalContentAlignment="Center" TextAlignment="Center" Grid.Row="0"  Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Value, ElementName=sliderRenovationRecommendationLevel, UpdateSourceTrigger=PropertyChanged}"  Height="20"  Width="50" IsReadOnly="True"  />
-
-                        <Label x:Name="labelRenovationRecommendationComment" Grid.Column="0" Grid.Row="1" Content="Comment:" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeftButtonUp="labeltbFocus" Width="Auto" Height="Auto"/>
-                        <TextBox x:Name="tbRenovationRecommendationComment" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" TextWrapping="Wrap" Text="{Binding RecommendationComment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Width="236" Height="59"/>
-
-                    </Grid>
-                </GroupBox>
-
-
-
+                <StackPanel Grid.Column="1" Orientation="Vertical">
+                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="22" />
+                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" FontSize="20"  FontWeight="Bold" Height="28" />
+                </StackPanel>
 
             </Grid>
-        </GroupBox>
 
-        <Button x:Name="buttonRate" Grid.Column="1" Grid.Row="4" Content="Rate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="945,20,0,0" Click="SaveReview" Width="175" Height="50" Grid.ColumnSpan="2"/>
+        </DockPanel>
 
-        <Button x:Name="buttonCancel" Grid.Row="4" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top"  Click="CancelReview" Width="176" Height="50" Margin="39,20,0,0"/>
 
-        <!-- Slika: -->
-        <Label Grid.Row="3" Content="Enter the url of the accommodation image:" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="labeltbFocus" Margin="781,25,0,0" Grid.Column="1" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="tbImage" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Text="{Binding Image, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="170" Margin="781,56,0,0" Grid.ColumnSpan="2"/>
-        <Button Grid.Column="2" Grid.Row="3" Content="Add image" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AddImageToList" Width="125" Height="40" Margin="59,56,0,0" RenderTransformOrigin="0.504,-0.624"/>
-        <DataGrid x:Name="dgImages" LoadingRow="LoadingRowForDgImages" Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Images, Mode=OneWay}" SelectedItem="{Binding SelectedImage, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True" Margin="781,90,194,210" Grid.ColumnSpan="2">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Images" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding ''}" Height="45"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Button Grid.Column="2" Grid.Row="3" Content="Remove image" Click="RemoveImageFromList" Width="125" Height="40" Margin="59,115,41,235"/>
+        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Width="834" Height="67" Margin="4,0,4,0">
 
-    </Grid>
 
+            <Button Content="Home" Click="GoToSearchAndShowAccommodations" Width="70" Height="50" Margin="10,0,8,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC"/>
+
+            <Button Content="Reservations" Click="GoToShowReservations"  Width="140" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" BorderBrush="#FFACACAC">
+                <Button.Background>
+                    <SolidColorBrush Color="#FFF0F0F0"/>
+                </Button.Background>
+            </Button>
+
+            <ComboBox x:Name="CBCreateReview" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBCreateReviewDropDownClosed" FontSize="20" FontWeight="Bold" Width="160" Height="50" Margin="9,0,9,0" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBoxItem Content="Create review" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Reviews" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Requests" PreviewMouseDown="CBItemPreviewMouseDown" />
+            </ComboBox>
+
+
+            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Click="GoToAnywhereAnytime" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
+                <StackPanel>
+                    <TextBlock Text="Anywhere" HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Top" />
+                    <TextBlock Text="Anytime" Height="Auto" Margin="0,-8,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                </StackPanel>
+            </Button>
+
+            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" Click="GoToForum" BorderBrush="#FFACACAC" />
+
+            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+                <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
+                <ComboBoxItem Content="Logout" PreviewMouseDown="CBItemPreviewMouseDown" />
+            </ComboBox>
+
+        </DockPanel>
+
+
+
+
+        <Grid>
+            <Grid x:Name="CreateReviewWindow">
+
+                <ScrollViewer  Visibility="Visible">
+
+                    <StackPanel>
+                        <Label x:Name="RateAccommodationsTitle"  Content="Rate accommodations" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
+
+                        <ItemsControl  ItemsSource="{Binding CreateReviewDTOs}" Margin="0,0,0,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Gray" BorderThickness="2" Margin="0,23,0,0" Height="210" Width="550">
+                                        <!-- margina izmedju kartica je 20 -->
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="65" />
+                                                <RowDefinition Height="50" />
+                                                <RowDefinition Height="95" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="230"/>
+                                                <ColumnDefinition Width="320"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Source="{Binding Image}" Margin="5,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"  MaxHeight="150" Stretch="Fill" Height="Auto" MaxWidth="190" Width="Auto"/>
+
+                                            <TextBlock  Grid.Column="1" Grid.Row="0" Text="{Binding AccommodationName}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="7,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="28" />
+
+                                            <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="7,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="24">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}, {1}">
+                                                        <Binding Path="Address" />
+                                                        <Binding Path="Type" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+
+                                            <TextBlock  Grid.Column="1" Grid.Row="2" Text="{Binding Deadline}" Foreground="Red" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="7,22,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="20" />
+
+                                            <Button Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" FontSize="24" FontWeight="Bold" Width="175" Height="55" VerticalAlignment="Top" Content="Review" CommandParameter="{Binding}" Command="{Binding DataContext.ReviewButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Margin="0,12,24,0"/>
+                                            <!--<Button FontSize="24" FontWeight="Bold" Width="177" Height="56" Margin="285,155,12,18" Content="See Availability" CommandParameter="{Binding}" Command="{Binding DataContext.SeeAvailabilityCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>-->
+
+
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </StackPanel>
+                    
+                </ScrollViewer>
+
+            </Grid>
+
+            <StackPanel Margin="0,0,0,20">
+
+
+                <Label x:Name="FillTheReviewTitle" Content="Fill the review" Visibility="Collapsed" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
+
+
+                <Border x:Name="FillReview_Window1" Visibility="Collapsed" BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="440" Width="780">
+
+                    <Grid Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="335" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="0,25,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto" Width="684" >
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="150" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                                    <StackPanel Orientation="Vertical" Margin="0,0,65,0">
+                                        <TextBlock HorizontalAlignment="Center" Text="Cleanliness" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="24" />
+                                        <ComboBox SelectedIndex="2" SelectedValue="3" ItemsSource="{Binding CleanlinessValues}" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Margin="0,10,0,10" Width="50" FontSize="20" FontWeight="Bold" SelectedItem="{Binding Cleanliness}" />
+                                        <TextBlock Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Vertical" Margin="0,0,65,0" >
+                                        <TextBlock HorizontalAlignment="Center" Text="Staff" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="24" />
+                                        <ComboBox SelectedIndex="2" SelectedValue="3" ItemsSource="{Binding StaffValues}" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Margin="0,10,0,10" Width="50" FontSize="20" FontWeight="Bold" SelectedItem="{Binding Staff}" />
+                                        <TextBlock Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Vertical" Margin="0,0,65,0">
+                                        <TextBlock Text="Comfort" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="24" />
+                                        <ComboBox SelectedIndex="2" SelectedValue="3" ItemsSource="{Binding ComfortValues}" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Margin="0,10,0,10" Width="50" FontSize="20" FontWeight="Bold" SelectedItem="{Binding Comfort}" />
+                                        <TextBlock Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+                                        <TextBlock Text="Value for money" Margin="0,0,0,0" TextWrapping="Wrap" FontWeight="Bold" FontSize="24" />
+                                        <ComboBox SelectedIndex="2" SelectedValue="3" ItemsSource="{Binding ValueForMoneyValues}" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Margin="0,10,0,10" Width="50" FontSize="20" FontWeight="Bold" SelectedItem="{Binding ValueForMoney}" />
+                                        <TextBlock Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+
+                            </Grid>
+
+
+                            <!-- <TextBlock x:Name="FilePathTB" Visibility="Collapsed" Text="" Foreground="Black" TextAlignment="Center" FontSize="20" FontWeight="Bold" VerticalAlignment="Bottom" Margin="0,10,0,0" HorizontalAlignment="Center" Grid.Row="0" Width="650" TextWrapping="Wrap" Height="Auto"   /> -->
+
+                        </StackPanel>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Left" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Content="Cancel" Click="GoToCreateReview" Margin="40,15,0,0" />
+
+                        <Button Grid.Row="1" HorizontalAlignment="Right" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Next" Click="GoForwardToAddImage_Window2"  Margin="0,15,40,0" Background="Black"/>
+
+
+                    </Grid>
+
+                </Border>
+
+
+                <Border x:Name="AddImage_Window2" Visibility="Collapsed" BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="440" Width="780">
+
+                    <Grid Visibility="Visible" Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="335" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="0,25,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto" Width="684" >
+
+                            <Button Visibility="Visible" FontSize="24" FontWeight="Bold" Width="260" Height="46" Content="Upload image(s)" Click="BrowseButton_Click" Margin="0,0,0,0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Grid>
+                                            <!-- <Image Visibility="Visible" Source="../Resources/Images/circle_button.jpg" Width="45" Height="46" Margin="0,0,140,5"/> -->
+                                            <Image Visibility="Visible" Source="https://i.ibb.co/VYYgFJp/circle-button.png" Width="45" Height="46" Margin="0,0,200,5"/>
+                                            <ContentPresenter Margin="60,0,0,5" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                            <TextBlock x:Name="ImageSliderErrorMessage" Visibility="Collapsed" Text="" Foreground="Red" TextAlignment="Center" FontSize="20" FontWeight="Bold" VerticalAlignment="Bottom" Margin="0,0,0,0" HorizontalAlignment="Center" Grid.Row="0" Width="650" TextWrapping="Wrap" Height="Auto"   />
+
+
+                            <StackPanel Visibility="Visible" x:Name="ImageSlider" VerticalAlignment="Bottom" Margin="0,30,0,10" Height="200">
+                                <Image Source="{Binding CurrentImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,15,0,0"  Stretch="UniformToFill" MaxWidth="300" Width="200" Height="140"/>
+
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                                    <Button Content="&lt;" Width="35" Margin="0,0,0,0" FontWeight="Bold" Height="35" CommandParameter="{Binding}" Command="{Binding DataContext.PreviousImageCommand, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" />
+                                    <Button Content="&gt;" Width="35" Margin="35,0,0,0" FontWeight="Bold" Height="35" CommandParameter="{Binding}" Command="{Binding DataContext.NextImageCommand, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" />
+                                </StackPanel>
+                            </StackPanel>
+
+
+
+                            <!-- <TextBlock x:Name="FilePathTB" Visibility="Collapsed" Text="" Foreground="Black" TextAlignment="Center" FontSize="20" FontWeight="Bold" VerticalAlignment="Bottom" Margin="0,10,0,0" HorizontalAlignment="Center" Grid.Row="0" Width="650" TextWrapping="Wrap" Height="Auto"   /> -->
+
+                        </StackPanel>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Left" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Content="Cancel"  Margin="40,15,0,0" />
+
+                        <Button Grid.Row="1" HorizontalAlignment="Right" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Next" Click="GoForwardToFillReview_Window3"  Margin="0,15,40,0" Background="Black"/>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Back" Click="GoBackToFillReview_Window1"  Margin="0,15,0,0" Background="Black"/>
+
+
+                    </Grid>
+
+                </Border>
+
+
+                <Border x:Name="FillReview_Window3" Visibility="Collapsed" BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="440" Width="780">
+
+                    <Grid Visibility="Visible" Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="335" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="0,25,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto" Width="684" >
+
+                            <StackPanel Grid.Row="1">
+                                <Grid Margin="0,0,0,0">
+                                    <TextBlock HorizontalAlignment="Center" Text="Add comment" Margin="0,0,0,0"  FontWeight="Bold" FontSize="28" />
+                                    <TextBlock Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Left"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"/>
+                                </Grid>
+                                <Border BorderBrush="Gray" BorderThickness="2" MinHeight="35" Height="Auto" Margin="0,10,0,0">
+                                    <TextBox Width="Auto" Text="{Binding Comment}" Height="Auto" TextWrapping="Wrap" FontSize="20" BorderBrush="Transparent" BorderThickness="0" />
+                                </Border>
+
+                                <TextBlock x:Name="CommentErrorMessage" Visibility="Collapsed" TextAlignment="Center"  Foreground="Red" FontSize="24" FontWeight="Bold" Text="" TextWrapping="Wrap" Width="657" MinHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,0"/>
+                            </StackPanel>
+
+                            <!-- <TextBlock x:Name="FilePathTB" Visibility="Collapsed" Text="" Foreground="Black" TextAlignment="Center" FontSize="20" FontWeight="Bold" VerticalAlignment="Bottom" Margin="0,10,0,0" HorizontalAlignment="Center" Grid.Row="0" Width="650" TextWrapping="Wrap" Height="Auto"   /> -->
+
+                        </StackPanel>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Left" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Content="Cancel" Click="GoToCreateReview" Margin="40,15,0,0" />
+
+                        <Button Grid.Row="1" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Back" Click="GoBackToFillReview_Window2"  Margin="0,15,0,0" Background="Black"/>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Right" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Next" Click="GoForwardToFillReview_Window4"  Margin="0,15,40,0" Background="Black"/>
+
+
+                    </Grid>
+
+                </Border>
+
+                <Border x:Name="FillReview_Window4" Visibility="Collapsed" BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="440" Width="780">
+                    <Grid Visibility="Visible" Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="335" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto" Width="684" >
+
+                            <TextBlock HorizontalAlignment="Center"  Text="Recommendation for renovation" Margin="0,0,0,0"  FontWeight="Bold" FontSize="28" />
+
+                            <TextBlock HorizontalAlignment="Center" Text="The level of renovation urgency" Margin="0,5,0,0"  FontWeight="Bold" FontSize="24" />
+
+                            <StackPanel Margin="0,5,0,0">
+                                <StackPanel.Resources>
+                                    <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+                                        <Setter Property="FontSize" Value="20"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="ContentTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <RadioButton VerticalContentAlignment="Center" Margin="0,5,0,0" IsChecked="{Binding RecommendationLevel, ConverterParameter=Level 1, Converter={StaticResource RadioButtonConverter}}" Content="Level 1 - It would be nice to renovate, but everything works as it should without renovation."/>
+                                <RadioButton VerticalContentAlignment="Center" Margin="0,5,0,0" IsChecked="{Binding RecommendationLevel, ConverterParameter=Level 2, Converter={StaticResource RadioButtonConverter}}" Content="Level 2 - Minor gripes about accommodation that, if removed, would make it perfect."/>
+                                <RadioButton VerticalContentAlignment="Center" Margin="0,5,0,0" IsChecked="{Binding RecommendationLevel, ConverterParameter=Level 3, Converter={StaticResource RadioButtonConverter}}" Content="Level 3 - A few things that bothered me should be renovated."/>
+                                <RadioButton VerticalContentAlignment="Center" Margin="0,5,0,0" IsChecked="{Binding RecommendationLevel, ConverterParameter=Level 4, Converter={StaticResource RadioButtonConverter}}" Content="Level 4 - There are many bad things, and renovation is necessary."/>
+                                <RadioButton VerticalContentAlignment="Center" Margin="0,5,0,0" IsChecked="{Binding RecommendationLevel, ConverterParameter=Level 5, Converter={StaticResource RadioButtonConverter}}" Content="Level 5 - The accommodation is in awful condition and is not worth renting unless renovated."/>
+                            </StackPanel>
+
+                            <TextBlock x:Name="CommentErrorMessage2" Visibility="Collapsed" TextAlignment="Center"  Foreground="Red" FontSize="24" FontWeight="Bold" Text="" TextWrapping="Wrap" Width="657" MinHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,0"/>
+                            <!-- <TextBlock x:Name="FilePathTB" Visibility="Collapsed" Text="" Foreground="Black" TextAlignment="Center" FontSize="20" FontWeight="Bold" VerticalAlignment="Bottom" Margin="0,10,0,0" HorizontalAlignment="Center" Grid.Row="0" Width="650" TextWrapping="Wrap" Height="Auto"   /> -->
+
+                        </StackPanel>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Left" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Content="Cancel" Click="GoToCreateReview" Margin="40,15,0,0" />
+
+                        <Button Grid.Row="1" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Back" Click="GoBackToFillReview_Window3"  Margin="0,15,0,0" Background="Black"/>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Right" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Next" Click="GoForwardToFillReview_Window56"  Margin="0,15,40,0" Background="Black"/>
+
+
+                    </Grid>
+                </Border>
+
+                <Border x:Name="FillReview_Window5" Visibility="Collapsed" BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="440" Width="780">
+                    <Grid Visibility="Visible" Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="335" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock HorizontalAlignment="Center"  Text="Recommendation for renovation" Margin="0,12,0,0"  FontWeight="Bold" FontSize="28" />
+
+                        <StackPanel Grid.Row="0" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto" Width="684" >
+
+                            <StackPanel Grid.Row="1">
+                                <Grid Margin="0,0,0,0">
+                                    <TextBlock HorizontalAlignment="Center" Text="Write your recommendation" Margin="0,0,0,0"  FontWeight="Bold" FontSize="24" />
+                                    <TextBlock Text="required" VerticalAlignment="Bottom" HorizontalAlignment="Left"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red"/>
+                                </Grid>
+                                <Border BorderBrush="Gray" BorderThickness="2" MinHeight="35" Height="Auto" Margin="0,10,0,0">
+                                    <TextBox Width="Auto" Text="{Binding RecommendationComment}" Height="Auto" TextWrapping="Wrap" FontSize="20" BorderBrush="Transparent" BorderThickness="0" />
+                                </Border>
+
+                                <TextBlock x:Name="RecommendationCommentErrorMessage" Visibility="Collapsed" Text="" TextAlignment="Center"  Foreground="Red" FontSize="24" FontWeight="Bold" TextWrapping="Wrap" Width="657" MinHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,0"/>
+
+                            </StackPanel>
+
+                            <TextBlock x:Name="CommentErrorMdessage2" Visibility="Collapsed" TextAlignment="Center"  Foreground="Red" FontSize="24" FontWeight="Bold" Text="" TextWrapping="Wrap" Width="657" MinHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,0"/>
+                            <!-- <TextBlock x:Name="FilePathTB" Visibility="Collapsed" Text="" Foreground="Black" TextAlignment="Center" FontSize="20" FontWeight="Bold" VerticalAlignment="Bottom" Margin="0,10,0,0" HorizontalAlignment="Center" Grid.Row="0" Width="650" TextWrapping="Wrap" Height="Auto"   /> -->
+
+                        </StackPanel>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Left" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Content="Cancel" Click="GoToCreateReview" Margin="40,15,0,0" />
+
+                        <Button Grid.Row="1" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Back" Click="GoBackToFillReview_Window4"  Margin="0,15,0,0" Background="Black"/>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Right" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Submit" Click="GoForwardToFillReview_Window7"  Margin="0,15,40,0" Background="Black"/>
+
+
+                    </Grid>
+                </Border>
+
+                <Border x:Name="FillReview_Window6" Visibility="Collapsed" BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="230" Width="780">
+                    <Grid Visibility="Visible" Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="125" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock HorizontalAlignment="Center"  Text="You can submit review or make some changes." Margin="0,48,0,0"  FontWeight="Bold" FontSize="24" />
+
+                        <Button Grid.Row="1" HorizontalAlignment="Left" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Content="Cancel" Click="GoToCreateReview" Margin="40,15,0,0" />
+
+                        <Button Grid.Row="1" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Back" Click="GoBackToFillReview_Window4From6"  Margin="0,15,0,0" Background="Black"/>
+
+                        <Button Grid.Row="1" HorizontalAlignment="Right" FontSize="24" FontWeight="Bold" Width="176" Height="55" VerticalAlignment="Top" Foreground="AliceBlue" Content="Submit" Click="GoForwardToFillReview_Window7From6"  Margin="0,15,40,0" Background="Black"/>
+
+
+                    </Grid>
+                </Border>
+
+                <Border x:Name="FillReview_Window7" Visibility="Collapsed" BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" Height="200" Width="780">
+
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center"  Text="You have successfully filled out the review." Foreground="Green" Margin="0,40,0,0"  FontWeight="Bold" FontSize="24" />
+
+                        <Button  HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Width="212" Height="55" VerticalAlignment="Top" Content="Return to reviews" Click="GoToCreateReview" Margin="0,30,0,0" />
+
+                    </StackPanel>
+                </Border>
+
+
+
+
+            </StackPanel>
+
+            </Grid>
+
+
+    </DockPanel>
 </Page>
+

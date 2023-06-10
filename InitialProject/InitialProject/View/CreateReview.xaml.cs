@@ -19,10 +19,15 @@ using System.Net;
 using System.Reflection;
 using System.Windows.Navigation;
 using InitialProject.Model;
+using GalaSoft.MvvmLight.Command;
+using Microsoft.Win32;
+using Microsoft.VisualBasic;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace InitialProject.View
 {
-    public partial class CreateReview : Page
+    public partial class CreateReview : Page, INotifyPropertyChanged 
     {
         private readonly ReviewService reviewService;
         private string guest1;
@@ -44,28 +49,6 @@ namespace InitialProject.View
             }
         }
 
-        public string Image
-        {
-            get { return image; }
-            set
-            {
-                image = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<string> Images
-        {
-            get;
-            set;
-        }
-
-        public string SelectedImage
-        {
-            get;
-            set;
-        }
-
         public List<CreateReviewDTO> CreateReviewDTOs
         {
             get;
@@ -78,41 +61,40 @@ namespace InitialProject.View
             set;
         }
 
+
         public int Cleanliness
         {
             get { return cleanliness; }
-            set
-            {
-                cleanliness = value;
-            }
+            set { cleanliness = value; OnPropertyChanged(nameof(Cleanliness)); }
         }
+
+        public List<int> CleanlinessValues { get; set; } = new List<int> { 1, 2, 3, 4, 5 };
+
 
         public int Staff
         {
             get { return staff; }
-            set
-            {
-                staff = value;
-            }
+            set { staff = value; OnPropertyChanged(nameof(Staff)); }
         }
+
+        public List<int> StaffValues { get; set; } = new List<int> { 1, 2, 3, 4, 5 };
 
         public int Comfort
         {
             get { return comfort; }
-            set
-            {
-                comfort = value;
-            }
+            set { comfort = value; OnPropertyChanged(nameof(Comfort)); }
         }
+
+        public List<int> ComfortValues { get; set; } = new List<int> { 1, 2, 3, 4, 5 };
 
         public int ValueForMoney
         {
             get { return valueForMoney; }
-            set
-            {
-                valueForMoney = value;
-            }
+            set { valueForMoney = value; OnPropertyChanged(nameof(ValueForMoney)); }
         }
+
+        public List<int> ValueForMoneyValues { get; set; } = new List<int> { 1, 2, 3, 4, 5 };
+
 
         public string Comment
         {
@@ -131,6 +113,7 @@ namespace InitialProject.View
                 recommendationLevel = value;
             }
         }
+
 
         public string RecommendationComment
         {
@@ -155,11 +138,13 @@ namespace InitialProject.View
         {
             if (Notification)
             {
-                NotificationMenuItem.Visibility = Visibility.Visible;
+                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Visible;
+                NotificationMenuItemImageRegularBell.Visibility = Visibility.Collapsed;
             }
             else
             {
-                NotificationMenuItem.Visibility = Visibility.Collapsed;
+                NotificationMenuItemImageNotificationBell.Visibility = Visibility.Collapsed;
+                NotificationMenuItemImageRegularBell.Visibility = Visibility.Visible;
             }
         }
 
@@ -183,24 +168,183 @@ namespace InitialProject.View
 
             CreateReviewDTOs = reviewService.FindAllReviewsToRate();
 
-            if (CreateReviewDTOs.Count == 0)
+            ReviewButtonCommand = new RelayCommand<CreateReviewDTO>(OpenReview);
+
+            SetImagePreviewer();
+
+            SetComboBoxes(page);
+
+            SetReviewComboBoxes();
+        }
+
+        private void SetReviewComboBoxes()
+        {
+            Cleanliness = 3;
+            Staff = 3;
+            Comfort = 3;
+            ValueForMoney = 3;
+        }
+
+
+        // start window
+        public ICommand ReviewButtonCommand { get; set; }
+        private void OpenReview(CreateReviewDTO createReviewDTO)
+        {
+            SelectedAccommodation = createReviewDTO;
+
+            CreateReviewWindow.Visibility = Visibility.Collapsed;
+            RateAccommodationsTitle.Visibility = Visibility.Collapsed;
+
+            FillTheReviewTitle.Visibility = Visibility.Visible;
+            FillReview_Window1.Visibility = Visibility.Visible;
+        }
+
+        // 1st window
+        private void GoForwardToAddImage_Window2(object sender, RoutedEventArgs e)
+        {
+            FillReview_Window1.Visibility = Visibility.Collapsed;
+
+            AddImage_Window2.Visibility = Visibility.Visible;
+        }
+
+        // 2nd window
+        private void GoForwardToFillReview_Window3(object sender, RoutedEventArgs e)
+        {
+                AddImage_Window2.Visibility = Visibility.Collapsed;
+
+                FillReview_Window3.Visibility = Visibility.Visible;
+        }
+
+        private void GoBackToFillReview_Window1(object sender, RoutedEventArgs e)
+        {
+             AddImage_Window2.Visibility = Visibility.Collapsed;
+
+             FillReview_Window1.Visibility = Visibility.Visible;
+        }
+
+        // 3rd window
+        private void GoForwardToFillReview_Window4(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Comment))
             {
-                MessageBox.Show("All accommodations are reviewed.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                
+                CommentErrorMessage.Text = "You haven't input a comment.";
+                CommentErrorMessage.Visibility = Visibility.Visible;
             }
             else
             {
-                MessageBox.Show("There are " + CreateReviewDTOs.Count + " acommodations left for you to rate.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+                CommentErrorMessage.Visibility = Visibility.Collapsed;
+                FillReview_Window3.Visibility = Visibility.Collapsed;
 
-            SetDefaultValue();
+                FillReview_Window4.Visibility = Visibility.Visible;
+            }
         }
+
+        private void GoBackToFillReview_Window2(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Comment))
+            {
+                CommentErrorMessage.Text = "You haven't input a comment.";
+                CommentErrorMessage.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                CommentErrorMessage.Visibility = Visibility.Collapsed;
+                FillReview_Window3.Visibility = Visibility.Collapsed;
+
+                AddImage_Window2.Visibility = Visibility.Visible;
+            }
+        }
+
+        // 4th window
+        private void GoBackToFillReview_Window3(object sender, RoutedEventArgs e)
+        {
+            FillReview_Window4.Visibility = Visibility.Collapsed;
+
+            FillReview_Window3.Visibility = Visibility.Visible;
+        }
+
+        // redirection depends on whether the radio button is selected
+        private void GoForwardToFillReview_Window56(object sender, RoutedEventArgs e)
+        {
+            if (IsAnyRadioButtonSelected())
+            {
+                FillReview_Window4.Visibility = Visibility.Collapsed;
+                FillReview_Window5.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                FillReview_Window4.Visibility = Visibility.Collapsed;
+                FillReview_Window6.Visibility = Visibility.Visible;
+            }
+        }
+
+        private bool IsAnyRadioButtonSelected()
+        {
+            if (RecommendationLevel == null) 
+                return false;
+            return true;
+        }
+
+
+        // 5th window
+        private void GoBackToFillReview_Window4(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(RecommendationComment))
+            {
+                RecommendationCommentErrorMessage.Text = "You haven't input a comment.";
+                RecommendationCommentErrorMessage.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                RecommendationCommentErrorMessage.Visibility = Visibility.Collapsed;
+                FillReview_Window5.Visibility = Visibility.Collapsed;
+
+                FillReview_Window4.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void GoForwardToFillReview_Window7(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(RecommendationComment))
+            {
+                RecommendationCommentErrorMessage.Text = "You haven't input a comment.";
+                RecommendationCommentErrorMessage.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                RecommendationCommentErrorMessage.Visibility = Visibility.Collapsed;
+                FillReview_Window5.Visibility = Visibility.Collapsed;
+
+                FillReview_Window7.Visibility = Visibility.Visible;
+
+                SaveReview();
+            }
+        }
+
+        // 6th window
+        private void GoBackToFillReview_Window4From6(object sender, RoutedEventArgs e)
+        {
+            FillReview_Window6.Visibility = Visibility.Collapsed;
+
+            FillReview_Window4.Visibility = Visibility.Visible;
+        }
+
+        private void GoForwardToFillReview_Window7From6(object sender, RoutedEventArgs e)
+        {
+            FillReview_Window6.Visibility = Visibility.Collapsed;
+
+            FillReview_Window7.Visibility = Visibility.Visible;
+
+            SaveReview();
+        }
+
 
         private void SetUsernameHeader()
         {
             Notification = reviewService.Guest1HasNotification();
             CheckNotification();
-            usernameAndSuperGuest.Header = Guest1 + CheckSuperType();
+            usernameAndSuperGuest.Text = $"{Guest1}";
+            superGuest.Text = $"{CheckSuperType()}";
         }
 
         private string CheckSuperType()
@@ -209,19 +353,14 @@ namespace InitialProject.View
 
             if (reviewService.IsSuperGuest(Guest1))
             {
-                superType = " (Super guest)";
+                superType = "(Super guest)";
             }
 
             return superType;
         }
 
-        private void SaveReview(object sender, RoutedEventArgs e)
+        private void SaveReview()
         {
-            if (!IsValidationPassed())
-            {
-                MessageBox.Show("You haven't input a recommendation comment.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
 
             SaveNewCreateReviewDTO saveNewCreateReviewDTO =
                 new SaveNewCreateReviewDTO(
@@ -235,7 +374,7 @@ namespace InitialProject.View
                     RecommendationLevel,
                     RecommendationComment);
 
-            if (renovationCheckBox.IsChecked.GetValueOrDefault())
+            if (IsAnyRadioButtonSelected()) // it means that renovation is filled out
                 reviewService.SaveNewReviewWithRenovation(saveNewCreateReviewDTO);
             else
                 reviewService.SaveNewReview(saveNewCreateReviewDTO);
@@ -243,175 +382,215 @@ namespace InitialProject.View
 
             reviewService.CheckSuperOwner(saveNewCreateReviewDTO.ReservationId);
 
-            CreateReviewDTOs.Remove(SelectedAccommodation);
-
-            dgCreateReview.Items.Refresh();
-
-            SetDefaultValue();
-
-            MessageBox.Show("You have successfully rated an accommodation", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            if (CreateReviewDTOs.Count == 0)
-            {
-                MessageBox.Show("All accommodations are rated.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                GoToSearchAndShowAccommodations(sender, e);
-            }
         }
 
-        public bool IsValidationPassed()
-        {
-            if (renovationCheckBox.IsChecked.GetValueOrDefault() && string.IsNullOrWhiteSpace(RecommendationComment)) return false;
 
-            return true;
-        }
-
-        private void CancelReview(object sender, RoutedEventArgs e)
+        private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
-            SetDefaultValue();
-            dgCreateReview.SelectedItem = null; 
-        }
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string imagePath = openFileDialog.FileName;
 
-        private void SetDefaultValue()
-        {
-            sliderCleanliness.Value = 3;
-            sliderStaff.Value = 3;
-            sliderComfort.Value = 3;
-            sliderValueForMoney.Value = 3;
-            Comment = "";
-            tbComment.Text = "";
-            Images = new ObservableCollection<string>();
-            dgImages.ItemsSource = Images;
-            buttonRate.IsEnabled = false;
-        }
+                Image = imagePath;
 
-        private void RateButtonEnable(object sender, SelectionChangedEventArgs e)
-        {
-            if (SelectedAccommodation == null)
-            {
-                buttonRate.IsEnabled = false;
-            }
-            else
-            {
-                buttonRate.IsEnabled = true;
-            }
-        }
+                string fileExtension = System.IO.Path.GetExtension(imagePath);
 
-        private void AddImageToList(object sender, RoutedEventArgs e)
-        {
-            if (CheckErrorUrlExists() == false)
-            {
-                MessageBox.Show("The image with the specified url does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (CheckErrorImageAlreadyExists() == false)
-            {
-                Images.Add(Image.ToString());
-            }
-            else
-            {
-                MessageBox.Show("You have already added this image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private bool CheckErrorUrlExists() 
-        {
-            string[] allowedExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".jfif" };
-            Uri uriResult;
-            if (Uri.TryCreate(Image.ToString(), UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
-            {
-                string extension = Path.GetExtension(uriResult.LocalPath).ToLower();
-                if (string.IsNullOrEmpty(extension))
+                if (IsImageFile(fileExtension))
                 {
-                    try
+                    if (CheckErrorImageAlreadyExists() == false)
                     {
-                        using (var client = new WebClient())
-                        {
-                            var data = client.DownloadData(uriResult);
-                            var contentType = client.ResponseHeaders["Content-Type"];
-                            if (!string.IsNullOrEmpty(contentType) && contentType.StartsWith("image/"))
-                            {
-                                extension = "." + contentType.Substring("image/".Length);
-                            }
-                        }
+                        CurrentImage = imagePath;
+                        SetImagePreviewer();
                     }
-                    catch (Exception)
+                    else
                     {
-                        
+                        ImageSliderErrorMessage.Text = "You have already added this image.";
+                        ImageSliderErrorMessage.Visibility = Visibility.Visible;
                     }
                 }
-                return allowedExtensions.Contains(extension);
+                else
+                {
+                    ImageSliderErrorMessage.Text = "The selected file is not an image.";
+                    ImageSliderErrorMessage.Visibility = Visibility.Visible;
+                }
             }
-            return false;
+        }
+
+        private bool IsImageFile(string fileExtension)
+        {
+            string[] imageExtensions = { ".png", ".jpeg", ".jpg" };
+            return imageExtensions.Contains(fileExtension.ToLower());
+        }
+
+
+        public string Image
+        {
+            get { return image; }
+            set
+            {
+                image = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<string> _images;
+        private int _currentIndex;
+        private string _currentImage;
+
+        public ObservableCollection<string> Images
+        {
+            get { return _images; }
+            set
+            {
+                _images = value;
+                OnPropertyChanged(nameof(Images));
+                UpdateCurrentImage();
+            }
+        }
+
+        public string CurrentImage
+        {
+            get { return _currentImage; }
+            set
+            {
+                _currentImage = value;
+                OnPropertyChanged(nameof(CurrentImage));
+            }
+        }
+
+        public ICommand PreviousImageCommand { get; private set; }
+        public ICommand NextImageCommand { get; private set; }
+
+        private void SetImagePreviewer()
+        {
+            if (Images == null)
+            {
+                ImageSlider.Visibility = Visibility.Collapsed;
+                Images = new ObservableCollection<string>();
+            }
+            else
+            { 
+                Images.Add(Image);
+                ImageSlider.Visibility = Visibility.Visible;
+                ImageSliderErrorMessage.Visibility = Visibility.Collapsed;
+            }
+
+            _currentIndex = 0;
+            PreviousImageCommand = new RelayCommand(PreviousImage);
+            NextImageCommand = new RelayCommand(NextImage);
+        }
+
+        private void PreviousImage()
+        {
+            _currentIndex--;
+            if (_currentIndex < 0)
+            {
+                _currentIndex = Images.Count - 1;
+            }
+            UpdateCurrentImage();
+        }
+
+        private void NextImage()
+        {
+            _currentIndex++;
+            if (_currentIndex >= Images.Count)
+            {
+                _currentIndex = 0;
+            }
+            UpdateCurrentImage();
+        }
+
+        private void UpdateCurrentImage()
+        {
+            if (Images != null && Images.Count > 0)
+            {
+                CurrentImage = Images[_currentIndex];
+            }
+            else
+            {
+                CurrentImage = null;
+            }
+            OnPropertyChanged(nameof(CurrentImage));
         }
 
         private bool CheckErrorImageAlreadyExists()
         {
-            return Images.Any(x => x.Equals(Image, StringComparison.OrdinalIgnoreCase));
+            return Images.Any(x => string.Equals(x, Image, StringComparison.OrdinalIgnoreCase));
         }
 
-        void LoadingRowForDgCreateReview(object sender, DataGridRowEventArgs e)
+
+        private bool comboBoxClicked = false;
+        private bool itemClicked = false;
+
+        private void CBPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+            comboBoxClicked = true;
         }
 
-        void LoadingRowForDgImages(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
 
-        private void RemoveImageFromList(object sender, RoutedEventArgs e)
+        public string SelectedCreateReviewCBItem { get; set; } 
+        private void CBCreateReviewDropDownClosed(object sender, EventArgs e)
         {
-            if (SelectedImage == null)
+            if (comboBoxClicked && itemClicked)
             {
-                MessageBox.Show("Select the image you want to remove.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ComboBox comboBox = (ComboBox)sender;
+                ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+
+                if (selectedItem.Content.ToString() == "Create review")
+                {
+                    SelectedCreateReviewCBItem = selectedItem.Content.ToString();
+                    GoToCreateReview(sender, null);
+                }
+                else if (selectedItem.Content.ToString() == "Reviews")
+                {
+                    SelectedCreateReviewCBItem = selectedItem.Content.ToString();
+
+                    //NavigationService?.Navigate(new Guest1GenerateReport(Guest1, this));
+                    GoToShowOwnerReviews(sender, null);
+
+                }
+                else if (selectedItem.Content.ToString() == "Requests")
+                {
+                    SelectedCreateReviewCBItem = selectedItem.Content.ToString();
+                    GoToGuest1Requests(sender, null);
+                }
             }
-            else
+
+            comboBoxClicked = false;
+            itemClicked = false;
+        }
+
+        private void CBSuperGuestDropDownClosed(object sender, EventArgs e)
+        {
+            if (comboBoxClicked && itemClicked)
             {
-                dgImages.Items.Refresh();
-                Images.Remove(SelectedImage);
+                ComboBox comboBox = (ComboBox)sender;
+                ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+
+                if (selectedItem.Content.ToString() == "Super-guest")
+                {
+                    GoToShowSuperGuest(sender, null);
+                }
+                else if (selectedItem.Content.ToString() == "Logout")
+                {
+                    GoToLogout(sender, null);
+                }
             }
+
+            comboBoxClicked = false;
+            itemClicked = false;
         }
 
-        private void labeltbFocus(object sender, MouseButtonEventArgs e)
+        private void CBItemPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 1)
-            {
-                var label = (Label)sender;
-                Keyboard.Focus(label.Target);
-            }
-        }
-
-        private void SliderCleanlinessValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Cleanliness = Convert.ToInt32(sliderCleanliness.Value);
-        }
-
-        private void SliderStaffValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Staff = Convert.ToInt32(sliderStaff.Value);
-        }
-
-        private void SliderComfortValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Comfort = Convert.ToInt32(sliderComfort.Value);
-        }
-        private void SliderValueForMoneyValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            ValueForMoney = Convert.ToInt32(sliderValueForMoney.Value);
-        }
-
-        private void SliderRenovationRecommendationLevelValueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            RecommendationLevel = "Level " + Convert.ToString(sliderRenovationRecommendationLevel.Value);
+            itemClicked = true;
         }
 
         private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new ShowOwnerReviews(Guest1, this));
-        }
-
-        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
-        {
-            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
         }
 
         //private void GoToGuest1Start(object sender, RoutedEventArgs e)
@@ -423,11 +602,22 @@ namespace InitialProject.View
         {
             NavigationService?.Navigate(new SearchAndShowAccommodations(Guest1, this));
         }
-
         private void GoToForum(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new Guest1Forum(Guest1, this));
         }
+
+
+        private void GoToShowSuperGuest(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new ShowSuperGuest(Guest1, this));
+        }
+
+        private void GoToAnywhereAnytime(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Guest1AnywhereAnytime(Guest1, this));
+        }
+
 
         private void GoToShowReservations(object sender, RoutedEventArgs e)
         {
@@ -458,6 +648,153 @@ namespace InitialProject.View
             currentWindow.Close();
         }
 
+        private void SetComboBoxes(Page page)
+        {
+            if (page is SearchAndShowAccommodations searchAndShowPage)
+            {
+                var comboBox = searchAndShowPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
 
+                comboBox = searchAndShowPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is AccommodationReservation accommodationReservationPage)
+            {
+                //var comboBox = accommodationReservationPage.CBCreateReview;
+                //if (comboBox != null)
+                //{
+                //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                //}
+
+                //comboBox = accommodationReservationPage.CBSuperGuest;
+                //if (comboBox != null)
+                //{
+                //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                //}
+            }
+            else if (page is CreateReservationReschedulingRequest createReschedulingRequestPage)
+            {
+                var comboBox = createReschedulingRequestPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = createReschedulingRequestPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is CreateReview createReviewPage)
+            {
+                //var comboBox = createReviewPage.CBCreateReview;
+                //if (comboBox != null)
+                //{
+                //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                //}
+
+                //comboBox = createReviewPage.CBSuperGuest;
+                //if (comboBox != null)
+                //{
+                //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                //}
+            }
+            else if (page is Guest1RequestPreview guest1RequestPreviewPage)
+            {
+                var comboBox = guest1RequestPreviewPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = guest1RequestPreviewPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is Guest1Requests guest1RequestsPage)
+            {
+                var comboBox = guest1RequestsPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = guest1RequestsPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is ShowGuest1Notifications showGuest1NotificationsPage)
+            {
+                var comboBox = showGuest1NotificationsPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = showGuest1NotificationsPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is ShowOwnerReviews showOwnerReviewsPage)
+            {
+                //var comboBox = showOwnerReviewsPage.CBCreateReview;
+                //if (comboBox != null)
+                //{
+                //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                //}
+
+                //comboBox = showOwnerReviewsPage.CBSuperGuest;
+                //if (comboBox != null)
+                //{
+                //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                //}
+            }
+            else if (page is ShowReservations showReservationsPage)
+            {
+                var comboBox = showReservationsPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
+                }
+
+                comboBox = showReservationsPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
+                }
+            }
+        }
+
+
+    }
+
+    public class RadioButtonConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value?.ToString() == parameter?.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if ((bool)value)
+            {
+                return parameter?.ToString();
+            }
+            return Binding.DoNothing;
+        }
     }
 }

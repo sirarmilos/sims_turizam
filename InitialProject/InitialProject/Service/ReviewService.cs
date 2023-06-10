@@ -110,14 +110,14 @@ namespace InitialProject.Service
 
             if (days <= 5 && days > 0)
             {
-                string deadline = "This is the last day to rate an accommodation.";
+                string deadline = "1 day left";
 
                 if (5 - days > 0)
                 {
-                    deadline = "You have " + (5 - days) + " more days to rate the accommodation.";
+                    deadline = (5 - days) + " days left";
                 }
 
-                return new CreateReviewDTO(temporaryReservation.ReservationId, temporaryReservation.Accommodation.AccommodationName, deadline);
+                return new CreateReviewDTO(temporaryReservation.ReservationId, temporaryReservation.Accommodation.AccommodationName, deadline, temporaryReservation.Accommodation.Location.Address, temporaryReservation.Accommodation.Type, temporaryReservation.Accommodation.Images[0]);
             }
 
             return null;

@@ -136,7 +136,42 @@ namespace InitialProject.View
             secondChart.Series = ScatterReviewsAverage;
         }
 
+        /*
+        public SeriesCollection SeriesCollectionReviewsAverage { get; set; }
+        public void SetSecondChart()
+        {
+	        //set periods
+	        ChartPeriodTime = new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
+	        SeriesCollectionReviewsAverage = new SeriesCollection
+	        {
+		        new ColumnSeries
+		        {
+			        Title = "Average of reviews",
+			        DataLabels = true,
+			        //Values = new ChartValues<int>(reviewService.FindNumberOfRatesInLastYearPerMonth(Guest1))
+			        Values = new ChartValues<double>(reviewService.FindAvgRateInLastYearPerMonth(Guest1))
+		        }
+	        };
+
+	        labelXAxisReviewsSecondChart.Labels = ChartPeriodTime;
+	        secondChart.Series = SeriesCollectionReviewsAverage;
+        }
+
+
+		<Label x:Name="labelRenovationRecommendationTitle" Grid.Column="2" Grid.Row="2" Content="Number of renovation recommendation" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,325,23,0" FontSize="16"/>
+        <lvc:CartesianChart x:Name="chartRenovationRecommendation" Series="{Binding SeriesCollectionRenovationRecommedation}" Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" HorizontalAlignment="Left" Height="220" VerticalAlignment="Bottom" Width="350" Margin="42,0,0,154" FontSize="14">
+
+	        <lvc:CartesianChart.AxisX>
+		        <lvc:Axis x:Name="labelXAxisRenovationRecommendation" Labels="{Binding ChartPeriodTime}"></lvc:Axis>
+	        </lvc:CartesianChart.AxisX>
+
+	        <lvc:CartesianChart.AxisY>
+		        <lvc:Axis Title="Renovation recommedation count" MinValue="0" MaxValue="10"></lvc:Axis>
+	        </lvc:CartesianChart.AxisY>
+
+        </lvc:CartesianChart> 
+        */
 
 
         private string CheckSuperType()
