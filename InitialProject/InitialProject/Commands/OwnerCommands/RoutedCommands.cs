@@ -89,6 +89,7 @@ namespace InitialProject.Commands.OwnerCommands
             typeof(RoutedCommands),
             new InputGestureCollection()
             {
+                new KeyGesture(Key.F, ModifierKeys.Control),
                 new KeyGesture(Key.F7),
                 new KeyGesture(Key.F, ModifierKeys.Alt)
             }
@@ -379,6 +380,17 @@ namespace InitialProject.Commands.OwnerCommands
             new InputGestureCollection()
             {
                 new KeyGesture(Key.R, ModifierKeys.Control)
+            }
+        );
+
+        public static readonly RoutedUICommand CloseDEMO = new RoutedUICommand
+        (
+            "Close DEMO",
+            "CloseDEMO",
+            typeof(RoutedCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.E, ModifierKeys.Control)
             }
         );
     }

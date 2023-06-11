@@ -112,7 +112,7 @@
 
         <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Content="Accommodation statistics" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,0,0,0" FontSize="24"/>
 
-        <GroupBox Grid.Column="0" Grid.Row="2" Header="Accommodation information" HorizontalAlignment="Left" Height="550" VerticalAlignment="Bottom" Width="507" Margin="25,0,0,0" FontSize="16" Focusable="False">
+        <GroupBox Grid.Column="0" Grid.Row="2" Header="Accommodation information" HorizontalAlignment="Left" Height="550" VerticalAlignment="Bottom" Width="507" Margin="25,0,0,0" FontSize="16" Focusable="False" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
             <Grid>
 

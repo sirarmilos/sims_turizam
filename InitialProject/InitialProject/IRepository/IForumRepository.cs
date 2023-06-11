@@ -26,5 +26,7 @@ namespace InitialProject.IRepository
         void CloseForum(int forumId);
 
         bool IsClosed(int forumId);
+
+        string FindQuestion(int forumId);
     }
 }

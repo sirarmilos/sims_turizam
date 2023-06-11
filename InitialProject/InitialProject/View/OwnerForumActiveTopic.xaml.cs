@@ -249,6 +249,8 @@ namespace InitialProject.View
 
             ShowOwnerForumsDTO = showOwnerForumsDTO;
 
+            ShowOwnerForumsDTO.Question = forumService.FindQuestion(ShowOwnerForumsDTO.ForumId);
+
             OwnerUsernameShow = OwnerUsername + ":";
 
             ShowOwnerForumCommentsDTOs = forumService.FindComments(ForumId);

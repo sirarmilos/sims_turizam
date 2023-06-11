@@ -225,5 +225,9 @@ namespace InitialProject.Service
             return forumRepository.IsClosed(forumId);
         }
 
+        public string FindQuestion(int forumId)
+        {
+            return forumRepository.FindQuestion(forumId);
+        }
     }
 }

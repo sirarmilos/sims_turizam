@@ -88,7 +88,7 @@
 
         <Label Grid.Row="2" Content="Turtle tourism" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="595,0,0,0" FontSize="32" FontWeight="SemiBold"/>
 
-        <Border Grid.Row="3" Grid.RowSpan="2" HorizontalAlignment="Left" Height="275" VerticalAlignment="Top" Width="750" Margin="325,25,0,0" BorderBrush="Gray" BorderThickness="0.2">
+        <Border Grid.Row="3" Grid.RowSpan="2" HorizontalAlignment="Left" Height="275" VerticalAlignment="Top" Width="750" Margin="325,25,0,0" BorderThickness="0.5, 0.5, 0.5, 0.5" BorderBrush="Gray">
 
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="245" VerticalAlignment="Center" Width="700" FontSize="14">
                 
@@ -130,7 +130,7 @@
 
         </Border>
 
-        <Border Grid.Row="4" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="750" Margin="325,45,0,0" BorderBrush="Gray" BorderThickness="0.2">
+        <Border Grid.Row="4" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="750" Margin="325,45,0,0" BorderThickness="0.5, 0.5, 0.5, 0.5" BorderBrush="Gray">
 
             <TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Height="131" VerticalAlignment="Center" Width="700" FontSize="14">
                 

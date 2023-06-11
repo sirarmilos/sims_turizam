@@ -123,7 +123,7 @@
 
         </DataGrid>
 
-        <GroupBox x:Name="groupBoxRateFields" Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Header="Rate guest" HorizontalAlignment="Center" Height="398" VerticalAlignment="Top" Width="513" Margin="0,25,0,0" FontSize="16">
+        <GroupBox x:Name="groupBoxRateFields" Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Header="Rate guest" HorizontalAlignment="Center" Height="398" VerticalAlignment="Top" Width="513" Margin="0,25,0,0" FontSize="16" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
             <Grid>
 

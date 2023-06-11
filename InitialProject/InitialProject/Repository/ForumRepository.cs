@@ -77,5 +77,10 @@ namespace InitialProject.Repository
         {
             return FindById(forumId).Closed;
         }
+
+        public string FindQuestion(int forumId)
+        {
+            return FindAll().ToList().Find(x => x.ForumId.Equals(forumId) == true).Question;
+        }
     }
 }

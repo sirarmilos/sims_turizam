@@ -148,7 +148,7 @@
             <TextBlock TextAlignment="Center" FontSize="14">Statistics<LineBreak/>(CTRL + G)</TextBlock>
         </Button>
 
-        <GroupBox Grid.Column="0" Grid.Row="3" Header="Top location" HorizontalAlignment="Left" Height="206" VerticalAlignment="Top" Width="560" Margin="25,50,0,0" FontSize="16">
+        <GroupBox Grid.Column="0" Grid.Row="3" Header="Top location" HorizontalAlignment="Left" Height="206" VerticalAlignment="Top" Width="560" Margin="25,50,0,0" FontSize="16" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
             <Grid>
 
@@ -174,7 +174,7 @@
 
         </GroupBox>
 
-        <GroupBox Grid.Column="1" Grid.Row="3" Header="Worst location" HorizontalAlignment="Left" Height="206" VerticalAlignment="Top" Width="560" Margin="0,50,0,0" FontSize="16">
+        <GroupBox Grid.Column="1" Grid.Row="3" Header="Worst location" HorizontalAlignment="Left" Height="206" VerticalAlignment="Top" Width="560" Margin="0,50,0,0" FontSize="16" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
             <Grid>
 

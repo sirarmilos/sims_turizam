@@ -98,9 +98,9 @@
 
         </DockPanel>
 
-        <DockPanel VerticalAlignment="Top" MinHeight="80" Margin="120,180,0,0" HorizontalAlignment="Left" Width="1000">
+        <DockPanel VerticalAlignment="Top" Height="140" Margin="120,180,0,0" HorizontalAlignment="Left" Width="1000">
 
-            <Border Margin="0,0,0,0" BorderBrush="Gray" BorderThickness="0.2">
+            <Border Margin="0,0,0,0" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
                 <Grid>
 
@@ -137,11 +137,11 @@
                                     <TextBlock Text="{Binding CommenterUsername}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="16"/>
                                     <TextBlock Text="{Binding CommenterType}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,20,25,25" FontSize="16"/>
 
-                                    <Border HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="825" Margin="100,0,0,0" BorderBrush="Gray" BorderThickness="0.2">
+                                    <Border HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="825" Margin="100,0,0,0" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
                                         <Grid>
 
-                                            <TextBlock Text="{Binding Answer}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,25,25" FontSize="13"/>
+                                            <TextBlock Text="{Binding Answer}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,25,25" FontSize="13"/>
 
                                         </Grid>
 

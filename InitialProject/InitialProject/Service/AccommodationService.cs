@@ -800,7 +800,7 @@ namespace InitialProject.Service
 
             List<TopAndWorstLocationDTO> worstLocationDTOsToRemove = FindAllToRemove(worstLocationDTOs, ownerUsername);
 
-            return RemoveWorst(worstLocationDTOsToRemove, mostPopularLocation);
+            return RemoveWorst(worstLocationDTOsToRemove, mostPopularLocation, ownerUsername);
         }
 
         public List<TopAndWorstLocationDTO> FindAllToRemove(List<TopAndWorstLocationDTO> worstLocationDTOs, string ownerUsername)
@@ -833,7 +833,7 @@ namespace InitialProject.Service
             return renovationService.CheckFutureRenovations(locationId, ownerUsername);
         }
 
-        public bool RemoveWorst(List<TopAndWorstLocationDTO> worstLocationDTOs, string mostPopularLocation)
+        public bool RemoveWorst(List<TopAndWorstLocationDTO> worstLocationDTOs, string mostPopularLocation, string ownerUsername)
         {
             TopAndWorstLocationDTO worstLocation = worstLocationDTOs.MinBy(x => x.TotalBusyPercentage);
 
@@ -847,7 +847,7 @@ namespace InitialProject.Service
                     return false;
                 }
 
-                accommodationRepository.Remove(country, city);
+                accommodationRepository.Remove(country, city, ownerUsername);
                 commentService.CheckIsStillOwner(country, city);
 
                 return true;

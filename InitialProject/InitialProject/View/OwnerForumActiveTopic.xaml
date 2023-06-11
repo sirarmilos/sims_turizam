@@ -100,51 +100,21 @@
 
         </DockPanel>
 
-        <DockPanel VerticalAlignment="Top" MinHeight="80" Margin="120,180,0,0" HorizontalAlignment="Left" Width="1000">
+        <DockPanel VerticalAlignment="Top" Height="140" Margin="120,180,0,0" HorizontalAlignment="Left" Width="1000">
 
-            <Border Margin="0,0,0,0" BorderBrush="Gray" BorderThickness="0.2">
+            <Border Margin="0,0,0,0" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
-                <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-                    <TextBlock Text="{Binding ShowOwnerForumsDTO.Question}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="25,25,25,25" FontSize="13"/>
+                    <Grid>
 
-                </Grid>
+                        <TextBlock Text="{Binding ShowOwnerForumsDTO.Question}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="25,25,25,25" FontSize="13"/>
+
+                    </Grid>
+
+                </ScrollViewer>
 
             </Border>
-
-        </DockPanel>
-
-        <DockPanel VerticalAlignment="Bottom" Height="208" Margin="25,0,0,25" HorizontalAlignment="Left" Width="1350">
-
-            <GroupBox Header="Comment" Height="208" Margin="0,0,0,0" FontSize="16">
-
-                <Grid>
-
-                    <TextBlock Text="{Binding OwnerUsernameShow}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="25,18,25,25" FontSize="16"/>
-                    <TextBlock Text="(owner)" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="27,43,25,25" FontSize="16"/>
-
-                    <TextBox x:Name="tbComment" Text="{Binding Path=CommentCheck, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="985" Margin="125,25,0,0" TextChanged="CheckErrorComment" FontSize="13"/>
-
-                    <TextBlock x:Name="textBlockErrorComment0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,36,245,0" FontSize="12" Foreground="Red" TextAlignment="Center">
-                    *
-                    </TextBlock>
-
-                    <TextBlock x:Name="textBlockErrorComment1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,235,0" FontSize="12" Foreground="Red">
-                    Comment must contain a minimum of 20 characters
-                    </TextBlock>
-
-                    <Button x:Name="buttonAddComment" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.AddComment" Margin="0,28,25,0">
-                        <TextBlock TextAlignment="Center" FontSize="14">Add comment<LineBreak/>(CTRL + R)</TextBlock>
-                    </Button>
-
-
-                    <Button x:Name="buttonClose" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.Close" Margin="0,100,25,0">
-                        <TextBlock TextAlignment="Center" FontSize="14">Close<LineBreak/>(ESC)</TextBlock>
-                    </Button>
-
-                </Grid>
-
-            </GroupBox>
 
         </DockPanel>
 
@@ -165,11 +135,11 @@
                                     <TextBlock Text="{Binding CommenterUsername}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="16"/>
                                     <TextBlock Text="{Binding CommenterType}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,20,25,25" FontSize="16"/>
 
-                                    <Border HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="825" Margin="100,0,0,0" BorderBrush="Gray" BorderThickness="0.2">
+                                    <Border HorizontalAlignment="Left" VerticalAlignment="Top" Width="825" Margin="100,0,0,0" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
                                         <Grid>
 
-                                            <TextBlock Text="{Binding Answer}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,25,25" FontSize="13"/>
+                                            <TextBlock Text="{Binding Answer}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,25,25" FontSize="13"/>
 
                                         </Grid>
 
@@ -198,7 +168,7 @@
                                     </TextBlock>
 
                                     <Button x:Name="buttonReport" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="75" Margin="0,47,25,0" CommandParameter="{Binding}" Command="{Binding DataContext.ReportCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}">
-                                        <TextBlock TextAlignment="Center" FontSize="14">Report<LineBreak/>(CTRL + R)</TextBlock>
+                                        <TextBlock TextAlignment="Center" FontSize="14">Report</TextBlock>
                                         <Button.Style>
                                             <Style TargetType="Button">
                                                 <Setter Property="Visibility" Value="Visible" />
@@ -222,6 +192,40 @@
                 </StackPanel>
 
             </ScrollViewer>
+
+        </DockPanel>
+
+        <DockPanel VerticalAlignment="Bottom" Height="208" Margin="25,0,0,25" HorizontalAlignment="Left" Width="1350">
+
+            <GroupBox Header="Comment" Height="208" Margin="0,0,0,0" FontSize="16" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
+
+                <Grid>
+
+                    <TextBlock Text="{Binding OwnerUsernameShow}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="25,18,25,25" FontSize="16"/>
+                    <TextBlock Text="(owner)" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="950" Margin="27,43,25,25" FontSize="16"/>
+
+                    <TextBox x:Name="tbComment" TextWrapping="Wrap" Text="{Binding Path=CommentCheck, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="985" Margin="125,25,0,0" TextChanged="CheckErrorComment" FontSize="13"/>
+
+                    <TextBlock x:Name="textBlockErrorComment0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,36,245,0" FontSize="12" Foreground="Red" TextAlignment="Center">
+                    *
+                    </TextBlock>
+
+                    <TextBlock x:Name="textBlockErrorComment1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,235,0" FontSize="12" Foreground="Red">
+                    Comment must contain a minimum of 20 characters
+                    </TextBlock>
+
+                    <Button x:Name="buttonAddComment" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.AddComment" Margin="0,28,25,0">
+                        <TextBlock TextAlignment="Center" FontSize="14">Add comment<LineBreak/>(CTRL + R)</TextBlock>
+                    </Button>
+
+
+                    <Button x:Name="buttonClose" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.Close" Margin="0,100,25,0">
+                        <TextBlock TextAlignment="Center" FontSize="14">Close<LineBreak/>(ESC)</TextBlock>
+                    </Button>
+
+                </Grid>
+
+            </GroupBox>
 
         </DockPanel>
 

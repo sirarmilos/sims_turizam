@@ -18,7 +18,7 @@
 
     <Grid>
 
-        <GroupBox Header="Comment" HorizontalAlignment="Left" Height="304" VerticalAlignment="Top" Width="513" Margin="25,25,25,25" FontSize="16">
+        <GroupBox Header="Comment" HorizontalAlignment="Left" Height="304" VerticalAlignment="Top" Width="513" Margin="25,25,25,25" FontSize="16" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
             <Grid>
 

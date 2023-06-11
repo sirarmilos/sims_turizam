@@ -21,6 +21,8 @@ using System.Diagnostics;
 using System.IO;
 using InitialProject.Service;
 using InitialProject.DTO;
+using System.Timers;
+using System.Windows.Threading;
 
 namespace InitialProject.View
 {
@@ -277,6 +279,8 @@ namespace InitialProject.View
             SetDefaultValue();
 
             tbAccommodationName.Focus();
+
+            buttonCloseDEMO.Visibility = Visibility.Hidden;
         }
 
         private void SetDefaultValue()
@@ -408,31 +412,34 @@ namespace InitialProject.View
 
         private void SaveAccommodation_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if(CheckErrorAllFieldsFilled() == true)
+            if(IsDemo == false)
             {
-                MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if(CheckErrorImagesNumber() == false) //
-            {
-                textBlockErrorImage3.Visibility = Visibility.Visible;
-                tbImage.Focus();
-            }
-            else if(accommodationService.IsAccommodationNameExist(AccommodationName) == true)
-            {
-                textBlockErrorAccommodationName1.Visibility = Visibility.Visible;
-                tbAccommodationName.Focus();
-            }
-            else
-            {
-                SaveNewAccommodationDTO saveNewAccommodationDTO = new SaveNewAccommodationDTO(AccommodationName, OwnerUsername, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images);
+                if (CheckErrorAllFieldsFilled() == true)
+                {
+                    MessageBox.Show("You must fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (CheckErrorImagesNumber() == false) //
+                {
+                    textBlockErrorImage3.Visibility = Visibility.Visible;
+                    tbImage.Focus();
+                }
+                else if (accommodationService.IsAccommodationNameExist(AccommodationName) == true)
+                {
+                    textBlockErrorAccommodationName1.Visibility = Visibility.Visible;
+                    tbAccommodationName.Focus();
+                }
+                else
+                {
+                    SaveNewAccommodationDTO saveNewAccommodationDTO = new SaveNewAccommodationDTO(AccommodationName, OwnerUsername, Country, City, Address, Latitude, Longitude, Type, (int)MaxGuests, (int)MinDaysReservation, (int)LeftCancelationDays, Images);
 
-                accommodationService.SaveNewAccommodation(saveNewAccommodationDTO);
+                    accommodationService.SaveNewAccommodation(saveNewAccommodationDTO);
 
-                SetDefaultValue();
+                    SetDefaultValue();
 
-                MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("New accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                Close();
+                    Close();
+                }
             }
         }
 
@@ -446,14 +453,459 @@ namespace InitialProject.View
             return !(Images.Count <= 0);
         }
 
+        private void CloseDEMO_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void CloseDEMO_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Timer.Stop();
+
+            TickCounter = 0;
+
+            buttonDEMO.Visibility = Visibility.Visible;
+            buttonCloseDEMO.Visibility = Visibility.Hidden;
+
+            SetDefaultValue();
+
+            IsDemo = false;
+
+            SetNotReadonlyToDemo();
+        }
+
         private void DEMO_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        DispatcherTimer Timer = new DispatcherTimer();
+
+        public int TickCounter = 0;
+
+        public bool IsDemo = false;
+
+        public void SetReadonlyToDemo()
+        {
+            tbAccommodationName.IsReadOnly = true;
+            tbCountry.IsReadOnly = true;
+            tbCity.IsReadOnly = true;
+            tbAddress.IsReadOnly = true;
+            sliderLatitude.IsEnabled = false;
+            sliderLongitude.IsEnabled = false;
+            tbMaxGuests.IsReadOnly = true;
+            tbMinDaysReservation.IsReadOnly = true;
+            tbLeftCancelationDays.IsReadOnly = true;
+        }
+
+        public void SetNotReadonlyToDemo()
+        {
+            tbAccommodationName.IsReadOnly = false;
+            tbCountry.IsReadOnly = false;
+            tbCity.IsReadOnly = false;
+            tbAddress.IsReadOnly = false;
+            sliderLatitude.IsEnabled = true;
+            sliderLongitude.IsEnabled = true;
+            tbMaxGuests.IsReadOnly = false;
+            tbMinDaysReservation.IsReadOnly = false;
+            tbLeftCancelationDays.IsReadOnly = false;
+        }
+
         private void DEMO_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            // DEMO deo aplikacije
+            IsDemo = true;
+
+            SetReadonlyToDemo();
+
+            buttonDEMO.Visibility = Visibility.Hidden;
+            buttonCloseDEMO.Visibility = Visibility.Visible;
+
+            Timer.Tick += new EventHandler(WriteAccommodationName);
+            Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+
+            Timer.Start();
+        }
+
+        public void WriteAccommodationName(object sender, EventArgs e)
+        {
+            TickCounter++;
+
+            if(TickCounter == 84)
+            {
+                Timer.Stop();
+                TickCounter = 0;
+                return;
+            }
+
+            if(TickCounter == 1)
+            {
+                tbAccommodationName.Focus();
+            }
+            else if(TickCounter == 2)
+            {
+                tbAccommodationName.Text = "D";
+            }
+            else if(TickCounter == 3)
+            {
+                tbAccommodationName.Text += "e";
+            }
+            else if(TickCounter == 4)
+            {
+                tbAccommodationName.Text += "m";
+            }
+            else if (TickCounter == 5)
+            {
+                tbAccommodationName.Text += "o";
+            }
+            else if (TickCounter == 6)
+            {
+                tbAccommodationName.Text += " ";
+            }
+            else if (TickCounter == 7)
+            {
+                tbAccommodationName.Text += "A";
+            }
+            else if (TickCounter == 8)
+            {
+                tbAccommodationName.Text += "c";
+            }
+            else if (TickCounter == 9)
+            {
+                tbAccommodationName.Text += "c";
+            }
+            else if (TickCounter == 10)
+            {
+                tbAccommodationName.Text += "o";
+            }
+            else if (TickCounter == 11)
+            {
+                tbAccommodationName.Text += "m";
+            }
+            else if (TickCounter == 12)
+            {
+                tbAccommodationName.Text += "m";
+            }
+            else if (TickCounter == 13)
+            {
+                tbAccommodationName.Text += "o";
+            }
+            else if (TickCounter == 14)
+            {
+                tbAccommodationName.Text += "d";
+            }
+            else if (TickCounter == 15)
+            {
+                tbAccommodationName.Text += "a";
+            }
+            else if (TickCounter == 16)
+            {
+                tbAccommodationName.Text += "t";
+            }
+            else if (TickCounter == 17)
+            {
+                tbAccommodationName.Text += "i";
+            }
+            else if (TickCounter == 18)
+            {
+                tbAccommodationName.Text += "o";
+            }
+            else if (TickCounter == 19)
+            {
+                tbAccommodationName.Text += "n";
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 20)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                tbCountry.Focus();
+            }
+            else if (TickCounter == 21)
+            {
+                tbCountry.Text += "S";
+            }
+            else if (TickCounter == 22)
+            {
+                tbCountry.Text += "e";
+            }
+            else if (TickCounter == 23)
+            {
+                tbCountry.Text += "r";
+            }
+            else if (TickCounter == 24)
+            {
+                tbCountry.Text += "b";
+            }
+            else if (TickCounter == 25)
+            {
+                tbCountry.Text += "i";
+            }
+            else if (TickCounter == 26)
+            {
+                tbCountry.Text += "a";
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 27)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                tbCity.Focus();
+            }
+            else if (TickCounter == 28)
+            {
+                tbCity.Text += "N";
+            }
+            else if (TickCounter == 29)
+            {
+                tbCity.Text += "o";
+            }
+            else if (TickCounter == 30)
+            {
+                tbCity.Text += "v";
+            }
+            else if (TickCounter == 31)
+            {
+                tbCity.Text += "i";
+            }
+            else if (TickCounter == 32)
+            {
+                tbCity.Text += " ";
+            }
+            else if (TickCounter == 33)
+            {
+                tbCity.Text += "S";
+            }
+            else if (TickCounter == 34)
+            {
+                tbCity.Text += "a";
+            }
+            else if (TickCounter == 35)
+            {
+                tbCity.Text += "d";
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 36)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                tbAddress.Focus();
+            }
+            else if (TickCounter == 37)
+            {
+                tbAddress.Text += "A";
+            }
+            else if (TickCounter == 38)
+            {
+                tbAddress.Text += "d";
+            }
+            else if (TickCounter == 39)
+            {
+                tbAddress.Text += "r";
+            }
+            else if (TickCounter == 40)
+            {
+                tbAddress.Text += "e";
+            }
+            else if (TickCounter == 41)
+            {
+                tbAddress.Text += "s";
+            }
+            else if (TickCounter == 42)
+            {
+                tbAddress.Text += "a";
+            }
+            else if (TickCounter == 43)
+            {
+                tbAddress.Text += " ";
+            }
+            else if (TickCounter == 44)
+            {
+                tbAddress.Text += "1";
+            }
+            else if (TickCounter == 45)
+            {
+                tbAddress.Text += "2";
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if(TickCounter == 46)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                sliderLatitude.Focus();
+            }
+            else if (TickCounter == 47)
+            {
+                sliderLatitude.Value += 1;
+            }
+            else if (TickCounter == 48)
+            {
+                sliderLatitude.Value += 1;
+            }
+            else if (TickCounter == 49)
+            {
+                sliderLatitude.Value += 1;
+            }
+            else if (TickCounter == 50)
+            {
+                sliderLatitude.Value += 1;
+            }
+            else if (TickCounter == 51)
+            {
+                sliderLatitude.Value += 1;
+            }
+            else if (TickCounter == 52)
+            {
+                sliderLatitude.Value += 1;
+            }
+            else if (TickCounter == 53)
+            {
+                sliderLatitude.Value += 1;
+            }
+            else if (TickCounter == 54)
+            {
+                sliderLatitude.Value += 1;
+            }
+            else if (TickCounter == 55)
+            {
+                sliderLatitude.Value += 1;
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 56)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                sliderLongitude.Focus();
+            }
+            else if (TickCounter == 57)
+            {
+                sliderLongitude.Value -= 1;
+            }
+            else if (TickCounter == 58)
+            {
+                sliderLongitude.Value -= 1;
+            }
+            else if (TickCounter == 59)
+            {
+                sliderLongitude.Value -= 1;
+            }
+            else if (TickCounter == 60)
+            {
+                sliderLongitude.Value -= 1;
+            }
+            else if (TickCounter == 61)
+            {
+                sliderLongitude.Value -= 1;
+            }
+            else if (TickCounter == 62)
+            {
+                sliderLongitude.Value -= 1;
+            }
+            else if (TickCounter == 63)
+            {
+                sliderLongitude.Value -= 1;
+            }
+            else if (TickCounter == 64)
+            {
+                sliderLongitude.Value -= 1;
+            }
+            else if (TickCounter == 65)
+            {
+                sliderLongitude.Value -= 1;
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 66)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                groupBoxTypeOfAccommodation.Focus();
+            }
+            else if (TickCounter == 67)
+            {
+                rbHome.IsChecked = true;
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 68)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                tbMaxGuests.Focus();
+            }
+            else if(TickCounter == 69)
+            {
+                tbMaxGuests.Text = "a";
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 70)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                tbMaxGuests.Text = "";
+            }
+            else if (TickCounter == 71)
+            {
+                tbMaxGuests.Text = "3";
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 72)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                tbMinDaysReservation.Focus();
+            }
+            else if (TickCounter == 73)
+            {
+                tbMinDaysReservation.Text = "2";
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 74)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                tbLeftCancelationDays.Focus();
+            }
+            else if (TickCounter == 75)
+            {
+                tbLeftCancelationDays.Text = "5";
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 76)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                tbImage.Text = "https://images.pexels.com/photos/7260268/pexels-photo-7260268.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 77)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                buttonAddImage.IsEnabled = true;
+                buttonAddImage.Focus();
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 78)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                AddImage_Executed(null, null);
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 79)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                buttonAddNewAccommodation.Focus();
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if (TickCounter == 80)
+            {
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                IsDemo = true;
+                SaveAccommodation_Executed(null, null);
+                Timer.Interval = new TimeSpan(0, 0, 1);
+            }
+            else if(TickCounter == 81)
+            {
+                SetDefaultValue();
+                MessageBox.Show("Demo accommodation has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if(TickCounter == 82)
+            {
+                MessageBox.Show("The demo is over.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if(TickCounter == 83)
+            {
+                buttonDEMO.Visibility = Visibility.Visible;
+                buttonCloseDEMO.Visibility = Visibility.Hidden;
+                IsDemo = false;
+                SetNotReadonlyToDemo();
+            }
         }
 
         private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -463,6 +915,15 @@ namespace InitialProject.View
 
         private void Cancel_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            Timer.Stop();
+
+            TickCounter = 0;
+
+            buttonDEMO.Visibility = Visibility.Visible;
+            buttonCloseDEMO.Visibility = Visibility.Hidden;
+
+            SetDefaultValue();
+
             Close();
         }
 

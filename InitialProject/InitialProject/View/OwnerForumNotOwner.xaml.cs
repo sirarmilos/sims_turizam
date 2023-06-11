@@ -233,6 +233,8 @@ namespace InitialProject.View
 
             OwnerUsernameShow = OwnerUsername + ":";
 
+            ShowOwnerForumsDTO.Question = forumService.FindQuestion(ShowOwnerForumsDTO.ForumId);
+
             ShowOwnerForumCommentsDTOs = forumService.FindComments(ForumId);
 
             ReportCommand = new RelayCommand<ShowOwnerForumCommentsDTO>(Report);

@@ -45,6 +45,7 @@
         <CommandBinding Command="cmd:RoutedCommands.RemoveImage" CanExecute="RemoveImage_CanExecute" Executed="RemoveImage_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.SaveAccommodation" CanExecute="SaveAccommodation_CanExecute" Executed="SaveAccommodation_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.DEMO" CanExecute="DEMO_CanExecute" Executed="DEMO_Executed"></CommandBinding>
+        <CommandBinding Command="cmd:RoutedCommands.CloseDEMO" CanExecute="CloseDEMO_CanExecute" Executed="CloseDEMO_Executed"></CommandBinding>
         <CommandBinding Command="cmd:RoutedCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed"></CommandBinding>
     </Window.CommandBindings>
 
@@ -58,7 +59,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="0" Grid.Row="0" Header="Add new accommodation" HorizontalAlignment="Left" Height="690" VerticalAlignment="Top" Width="674" Margin="25,25,25,0" FontSize="16">
+        <GroupBox Grid.Column="0" Grid.Row="0" Header="Add new accommodation" HorizontalAlignment="Left" Height="690" VerticalAlignment="Top" Width="674" Margin="25,25,25,0" FontSize="16" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
             <Grid>
 
@@ -123,7 +124,7 @@
                 <TextBox x:Name="tbLongitude" Grid.Column="2" Grid.Row="5" Text="{Binding ElementName=sliderLongitude, Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={cvt:DecimalStringConverter}}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="50" TextAlignment="Center" IsReadOnly="True" Margin="0,0,0,8" FontSize="13" Focusable="False"/>
                 <Slider Grid.Column="1" Grid.Row="5" x:Name="sliderLongitude" Minimum="-180" Maximum="180" ValueChanged="SliderLongitudeValueChange" HorizontalAlignment="Left" VerticalAlignment="Center" Width="145" FontSize="13"/>
 
-                <GroupBox Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Header="Type of accommodation:" Width="200" Margin="-10,15,0,0" FontSize="13">
+                <GroupBox x:Name="groupBoxTypeOfAccommodation" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Header="Type of accommodation:" Width="200" Margin="-10,15,0,0" FontSize="13">
                     <StackPanel Margin="0 5 0 0">
                         <RadioButton x:Name="rbApartment" Content="Apartment" IsChecked="{Binding Apartment, Mode=OneWayToSource}" Margin="0,1,0,0" FontSize="13"/>
                         <RadioButton x:Name="rbHome" Content="Home" IsChecked="{Binding Home, Mode=OneWayToSource}" Margin="0,1,0,0" FontSize="13"/>
@@ -217,6 +218,10 @@
 
         <Button x:Name="buttonDEMO" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="176" Command="cmd:RoutedCommands.DEMO" Margin="278,25,0,0">
             <TextBlock TextAlignment="Center" FontSize="14">DEMO<LineBreak/>(CTRL + D)</TextBlock>
+        </Button>
+
+        <Button x:Name="buttonCloseDEMO" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="176" Command="cmd:RoutedCommands.CloseDEMO" Margin="278,25,0,0">
+            <TextBlock TextAlignment="Center" FontSize="14">Close DEMO<LineBreak/>(CTRL + E)</TextBlock>
         </Button>
 
         <Button x:Name="buttonCancel" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.Cancel" Margin="0,25,35,0">

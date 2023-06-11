@@ -89,16 +89,18 @@ namespace InitialProject.View
             if(printDialog.ShowDialog() == true)
             {
                 printDialog.PrintVisual(this, "pdf");
+
+                MessageBox.Show("You have successfully saved the report in PDF format.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                Close();
             }
-
-            buttonPDF.Visibility = Visibility.Visible;
-            buttonBack.Visibility = Visibility.Visible;
-            this.Height = 740;
-            this.Width = 1416;
-
-            MessageBox.Show("You have successfully saved the report in PDF format.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            Close();
+            else
+            {
+                buttonPDF.Visibility = Visibility.Visible;
+                buttonBack.Visibility = Visibility.Visible;
+                this.Height = 740;
+                this.Width = 1416;
+            }
         }
 
         private void BackFromPDFReport_CanExecute(object sender, CanExecuteRoutedEventArgs e)

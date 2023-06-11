@@ -40,6 +40,6 @@ namespace InitialProject.IRepository
 
         List<Accommodation> FindByOwnerUsername(string ownerUsername);
 
-        void Remove(string country, string city);
+        void Remove(string country, string city, string ownerUsername);
     }
 }

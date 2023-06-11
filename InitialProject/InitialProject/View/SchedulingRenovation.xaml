@@ -55,7 +55,7 @@
             <ColumnDefinition Width="453" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Header="Renovate accommodation" HorizontalAlignment="Left" Height="665" VerticalAlignment="Top" Width="612" Margin="25,25,25,0" FontSize="16">
+        <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Header="Renovate accommodation" HorizontalAlignment="Left" Height="665" VerticalAlignment="Top" Width="612" Margin="25,25,25,0" FontSize="16" BorderThickness="1, 1, 1, 1" BorderBrush="Gray">
 
             <Grid>
 
