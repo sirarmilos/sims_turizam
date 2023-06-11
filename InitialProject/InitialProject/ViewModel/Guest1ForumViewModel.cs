@@ -1,67 +1,43 @@
-﻿using InitialProject.DTO;
+﻿using GalaSoft.MvvmLight.Command;
+using InitialProject.DTO;
 using InitialProject.Service;
-using InitialProject.View;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows;
-using Prism.Commands;
-using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
-using System.Windows.Documents;
-using System.Windows.Controls;
-using InitialProject.Model;
-using System.Windows.Navigation;
-using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
-using System.ComponentModel;
+using System.Windows.Navigation;
+using Prism.Commands;
+
 
 namespace InitialProject.View
 {
-    public partial class ShowReservationsViewModel : Page, INotifyPropertyChanged
+
+    public partial class Guest1ForumViewModel : Page, INotifyPropertyChanged//, IObserver
     {
-        private ReservationService reservationService;
-        private string accommodationName;
-        private DateTime startDate;
-        private DateTime endDate;
-        private int guestsNumber;
+        private readonly ForumService forumService;
+
+        public List<ShowGuest1ForumsDTO> ShowGuest1ForumsDTOs
+        {
+            get;
+            set;
+        }
+
+        public ShowGuest1ForumsDTO ShowGuest1ForumsDTO
+        {
+            get;
+            set;
+        }
+
+        public NavigationService NavService { get; set; }
+
         private string guest1;
-
-
-        public int GuestsNumber
-        {
-            get { return guestsNumber; }
-            set
-            {
-                guestsNumber = value;
-            }
-        }
-
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set
-            {
-                startDate = value;
-            }
-        }
-
-        public DateTime EndDate
-        {
-            get { return endDate; }
-            set
-            {
-                endDate = value;
-            }
-        }
-
         public string Guest1
         {
             get { return guest1; }
@@ -71,55 +47,6 @@ namespace InitialProject.View
             }
         }
 
-        public string AccommodationName
-        {
-            get { return accommodationName; }
-            set
-            {
-                accommodationName = value;
-            }
-        }
-
-        public ObservableCollection<ShowReservationDTO> ShowReservationDTOs
-        {
-            get;
-            set;
-        }
-
-        //private bool notification;
-        //public bool Notification
-        //{
-        //    get { return notification; }
-        //    set
-        //    {
-        //        notification = value;
-        //    }
-        //}
-
-
-
-        //public string NotificationEnable
-        //{
-        //    get;
-        //    set;
-        //}
-
-
-        public ICommand CancelCommand { get; set; }
-
-        public ICommand RescheduleCommand { get; set; }
-
-        //public DelegateCommand GoToGuest1StartCommand { get; }
-
-        //public DelegateCommand GoToSearchAndShowAccommodationsCommand { get; }
-
-        //public DelegateCommand GoToCreateReviewCommand { get; }
-
-        //public DelegateCommand GoToGuest1RequestsCommand { get; }
-
-        //public DelegateCommand GoToLogoutCommand { get; }
-
-        //public DelegateCommand CheckNotificationCommand { get; }
         private bool notification;
         public bool Notification
         {
@@ -171,7 +98,6 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public NavigationService NavService { get; set; }
 
         private void CheckNotification()
         {
@@ -187,6 +113,9 @@ namespace InitialProject.View
             }
         }
 
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -194,34 +123,30 @@ namespace InitialProject.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        Page ViewPage { get; set; }
+        //public UpcommingToursVIewModel(int id, NavigationService navService)
+        //{
+        //    ActiveGuide = new UserService().GetById(id);
+        //    TourOccurrenceService = new TourOccurrenceService();
+        //    TourOccurrenceService.Subscribe(this);
+        //    TourOccurrences = new ObservableCollection<TourOccurrence>(TourOccurrenceService.GetUpcomingToursForGuide(ActiveGuide.Id));
+        //    NavService = navService;
+        //    CancelCommand = new ButtonCommandNoParameter(CancelTour);
+        //    CreateCommand = new ButtonCommandNoParameter(CreateNewTour);
+        //    UndoCancelCommand = new ButtonCommandNoParameter(UndoCancelTour);
+        //    CanceledTour = -1;
+        //}
 
+        Page ViewPage { get; set; } 
 
-        public ShowReservationsViewModel(string username, ShowReservationsView showReservationsView, Page page, NavigationService navService)
+        public Guest1ForumViewModel(string username, Guest1ForumView guest1ForumView, Page page, NavigationService navService) 
         {
             Guest1 = username;
-            reservationService = new ReservationService(Guest1);
 
-            //GoToGuest1StartCommand = new DelegateCommand(GoToGuest1Start);
-            //GoToSearchAndShowAccommodationsCommand = new DelegateCommand(GoToSearchAndShowAccommodations);
-            //GoToCreateReviewCommand = new DelegateCommand(GoToCreateReview);
-            //GoToGuest1RequestsCommand = new DelegateCommand(GoToGuest1Requests);
-            //GoToLogoutCommand = new DelegateCommand(GoToLogout);
+            forumService = new ForumService(Guest1);
 
+            ShowGuest1ForumsDTOs = forumService.FindGuest1Forums();
 
-            //ValidationMessage.Visibility = Visibility.Collapsed;
-            ValidationMessageVisibility = Visibility.Collapsed;
-            ValidationBorderVisibility = Visibility.Collapsed;
-
-
-            //CheckNotificationCommand = new DelegateCommand(CheckNotification);
-
-            ShowReservationDTOs = new ObservableCollection<ShowReservationDTO>(reservationService.FindAll(Guest1));
-            CancelCommand = new RelayCommand<ShowReservationDTO>(Cancel);
-            RescheduleCommand = new RelayCommand<ShowReservationDTO>(Reschedule);
-
-
-
+            ReadMoreCommand = new RelayCommand<ShowGuest1ForumsDTO>(ReadMore);
 
             SetUsernameHeader();
 
@@ -229,7 +154,7 @@ namespace InitialProject.View
 
             NavService = navService;
 
-            ViewPage = showReservationsView;
+            ViewPage = guest1ForumView;
 
             ComboBoxCommand = new DelegateCommand<object>(ComboBoxAction);
             ComboBoxSGCommand = new DelegateCommand<object>(ComboBoxSuperGuestAction);
@@ -239,93 +164,21 @@ namespace InitialProject.View
             GoToAnywhereAnytimeCommand = new RelayCommand(GoToAnywhereAnytime);
             GoToSearchAndShowAccommodationsCommand = new RelayCommand(GoToSearchAndShowAccommodations);
             GoToForumCommand = new RelayCommand(GoToForum);
-        }
+    }
 
 
-        private string validationMessage;
-        public string ValidationMessage
+        public ICommand ReadMoreCommand
         {
-            get { return validationMessage; }
-            set
-            {
-                if (validationMessage != value)
-                {
-                    validationMessage = value;
-                    OnPropertyChanged();
-                }
-            }
+            get;
+            set;
         }
 
-        private Visibility validationMessageVisibility;
-        public Visibility ValidationMessageVisibility
+        private void ReadMore(ShowGuest1ForumsDTO showGuest1ForumsDTO)
         {
-            get { return validationMessageVisibility; }
-            set
-            {
-                if (validationMessageVisibility != value)
-                {
-                    validationMessageVisibility = value;
-                    OnPropertyChanged();
-                }
-            }
+            ShowGuest1ForumsDTO = showGuest1ForumsDTO;
+
+            GoToForumPreview(null, null);
         }
-
-        private Visibility validationBorderVisibility;
-        public Visibility ValidationBorderVisibility
-        {
-            get { return validationBorderVisibility; }
-            set
-            {
-                if (validationBorderVisibility != value)
-                {
-                    validationBorderVisibility = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-
-        private void Cancel(ShowReservationDTO showReservationDTO)
-        {
-            bool isReservationCancelEligible = reservationService.IsRemoved(showReservationDTO);
-
-            if (showReservationDTO.StartDate <= DateTime.Now)
-            {
-                return;
-            }
-
-            if (!isReservationCancelEligible)
-            { 
-                //ValidationMessage.Text = "Reservation is not eligible for cancellation. Since the number of left cancelation days is 0.";
-                //ValidationMessage.Visibility = Visibility.Visible;
-                //ValidationBorder.Visibility = Visibility.Visible;
-                //LabelColor = Brushes.Red;
-                return;
-            }
-
-            ShowReservationDTOs.Remove(showReservationDTO);
-
-            ValidationMessage = "Reservation has been successfully canceled.";
-            ValidationMessageVisibility = Visibility.Visible;
-            ValidationBorderVisibility = Visibility.Visible;
-
-
-            LabelColor = Brushes.Green;
-        }
-
-        private void Reschedule(ShowReservationDTO showReservationDTO)
-        {
-
-            if (showReservationDTO.StartDate < DateTime.Now)
-            {
-                //MessageBox.Show("Reservation is not eligible for rescheduling since it already started.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            NavService?.Navigate(new CreateReservationReschedulingRequest(showReservationDTO, Guest1, "ShowReservations", this));
-        }
-
-
 
 
 
@@ -355,7 +208,7 @@ namespace InitialProject.View
 
         private void SetUsernameHeader()
         {
-            Notification = reservationService.Guest1HasNotification();
+            Notification = forumService.Guest1HasNotification();
             CheckNotification();
             UsernameAndSuperGuestText = Guest1;
             SuperGuestText = CheckSuperType();
@@ -365,7 +218,7 @@ namespace InitialProject.View
         {
             string superType = string.Empty;
 
-            if (reservationService.IsSuperGuest(Guest1))
+            if (forumService.IsSuperGuest(Guest1))
             {
                 superType = "(Super guest)";
             }
@@ -387,16 +240,19 @@ namespace InitialProject.View
             {
                 if (parameter.Equals("Create review"))
                 {
+                    // Logika za otvaranje Create Review prozora
                     GoToCreateReview(null, null);
 
                 }
                 else if (parameter.Equals("Reviews"))
                 {
+                    // Logika za otvaranje Owner Reviews prozora
                     GoToShowOwnerReviews(null, null);
 
                 }
                 else if (parameter.Equals("Requests"))
                 {
+                    // Logika za otvaranje Guest1 Requests prozora
                     GoToGuest1Requests(null, null);
 
                 }
@@ -409,17 +265,81 @@ namespace InitialProject.View
             {
                 if (parameter.Equals("Super-guest"))
                 {
+                    // Logika za otvaranje Owner Reviews prozora
                     GoToShowSuperGuest(null, null);
 
                 }
                 else if (parameter.Equals("Logout"))
                 {
+                    // Logika za otvaranje Guest1 Requests prozora
                     GoToLogout(null, null);
 
                 }
             }
         }
 
+
+        // OLD 
+        //private bool comboBoxClicked = false;
+        //private bool itemClicked = false;
+
+        //private void CBPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    comboBoxClicked = true;
+        //}
+
+        //private void CBCreateReviewDropDownClosed(object sender, EventArgs e)
+        //{
+        //    if (comboBoxClicked && itemClicked)
+        //    {
+        //        ComboBox comboBox = (ComboBox)sender;
+        //        ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+
+        //        if (selectedItem.Content.ToString() == "Create review")
+        //        {
+        //            GoToCreateReview(sender, null);
+        //        }
+        //        else if (selectedItem.Content.ToString() == "Reviews")
+        //        {
+        //            GoToShowOwnerReviews(sender, null);
+        //        }
+        //        else if (selectedItem.Content.ToString() == "Requests")
+        //        {
+        //            GoToGuest1Requests(sender, null);
+        //        }
+        //    }
+
+        //    comboBoxClicked = false;
+        //    itemClicked = false;
+        //}
+
+        //private void CBItemPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    itemClicked = true;
+        //}
+
+        //private void CBSuperGuestDropDownClosed(object sender, EventArgs e)
+        //{
+        //    if (comboBoxClicked && itemClicked)
+        //    {
+        //        ComboBox comboBox = (ComboBox)sender;
+        //        ComboBoxItem selectedItem = (ComboBoxItem)comboBox.SelectedItem;
+
+        //        if (selectedItem.Content.ToString() == "Super-guest")
+        //        {
+        //            GoToSearchAndShowAccommodations(sender, null);
+        //        }
+        //        else if (selectedItem.Content.ToString() == "Logout")
+        //        {
+        //            GoToLogout(sender, null);
+        //        }
+        //    }
+
+        //    comboBoxClicked = false;
+        //    itemClicked = false;
+        //}
+
+        // ------------------------------
 
         public ICommand GoToShowOwnerReviewsCommand { get; set; }
         private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
@@ -428,7 +348,7 @@ namespace InitialProject.View
         }
 
         public ICommand GoToForumCommand { get; set; }
-        private void GoToForum()
+        private void GoToForum() 
         {
             NavService.Navigate(new Guest1ForumView(Guest1, this, NavService));
         }
@@ -440,7 +360,7 @@ namespace InitialProject.View
         }
 
 
-        public ICommand GoToGuest1CreateForumCommand { get; set; }
+        public ICommand GoToGuest1CreateForumCommand { get; set;  }
 
         private void GoToGuest1CreateForum()
         {
@@ -473,7 +393,6 @@ namespace InitialProject.View
         private void GoToGuest1Requests(object sender, RoutedEventArgs e)
         {
             NavService?.Navigate(new Guest1RequestsView(Guest1, this, NavService));
-
         }
 
         private DelegateCommand goToShowGuest1NotificationsCommand;
@@ -541,7 +460,7 @@ namespace InitialProject.View
             //        SelectedComboBox2Index = comboBox;
             //    }
             //}
-
+            
             if (page is SearchAndShowAccommodations searchAndShowPage)
             {
                 var comboBox = searchAndShowPage.CBCreateReview;
@@ -669,41 +588,24 @@ namespace InitialProject.View
             //    }
             //}
         }
-
-
-
+        
     }
 
-    public class DateTimeToVisibilityConverter : IValueConverter
+    public class EmptyStringToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is DateTime dateTime)
-            {
-                if (parameter is string parameterValue)
-                {
-                    if (parameterValue == "Past")
-                    {
-                        return dateTime < DateTime.Now ? Visibility.Collapsed : Visibility.Visible;
-                    }
-                    else if (parameterValue == "Future")
-                    {
-                        return dateTime > DateTime.Now ? Visibility.Collapsed : Visibility.Visible;
-                    }
-                }
-            }
-
-            return Visibility.Visible;
+            string stringValue = value as string;
+            if (string.IsNullOrEmpty(stringValue))
+                return Visibility.Collapsed;
+            else
+                return Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 
 }
-
-
-
-

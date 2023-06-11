@@ -1,4 +1,4 @@
-﻿<Page x:Class="InitialProject.View.Guest1Requests"
+﻿<Page x:Class="InitialProject.View.Guest1RequestsView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,6 +12,7 @@
 
 
     <DockPanel>
+
         <DockPanel DockPanel.Dock="Top" Margin="0,2,15,0">
             <StackPanel Orientation="Horizontal">
                 <Image Source="https://img001.prntscr.com/file/img001/AboPt71lRn6VPLBmk3xMmA.png" Width="88" Height="50" Margin="0,0,0,0" />
@@ -24,49 +25,87 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0" />
-                <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
+                <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="{Binding DataContext.IsNotificationVisible, RelativeSource={RelativeSource AncestorType=Page}}" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" >
+                    <Image.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding GoToShowGuest1NotificationsCommand}" />
+                    </Image.InputBindings>
+                </Image>
+
+                <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="{Binding DataContext.IsRegularBellVisible, RelativeSource={RelativeSource AncestorType=Page}}" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0">
+                    <Image.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding GoToShowGuest1NotificationsCommand}" />
+                    </Image.InputBindings>
+                </Image>
 
                 <StackPanel Grid.Column="1" Orientation="Vertical">
-                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="22" />
-                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" FontSize="20"  FontWeight="Bold" Height="28" />
+                    <TextBlock Text="{Binding UsernameAndSuperGuestText}" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="22" />
+                    <TextBlock Text="{Binding SuperGuestText}" Foreground="Green" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="28" />
                 </StackPanel>
+
 
             </Grid>
 
         </DockPanel>
 
+
         <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Width="834" Height="67" Margin="4,0,4,0">
 
 
-            <Button Content="Home" Click="GoToSearchAndShowAccommodations" Width="70" Height="50" Margin="10,0,8,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC"/>
+            <Button Content="Home" Command="{Binding GoToSearchAndShowAccommodationsCommand}" Width="70" Height="50" Margin="10,0,8,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC"/>
 
-            <Button Content="Reservations" Click="GoToShowReservations"  Width="140" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" BorderBrush="#FFACACAC">
+            <Button Content="Reservations" Command="{Binding GoToShowReservationsCommand}"  Width="140" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" BorderBrush="#FFACACAC">
                 <Button.Background>
                     <SolidColorBrush Color="#FFF0F0F0"/>
                 </Button.Background>
             </Button>
 
-            <ComboBox x:Name="CBCreateReview" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBCreateReviewDropDownClosed" FontSize="20" FontWeight="Bold" Width="160" Height="50" Margin="9,0,9,0" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                <ComboBoxItem Content="Create review" PreviewMouseDown="CBItemPreviewMouseDown" />
-                <ComboBoxItem Content="Reviews" PreviewMouseDown="CBItemPreviewMouseDown" />
-                <ComboBoxItem Content="Requests" PreviewMouseDown="CBItemPreviewMouseDown" />
+            <ComboBox x:Name="CBCreateReview" FontSize="20" FontWeight="Bold" Width="160" Height="50" Margin="9,0,9,0" SelectedIndex="{Binding SelectedComboBox1Index, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBoxItem">
+                                    <Button Content="{TemplateBinding Content}" Command="{Binding DataContext.ComboBoxCommand, RelativeSource={RelativeSource AncestorType=ComboBox}}" CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+                <ComboBox.Items>
+                    <ComboBoxItem Content="Create review" />
+                    <ComboBoxItem Content="Reviews" />
+                    <ComboBoxItem Content="Requests" />
+                </ComboBox.Items>
             </ComboBox>
 
-
-            <Button Width="125" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Click="GoToAnywhereAnytime" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
+            <Button Width="125" Height="50"  Command="{Binding GoToAnywhereAnytimeCommand}" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC">
                 <StackPanel>
                     <TextBlock Text="Anywhere" HorizontalAlignment="Center" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Top" />
                     <TextBlock Text="Anytime" Height="Auto" Margin="0,-8,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 </StackPanel>
             </Button>
 
-            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" Click="GoToForum" BorderBrush="#FFACACAC" />
+            <Button Content="Forum" Command="{Binding GoToForumCommand}" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC"  />
 
-            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
-                <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
-                <ComboBoxItem Content="Logout" PreviewMouseDown="CBItemPreviewMouseDown" />
+            <ComboBox x:Name="CBSuperGuest" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="{Binding SelectedComboBox2Index, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBoxItem">
+                                    <Button Content="{TemplateBinding Content}" Command="{Binding DataContext.ComboBoxSGCommand, RelativeSource={RelativeSource AncestorType=ComboBox}}" CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+                <ComboBox.Items>
+                    <ComboBoxItem Content="Super-guest" />
+                    <ComboBoxItem Content="Logout" />
+                </ComboBox.Items>
             </ComboBox>
+
+
 
         </DockPanel>
 
@@ -82,7 +121,7 @@
                     <!-- margina skroz dole je 20 -->
                     <Label Content="Requests" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
 
-                    <ItemsControl x:Name="Guest1RebookingRequestsDTOs" >
+                    <ItemsControl ItemsSource="{Binding Guest1RebookingRequestsDTOs}" >
                         <!-- ItemsSource="{Binding Guest1RebookingRequestsDTOs}"  x:Name="Guest1RebookingRequestsDTOs"-->
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -126,7 +165,11 @@
                                                 <Run FontWeight="Bold" FontSize="20" Text="{Binding OldEndDate, StringFormat='{}{0:dd.MM.yyyy}'}" />
                                             </TextBlock.Inlines>
                                         </TextBlock>
+
+                                        <Button Grid.Row="1" FontSize="24" FontWeight="Bold" Width="177" Height="55" Content="Cancel" Margin="30,256,123,654"/>
+                                        <!-- 
                                         <Button Grid.Row="1" FontSize="24" FontWeight="Bold" Width="177" Height="55" Content="Cancel" Click="GoToGuest1Requests" Margin="30,256,123,654"/>
+                                        -->
 
                                         <TextBlock Grid.Row="1" FontSize="20" Margin="256,109,190,828" >
                                             <TextBlock.Inlines>
@@ -141,6 +184,8 @@
 
 
                                         <Button Grid.Row="1" FontSize="24" FontWeight="Bold" Content="More details" CommandParameter="{Binding}" Command="{Binding DataContext.MoreDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Width="177" Height="55" Margin="491,92,12,818"/>
+                                        
+                                        
                                         <Label Grid.Column="1" Content="New date" FontSize="24" FontWeight="Bold"  Margin="314,32,248,897" Height="36" Width="117" Grid.Row="1"   />
                                         <Label Grid.Row="1" Content="End date" FontSize="24" FontWeight="Bold"  Margin="329,136,571,792" Width="110" Height="37" Grid.ColumnSpan="2"  />
                                         <Image Grid.Column="0" Grid.Row="1"  Source="https://freepngimg.com/thumb/web_design/24684-5-right-arrow-transparent-picture.png" Margin="234,33,412,897" RenderTransformOrigin="0.5,0.5" Width="35" Height="35" />
@@ -151,14 +196,31 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-                <ComboBox Grid.Row="0" Width="Auto" FontWeight="Bold" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,17,52,0" Height="33">
-                    <ComboBoxItem Content="All" PreviewMouseDown="ShowAllRequests"/>
-                    <ComboBoxItem Content="Rejected" PreviewMouseDown="ShowAllRejectedRequests"/>
-                    <ComboBoxItem Content="Pending" PreviewMouseDown="ShowAllPendingRequests"/>
-                    <ComboBoxItem Content="Accepted" PreviewMouseDown="ShowAllAcceptedRequests"/>
+
+                <ComboBox FontWeight="Bold" IsDropDownOpen="{Binding IsDropDownOpen, Mode=TwoWay}" SelectedIndex="{Binding SelectedComboBox3Index, Mode=TwoWay}" FontSize="20" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,17,52,0" Height="33" >
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ComboBoxItem">
+                                        <Button Content="{TemplateBinding Content}" Command="{Binding DataContext.ComboBoxFilterCommand, RelativeSource={RelativeSource AncestorType=ComboBox}}" CommandParameter="{Binding Content, RelativeSource={RelativeSource Self}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="All" />
+                        <ComboBoxItem Content="Rejected" />
+                        <ComboBoxItem Content="Pending" />
+                        <ComboBoxItem Content="Accepted" />
+                    </ComboBox.Items>
                 </ComboBox>
 
-                <Button Grid.Row="1" FontSize="24" FontWeight="Bold" Click="CreateRequest" Content="Create request" Width="177" Height="55" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="20,0,0,15"/>
+
+
+                <Button Grid.Row="1" FontSize="24"  Command="{Binding GoToCreateRequestCommand}" FontWeight="Bold" Content="Create request" Width="177" Height="55" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="20,0,0,15"/>
+            
             </Grid>
         </ScrollViewer>
 
