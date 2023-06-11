@@ -210,10 +210,6 @@
                     *
                     </TextBlock>
 
-                    <TextBlock x:Name="textBlockErrorComment1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,235,0" FontSize="12" Foreground="Red">
-                    Comment must contain a minimum of 20 characters
-                    </TextBlock>
-
                     <Button x:Name="buttonAddComment" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Command="cmd:RoutedCommands.AddComment" Margin="0,28,25,0">
                         <TextBlock TextAlignment="Center" FontSize="14">Add comment<LineBreak/>(CTRL + R)</TextBlock>
                     </Button>

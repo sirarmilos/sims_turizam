@@ -31,6 +31,8 @@ namespace InitialProject.Service
 
         private readonly ForumNotificationsToOwnerService forumNotificationsToOwnerService;
 
+        private AccommodationService accommodationService;
+
         public string Owner
         {
             get;
@@ -187,11 +189,6 @@ namespace InitialProject.Service
             return guest1ReportService.ReportGuest(commentId, ownerUsername);
         }
 
-        public bool IsOwnerStillOwner(int forumId, string ownerUsername)
-        {
-            return commentService.IsOwnerStillOwner(forumId, ownerUsername);
-        }
-
         public int FindNumberOfNewForums(string ownerUsername)
         {
             return forumNotificationsToOwnerService.FindNumberOfNewForums(ownerUsername);
@@ -228,6 +225,12 @@ namespace InitialProject.Service
         public string FindQuestion(int forumId)
         {
             return forumRepository.FindQuestion(forumId);
+        }
+
+        public bool IsStillAccommodationOwner(string location, string ownerUsername)
+        {
+            accommodationService = new AccommodationService();
+            return accommodationService.CheckIsStillOwner(location.Split(", ")[0], location.Split(", ")[1], ownerUsername);
         }
     }
 }

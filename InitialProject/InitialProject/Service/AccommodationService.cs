@@ -871,5 +871,9 @@ namespace InitialProject.Service
             return reservationService.FindAvailableDateSlots(dateSlots, accommodation, startDate, endDate, reservationDays);
         }
 
+        public bool CheckIsStillOwner(string city, string country, string ownerUsername)
+        {
+            return accommodationRepository.CheckIsStillOwner(city, country, ownerUsername);
+        }
     }
 }

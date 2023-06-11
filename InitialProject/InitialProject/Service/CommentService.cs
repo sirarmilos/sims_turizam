@@ -43,11 +43,6 @@ namespace InitialProject.Service
             commentRepository.AddReportNumber(commentId);
         }
 
-        public bool IsOwnerStillOwner(int forumId, string ownerUsername)
-        { 
-            return commentRepository.IsOwnerStillOwner(forumId, ownerUsername);
-        }
-
         public bool CheckComments(int forumId)
         {
             return CheckOwnerComments(forumId) && CheckGuest1Coments(forumId);

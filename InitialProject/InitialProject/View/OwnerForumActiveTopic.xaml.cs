@@ -212,8 +212,6 @@ namespace InitialProject.View
             SetDefaultValue(showOwnerForumsDTO);
 
             SetMenu(ownerHeader);
-
-            textBlockErrorComment1.Visibility = Visibility.Hidden;
         }
 
         private void SetMenu(string ownerHeader)
@@ -315,22 +313,11 @@ namespace InitialProject.View
             {
                 Comment = string.Empty;
                 textBlockErrorComment0.Visibility = Visibility.Visible;
-                textBlockErrorComment1.Visibility = Visibility.Hidden;
             }
             else
             {
                 textBlockErrorComment0.Visibility = Visibility.Hidden;
-
-                if(CommentCheck.Length <= 20)
-                {
-                    Comment = string.Empty;
-                    textBlockErrorComment1.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    textBlockErrorComment1.Visibility = Visibility.Hidden;
-                    Comment = CommentCheck;
-                }
+                Comment = CommentCheck;
             }
         }
     }

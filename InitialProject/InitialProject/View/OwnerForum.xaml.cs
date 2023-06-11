@@ -221,7 +221,7 @@ namespace InitialProject.View
         {
             if (string.IsNullOrEmpty(showOwnerForumsDTO.Closed) == true)
             {
-                if(forumService.IsOwnerStillOwner(showOwnerForumsDTO.ForumId, OwnerUsername) == false)
+                if(forumService.IsStillAccommodationOwner(showOwnerForumsDTO.Location, OwnerUsername) == true)
                 {
                     OwnerForumActiveTopic window = new OwnerForumActiveTopic(OwnerUsername, usernameAndSuperOwner.Header.ToString(), showOwnerForumsDTO);
                     window.Show();

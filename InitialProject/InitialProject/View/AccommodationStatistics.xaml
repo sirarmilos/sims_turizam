@@ -184,7 +184,7 @@
         <ComboBox x:Name="cbSelectPeriod" Grid.Column="0" Grid.Row="3" ItemsSource="{Binding Years, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" SelectedItem="{Binding SelectedYear}" SelectionChanged="ShowStatistics" Margin="150,30,0,0" FontSize="16"/>
 
         <Label Grid.Column="0" Grid.Row="3" Content="The most occupied period of this accommodation was:" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Margin="25,70,0,0" FontSize="16"/>
-        <Label x:Name="labelMostBusyPeriodTime" Grid.Column="0" Grid.Row="3" Content="{Binding MostBusyPeriodTime, Mode=TwoWay}" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="200" Margin="425,70,0,0" FontSize="16"/>
+        <Label x:Name="labelMostBusyPeriodTime" Grid.Column="0" Grid.Row="3" Content="{Binding MostBusyPeriodTime, Mode=TwoWay}" HorizontalAlignment="Left" Height="35" VerticalAlignment="Top" Width="200" Margin="425,70,0,0" FontSize="16"/>
 
         <Label x:Name="labelDataNotFound" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Content="There is no data found for this accommodation" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,16,0" FontSize="30"/>
 

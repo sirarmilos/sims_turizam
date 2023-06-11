@@ -132,5 +132,10 @@ namespace InitialProject.Repository
             allAccommodations.ToList().Where(x => x.Location.Country.Equals(country) == true && x.Location.City.Equals(city) == true && x.Removed == false && x.OwnerUsername.Equals(ownerUsername) == true).SetValue(x => x.Removed = true);
             Save(allAccommodations);
         }
+
+        public bool CheckIsStillOwner(string city, string country, string ownerUsername)
+        {
+            return FindAll().ToList().Exists(x => x.OwnerUsername.Equals(ownerUsername) == true && x.Location.City.Equals(city) == true && x.Location.Country.Equals(country) == true && x.Removed == false);
+        }
     }
 }

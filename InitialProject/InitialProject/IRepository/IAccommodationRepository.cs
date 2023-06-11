@@ -41,5 +41,7 @@ namespace InitialProject.IRepository
         List<Accommodation> FindByOwnerUsername(string ownerUsername);
 
         void Remove(string country, string city, string ownerUsername);
+
+        bool CheckIsStillOwner(string city, string country, string ownerUsername);
     }
 }

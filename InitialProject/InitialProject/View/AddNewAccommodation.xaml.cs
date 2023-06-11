@@ -255,6 +255,12 @@ namespace InitialProject.View
             }
         }
 
+        DispatcherTimer Timer = new DispatcherTimer();
+
+        public int TickCounter = 0;
+
+        public bool IsDemo = false;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -474,16 +480,42 @@ namespace InitialProject.View
             SetNotReadonlyToDemo();
         }
 
+        public void SetNotReadonlyToDemo()
+        {
+            tbAccommodationName.IsReadOnly = false;
+            tbCountry.IsReadOnly = false;
+            tbCity.IsReadOnly = false;
+            tbAddress.IsReadOnly = false;
+            sliderLatitude.IsEnabled = true;
+            sliderLongitude.IsEnabled = true;
+            tbMaxGuests.IsReadOnly = false;
+            tbMinDaysReservation.IsReadOnly = false;
+            tbLeftCancelationDays.IsReadOnly = false;
+            tbImage.IsReadOnly = false;
+        }
+
         private void DEMO_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
-        DispatcherTimer Timer = new DispatcherTimer();
+        private void DEMO_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            IsDemo = true;
 
-        public int TickCounter = 0;
+            SetReadonlyToDemo();
+            SetDefaultValue();
 
-        public bool IsDemo = false;
+            buttonDEMO.Visibility = Visibility.Hidden;
+            buttonCloseDEMO.Visibility = Visibility.Visible;
+
+            TickCounter = 0;
+
+            Timer.Tick += new EventHandler(WriteDEMO);
+            Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+
+            Timer.Start();
+        }
 
         public void SetReadonlyToDemo()
         {
@@ -496,37 +528,10 @@ namespace InitialProject.View
             tbMaxGuests.IsReadOnly = true;
             tbMinDaysReservation.IsReadOnly = true;
             tbLeftCancelationDays.IsReadOnly = true;
+            tbImage.IsReadOnly = true;
         }
 
-        public void SetNotReadonlyToDemo()
-        {
-            tbAccommodationName.IsReadOnly = false;
-            tbCountry.IsReadOnly = false;
-            tbCity.IsReadOnly = false;
-            tbAddress.IsReadOnly = false;
-            sliderLatitude.IsEnabled = true;
-            sliderLongitude.IsEnabled = true;
-            tbMaxGuests.IsReadOnly = false;
-            tbMinDaysReservation.IsReadOnly = false;
-            tbLeftCancelationDays.IsReadOnly = false;
-        }
-
-        private void DEMO_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            IsDemo = true;
-
-            SetReadonlyToDemo();
-
-            buttonDEMO.Visibility = Visibility.Hidden;
-            buttonCloseDEMO.Visibility = Visibility.Visible;
-
-            Timer.Tick += new EventHandler(WriteAccommodationName);
-            Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
-
-            Timer.Start();
-        }
-
-        public void WriteAccommodationName(object sender, EventArgs e)
+        public void WriteDEMO(object sender, EventArgs e)
         {
             TickCounter++;
 
@@ -616,7 +621,7 @@ namespace InitialProject.View
             }
             else if (TickCounter == 20)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 tbCountry.Focus();
             }
             else if (TickCounter == 21)
@@ -646,7 +651,7 @@ namespace InitialProject.View
             }
             else if (TickCounter == 27)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 tbCity.Focus();
             }
             else if (TickCounter == 28)
@@ -684,7 +689,7 @@ namespace InitialProject.View
             }
             else if (TickCounter == 36)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 tbAddress.Focus();
             }
             else if (TickCounter == 37)
@@ -726,7 +731,7 @@ namespace InitialProject.View
             }
             else if(TickCounter == 46)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 sliderLatitude.Focus();
             }
             else if (TickCounter == 47)
@@ -768,7 +773,7 @@ namespace InitialProject.View
             }
             else if (TickCounter == 56)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 sliderLongitude.Focus();
             }
             else if (TickCounter == 57)
@@ -810,7 +815,7 @@ namespace InitialProject.View
             }
             else if (TickCounter == 66)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 groupBoxTypeOfAccommodation.Focus();
             }
             else if (TickCounter == 67)
@@ -820,7 +825,7 @@ namespace InitialProject.View
             }
             else if (TickCounter == 68)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 tbMaxGuests.Focus();
             }
             else if(TickCounter == 69)
@@ -830,7 +835,7 @@ namespace InitialProject.View
             }
             else if (TickCounter == 70)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 tbMaxGuests.Text = "";
             }
             else if (TickCounter == 71)
@@ -840,7 +845,7 @@ namespace InitialProject.View
             }
             else if (TickCounter == 72)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 tbMinDaysReservation.Focus();
             }
             else if (TickCounter == 73)
@@ -850,7 +855,7 @@ namespace InitialProject.View
             }
             else if (TickCounter == 74)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 tbLeftCancelationDays.Focus();
             }
             else if (TickCounter == 75)
@@ -860,32 +865,33 @@ namespace InitialProject.View
             }
             else if (TickCounter == 76)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+                Image = "https://images.pexels.com/photos/7260268/pexels-photo-7260268.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
                 tbImage.Text = "https://images.pexels.com/photos/7260268/pexels-photo-7260268.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
-                Timer.Interval = new TimeSpan(0, 0, 1);
+                // Timer.Interval = new TimeSpan(0, 0, 1);
             }
             else if (TickCounter == 77)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 buttonAddImage.IsEnabled = true;
                 buttonAddImage.Focus();
                 Timer.Interval = new TimeSpan(0, 0, 1);
             }
             else if (TickCounter == 78)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
-                AddImage_Executed(null, null);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+                AddImage_Executed(sender, null);
                 Timer.Interval = new TimeSpan(0, 0, 1);
             }
             else if (TickCounter == 79)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 buttonAddNewAccommodation.Focus();
                 Timer.Interval = new TimeSpan(0, 0, 1);
             }
             else if (TickCounter == 80)
             {
-                Timer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
                 IsDemo = true;
                 SaveAccommodation_Executed(null, null);
                 Timer.Interval = new TimeSpan(0, 0, 1);

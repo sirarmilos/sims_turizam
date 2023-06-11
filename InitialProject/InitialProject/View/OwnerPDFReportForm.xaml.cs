@@ -85,6 +85,10 @@ namespace InitialProject.View
             this.Height = 639;
             this.Width = 1400;
 
+            Keyboard.ClearFocus();
+
+            lvShowGuestReviews.SelectedItem = null;
+
             PrintDialog printDialog = new PrintDialog();
             if(printDialog.ShowDialog() == true)
             {
