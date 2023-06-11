@@ -1,0 +1,27 @@
+﻿<Page x:Class="InitialProject.View.Guest2SuccesfulReservation"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:InitialProject.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="630" d:DesignWidth="1494"
+      Title="Guest2SuccesfulReservation" Background="{DynamicResource BackGrid}" >
+
+    <Grid>
+        <Label Content="{DynamicResource StrSuccesRes}" Foreground="{DynamicResource TextColor}" FontSize="60" HorizontalAlignment="Center" Margin="0,168,0,0" VerticalAlignment="Top"/>
+        <Label Margin="400,300,806,268">
+            <Hyperlink Click="HyperLinkHomePage">
+                <Label Content="{DynamicResource StrHP}" Foreground="Blue" FontSize="30"/>
+            </Hyperlink>
+        </Label>
+
+        <Label Margin="750,300,0,0">
+            <Hyperlink Click="HyperLinkCreateMoreReservations">
+                <Label Content="{DynamicResource StrMoreReq}" FontSize="30" Foreground="Blue"/>
+            </Hyperlink>
+        </Label>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
+        <Button Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" Content="{DynamicResource StrGenRep}" HorizontalAlignment="Center" Margin="0,434,0,0" FontSize="20" VerticalAlignment="Top" Height="62" Width="170" Click="GenerateReport"/>
+    </Grid>
+</Page>

@@ -71,4 +71,56 @@
 
     <system:String x:Key="StrTourStillActive">     Tour still active   </system:String>
 
+    <system:String x:Key="StrGuestNumber">Number of guests</system:String>
+
+    <system:String x:Key="StrAcceptedDate">Accepted date</system:String>
+    
+
+    <system:String x:Key="StrStartDate">Start date</system:String>
+    <system:String x:Key="StrEndDate">End date</system:String>
+    <system:String x:Key="StrAddedTour">New tour added, you may like it</system:String>
+
+    <system:String x:Key="StrGuideUser">Guide:</system:String>
+    
+    <system:String x:Key="StrGuideRating">Guide rating</system:String>
+    <system:String x:Key="StrGuideKnowledge">Guide general knowledge:</system:String>
+    <system:String x:Key="StrLangKnowledge">Guide language knowledge:</system:String>
+    <system:String x:Key="StrTourExt">General tour experience:</system:String>
+    <system:String x:Key="StrAddPics">Add pictures from tour:</system:String>
+
+    <system:String x:Key="StrRateGuide1">Rate guide</system:String>
+    <system:String x:Key="StrSubmitRequest">Submit request</system:String>
+
+    <system:String x:Key="StrRatio">Ratio of accepted vs invalid tours</system:String>
+    <system:String x:Key="StrYear">Year:</system:String>
+
+    <system:String x:Key="StrTourRequestPerLang">Tour requests per language</system:String>
+    <system:String x:Key="StrTourRequestPerLoc">Tour requests per location</system:String>
+
+    <system:String x:Key="StrCityAndCountry">City and country</system:String>
+
+    <system:String x:Key="StrNumOfOc">Number of occurences</system:String>
+
+
+    <system:String x:Key="StrAcceptedGuests">Accepted guests</system:String>
+
+    <system:String x:Key="StrAvgNumOfAccGuests">Average number of accepted guests:</system:String>
+
+    <system:String x:Key="StrNesto1">Tour request successfully created!</system:String>
+    <system:String x:Key="StrMoreReq">Create more requests</system:String>
+    <system:String x:Key="StrAllReq">See all created requests</system:String>
+
+    <system:String x:Key="StrHP">Back to home page</system:String>
+    <system:String x:Key="StrSuccesRes">Succesful reservation!</system:String>
+    <system:String x:Key="StrMoreRes">Create more reservations</system:String>
+    <system:String x:Key="StrGenRep">Generate report</system:String>
+
+    <system:String x:Key="StrTourAtt">Back to tour attendance</system:String>
+
+    <system:String x:Key="StrGuideSucc">Guide succesfully rated!</system:String>
+
+    <system:String x:Key="StrComplSucc">Succesful complex tour creation</system:String>
+    <system:String x:Key="StrCreateComplex">Create more tours</system:String>
+    <system:String x:Key="StrDisplayComplex">Display created complex tours</system:String>
+    
 </ResourceDictionary>

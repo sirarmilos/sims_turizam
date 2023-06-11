@@ -32,7 +32,7 @@ namespace InitialProject.View
 
         private List<TourRequest> tourRequests;
 
-        public ObservableCollection<TourRequest> requests;
+        public ObservableCollection<TourRequest> requests { get; set; }
 
         private string Username;
 
@@ -214,6 +214,9 @@ namespace InitialProject.View
 
             StartDate = DateTime.Now;
             EndDate = DateTime.Now;
+
+            finnishButton.IsEnabled = false;
+            createRequestButton.IsEnabled = false;
         }
 
         public void InitializeCbLang()
@@ -247,15 +250,22 @@ namespace InitialProject.View
 
             requests.Add(tourRequest);
 
-            lista.ItemsSource = requests;
 
+            tbCity.Text = "";
+            tbCountry.Text = "";
+            tbDesc.Text = "";
+            tbGuests.Text = "";
+            toDate.SelectedDate = DateTime.Now;
+            fromDate.SelectedDate = DateTime.Now;
+            cbLanguage.SelectedIndex = -1;
 
-            description = "";
-            maxGuests = "";
-            StartDate = DateTime.Now;
-            EndDate = DateTime.Now;
-            City = "";
-            Country = "";
+            if(requests.Count>=2)
+            {
+                finnishButton.IsEnabled = true;
+            }
+
+            maxGuestsWarning.Visibility = Visibility.Hidden;
+            datePickerWarningLabel.Visibility = Visibility.Hidden;
 
         }
 
@@ -263,7 +273,11 @@ namespace InitialProject.View
         {
             tourRequestService.SaveList(requests.ToList());
             requests.Clear();
+            Guest2ComplexRequestSuccess guest2ComplexRequestSuccess = new Guest2ComplexRequestSuccess();
+            NavigationService.Navigate(guest2ComplexRequestSuccess);
 
         }
+
+
     }
 }

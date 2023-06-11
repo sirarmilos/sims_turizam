@@ -108,7 +108,7 @@ namespace InitialProject.Repository
             {
                 if(notification.TourGuidence.Id.Equals(tourNotification.TourGuidence.Id) && notification.IsNotified.Equals(tourNotification.IsNotified) && notification.User.Username.Equals(tourNotification.User.Username))
                 {
-                    notification.IsNotified = true;
+                    //notification.IsNotified = true;
                 }
             }
 

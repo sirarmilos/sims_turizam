@@ -14,10 +14,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using InitialProject;
+using ControlzEx.Theming;
 
 namespace InitialProject.View
 {
-
     public partial class Guest2MainWindow : Window
     {
         private string Username;
@@ -28,6 +29,130 @@ namespace InitialProject.View
 
         public static Button currentlySelected = new Button();
 
+        public event EventHandler ButtonClicked;
+
+        public event EventHandler ButtonThemeClicked;
+
+        public event EventHandler ToursButtonClicked;
+
+        private string currentLanguage;
+
+        public string CurrentLanguage
+        {
+            get { return currentLanguage; }
+            set
+            {
+                currentLanguage = value;
+            }
+        }
+
+        public event EventHandler<EventArgs> PageNavigated;
+
+        protected virtual void OnPageNavigated()
+        {
+            PageNavigated?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void Frame_Navigated(object sender, NavigationEventArgs e)
+        {
+            OnPageNavigated();
+        }
+
+        private void Frame_PageNavigated(object sender, EventArgs e)
+        {
+            if(mainFrame.Content is Guest2PageTours)
+            {
+                PaintButtons();
+                ToursButton.Background = Brushes.LightGray;
+                ToursButton.Foreground = Brushes.Black;
+
+                currentlySelected = ToursButton;
+            }
+
+            if(mainFrame.Content is Guest2NotificationPage)
+            {
+                PaintButtons();
+                NotificationsButton.Background = Brushes.LightGray;
+                NotificationsButton.Foreground = Brushes.Black;
+            }
+        }
+
+        
+
+        private void MainFrameContentRendered(object sender, EventArgs e)
+        {
+            if (mainFrame.Content is Guest2PageTours)
+            {
+                PaintButtons();
+                ToursButton.Background = Brushes.LightGray;
+                ToursButton.Foreground = Brushes.Black;
+
+                currentlySelected = ToursButton;
+            }
+            else if (mainFrame.Content is Guest2NotificationPage)
+            {
+                PaintButtons();
+                NotificationsButton.Background = Brushes.LightGray;
+                NotificationsButton.Foreground = Brushes.Black;
+            }
+
+            else if (mainFrame.Content is Guest2ProfilePreview)
+            {
+                PaintButtons();
+                ProfileButton.Background = Brushes.LightGray;
+                ProfileButton.Foreground = Brushes.Black;
+
+                currentlySelected = ProfileButton;
+            }
+            else if (mainFrame.Content is Guest2TourRequestCreation)
+            {
+                PaintButtons();
+                TourRequestCreationButton.Background = Brushes.LightGray;
+                TourRequestCreationButton.Foreground = Brushes.Black;
+
+                currentlySelected = TourRequestCreationButton;
+            }
+            else if (mainFrame.Content is Guest2TourAttendance)
+            {
+                PaintButtons();
+                TourAttendanceButton.Background = Brushes.LightGray;
+                TourAttendanceButton.Foreground = Brushes.Black;
+
+                currentlySelected = TourAttendanceButton;
+            }
+            else if(mainFrame.Content is Guest2ComplexTourDisplay)
+            {
+                PaintButtons();
+                ComplexTourDisplayButton.Background = Brushes.LightGray;    
+                ComplexTourDisplayButton.Foreground = Brushes.Black;
+                currentlySelected = ComplexTourDisplayButton;
+            }
+
+            else if(mainFrame.Content is Guest2TourRequestStatistics)
+            {
+                PaintButtons();
+                TourRequestStatisticsButton.Background = Brushes.LightGray;
+                TourRequestStatisticsButton.Foreground = Brushes.Black;
+                currentlySelected = TourRequestStatisticsButton;
+            }
+
+            else if(mainFrame.Content is Guest2ComplexTourRequestCreation)
+            {
+                PaintButtons();
+                ComplexTourRequestButton.Background = Brushes.LightGray;
+                ComplexTourRequestButton.Foreground = Brushes.Black;
+                currentlySelected = ComplexTourRequestButton;
+            }
+
+            else if(mainFrame.Content is Guest2DisplayRequestedTours)
+            {
+                PaintButtons();
+                TourRequestDisplayButton.Background = Brushes.LightGray;
+                TourRequestDisplayButton.Foreground = Brushes.Black;
+                currentlySelected = TourRequestDisplayButton;
+            }
+        }
+
         public Page Page { get; set; }
 
         public Guest2MainWindow(string username)
@@ -35,7 +160,8 @@ namespace InitialProject.View
             InitializeComponent();
             Username = username;
 
-        
+            mainFrame.ContentRendered += MainFrameContentRendered;
+            CurrentLanguage = "en-US";
 
             Guest2PageTours guest2PageTours = new Guest2PageTours(Username);
             mainFrame.Content = guest2PageTours;
@@ -52,10 +178,11 @@ namespace InitialProject.View
         }
 
 
-        private void ToursButtonClick(object sender, RoutedEventArgs e)
+        public void ToursButtonClick(object sender, EventArgs e)
         {
             Guest2PageTours guest2PageTours = new Guest2PageTours(Username);
             mainFrame.Content = guest2PageTours;
+
             ToursButton.Background = Brushes.LightGray;
 
 
@@ -64,7 +191,10 @@ namespace InitialProject.View
             ToursButton.Foreground = Brushes.Black;
 
             currentlySelected = ToursButton;
+
+            ToursButtonClicked?.Invoke(this, EventArgs.Empty);
         }
+
 
         private void ProfilePage(object sender, RoutedEventArgs e)
         {
@@ -83,7 +213,7 @@ namespace InitialProject.View
         private void TourRequestCreate(object sender, RoutedEventArgs e)
         {
             
-            Guest2TourRequestCreation guest2TourRequestCreation = new Guest2TourRequestCreation(Username);
+            Guest2TourRequestCreation guest2TourRequestCreation = new Guest2TourRequestCreation();
             mainFrame.Content = guest2TourRequestCreation;
 
 
@@ -96,38 +226,40 @@ namespace InitialProject.View
 
         private void ChangeTheme(object sender, RoutedEventArgs e)
         {
-            if (ThemeType == 0)
-            {
-                if (LanguageId == 0)
-                {
-                    AppTheme.ChangeTheme(new Uri("/Themes/DarkTheme.xaml", UriKind.Relative), new Uri("/Languages/StringEn.xaml", UriKind.Relative));
-                    ThemeType = 1;
-                }
-                else
-                {
-                    AppTheme.ChangeTheme(new Uri("/Themes/DarkTheme.xaml", UriKind.Relative), new Uri("/Languages/StringSr.xaml", UriKind.Relative));
-                    ThemeType = 1;
-                }
-            }
-            else
-            {
-                if (LanguageId == 0)
-                {
-                    AppTheme.ChangeTheme(new Uri("/Themes/LightTheme.xaml", UriKind.Relative), new Uri("/Languages/StringEn.xaml", UriKind.Relative));
-                    ThemeType = 0;
-                }
-                else
-                {
-                    AppTheme.ChangeTheme(new Uri("/Themes/LightTheme.xaml", UriKind.Relative), new Uri("/Languages/StringSr.xaml", UriKind.Relative));
-                    ThemeType = 0;
-                }
-            }
+             if (ThemeType == 0)
+             {
+                 if (LanguageId == 0)
+                 {
+                     AppTheme.ChangeTheme(new Uri("/Themes/DarkTheme.xaml", UriKind.Relative), new Uri("/Languages/StringEn.xaml", UriKind.Relative));
+                     ThemeType = 1;
+                 }
+                 else
+                 {
+                     AppTheme.ChangeTheme(new Uri("/Themes/DarkTheme.xaml", UriKind.Relative), new Uri("/Languages/StringSr.xaml", UriKind.Relative));
+                     ThemeType = 1;
+                 }
+             }
+             else
+             {
+                 if (LanguageId == 0)
+                 {
+                     AppTheme.ChangeTheme(new Uri("/Themes/LightTheme.xaml", UriKind.Relative), new Uri("/Languages/StringEn.xaml", UriKind.Relative));
+                     ThemeType = 0;
+                 }
+                 else
+                 {
+                     AppTheme.ChangeTheme(new Uri("/Themes/LightTheme.xaml", UriKind.Relative), new Uri("/Languages/StringSr.xaml", UriKind.Relative));
+                     ThemeType = 0;
+                 }
+             }
 
-            DataContext = this;
+             DataContext = this;
             PaintButtons();
             currentlySelected.Background = Brushes.LightGray;
             currentlySelected.Foreground = Brushes.Black;
-           
+
+            ButtonClicked?.Invoke(this, EventArgs.Empty);
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -165,23 +297,13 @@ namespace InitialProject.View
             currentlySelected.Background = Brushes.LightGray;
             currentlySelected.Foreground = Brushes.Black;
 
-
-            object currentPage = mainFrame.Content;
-
-            // Check if the page is of a specific type
-            if (currentPage is Guest2PageTours)
-            {
-                // The displayed page is of type YourPageType
-                Guest2PageTours pagee = (Guest2PageTours)currentPage;
-                // Perform actions specific to YourPageType
-                mainFrame.Content = pagee;
-            }
+            ButtonClicked?.Invoke(this, EventArgs.Empty);
 
         }
 
         private void TourAttendance(object sender, RoutedEventArgs e)
         {
-            Guest2TourAttendance guest2TourAttendance = new Guest2TourAttendance(Username);
+            Guest2TourAttendance guest2TourAttendance = new Guest2TourAttendance();
             mainFrame.Content = guest2TourAttendance;
 
 

@@ -156,7 +156,7 @@ namespace InitialProject.Service
         }
 
 
-        public List<TourDisplayDTO> SearchAndShow(string city = null, string country = null, int duration = 0, Language language = 0, int numberOfGuests = 0)
+        /*public List<TourDisplayDTO> SearchAndShow(string city = null, string country = null, int duration = 0, Language language = 0, int numberOfGuests = 0)
         {
             List<TourDisplayDTO> sameCity = new List<TourDisplayDTO>();
             List<TourDisplayDTO> sameCountry = new List<TourDisplayDTO>();
@@ -176,7 +176,7 @@ namespace InitialProject.Service
 
             return result;
 
-        }
+        }*/
 
         private List<TourDisplayDTO> GetIntersections(List<TourDisplayDTO> sameCity, List<TourDisplayDTO> sameCountry, List<TourDisplayDTO> longerDuration, List<TourDisplayDTO> sameLanguage, List<TourDisplayDTO> moreGuests)
         {
@@ -305,7 +305,42 @@ namespace InitialProject.Service
             return result;
         }
 
-        
+
+        public List<TourDisplayDTO> SearchAndShow(string city = null, string country = null, int duration = 0, Language language = 0, int numberOfGuests = 0)
+        {
+            List<TourDisplayDTO> displayedTours = GetToursForDisplay();
+
+            var result = displayedTours;
+
+            if (!string.IsNullOrEmpty(city))
+            {
+                result = result.Where(t => t.Location.City.ToLower().StartsWith(city.ToLower())).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(country))
+            {
+                result = result.Where(t => t.Location.Country.ToLower().StartsWith(country.ToLower())).ToList();
+            }
+
+            if (duration > 0)
+            {
+                result = result.Where(t => t.Duration >= duration).ToList();
+            }
+
+            if (language > 0)
+            {
+                result = result.Where(t => t.Language == language).ToList();
+            }
+
+            if (numberOfGuests > 0)
+            {
+                result = result.Where(t => t.FreeSlots >= numberOfGuests).ToList();
+            }
+
+            return result;
+        }
+
+
 
         public List<int> FindGuestNumber(int tourId, string username)
         {

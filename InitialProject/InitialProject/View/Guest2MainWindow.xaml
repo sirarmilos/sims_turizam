@@ -4,24 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
+        xmlns:ns="clr-namespace:InitialProject"
         mc:Ignorable="d"
         Title="Guest2MainWindow" Height="1080" Width="1920"
-        WindowState="Maximized">
+        WindowState="Maximized"
+       >
 
     <Grid Background="{DynamicResource BackGrid}">
         <Button  Grid.Row="1" HorizontalAlignment="Left" Height="95" VerticalAlignment="Top" Width="150"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Margin="212,80,0,0" RenderTransformOrigin="-1.26,1.432" Click="LogoClick">
             <Image Source="../Resources/Images/logo.png" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Width="150" Height="95"/>
         </Button>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <Frame Content="{Binding Page,Mode=OneWay}" NavigationUIVisibility="Hidden" x:Name="mainFrame" Margin="211,317,215,60"/>
-        </ScrollViewer>
+        <Frame  Content="{Binding Page,Mode=OneWay}" NavigationUIVisibility="Hidden" x:Name="mainFrame" Margin="211,317,215,60"/>
         <Button x:Name="NotificationsButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}"  Content="{DynamicResource StrNotifications}" HorizontalAlignment="Left" Margin="1174,108
                 ,0,0" VerticalAlignment="Top" FontSize="14" Width="100" Height="71.1" FontWeight="Bold" Click="NotificationsButton_Click"/>
         <Button x:Name="ProfileButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrProfile}" HorizontalAlignment="Left" Margin="1314,108,0,0" VerticalAlignment="Top" Height="72" Width="211" FontSize="20" FontWeight="Bold" Click="ProfilePage"/>
         <Button Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" Content="SRB / ENG" HorizontalAlignment="Left" Margin="1584,101,0,0" VerticalAlignment="Top" Height="34" Width="109" FontSize="14" FontWeight="Bold" Click="Button_Click"/>
         <Button Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrTheme}" HorizontalAlignment="Left" Margin="1573,161,0,0" VerticalAlignment="Top" Height="37" Width="132" FontSize="14" FontWeight="Bold" Click="ChangeTheme"/>
         <Label Foreground="{DynamicResource TextColor}"  Content="{DynamicResource StrLanguage}" HorizontalAlignment="Left" Margin="1597,68,0,0" VerticalAlignment="Top" FontSize="17"/>
-        <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrThemeLabel}" HorizontalAlignment="Left" Margin="1608,135,0,0" VerticalAlignment="Top" FontSize="17" Height="44"/>
+        <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrTheme}" HorizontalAlignment="Left" Margin="1608,135,0,0" VerticalAlignment="Top" FontSize="17" Height="44"/>
 
         <Button Background="{DynamicResource ButtonColor}" x:Name="ToursButton" HorizontalAlignment="Left" Margin="211,211,0,0" VerticalAlignment="Top" Height="91" Width="128" FontSize="20" Click="ToursButtonClick">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrTours}" TextWrapping="Wrap" TextAlignment="Center"/>

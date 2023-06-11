@@ -126,11 +126,12 @@ namespace InitialProject.View
                     //Guest2Start window = new Guest2Start(Username);
 
                     Guest2MainWindow window = new Guest2MainWindow(Username);
+                    UserClass.Username = username;
                     window.Show();
                     Close();
                 }
 
-                MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show("Welcome to the application " + Username + ".", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

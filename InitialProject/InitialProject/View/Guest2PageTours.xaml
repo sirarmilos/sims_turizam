@@ -1,12 +1,16 @@
 ﻿<Page x:Class="InitialProject.View.Guest2PageTours"
+      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:ns="clr-namespace:InitialProject"
       xmlns:local="clr-namespace:InitialProject.View"
+
       mc:Ignorable="d" 
       d:DesignHeight="630" d:DesignWidth="1494"
-      Title="Guest2PageTours"
+      Title="Guest2PageTours" Loaded="Page_Loaded"
       > 
 
     <Grid Background="{DynamicResource BackGrid}" Margin="0,0,0,0">
@@ -54,7 +58,7 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{Binding Source={StaticResource StrName}}" Binding="{Binding TourName}" Width="80"/>
+                <DataGridTextColumn Header="{DynamicResource StrName}" Binding="{Binding TourName}" Width="80"/>
                 <DataGridTextColumn Header="{Binding Source={StaticResource StrCity}}" Binding="{Binding Location.City}" Width="100"/>
                 <DataGridTextColumn Header="{Binding Source={StaticResource StrCountry}}" Binding="{Binding Location.Country}" Width="100"/>
                 <DataGridTextColumn Header="{Binding Source={StaticResource StrDescription}}" Binding="{Binding Description}" Width="150"/>
@@ -98,10 +102,28 @@
         </Label>
         <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrLanguage1}" HorizontalAlignment="Left" Margin="25,327,0,0" VerticalAlignment="Top" FontSize="17"/>
         <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrMaxGuests}" HorizontalAlignment="Left" Margin="25,433,0,0" VerticalAlignment="Top" FontSize="17"/>
-        <Button x:Name="searchButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" Content="{DynamicResource StrSearch}" Margin="99,520,0,0" VerticalAlignment="Top" Height="59" Width="140" Click="SearchTours" HorizontalAlignment="Left"/>
+        <Button x:Name="searchButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" Content="{DynamicResource StrSearch}" Margin="99,520,0,0" VerticalAlignment="Top" Height="59" Width="140" Click="SearchTours" HorizontalAlignment="Left">
+            <Button.ContentTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Magnify" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Button.ContentTemplate>
+        </Button>
 
         <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrSelectTourToReservate}" HorizontalAlignment="Left" Margin="64,29,0,0" VerticalAlignment="Top" FontSize="24" Grid.Column="1"/>
-        <Button Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" x:Name="createReservationButton" Content="{DynamicResource StrCreateResButton}" HorizontalAlignment="Left" Margin="137,558,0,0" VerticalAlignment="Top" Width="308" Height="42" FontSize="16" Grid.Column="1" Click="CreateReservation"/>
+        <Button Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" x:Name="createReservationButton" Content="{DynamicResource StrCreateResButton}" HorizontalAlignment="Left" Margin="137,558,0,0" VerticalAlignment="Top" Width="308" Height="42" FontSize="16" Grid.Column="1" Click="CreateReservation">
+            <Button.ContentTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="BookAdd" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Button.ContentTemplate>
+        </Button>
         <TextBox Text="{Binding Path=Country, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="31,76,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="278" FontSize="17"/>
         <TextBox Text="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="31,164,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="278" Height="26" FontSize="17"/>
         <TextBox x:Name="tbDuration" HorizontalAlignment="Left" Margin="31,251,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="278" FontSize="17">
@@ -112,7 +134,7 @@
         </TextBox>
         <ComboBox x:Name="cbLanguage" SelectedItem="{Binding Languagee}"  HorizontalAlignment="Left" Margin="31,356,0,0" VerticalAlignment="Top" Width="278" FontSize="17"/>
         <TextBox Text="{Binding MaxGuests, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{0:#;;}}"  HorizontalAlignment="Left" Margin="30,462,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="278" FontSize="17"/>
-        <Frame NavigationUIVisibility="Hidden" x:Name="page" Grid.ColumnSpan="2"/>
+        <Frame NavigationUIVisibility="Hidden" x:Name="page" Grid.ColumnSpan="2" Navigated="page_Navigated"/>
         <Label x:Name="maxGuestsWarning" Visibility="Hidden" Foreground="Red" Content="{DynamicResource StrMaxGuestWarning}" HorizontalAlignment="Left" Margin="30,487,0,0" VerticalAlignment="Top"/>
         <Label x:Name="durationWarning" Visibility="Hidden" Foreground="Red" Content="{DynamicResource StrMaxGuestWarning}" HorizontalAlignment="Left" Margin="31,281,0,0" VerticalAlignment="Top"/>
 

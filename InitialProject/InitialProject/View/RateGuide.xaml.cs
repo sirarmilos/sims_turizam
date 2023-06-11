@@ -27,6 +27,7 @@ namespace InitialProject.View
         private readonly string username;
         private readonly string guideUsername;
         private readonly int tourGuidenceId;
+        private string guideKnowledge;
 
         private readonly Guest2Repository guest2Repository = new Guest2Repository();
 

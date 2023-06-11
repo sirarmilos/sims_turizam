@@ -47,8 +47,8 @@ namespace InitialProject.View
 
         private void ShowUserInfo(object sender, RoutedEventArgs e)
         {
-            Guest2Info window = new Guest2Info(username);
-            window.Show();
+            //Guest2Info window = new Guest2Info(username);
+            //window.Show();
         }
 
         private void ShowNotifications(object sender, RoutedEventArgs e)

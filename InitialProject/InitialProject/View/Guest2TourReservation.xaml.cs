@@ -186,6 +186,7 @@ namespace InitialProject.View
             ComboBoxItem selectedItem = ComboBoxVouchers.SelectedItem as ComboBoxItem;
 
             int voucherId = 0;
+            string voucherType = "";
 
             if (selectedItem != null)
             {
@@ -193,6 +194,7 @@ namespace InitialProject.View
 
                 if (int.TryParse(selectedValue, out voucherId))
                 {
+                    voucherType = selectedItem.Content.ToString();
                 }
                 else
                 {
@@ -208,8 +210,8 @@ namespace InitialProject.View
                 if(tourReservationService.CreateReservation(Username,tourGuidence,numberOfGuests,voucherId,tourReservationService.NextId()))
                 {
                     guest2Service.UpdateVoucherUsedStatus(voucherId);
-                    Guest2RateTourAndGuide guest2RateTourAndGuide = new Guest2RateTourAndGuide();
-                    NavigationService.Navigate(guest2RateTourAndGuide);
+                    Guest2SuccesfulReservation succesfulReservation = new Guest2SuccesfulReservation(Username,tourDisplayDTO,numberOfGuests,voucherType);
+                    NavigationService.Navigate(succesfulReservation);
                 }
             }
 

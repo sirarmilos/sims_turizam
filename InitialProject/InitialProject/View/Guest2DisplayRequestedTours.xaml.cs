@@ -25,11 +25,30 @@ namespace InitialProject.View
         TourRequestService tourRequestService = new TourRequestService();
         public List<TourRequest> listRequestedTours { get ; set; }
 
+        private string username;
+
         public Guest2DisplayRequestedTours(string username)
         {
             InitializeComponent();
             listRequestedTours = new List<TourRequest>();
             listTourRequests.ItemsSource = tourRequestService.GetByUser(username);
+            this.username = username;
+        }
+
+        private void MainWindow_ButtonClicked(object sender, EventArgs e)
+        {
+            Guest2DisplayRequestedTours guest2DisplayRequestedTours = new Guest2DisplayRequestedTours(username);
+            NavigationService.Navigate(guest2DisplayRequestedTours);
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            var mainWindow = Window.GetWindow(this) as Guest2MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.ButtonClicked += MainWindow_ButtonClicked;
+            }
         }
     }
 }

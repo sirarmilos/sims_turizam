@@ -25,15 +25,7 @@ namespace InitialProject.View
         public Guest2ProfilePreview(string username)
         {
             InitializeComponent();
-            this.DataContext = new Guest2InfoViewModel(username);
-        }
-
-        private void LogOut(object sender, RoutedEventArgs e)
-        {
-            LoginForm loginForm = new LoginForm();
-            Window parentWindow = Window.GetWindow(this);
-            parentWindow.Close();   
-            loginForm.Show();   
+            this.DataContext = new Guest2InfoViewModel(this);
         }
     }
 }

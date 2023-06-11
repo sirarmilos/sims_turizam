@@ -22,7 +22,7 @@
     <system:String x:Key="StrMaxGuests">Broj slobodnih mesta:</system:String>
     <system:String x:Key="StrSelectTourToReservate">Odaberite jednu od tura da bi rezervisali</system:String>
 
-    <system:String x:Key="StrName">Naziv tura</system:String>
+    <system:String x:Key="StrName">Naziv ture</system:String>
     <system:String x:Key="StrDescription">Opis</system:String>
     <system:String x:Key="StrFreeSlots">Broj mesta</system:String>
     <system:String x:Key="StrDate">Datum</system:String>
@@ -71,5 +71,55 @@
 
     <system:String x:Key="StrTourStillActive">Tura je aktivna</system:String>
 
+    <system:String x:Key="StrGuestNumber">Broj gostiju</system:String>
+
+    <system:String x:Key="StrAcceptedDate">Prihvaćen datum</system:String>
+
+    <system:String x:Key="StrStartDate">Početni datum</system:String>
+    <system:String x:Key="StrEndDate">Krajnji datum</system:String>
+
+    <system:String x:Key="StrAddedTour">Dodata je nova tura, možda će vam se svideti</system:String>
+
+    <system:String x:Key="StrGuideUser">Vodič:</system:String>
+
+    <system:String x:Key="StrGuideRating">Ocena vodiča</system:String>
+    <system:String x:Key="StrGuideKnowledge">Opšte znanje vodiča:</system:String>
+    <system:String x:Key="StrLangKnowledge">Poznvanje jezika:</system:String>
+    <system:String x:Key="StrTourExt">Opšte iskustvo na turi:</system:String>
+    <system:String x:Key="StrAddPics">Dodajte slike:</system:String>
+
+    <system:String x:Key="StrRateGuide1">Oceni vodiča</system:String>
+
+    <system:String x:Key="StrSubmitRequest">Predaj zahtev</system:String>
+
+    <system:String x:Key="StrRatio">Odnos prihvaćenih i nevalidnih tura</system:String>
+    
+    <system:String x:Key="StrYear">Godina:</system:String>
+
+    <system:String x:Key="StrTourRequestPerLang">Broj zahteva po jeziku</system:String>
+
+    <system:String x:Key="StrCityAndCountry">Grad i država</system:String>
+
+    <system:String x:Key="StrNumOfOc">Broj ponavljanja</system:String>
+
+    <system:String x:Key="StrAcceptedGuests">Prihvaćeni gosti</system:String>
+
+    <system:String x:Key="StrAvgNumOfAccGuests">Prosečan broj gostiju:</system:String>
+
+    <system:String x:Key="StrNesto1">Uspešno kreiran zahtev za ture!</system:String>
+    <system:String x:Key="StrMoreReq">Kreiraj još zahteva</system:String>
+    <system:String x:Key="StrAllReq">Pogledaj sve zahteve</system:String>
+
+    <system:String x:Key="StrHP">Glavna stranica</system:String>
+    <system:String x:Key="StrSuccesRes">Uspešna rezervacija!</system:String>
+    <system:String x:Key="StrMoreRes">Kreiraj još rezervacija</system:String>
+    <system:String x:Key="StrGenRep">Generiši izveštaj</system:String>
+
+    <system:String x:Key="StrTourAtt">Praćenje ture</system:String>
+    <system:String x:Key="StrGuideSucc">Vodič uspešno ocenjen!</system:String>
+
+    <system:String x:Key="StrComplSucc">Uspešno kreiran kompleksni zahtev</system:String>
+    <system:String x:Key="StrCreateComplex">Kreiraj još zahteva</system:String>
+    <system:String x:Key="StrDisplayComplex">Prikaži kompleksne zahteve</system:String>
 
 </ResourceDictionary>

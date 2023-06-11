@@ -36,6 +36,11 @@ namespace InitialProject.Service
             return tourGuidenceRepository.FindFinishedByGuideUsername(tourId, username);
         }
 
+        public string FindGuide(int tourGuidenceId)
+        {
+            return tourGuidenceRepository.FindGuide(tourGuidenceId);
+        }
+
         public List<int> NotifyGuestOfTourStarting(string username)
         {
             List<int> results = new List<int>();

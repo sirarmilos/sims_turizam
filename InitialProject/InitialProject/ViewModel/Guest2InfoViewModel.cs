@@ -1,12 +1,17 @@
-﻿using InitialProject.Dto;
+﻿using GalaSoft.MvvmLight.Command;
+using InitialProject.Dto;
 using InitialProject.Model;
 using InitialProject.Repository;
 using InitialProject.Service;
+using InitialProject.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace InitialProject.ViewModel
 {
@@ -26,12 +31,53 @@ namespace InitialProject.ViewModel
 
         public string Address { get; set; }
 
-        public Guest2InfoViewModel(string username)
+        public ICommand LogOutCommand { get; private set; }
+
+        public ICommand PageLoadCommand { get; private set; }
+
+        private readonly Page _page;
+
+        private void LogOut()
         {
-            this.username = username;
+            LoginForm loginForm = new LoginForm();
+            Window parentWindow = Window.GetWindow(_page);
+            parentWindow.Close();
+            loginForm.Show();
+        }
+
+        private void MainWindow_ButtonClicked(object sender, EventArgs e)
+        {
+            Guest2ProfilePreview guest2ProfilePreview = new Guest2ProfilePreview(Username);
+            _page.NavigationService.Navigate(guest2ProfilePreview);
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            var mainWindow = Window.GetWindow(_page) as Guest2MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.ButtonClicked += MainWindow_ButtonClicked;
+            }
+        }
+
+        private void ExecutePageLoadCommand()
+        {
+            Page_Loaded(null, null);
+        }
+
+
+        public Guest2InfoViewModel(Page page)
+        {
+            _page = page;
+
+            this.username = UserClass.Username;
             guest2Repository = new Guest2Repository();
 
             VoucherDisplayDTOs = new List<VoucherDisplayDTO>();
+
+            LogOutCommand = new RelayCommand(LogOut);
+            PageLoadCommand = new RelayCommand(ExecutePageLoadCommand);
 
             Guest2 guest2 = guest2Service.GetByUsername(username);
 

@@ -48,9 +48,9 @@ namespace InitialProject.Model
                 imageToString += ",";
             }
 
-            if (Images.Count>=1)
+            if (Images.Count>=2)
             {
-                imageToString = imageToString.Substring(0, imageToString.Length - 2);
+                imageToString = imageToString.Substring(0, imageToString.Length - 1);
             }
 
             string[] csvValues = { UserId.ToString(), GuideId.ToString(), tourGuidenceId.ToString(), GuideKnowledge.ToString(), GuideKnowledge.ToString(), TourExperience.ToString(), Comment.ToString(), imageToString.ToString(), Valid.ToString() };
