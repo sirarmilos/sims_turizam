@@ -13,4 +13,6 @@
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="ButtonHoveredText" Color="Coral"/>
+
+    <SolidColorBrush x:Key="TBCBBorder" Color="Black"/>
 </ResourceDictionary>

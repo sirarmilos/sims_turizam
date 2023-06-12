@@ -8,11 +8,19 @@
       mc:Ignorable="d" 
       d:DesignHeight="630" d:DesignWidth="1494"
       Title="Guest2TourRequestStatistics">
+    <Page.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource BackGrid}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TBCBBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+    </Page.Resources>
 
     <Grid x:Name="myGrid" Background="{DynamicResource BackGrid}">
         <lvc:PieChart x:Name="pieChart" RenderTransformOrigin="0.506,0.512" Margin="72,86,1086,268"/>
         <TextBlock Foreground="{DynamicResource TextColor}" TextAlignment="Center" HorizontalAlignment="Left" Margin="138,17,0,0" TextWrapping="Wrap" Text="{DynamicResource StrRatio}" FontSize="22" VerticalAlignment="Top" Height="69" Width="204"/>
-        <ComboBox x:Name="comboBoxYears" SelectedItem="{Binding Year}" HorizontalAlignment="Left" Margin="413,128,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="comboBoxYears" SelectedItem="{Binding Year}" Height="20" HorizontalAlignment="Left" Margin="413,128,0,0" VerticalAlignment="Top" Width="120"/>
         <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrYear}" HorizontalAlignment="Left" Margin="413,97,0,0" VerticalAlignment="Top" Width="103"/>
         <TextBlock Foreground="{DynamicResource TextColor}" TextAlignment="Center" HorizontalAlignment="Left" Margin="720,17,0,0" TextWrapping="Wrap" Text="{DynamicResource StrTourRequestPerLang}" FontSize="22" VerticalAlignment="Top" Height="69" Width="204"/>
         <TextBlock Foreground="{DynamicResource TextColor}" TextAlignment="Center" HorizontalAlignment="Left" Margin="1132,17,0,0" TextWrapping="Wrap" Text="{DynamicResource StrTourRequestPerLoc}" FontSize="22" VerticalAlignment="Top" Height="69" Width="204"/>
@@ -28,9 +36,9 @@
         <GroupBox Foreground="{DynamicResource TextColor}" Header="{DynamicResource StrAcceptedGuests}" Margin="396,448,246,38">
             <Grid>
                 <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrAvgNumOfAccGuests}" HorizontalAlignment="Left" Margin="40,10,0,0" VerticalAlignment="Top" Width="277"/>
-                <TextBox x:Name="tb1" HorizontalAlignment="Left" Margin="40,43,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="204" Height="18"/>
+                <TextBox IsEnabled="False" x:Name="tb1" HorizontalAlignment="Left" Margin="40,43,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="204" Height="18"/>
                 <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrYear}" HorizontalAlignment="Left" Margin="492,10,0,0" VerticalAlignment="Top" Width="91"/>
-                <ComboBox x:Name="comboBoxYears1" SelectedItem="{Binding Year1}" HorizontalAlignment="Left" Margin="492,45,0,0" VerticalAlignment="Top" Width="120"/>
+                <ComboBox x:Name="comboBoxYears1" SelectedItem="{Binding Year1}" Height="20" HorizontalAlignment="Left" Margin="492,45,0,0" VerticalAlignment="Top" Width="120"/>
             </Grid>
         </GroupBox>
         <lvc:CartesianChart x:Name="chartCountryCity" Width="336" Height="276" Margin="1066,86,92,268" Series="{Binding DataChart}" LegendLocation="Right" AutomationProperties.IsOffscreenBehavior="Onscreen" DisableAnimations="True">

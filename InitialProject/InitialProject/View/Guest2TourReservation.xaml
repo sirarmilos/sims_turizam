@@ -42,6 +42,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource BackGrid}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TBCBBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
     </Page.Resources>
 
 
@@ -71,9 +78,9 @@
             </Grid>
         </GroupBox>
         <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrGuestsForTours}" HorizontalAlignment="Left" Margin="682,361,0,0" VerticalAlignment="Top" FontSize="32"/>
-        <TextBox HorizontalAlignment="Left" Margin="682,419,0,0" TextWrapping="Wrap" Text="{Binding MaxGuests, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{0:#;;}}" FontSize="32" VerticalAlignment="Top" Width="282" Height="41"/>
+        <TextBox HorizontalAlignment="Left" Margin="682,419,0,0" TextWrapping="Wrap" Text="{Binding MaxGuests, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{0:#;;}}" FontSize="28" VerticalAlignment="Top" Width="282" Height="41"/>
         <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrSelectVoucher}" HorizontalAlignment="Left" Margin="682,485,0,0" VerticalAlignment="Top" FontSize="32"/>
-        <ComboBox x:Name="ComboBoxVouchers" HorizontalAlignment="Left" Margin="682,543,0,0" VerticalAlignment="Top" Width="282" FontSize="32"/>
+        <ComboBox x:Name="ComboBoxVouchers" Height="40" HorizontalAlignment="Left" Margin="682,543,0,0" VerticalAlignment="Top" Width="282" FontSize="28"/>
         <Button x:Name="createReservationButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource ButtonText}" HorizontalAlignment="Left" Margin="984,395,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.025,-0.526" FontSize="24" Height="74" Width="190" Click="createReservationButton_Click">
             <TextBlock TextWrapping="Wrap" TextAlignment="Center"><Run Text="{DynamicResource StrCreateReservation}"/></TextBlock>
             

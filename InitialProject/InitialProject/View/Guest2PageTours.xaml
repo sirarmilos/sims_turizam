@@ -10,7 +10,7 @@
 
       mc:Ignorable="d" 
       d:DesignHeight="630" d:DesignWidth="1494"
-      Title="Guest2PageTours" Loaded="Page_Loaded"
+      Title="Guest2PageTours"
       >
     <Page.Resources>
         <Style TargetType="{x:Type Button}">
@@ -44,6 +44,15 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource BackGrid}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TBCBBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+
     </Page.Resources>
 
     <Grid Background="{DynamicResource BackGrid}" Margin="0,0,0,0">
@@ -165,7 +174,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <ComboBox x:Name="cbLanguage" SelectedItem="{Binding Languagee}"  HorizontalAlignment="Left" Margin="31,356,0,0" VerticalAlignment="Top" Width="278" FontSize="17"/>
+        <ComboBox Background="{DynamicResource BackGrid}" x:Name="cbLanguage" SelectedItem="{Binding Languagee}" Height="27"  HorizontalAlignment="Left" Margin="31,356,0,0" VerticalAlignment="Top" Width="278" FontSize="17"/>
         <TextBox Text="{Binding MaxGuests, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{0:#;;}}"  HorizontalAlignment="Left" Margin="30,462,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="278" FontSize="17"/>
         <Frame NavigationUIVisibility="Hidden" x:Name="page" Grid.ColumnSpan="2" Navigated="page_Navigated"/>
         <Label x:Name="maxGuestsWarning" Visibility="Hidden" Foreground="Red" Content="{DynamicResource StrMaxGuestWarning}" HorizontalAlignment="Left" Margin="30,487,0,0" VerticalAlignment="Top"/>

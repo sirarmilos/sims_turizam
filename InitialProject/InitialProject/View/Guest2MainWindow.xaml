@@ -42,12 +42,16 @@
 
     </Window.Resources>
     <Grid Background="{DynamicResource BackGrid}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="71*"/>
+            <ColumnDefinition Width="169*"/>
+        </Grid.ColumnDefinitions>
 
-        <Button  Grid.Row="1" HorizontalAlignment="Left" Height="95" VerticalAlignment="Top" Width="150"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Margin="212,80,0,0" RenderTransformOrigin="-1.26,1.432" Click="LogoClick">
+        <Button HorizontalAlignment="Left" Height="95" VerticalAlignment="Top" Width="150"  Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Margin="212,80,0,0" RenderTransformOrigin="-1.26,1.432" Click="LogoClick">
             <Image Source="../Resources/Images/logo.png" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Width="150" Height="95"/>
         </Button>
-        <Frame  Content="{Binding Page,Mode=OneWay}" NavigationUIVisibility="Hidden" x:Name="mainFrame" Margin="211,317,215,60"/>
-        <Button x:Name="NotificationsButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}"  Content="{DynamicResource StrNotifications}" HorizontalAlignment="Left" Margin="1135,107,0,0" VerticalAlignment="Top" FontSize="14" Width="174" Height="72" FontWeight="Bold" Click="NotificationsButton_Click">
+        <Frame  Content="{Binding Page,Mode=OneWay}" NavigationUIVisibility="Hidden" x:Name="mainFrame" Margin="211,317,215,60" Grid.ColumnSpan="2"/>
+        <Button x:Name="NotificationsButton" Content="{DynamicResource StrNotifications}" HorizontalAlignment="Left" Margin="567,107,0,0" VerticalAlignment="Top" FontSize="14" Width="174" Height="72" FontWeight="Bold" Click="NotificationsButton_Click" Grid.Column="1">
             <Button.ContentTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -57,7 +61,7 @@
                 </DataTemplate>
             </Button.ContentTemplate>
         </Button>
-        <Button x:Name="ProfileButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrProfile}" HorizontalAlignment="Left" Margin="1356,107,0,0" VerticalAlignment="Top" Height="72" Width="174" FontSize="20" FontWeight="Bold" Click="ProfilePage">
+        <Button x:Name="ProfileButton"  Content="{DynamicResource StrProfile}" HorizontalAlignment="Left" Margin="788,107,0,0" VerticalAlignment="Top" Height="72" Width="174" FontSize="20" FontWeight="Bold" Click="ProfilePage" Grid.Column="1">
             <Button.ContentTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -67,7 +71,7 @@
                 </DataTemplate>
             </Button.ContentTemplate>
         </Button>
-        <Button  Foreground="{DynamicResource TextColor}" Content="SRB / ENG" HorizontalAlignment="Left" Margin="1573,98,0,0" VerticalAlignment="Top" Height="34" Width="132" FontSize="14" FontWeight="Bold" Click="Button_Click" RenderTransformOrigin="0.5,0.5">
+        <Button Foreground="{DynamicResource TextColor}"  Content="SRB / ENG" HorizontalAlignment="Left" Margin="1005,98,0,0" VerticalAlignment="Top" Height="34" Width="132" FontSize="14" FontWeight="Bold" Click="Button_Click" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -77,9 +81,9 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <Button  Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrThemeLabel}" HorizontalAlignment="Left" Margin="1573,161,0,0" VerticalAlignment="Top" Height="37" Width="132" FontSize="14" FontWeight="Bold" Click="ChangeTheme"/>
-        <Label Foreground="{DynamicResource TextColor}"  Content="{DynamicResource StrLanguage}" HorizontalAlignment="Left" Margin="1597,68,0,0" VerticalAlignment="Top" FontSize="17"/>
-        <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrTheme}" HorizontalAlignment="Left" Margin="1584,135,0,0" VerticalAlignment="Top" FontSize="17" Height="44"/>
+        <Button Foreground="{DynamicResource TextColor}"  Content="{DynamicResource StrTheme}" HorizontalAlignment="Left" Margin="1005,161,0,0" VerticalAlignment="Top" Height="37" Width="132" FontSize="14" FontWeight="Bold" Click="ChangeTheme" Grid.Column="1"/>
+        <Label Foreground="{DynamicResource TextColor}"  Content="{DynamicResource StrLanguage}" HorizontalAlignment="Left" Margin="1029,68,0,0" VerticalAlignment="Top" FontSize="17" Grid.Column="1"/>
+        <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrThemeLabel}" HorizontalAlignment="Left" Margin="1040,135,0,0" VerticalAlignment="Top" FontSize="17" Height="44" Grid.Column="1"/>
 
         <Button  x:Name="ToursButton" HorizontalAlignment="Left" Margin="211,211,0,0" VerticalAlignment="Top" Height="91" Width="128" FontSize="20" Click="ToursButtonClick">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrTours}" TextWrapping="Wrap" TextAlignment="Center"/>
@@ -87,24 +91,24 @@
         <Button x:Name="TourAttendanceButton"  HorizontalAlignment="Left" Margin="339,211,0,0" VerticalAlignment="Top" Height="91" Width="179" FontSize="20" Click="TourAttendance">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrTourAttendance}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="TourRequestCreationButton"  Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="518,211,0,0" VerticalAlignment="Top" Height="91" Width="221" FontSize="20" Click="TourRequestCreate">
+        <Button x:Name="TourRequestCreationButton"  Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="518,211,0,0" VerticalAlignment="Top" Height="91" Width="221" FontSize="20" Click="TourRequestCreate" Grid.ColumnSpan="2">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrTourRequestCreation}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="TourRequestDisplayButton"  Foreground="{DynamicResource TextColor}"  HorizontalAlignment="Left" Margin="739,211,0,0" VerticalAlignment="Top" Height="91" Width="261" FontSize="20" Click="TourRequestDisplayButton_Click">
+        <Button x:Name="TourRequestDisplayButton"  Foreground="{DynamicResource TextColor}"  HorizontalAlignment="Left" Margin="171,211,0,0" VerticalAlignment="Top" Height="91" Width="261" FontSize="20" Click="TourRequestDisplayButton_Click" Grid.Column="1">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrRequestedToursDisplay}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="TourRequestStatisticsButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1000,211,0,0" VerticalAlignment="Top" Height="91" Width="261" FontSize="20" Click="TourRequestStatisticsButton_Click">
+        <Button x:Name="TourRequestStatisticsButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="432,211,0,0" VerticalAlignment="Top" Height="91" Width="261" FontSize="20" Click="TourRequestStatisticsButton_Click" Grid.Column="1">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrRequestStats}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="ComplexTourRequestButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1261,211,0,0" VerticalAlignment="Top" Height="91" Width="227" FontSize="20" Click="ComplexTourRequestButton_Click">
+        <Button x:Name="ComplexTourRequestButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="693,211,0,0" VerticalAlignment="Top" Height="91" Width="227" FontSize="20" Click="ComplexTourRequestButton_Click" Grid.Column="1">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrComplexTourRequest}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="ComplexTourDisplayButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="1488,211,0,0" VerticalAlignment="Top" Height="91" Width="217" FontSize="20" Click="ComplexTourDisplayButton_Click">
+        <Button x:Name="ComplexTourDisplayButton" Background="{DynamicResource ButtonColor}" Foreground="{DynamicResource TextColor}" HorizontalAlignment="Left" Margin="920,211,0,0" VerticalAlignment="Top" Height="91" Width="217" FontSize="20" Click="ComplexTourDisplayButton_Click" Grid.Column="1">
             <TextBlock Foreground="{DynamicResource TextColor}" Text="{DynamicResource StrComplexTourDisplay}" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Rectangle Stroke="{DynamicResource TextColor}" HorizontalAlignment="Center" Height="44" Margin="0,973,0,0"  VerticalAlignment="Top" Width="1920"/>
+        <Rectangle Stroke="{DynamicResource TextColor}" HorizontalAlignment="Left" Height="44" Margin="0,973,0,0"  VerticalAlignment="Top" Width="1920" Grid.ColumnSpan="2"/>
         <Label Foreground="{DynamicResource TextColor}" Content="Instagram: @touragency" FontSize="20" HorizontalAlignment="Left" Margin="211,977,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.369,0.31"/>
-        <Label Foreground="{DynamicResource TextColor}" Content="021/123-123   office@touragency.com" FontSize="20" HorizontalAlignment="Left" Margin="1356,977,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.369,0.31"/>
+        <Label Foreground="{DynamicResource TextColor}" Content="021/123-123   office@touragency.com" FontSize="20" HorizontalAlignment="Left" Margin="788,977,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.369,0.31" Grid.Column="1"/>
 
     </Grid>
 </Window>

@@ -155,11 +155,6 @@ namespace InitialProject.View
             createReservationButton.IsEnabled = false;
         }
 
-        private void MainWindow_ButtonClicked(object sender, EventArgs e)
-        {
-            Guest2PageTours guest2PageTours = new Guest2PageTours(Username);
-            page.Navigate(guest2PageTours);
-        }
 
         public Guest2PageTours()
         {
@@ -187,7 +182,7 @@ namespace InitialProject.View
         private void CreateReservation(object sender, RoutedEventArgs e)
         {
             Guest2TourReservation tourReservation = new Guest2TourReservation(Username, (TourDisplayDTO)listTours.SelectedItems[0]);
-            NavigationService.Navigate(tourReservation);
+            page.Navigate(tourReservation);
 
             //Guest2TourReservationUserControl guest2TourReservationUserControl = new Guest2TourReservationUserControl(Username, (TourDisplayDTO)listTours.SelectedItems[0]);
             //page.Content = guest2TourReservationUserControl;
@@ -208,14 +203,5 @@ namespace InitialProject.View
 
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            var mainWindow = Window.GetWindow(this) as Guest2MainWindow;
-            if (mainWindow != null)
-            {
-                mainWindow.ButtonClicked += MainWindow_ButtonClicked;
-            }
-        }
     }
 }

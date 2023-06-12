@@ -9,6 +9,7 @@
       d:DesignHeight="630" d:DesignWidth="1494"
       Title="Guest2ComplexTourRequestCreation"
       >
+    
     <Page.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="{DynamicResource ButtonColor}" />
@@ -41,6 +42,16 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource BackGrid}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TBCBBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        
+
     </Page.Resources>
 
     <Grid Background="{DynamicResource BackGrid}">
@@ -56,7 +67,7 @@
                 <TextBox x:Name="tbDesc" HorizontalAlignment="Left" Margin="23,338,0,0" TextWrapping="Wrap" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="277" Height="112"/>
                 <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrDescription1}" HorizontalAlignment="Left" Margin="23,291,0,0" VerticalAlignment="Top" FontSize="24"/>
                 <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrLanguage1}" HorizontalAlignment="Left" Margin="365,41,0,0" VerticalAlignment="Top" FontSize="24"/>
-                <ComboBox x:Name="cbLanguage" SelectedItem="{Binding Languagee}" HorizontalAlignment="Left" Margin="361,86,0,0" VerticalAlignment="Top" Width="277" FontSize="28"/>
+                <ComboBox x:Name="cbLanguage" SelectedItem="{Binding Languagee}"  HorizontalAlignment="Left" Margin="361,86,0,0" VerticalAlignment="Top" Width="277" FontSize="28"/>
                 <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrGuestsForTours}" HorizontalAlignment="Left" Margin="361,161,0,0" VerticalAlignment="Top" FontSize="24"/>
                 <TextBox x:Name="tbGuests" HorizontalAlignment="Left" Margin="358,203,0,0" TextWrapping="Wrap" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="277" FontSize="28"/>
                 <Label Foreground="{DynamicResource TextColor}" Content="{DynamicResource StrFrom}" HorizontalAlignment="Left" Margin="365,314,0,0" VerticalAlignment="Top" FontSize="24"/>
