@@ -1,0 +1,29 @@
+﻿<Page x:Class="InitialProject.View.Guest2RegisterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:InitialProject.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1000"
+      Background="White"
+      Title="Guest2RegisterPage">
+
+    <Grid>
+        <Grid>
+            <Image HorizontalAlignment="Left" Height="289" Margin="353,47,0,0" VerticalAlignment="Top" Width="289" Source="/Resources/Images/logo.png"/>
+            <Label Content="Username:" FontSize="25" HorizontalAlignment="Left" Margin="353,352,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="username1" HorizontalAlignment="Center" Margin="0,395,0,0" TextWrapping="Wrap" Text="" FontSize="25" VerticalAlignment="Top" Width="280"/>
+            <Button Content="Register" Foreground="{DynamicResource ButtonText}" FontSize="25" Background="{DynamicResource ButtonColor}" HorizontalAlignment="Center" Margin="0,685,0,0" VerticalAlignment="Top" Height="66" Width="237" Click="Button_Click"/>
+            <Label x:Name="labelWarning" Content="Error occured!" Foreground="Red" HorizontalAlignment="Center" Margin="0,756,0,0" VerticalAlignment="Top"/>
+            <Label Content="Email:" FontSize="25" HorizontalAlignment="Left" Margin="353,430,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="username1_Copy" HorizontalAlignment="Center" Margin="0,468,0,0" TextWrapping="Wrap" Text="" FontSize="25" VerticalAlignment="Top" Width="280"/>
+            <PasswordBox x:Name="password1" FontSize="25" HorizontalAlignment="Center" Margin="0,551,0,0" VerticalAlignment="Top" Width="280"/>
+            <PasswordBox x:Name="password1_Copy" FontSize="25" HorizontalAlignment="Center" Margin="0,632,0,0" VerticalAlignment="Top" Width="280"/>
+            <Label Content="Password:" FontSize="25" HorizontalAlignment="Left" Margin="353,508,0,0" VerticalAlignment="Top"/>
+            <Label Content="Repeat password:" FontSize="25" HorizontalAlignment="Left" Margin="353,591,0,0" VerticalAlignment="Top"/>
+
+        </Grid>
+
+    </Grid>
+</Page>

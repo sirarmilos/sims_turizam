@@ -1,8 +1,10 @@
-﻿using InitialProject.Model;
+﻿using GalaSoft.MvvmLight.Command;
+using InitialProject.Model;
 using InitialProject.Service;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -30,8 +32,6 @@ namespace InitialProject.View
         private readonly string username;
         private readonly string guideUsername;
         private readonly int tourGuidenceId;
-
-        private List<string> pictures;
 
         private string generalKnowledgeVal;
         private string languageKnowledgeVal;
@@ -81,6 +81,17 @@ namespace InitialProject.View
                 }
             }
         }
+        private ObservableCollection<string> pictures;
+
+        public ObservableCollection<string> Pictures
+        {
+            get { return pictures; }
+            set
+            {
+                pictures = value;
+                OnPropertyChanged(nameof(Pictures));
+            }
+        }
 
         public bool IsButtonActive()
         {
@@ -108,7 +119,7 @@ namespace InitialProject.View
             guideUsername = tourGuidence.Tour.GuideUsername;
             tourGuidenceId = tourGuidence.Id;
 
-            pictures = new List<string>();
+            pictures = new ObservableCollection<string>();
             guest2Service = new Guest2Service();
 
             GeneralKnowledgeVal = string.Empty;
@@ -134,14 +145,19 @@ namespace InitialProject.View
             {
 
                 string selectedFilePath = openFileDialog.FileName;
-                pictures.Add(selectedFilePath);
-
+                Pictures.Add(selectedFilePath);
             }
+
+        }
+
+        private void RemovePicture(string picture)
+        {
+            Pictures.Remove(picture);
         }
 
         private void RateGuide(object sender, RoutedEventArgs e)
         {
-            guest2Service.GuideRating(username, "Guide1", tourGuidenceId, Convert.ToInt32(GeneralKnowledgeVal), Convert.ToInt32(LanguageKnowledgeVal), Convert.ToInt32(TourExperienceVal), "", pictures);
+            guest2Service.GuideRating(username, "Guide1", tourGuidenceId, Convert.ToInt32(GeneralKnowledgeVal), Convert.ToInt32(LanguageKnowledgeVal), Convert.ToInt32(TourExperienceVal), "", Pictures.ToList());
             Guest2SuccesRating guest2SuccesRating = new Guest2SuccesRating(username);
             NavigationService.Navigate(guest2SuccesRating);
 

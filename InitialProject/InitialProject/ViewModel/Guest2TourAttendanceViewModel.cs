@@ -63,14 +63,15 @@ namespace InitialProject.ViewModel
                 groupBox.Header = attendanceDTO.TourKeyPoints[0].TourGuidence.Tour.TourName;
                 //groupBox.Foreground = (Brush)FindResource("TextColor");
                 groupBox.Width = 1492;
-                groupBox.Height = 162;
+                groupBox.Height = 200;
 
 
                 DataGrid dataGrid = new DataGrid();
-                dataGrid.Height = 75;
-                dataGrid.Width = 1181;
-                dataGrid.ColumnHeaderHeight = 25;
-                dataGrid.RowHeight = 50;
+                dataGrid.VerticalContentAlignment = VerticalAlignment.Stretch;
+                dataGrid.Height = 90;
+                dataGrid.Width = 1100;
+                dataGrid.ColumnHeaderHeight = 45;
+                dataGrid.RowHeight = 45;
                 dataGrid.CanUserAddRows = false;
                 dataGrid.AutoGenerateColumns = false;
                 dataGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
@@ -85,7 +86,7 @@ namespace InitialProject.ViewModel
                 DataGridTextColumn guideName = new DataGridTextColumn();
                 guideName.Header = "Guide";
                 guideName.Width = 300;
-                guideName.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
+                //guideName.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
                 guideName.Binding = new Binding("GuideUsername");
                 //guideName.DisplayIndex = 0;
                 dataGrid.Columns.Add(guideName);
@@ -95,7 +96,7 @@ namespace InitialProject.ViewModel
                 DataGridTextColumn date = new DataGridTextColumn();
                 date.Header = "Date";
                 date.Width = 300;
-                date.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
+                //date.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
                 date.Binding = new Binding("Date");
                 dataGrid.Columns.Add(date);
 
@@ -109,7 +110,7 @@ namespace InitialProject.ViewModel
                     tkp.Width = tkpWidth - 1;
 
                     tkp.Binding = new Binding("TourKeyPoints[0].Passed");
-                    tkp.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Left) } };
+                    //tkp.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Left) } };
                     dataGrid.Columns.Add(tkp);
                     br++;
 
@@ -118,8 +119,8 @@ namespace InitialProject.ViewModel
                 Button button = new Button();
                 button.Tag = tourReservation.tourGuidenceId;
                 button.Height = 40;
-                button.Width = 189;
-                button.Content = "Rate guide / Oceni vodiča";
+                button.Width = 200;
+                button.Content = Application.Current.Resources["StrRateGuide"] as string;
                 button.Margin = new Thickness(45, -40, 0, 0);
                 button.FontSize = 28;
                 button.HorizontalAlignment = HorizontalAlignment.Center;
@@ -132,7 +133,7 @@ namespace InitialProject.ViewModel
                 Label label = new Label();
                 //label.Content = FindResource("StrTourStillActive");
 
-                label.Content = "Tour is still active";
+                label.Content = Application.Current.Resources["StrTourStillActive"] as string;
 
                 //label.Foreground = Brushes.Red;
                 label.Margin = new Thickness(-160, 70, 0, 0);
@@ -152,7 +153,7 @@ namespace InitialProject.ViewModel
                     label.Visibility = Visibility.Hidden;
                 }
 
-                Style cellStyle = new Style(typeof(DataGridCell));
+               /* Style cellStyle = new Style(typeof(DataGridCell));
                 cellStyle.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center));
                 cellStyle.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.Bold));
                 cellStyle.Setters.Add(new Setter(TextBlock.FontSizeProperty, 14.0));
@@ -163,19 +164,19 @@ namespace InitialProject.ViewModel
                 foreach (DataGridColumn column in dataGrid.Columns)
                 {
                     column.CellStyle = cellStyle;
-                }
+                }*/
 
 
                 //dataGrid.Background = (Brush)FindResource("BackGrid");
                 //dataGrid.Foreground = (Brush)FindResource("TextColor");
-                dataGrid.BorderThickness = new Thickness(1);
+                //dataGrid.BorderThickness = new Thickness(1);
                 //dataGrid.BorderBrush = Brushes.Gray;
                 dataGrid.Margin = new Thickness(30, 0, 0, 0);
 
-                dataGrid.ColumnHeaderStyle = new Style(typeof(DataGridColumnHeader));
+                //dataGrid.ColumnHeaderStyle = new Style(typeof(DataGridColumnHeader));
                 //dataGrid.ColumnHeaderStyle.Setters.Add(new Setter(Control.BackgroundProperty, Brushes.LightGray));
 
-
+                groupBox.Margin = new Thickness(0, 0, 0, 0);
                 StackPanel innerStackPanel = new StackPanel();
                 innerStackPanel.Orientation = Orientation.Horizontal;
                 innerStackPanel.Children.Add(dataGrid);

@@ -62,55 +62,57 @@ namespace InitialProject.ViewModel
                 int num = tourRequests.Count;
 
                 GroupBox groupBox = new GroupBox();
-                groupBox.Header = "Complex tour request " + complexId.ToString();
+                groupBox.Header = Application.Current.Resources["StrComplTourReq"] as string + complexId.ToString();
 
 
 
                 //groupBox.Foreground = (Brush)FindResource("TextColor");
-                groupBox.Width = 1400;
-                groupBox.Height = num * 70 + 100;
+                groupBox.Width = 1492;
+                groupBox.Height = 40 + 40 * num + 100;
+                groupBox.Margin = new Thickness(-150,0,0,0);
 
                 DataGrid dataGrid = new DataGrid();
-                dataGrid.Height = 70 * num;
+                dataGrid.Height = 40+ 40 * num;
                 dataGrid.Width = 1300;
-                dataGrid.ColumnHeaderHeight = 25;
-                dataGrid.RowHeight = 50;
+                dataGrid.ColumnHeaderHeight = 40;
+                dataGrid.RowHeight = 40;
                 dataGrid.CanUserAddRows = false;
                 dataGrid.AutoGenerateColumns = false;
                 dataGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
                 dataGrid.SelectionMode = DataGridSelectionMode.Single;
                 //dataGrid.Foreground = (Brush)FindResource("TextColor");
                 //dataGrid.Background = (Brush)FindResource("BackGrid");
-                dataGrid.Margin = new Thickness(35, 20, 30, 10);
+                dataGrid.Margin = new Thickness(0, 0, 0, 0);
 
-                int colWidth = 1181 / 7;
+                int colWidth = 1300 / 7;
+
 
                 DataGridTextColumn columnCountry = new DataGridTextColumn();
-                columnCountry.Header = "Country";
+                columnCountry.Header = Application.Current.Resources["StrCountry"] as string;
                 columnCountry.Binding = new Binding("Location.Country");
                 columnCountry.Width = colWidth;
                 dataGrid.Columns.Add(columnCountry);
 
                 DataGridTextColumn columnCity = new DataGridTextColumn();
-                columnCity.Header = "City";
+                columnCity.Header = Application.Current.Resources["StrCity"] as string;
                 columnCity.Binding = new Binding("Location.City");
                 columnCity.Width = colWidth;
                 dataGrid.Columns.Add(columnCity);
 
                 DataGridTextColumn columnDescription = new DataGridTextColumn();
-                columnDescription.Header = "Description";
+                columnDescription.Header = Application.Current.Resources["StrDescription"] as string;
                 columnDescription.Binding = new Binding("Description");
                 columnDescription.Width = colWidth;
                 dataGrid.Columns.Add(columnDescription);
 
                 DataGridTextColumn columnLanguage = new DataGridTextColumn();
-                columnLanguage.Header = "Language";
+                columnLanguage.Header = Application.Current.Resources["StrLanguage"] as string;
                 columnLanguage.Binding = new Binding("Language");
                 columnLanguage.Width = colWidth;
                 dataGrid.Columns.Add(columnLanguage);
 
-                DataGridTextColumn columnGuestNum = new DataGridTextColumn();
-                columnGuestNum.Header = "Number of guests";
+                DataGridTextColumn columnGuestNum = new DataGridTextColumn(); 
+                columnGuestNum.Header = Application.Current.Resources["StrGuestNumber"] as string;
                 columnGuestNum.Binding = new Binding("GuestNumber");
                 columnGuestNum.Width = colWidth;
                 dataGrid.Columns.Add(columnGuestNum);
@@ -122,7 +124,7 @@ namespace InitialProject.ViewModel
                 dataGrid.Columns.Add(statusColumn);
 
                 DataGridTextColumn acceptedDateColumn = new DataGridTextColumn();
-                acceptedDateColumn.Header = "Accepted date";
+                columnGuestNum.Header = Application.Current.Resources["StrAcceptedDate"] as string;
                 acceptedDateColumn.Binding = new Binding("AcceptedDate");
                 acceptedDateColumn.Width = colWidth;
                 dataGrid.Columns.Add(acceptedDateColumn);
@@ -131,34 +133,11 @@ namespace InitialProject.ViewModel
                 dataGrid.SetBinding(DataGrid.ItemsSourceProperty, new Binding("tourRequests") { Mode = BindingMode.OneWay });
                 dataGrid.DataContext = new { tourRequests };
 
-                Style cellStyle = new Style(typeof(DataGridCell));
-                cellStyle.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center));
-                cellStyle.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.Bold));
-                cellStyle.Setters.Add(new Setter(TextBlock.FontSizeProperty, 14.0));
-                cellStyle.Setters.Add(new Setter(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Center));
-
-
-
-                foreach (DataGridColumn column in dataGrid.Columns)
-                {
-                    column.CellStyle = cellStyle;
-                }
-
-
-               // dataGrid.Background = (Brush)FindResource("BackGrid");
-               //dataGrid.Foreground = (Brush)FindResource("TextColor");
-                dataGrid.BorderThickness = new Thickness(1);
-                //dataGrid.BorderBrush = Brushes.Gray;
-                dataGrid.Margin = new Thickness(30, 0, 0, 0);
-
-                dataGrid.ColumnHeaderStyle = new Style(typeof(DataGridColumnHeader));
-                //dataGrid.ColumnHeaderStyle.Setters.Add(new Setter(Control.BackgroundProperty, Brushes.LightGray));
-
 
                 StackPanel innerStackPanel = new StackPanel();
                 innerStackPanel.Orientation = Orientation.Horizontal;
                 innerStackPanel.Children.Add(dataGrid);
-                groupBox.Margin = new Thickness(40, 0, 0, 0);
+                groupBox.Margin = new Thickness(0, 0, 0, 0);
                 groupBox.Content = innerStackPanel;
                 stackPanel.Children.Add(groupBox);
             }

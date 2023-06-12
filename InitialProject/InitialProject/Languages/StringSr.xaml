@@ -122,4 +122,14 @@
     <system:String x:Key="StrCreateComplex">Kreiraj još zahteva</system:String>
     <system:String x:Key="StrDisplayComplex">Prikaži kompleksne zahteve</system:String>
 
+    <system:String x:Key="StrComplTourReq">Kompleksni zahtev </system:String>
+
+    <system:String x:Key="StrTourStart">Tura koju ste rezervisali je počela</system:String>
+
+    <system:String x:Key="StrTourAttend">Priključi se turi!</system:String>
+
+    <system:String x:Key="StrAddedToTour">Dodati ste na turu na klučnoj tački:</system:String>
+
+    <system:String x:Key="StrConfirmedTour">Tura koju ste tražili je prihvaćena</system:String>
+
 </ResourceDictionary>

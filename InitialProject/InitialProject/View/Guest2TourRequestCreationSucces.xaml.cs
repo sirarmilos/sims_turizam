@@ -33,8 +33,8 @@ namespace InitialProject.View
 
         private void HyperLinkCreateMoreRequests(object sender, RoutedEventArgs e)
         {
-            Guest2ComplexTourRequestCreation guest2ComplexTourRequestCreation = new Guest2ComplexTourRequestCreation(UserClass.Username);
-            NavigationService.Navigate(guest2ComplexTourRequestCreation);
+            Guest2TourRequestCreation guest2TourRequestCreation = new Guest2TourRequestCreation();
+            NavigationService.Navigate(guest2TourRequestCreation);
         }
     }
 }

@@ -8,13 +8,6 @@
         Title="Guest2LogIn" Height="1080" Width="1920"
         WindowState="Maximized">
     <Grid>
-        <Image HorizontalAlignment="Center" Height="352" Margin="0,104,0,0" VerticalAlignment="Top" Width="352" Source="/Resources/Images/logo.png"/>
-        <Label Content="Username:" FontSize="30"  HorizontalAlignment="Left" Margin="712,560,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="username1" HorizontalAlignment="Left" Margin="727,615,0,0" TextWrapping="Wrap" Text="" FontSize="30" VerticalAlignment="Top" Width="409"/>
-        <Label Content="Password:" FontSize="30"  HorizontalAlignment="Left" Margin="712,718,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="password1" HorizontalAlignment="Left" Margin="727,773,0,0" TextWrapping="Wrap" Text="" FontSize="30" VerticalAlignment="Top" Width="409"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="858,865,0,0" VerticalAlignment="Top" Height="84" Width="167" Click="Button_Click"/>
-
-
+        <Frame x:Name="frame" Width="1000" Content="" NavigationUIVisibility="Hidden" Margin="460,132,460,85"/>
     </Grid>
 </Window>

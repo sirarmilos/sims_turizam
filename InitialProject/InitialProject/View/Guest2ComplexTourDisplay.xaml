@@ -60,6 +60,35 @@
             <Setter Property="Padding" Value="10" />
         </Style>
 
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="{DynamicResource ButtonColor}" />
+                <Setter Property="Foreground" Value="{DynamicResource ButtonText}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"/>
+                                <ContentPresenter x:Name="contentPresenter"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonHovered}" />
+                                    <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="Black" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
     </Page.Resources>
 
     <Grid x:Name="myGrid" Background="{DynamicResource BackGrid}"  Margin="0,0,0,0">

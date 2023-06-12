@@ -4,4 +4,13 @@
     <SolidColorBrush Color="#4CAF50" x:Key="ButtonColor"/>
     <SolidColorBrush Color="#333333" x:Key="TextColor"/>
     <SolidColorBrush Color="Black" x:Key="ButtonText"/>
+
+    <LinearGradientBrush x:Key="ButtonHovered" StartPoint="0,0" EndPoint="1,0">
+        <GradientStopCollection>
+            <GradientStop Color="LightGreen" Offset="0" />
+            <GradientStop Color="Turquoise" Offset="1" />
+        </GradientStopCollection>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="ButtonHoveredText" Color="Coral"/>
 </ResourceDictionary>

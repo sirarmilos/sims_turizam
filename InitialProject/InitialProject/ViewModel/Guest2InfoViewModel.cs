@@ -39,7 +39,7 @@ namespace InitialProject.ViewModel
 
         private void LogOut()
         {
-            LoginForm loginForm = new LoginForm();
+            Guest2LogIn loginForm = new Guest2LogIn();
             Window parentWindow = Window.GetWindow(_page);
             parentWindow.Close();
             loginForm.Show();

@@ -19,22 +19,22 @@
     <system:String x:Key="StrCity">City</system:String>
     <system:String x:Key="StrTourDuration">Tour duration</system:String>
     <system:String x:Key="StrMaxGuests">Available number of free slots:</system:String>
-    <system:String x:Key="StrSelectTourToReservate">Select tour from following list to reservate</system:String>
+    <system:String x:Key="StrSelectTourToReservate">Select tour from following list to book</system:String>
 
     <system:String x:Key="StrName">Tour name</system:String>
     <system:String x:Key="StrDescription">Description</system:String>
     <system:String x:Key="StrFreeSlots">Free slots</system:String>
     <system:String x:Key="StrDate">Date</system:String>
 
-    <system:String x:Key="StrCreateResButton">Create a reservation!</system:String>
+    <system:String x:Key="StrCreateResButton">Create a booking!</system:String>
 
     <system:String x:Key="StrKeyPoints">Key points:</system:String>
 
     <system:String x:Key="StrGuestsForTours">Guests for tour:</system:String>
     <system:String x:Key="StrSelectVoucher">Select voucher:</system:String>
 
-    <system:String x:Key="StrCreateReservation">Create reservation</system:String>
-    <system:String x:Key="StrCancelReservation">Cancel reservation</system:String>
+    <system:String x:Key="StrCreateReservation">Create booking</system:String>
+    <system:String x:Key="StrCancelReservation">Cancel booking</system:String>
 
     <system:String x:Key="StrName1">Tour name:</system:String>
     <system:String x:Key="StrCountry1">Country:</system:String>
@@ -111,8 +111,8 @@
     <system:String x:Key="StrAllReq">See all created requests</system:String>
 
     <system:String x:Key="StrHP">Back to home page</system:String>
-    <system:String x:Key="StrSuccesRes">Succesful reservation!</system:String>
-    <system:String x:Key="StrMoreRes">Create more reservations</system:String>
+    <system:String x:Key="StrSuccesRes">Succesful booking!</system:String>
+    <system:String x:Key="StrMoreRes">Create more booking</system:String>
     <system:String x:Key="StrGenRep">Generate report</system:String>
 
     <system:String x:Key="StrTourAtt">Back to tour attendance</system:String>
@@ -122,5 +122,13 @@
     <system:String x:Key="StrComplSucc">Succesful complex tour creation</system:String>
     <system:String x:Key="StrCreateComplex">Create more tours</system:String>
     <system:String x:Key="StrDisplayComplex">Display created complex tours</system:String>
-    
+
+    <system:String x:Key="StrComplTourReq">Complex tour request</system:String>
+
+    <system:String x:Key="StrTourStart">Tour that you booked has started</system:String>
+
+    <system:String x:Key="StrTourAttend">Attend tour!</system:String>
+
+    <system:String x:Key="StrAddedToTour">You have been added to tour on key point:</system:String>
+    <system:String x:Key="StrConfirmedTour">Tour that you requested has been confirmed</system:String>
 </ResourceDictionary>

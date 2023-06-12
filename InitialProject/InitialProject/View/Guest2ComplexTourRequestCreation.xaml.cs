@@ -161,6 +161,7 @@ namespace InitialProject.View
                     datePickerWarningLabel.Visibility = Visibility.Visible;
                 }
 
+
                 else
                 {
                     createRequestButton.IsEnabled = true;
@@ -183,6 +184,7 @@ namespace InitialProject.View
                     createRequestButton.IsEnabled = false;
                     datePickerWarningLabel.Visibility = Visibility.Visible;
                 }
+
 
                 else
                 {

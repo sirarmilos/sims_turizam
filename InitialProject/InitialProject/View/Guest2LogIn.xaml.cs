@@ -27,27 +27,7 @@ namespace InitialProject.View
         public Guest2LogIn()
         {
             InitializeComponent();
+            frame.Content = new Guest2LogInPage();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            string username = username1.Text;
-            string password = password1.Text;
-            UserService userService = new UserService();
-            UserClass.Username = username;
-
-            Guest2MainWindow guest2MainWindow = new Guest2MainWindow(username);
-            guest2MainWindow.Left = Left;
-            guest2MainWindow.Top = Top;
-            guest2MainWindow.Width = Width;
-            guest2MainWindow.Height = Height;
-
-            guest2MainWindow.WindowStartupLocation = WindowStartupLocation.Manual;
-
-            Hide();
-            guest2MainWindow.Show();
-            Dispatcher.BeginInvoke(new Action(() => Close()), DispatcherPriority.ApplicationIdle);
-        }
-
     }
 }

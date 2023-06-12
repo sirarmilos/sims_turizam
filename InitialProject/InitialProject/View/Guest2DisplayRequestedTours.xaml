@@ -7,7 +7,6 @@
       mc:Ignorable="d" 
       d:DesignHeight="630" d:DesignWidth="1494"
       Title="Guest2DisplayRequestedTours"
-      Loaded="Page_Loaded"
       >
 
     <Grid Background="{DynamicResource BackGrid}" Margin="0,0,0,0">
@@ -43,13 +42,13 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{DynamicResource StrCountry}" Binding="{Binding Location.Country}" Width="100"/>
-                <DataGridTextColumn Header="{DynamicResource StrCity}" Binding="{Binding Location.City}" Width="100"/>
-                <DataGridTextColumn Header="{DynamicResource StrDescription}" Binding="{Binding Description}" Width="150"/>
-                <DataGridTextColumn Header="{DynamicResource StrLanguage}" Binding="{Binding Language}" Width="80"/>
-                <DataGridTextColumn Header="{DynamicResource StrGuestNumber}" Binding="{Binding GuestNumber}" Width="80"/>
-                <DataGridTextColumn Header="{DynamicResource StrStartDate}" Binding="{Binding StartDate}" Width="100"/>
-                <DataGridTextColumn Header="{DynamicResource StrEndDate}" Binding="{Binding EndDate}" Width="100"/>
+                <DataGridTextColumn Header="{DynamicResource StrCountry}" Binding="{Binding Location.Country}" Width="150"/>
+                <DataGridTextColumn Header="{DynamicResource StrCity}" Binding="{Binding Location.City}" Width="150"/>
+                <DataGridTextColumn Header="{DynamicResource StrDescription}" Binding="{Binding Description}" Width="180"/>
+                <DataGridTextColumn Header="{DynamicResource StrLanguage}" Binding="{Binding Language}" Width="120"/>
+                <DataGridTextColumn Header="{DynamicResource StrGuestNumber}" Binding="{Binding GuestNumber}" Width="120"/>
+                <DataGridTextColumn Header="{DynamicResource StrStartDate}" Binding="{Binding StartDate}" Width="140"/>
+                <DataGridTextColumn Header="{DynamicResource StrEndDate}" Binding="{Binding EndDate}" Width="140"/>
                 <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*"/>
 
             </DataGrid.Columns>
