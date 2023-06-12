@@ -161,5 +161,25 @@ namespace InitialProject.View
                 return;
             }
         }
+
+        private void GuestReviews(object sender, RoutedEventArgs e)
+        {
+            GuideShowGuest2Reviews window = new GuideShowGuest2Reviews(TourGuidence.Tour.GuideUsername);
+            window.Show();
+        }
+
+        private void GoToAddNewTour(object sender, RoutedEventArgs e)
+        {
+            AllTourOccurences window = new AllTourOccurences();
+            window.Show();
+            Close();
+        }
+
+        private void GoToTourRequests(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests("Guide1");
+            window.Show();
+            Close();
+        }
     }
 }

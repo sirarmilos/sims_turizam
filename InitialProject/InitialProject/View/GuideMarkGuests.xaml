@@ -7,7 +7,105 @@
         mc:Ignorable="d"
         Title="GuideMarkGuests" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Yellow" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <!-- Add more setters for other properties as needed -->
+        </Style>
+    </Window.Resources>
+
+
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Menu column -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content column -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Menu -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0">
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <StackPanel>
+                    <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
+                    <MenuItem Header="Profile" Margin="0,5,0,0"/>
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToCreateNewTour" />
+                    <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
+                    <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
+                </StackPanel>
+                <Grid>
+                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+
+        <!-- Main content -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
+            <Grid Grid.Column="1">
+                <TextBlock Text="{Binding WelcomeText}" Margin="50,40,10,0" FontSize="20" FontWeight="Bold" />
+
+
+                <DataGrid x:Name="allGuests" ItemsSource="{Binding tourReservations}" CanUserAddRows="False" Height="NaN" Margin="108,150,971,182" Width="100" AutoGenerateColumns="False" IsReadOnly="True" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Guests" Binding="{Binding userId}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DataGrid x:Name="addedGuest" CanUserAddRows="False" Height="NaN" Margin="822,150,285,216" Width="100"  AutoGenerateColumns="False" RenderTransformOrigin="0.5,0.5" >
+                    <DataGrid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </DataGrid.RenderTransform>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Guests" Binding="{Binding Username}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="120,649,0,0" VerticalAlignment="Top" Height="30" Width="97" >
+                    <Button Content="BACK" Click="GoToBack"/>
+                </Border>
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="830,649,0,0" VerticalAlignment="Top" Height="30" Width="97" >
+                    <Button Content="ADD GUEST" Click="GoToAddGuest"/>
+                </Border>
+                
+
+            </Grid>
+        </Border>
+
+
+
+    </Grid>
+
+
+
+
+
+    <!--<Grid>
 
         <TextBlock Text="{Binding WelcomeText}" Margin="50,40,10,0" FontSize="20" FontWeight="Bold" />
 
@@ -45,5 +143,5 @@
 
 
 
-    </Grid>
+    </Grid>-->
 </Window>

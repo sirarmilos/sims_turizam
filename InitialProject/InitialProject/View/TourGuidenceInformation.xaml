@@ -32,9 +32,10 @@
                 <StackPanel>
                     <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
                     <MenuItem Header="Profile" Margin="0,5,0,0"/>
-                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToAddNewTour" />
                     <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
                     <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
+                    <MenuItem Header="Tour Requests" Click="GoToTourRequests" Margin="0,5,0,0"/>
                 </StackPanel>
                 <Grid>
                     <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
@@ -76,7 +77,7 @@
                         <TextBlock Text="{Binding TourGuidence.StartTime}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" TextAlignment="Center" />
                     </Border>
 
-                    <Border BorderBrush="Black" BorderThickness="1" Margin="1010,36,60,24">
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="1010,36,60,24" Width="97" Height="30">
                         <Button x:Name="CancelButton" Content="CANCEL" Click="GoToCancelTour"/>
                     </Border>
                 </Grid>
@@ -152,13 +153,17 @@
                     </Grid>
                 </Border>
 
-                <TextBlock HorizontalAlignment="Left" Margin="145,520,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="70,490,0,0" TextWrapping="Wrap" Text="Description:" VerticalAlignment="Top"/>
 
-                <Border BorderBrush="Black" BorderThickness="1" Margin="248,489,0,165" HorizontalAlignment="Left" Width="666">
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding LoremIpsum}" VerticalAlignment="Top" Width="666" Height="102" Margin="1,0,0,0"/>
+                <Border BorderBrush="Black" BorderThickness="1" Margin="65,489,0,165" HorizontalAlignment="Left" Width="860">
+                    <TextBlock TextWrapping="Wrap" Text="{Binding LoremIpsum}" Margin="9,28,9,-1"/>
                 </Border>
 
-                <Button x:Name="StatsButton" Content="STATS AND REVIEWS" HorizontalAlignment="Left" Margin="994,671,0,0" VerticalAlignment="Top" Width="147"/>
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="994,671,0,0" VerticalAlignment="Top" Width="147" Height="30">
+                    <Button x:Name="StatsButton" Content="STATS AND REVIEWS"  Click="GuestReviews"/>
+                </Border>
+                
 
 
                 <TextBlock HorizontalAlignment="Left" Margin="330,680,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="114">

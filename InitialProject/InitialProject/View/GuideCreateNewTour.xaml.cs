@@ -255,10 +255,25 @@ namespace InitialProject.View
             set;
         }
 
+        public TourRequest TourRequest { get; set; }
+
+
         private List<TourKeyPointDto> tourKeyPointDtos;
         private List<TourGuidenceDto> tourGuidenceDtos;
         private List<TourKeyPoint> tourKeyPoints;
         private List<TourGuidence> tourGuidences;
+
+        public List<string> Years
+        {
+            get;
+            set;
+        }
+
+        public string SelectedYear
+        {
+            get;
+            set;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -289,6 +304,144 @@ namespace InitialProject.View
             TourDates = new List<DateTime>();
             KeyPointLocation = new List<Location>();
             Location = null;
+
+            Years = new List<string>();
+            Years.Add("ENGLISH");
+            Years.Add("SERBIAN");
+            Years.Add("GERMAN");
+            Years.Add("MANDARINSKI");
+            SelectedYear = "ENGLISH";
+        }
+
+        public GuideCreateNewTour(string guide, TourRequest tourRequest, DateTime selectedStartByGuide)
+        {
+            InitializeComponent();
+            DataContext = this;
+            Guide = guide;
+            TourRequest = tourRequest;
+            Images = new ObservableCollection<string>();
+            SelectedImage = string.Empty;
+            SetDefaultValue();
+
+            LocationRepository locationRepository = new LocationRepository();
+            TourRepository tourRepository = new TourRepository();
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+
+            tourKeyPointDtos = new List<TourKeyPointDto>();
+            tourKeyPoints = new List<TourKeyPoint>();
+            tourGuidences = new List<TourGuidence>();
+            tourGuidenceDtos = new List<TourGuidenceDto>();
+
+            TourDates = new List<DateTime>();
+            KeyPointLocation = new List<Location>();
+            Location = null;
+
+            Country = TourRequest.Location.Country;
+            City = TourRequest.Location.City;
+            tbCountry.IsReadOnly = true;
+            tbCity.IsReadOnly = true;
+            tbCity.Text = TourRequest.Location.City;
+            tbCountry.Text = TourRequest.Location.Country;
+            
+
+            //Languages = TourRequest.Language;
+            //tbLanguages.Text = TourRequest.Language.ToString();
+            //tbLanguages.IsReadOnly = true;
+
+            MaxGuests = TourRequest.GuestNumber;
+            tbMaxGuests.Text = TourRequest.GuestNumber.ToString();
+            tbMaxGuests.IsReadOnly = true;
+
+            TourDate = selectedStartByGuide;
+            date.Text = selectedStartByGuide.ToString();
+
+            Location = tourRequest.Location;
+
+            Years = new List<string>();
+            Years.Add("ENGLISH");
+            Years.Add("SERBIAN");
+            Years.Add("GERMAN");
+            Years.Add("MANDARINSKI");
+            SelectedYear = TourRequest.Language.ToString();
+            cb1.IsEnabled = false;
+        }
+
+        public GuideCreateNewTour(string guide, Location location)
+        {
+            InitializeComponent();
+            DataContext = this;
+            Guide = guide;
+            Location = location;
+            Images = new ObservableCollection<string>();
+            SelectedImage = string.Empty;
+            SetDefaultValue();
+
+            LocationRepository locationRepository = new LocationRepository();
+            TourRepository tourRepository = new TourRepository();
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+
+            tourKeyPointDtos = new List<TourKeyPointDto>();
+            tourKeyPoints = new List<TourKeyPoint>();
+            tourGuidences = new List<TourGuidence>();
+            tourGuidenceDtos = new List<TourGuidenceDto>();
+
+            TourDates = new List<DateTime>();
+            KeyPointLocation = new List<Location>();
+            //Location = null;
+
+            Country = Location.Country;
+            City = Location.City;
+            tbCountry.IsReadOnly = true;
+            tbCity.IsReadOnly = true;
+            tbCity.Text = Location.City;
+            tbCountry.Text = Location.Country;
+            date.Text = DateTime.Now.Date.ToString();
+
+            Years = new List<string>();
+            Years.Add("ENGLISH");
+            Years.Add("SERBIAN");
+            Years.Add("GERMAN");
+            Years.Add("MANDARINSKI");
+            SelectedYear = "ENGLISH";
+        }
+
+        public GuideCreateNewTour(string guide, Language language)
+        {
+            InitializeComponent();
+            DataContext = this;
+            Guide = guide;
+            Images = new ObservableCollection<string>();
+            SelectedImage = string.Empty;
+            SetDefaultValue();
+
+            LocationRepository locationRepository = new LocationRepository();
+            TourRepository tourRepository = new TourRepository();
+            TourKeyPointRepository tourKeyPointRepository = new TourKeyPointRepository();
+            TourGuidenceRepository tourGuidenceRepository = new TourGuidenceRepository();
+
+            tourKeyPointDtos = new List<TourKeyPointDto>();
+            tourKeyPoints = new List<TourKeyPoint>();
+            tourGuidences = new List<TourGuidence>();
+            tourGuidenceDtos = new List<TourGuidenceDto>();
+
+            TourDates = new List<DateTime>();
+            KeyPointLocation = new List<Location>();
+            Location = null;
+
+            //Languages = language;
+            //tbLanguages.IsReadOnly = true;
+            //tbLanguages.Text = Languages.ToString();
+            date.Text = DateTime.Now.Date.ToString();
+
+            Years = new List<string>();
+            Years.Add("ENGLISH");
+            Years.Add("SERBIAN");
+            Years.Add("GERMAN");
+            Years.Add("MANDARINSKI");
+            SelectedYear = language.ToString();
+            cb1.IsEnabled = false;
         }
 
         private void SetDefaultValue()
@@ -304,6 +457,7 @@ namespace InitialProject.View
             sliderLatitude.Value = 0;
             sliderLongitude.Value = 0;
             tbMaxGuests.Text = string.Empty;
+            //tbLanguages.Text = string.Empty;
             //tbLanguages.Text = "ALL";
         }
 
@@ -567,7 +721,7 @@ namespace InitialProject.View
                 }
 
 
-                TourDto tourDto = new TourDto(TourName, location, Description, Languages, maxGuests, Duration, Images.ToList(), Guide);
+                TourDto tourDto = new TourDto(TourName, location, Description, (Language)Enum.Parse(typeof(Language), SelectedYear), maxGuests, Duration, Images.ToList(), Guide);
                 Tour tour = tourRepository.Save(tourDto);
 
 
@@ -589,7 +743,10 @@ namespace InitialProject.View
 
                 MessageBox.Show("New tour has been successfully added.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                GuideCreateNewTour window = new GuideCreateNewTour(Guide);
+                window.Show();
                 Close();
+                //Close();
             }
         }
 
@@ -620,6 +777,20 @@ namespace InitialProject.View
         private bool CheckErrorAllFieldsFilled()
         {
             return string.IsNullOrEmpty(TourName) || string.IsNullOrEmpty(Country) || string.IsNullOrEmpty(City) || string.IsNullOrEmpty(Address) || MaxGuests<=0  || Duration <= 0 || string.IsNullOrEmpty(Languages.ToString()) || string.IsNullOrEmpty(Description) || tourGuidenceDtos.Count==0 || tourKeyPointDtos.Count==0 ; // || !MinDaysReservation.HasValue || !LeftCancelationDays.HasValue;
+        }
+
+        private void GoToCreateNewTour(object sender, RoutedEventArgs e)
+        {
+            GuideCreateNewTour window = new GuideCreateNewTour(Guide);
+            window.Show();
+            Close();
+        }
+
+        private void GoToTourRequests(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests(Guide);
+            window.Show();
+            Close();
         }
     }
 }

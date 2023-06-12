@@ -7,9 +7,94 @@
         mc:Ignorable="d"
         Title="Key Points" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
-    <Grid>
 
-        <TextBlock Text="Key Points for Tour1" Margin="50,40,10,0" FontSize="20" FontWeight="Bold" />
+
+    <Window.Resources>
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Yellow" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <!-- Add more setters for other properties as needed -->
+        </Style>
+    </Window.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Menu column -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content column -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Menu -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0">
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <StackPanel>
+                    <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
+                    <MenuItem Header="Profile" Margin="0,5,0,0"/>
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToCreateNewTour" />
+                    <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
+                    <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
+                </StackPanel>
+                <Grid>
+                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Margin="0,411,0,-401"  Width="80">
+                        <Button Content="LOG OUT" Click="GoToLogout"/>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+
+        <!-- Main content -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
+            <Grid Grid.Column="1">
+                <TextBlock Text="Key Points for Tour1" Margin="50,40,10,0" FontSize="20" FontWeight="Bold" />
+
+                <DataGrid x:Name="dataGridKP" ItemsSource="{Binding tourKeyPoints}" CanUserAddRows="False" Height="NaN" Margin="453,234,452,210"  AutoGenerateColumns="False" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Key Point Name" Binding="{Binding KeyPointName}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridCheckBoxColumn Header="SELECT" Binding="{Binding Passed}" Width="50"/>
+                        <DataGridTemplateColumn Header="Button" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="add guests" HorizontalAlignment="Center" Click="GoToMarkGuests"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Label Content="Please select which key point You have reached" HorizontalAlignment="Center" Margin="0,96,0,0" VerticalAlignment="Top"/>
+                <Label Content="Selecting last key point You will finish Tour " HorizontalAlignment="Center" Margin="0,143,0,0" VerticalAlignment="Top" Width="240" RenderTransformOrigin="0.525,0.425"/>
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="207,640,0,0" VerticalAlignment="Top" Height="30" Width="97">
+                    <Button Content="Confirm"  Click="SaveCheckedKeyPoints"/>
+                </Border>
+
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="922,640,0,0" VerticalAlignment="Top" Height="30" Width="97">
+                    <Button Content="Finish"  Click="FinishTourGuidence"/>
+                </Border>
+                
+
+            </Grid>
+        </Border>
+
+
+
+    </Grid>
+
+
+
+    <!--<TextBlock Text="Key Points for Tour1" Margin="50,40,10,0" FontSize="20" FontWeight="Bold" />
 
         <DataGrid x:Name="dataGridKP" ItemsSource="{Binding tourKeyPoints}" CanUserAddRows="False" Height="NaN" Margin="453,234,452,210"  AutoGenerateColumns="False" >
             <DataGrid.Columns>
@@ -33,7 +118,6 @@
         <Label Content="Please select which key point You have reached" HorizontalAlignment="Center" Margin="0,96,0,0" VerticalAlignment="Top"/>
         <Label Content="Selecting last key point You will finish Tour " HorizontalAlignment="Center" Margin="0,143,0,0" VerticalAlignment="Top" Width="240" RenderTransformOrigin="0.525,0.425"/>
         <Button Content="Confirm" HorizontalAlignment="Left" Margin="387,649,0,0" VerticalAlignment="Top" Height="40" Width="91" Click="SaveCheckedKeyPoints"/>
-        <Button Content="Finish" HorizontalAlignment="Left" Margin="922,644,0,0" VerticalAlignment="Top" Height="40" Width="91" Click="FinishTourGuidence"/>
+        <Button Content="Finish" HorizontalAlignment="Left" Margin="922,644,0,0" VerticalAlignment="Top" Height="40" Width="91" Click="FinishTourGuidence"/>-->
 
-    </Grid>
 </Window>

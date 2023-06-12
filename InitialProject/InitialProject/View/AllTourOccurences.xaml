@@ -32,10 +32,10 @@
                 <StackPanel>
                     <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
                     <MenuItem Header="Profile" Margin="0,5,0,0"/>
-                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToCreateNewTour"/>
                     <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
                     <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
-                    <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
                 </StackPanel>
                 <Grid>
                     <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
@@ -82,44 +82,70 @@
                     <Label Content="To: " FontSize="10" HorizontalAlignment="Left" Margin="368,1,0,1" Width="36"/>
 
                     <Border BorderBrush="Black" BorderThickness="1" Margin="62,0,372,0">
-                        <DatePicker x:Name="fromDatePicker"  SelectedDate="{Binding SelectedFromDate, Mode=TwoWay}"/>
+                        <DatePicker x:Name="fromDatePicker"  SelectedDate="{Binding SelectedFromDate, Mode=TwoWay}">
+                                    <DatePicker.Resources>
+                                        <Style TargetType="DatePickerTextBox">
+                                            <Setter Property="IsReadOnly" Value="True"/>
+                                        </Style>
+                                    </DatePicker.Resources>
+                                </DatePicker>
                     </Border>
 
                     <Border Margin="405,0,27,0" BorderBrush="Black" BorderThickness="1">
-                        <DatePicker x:Name="toDatePicker"  SelectedDate="{Binding SelectedToDate, Mode=TwoWay}"/>
-                    </Border>
+                                <DatePicker x:Name="toDatePicker"  SelectedDate="{Binding SelectedToDate, Mode=TwoWay}">
+                                    <DatePicker.Resources>
+                                        <Style TargetType="DatePickerTextBox">
+                                            <Setter Property="IsReadOnly" Value="True"/>
+                                        </Style>
+                                    </DatePicker.Resources>
+                                </DatePicker>
+                            </Border>
 
                     </Grid>
                 </Border>
 
             </Grid>
 
-            <Button Content="APPLY FILTER" Margin="736,77,346,617" Click="ApplyDateFilters">
+                <Button Content="Apply Filter" Width="126" Height="30" HorizontalAlignment="Center" Margin="200,80,0,0" VerticalAlignment="Top" Click="ApplyDateFilters">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="Black"/>
                 </Button.BorderBrush>
                 <Button.BorderThickness>
-                    <Thickness>2</Thickness>
+                        <Thickness>1</Thickness>
                 </Button.BorderThickness>
                     <!--<Button.ToolTip>
                         <ToolTip>You can choose date range for filter</ToolTip>
                     </Button.ToolTip>-->
                 </Button>
-            
-            
 
 
-            <Button Content="OPTIONS" HorizontalAlignment="Left" Margin="1030,636,0,0" VerticalAlignment="Top" Height="47" Width="126" Click="OptionButton">
+                <Button Content="Generate Report" Click="GeneratePDF" Width="126" Height="47" HorizontalAlignment="Left" Margin="50,636,0,0" VerticalAlignment="Top" >
+                    <Button.BorderBrush>
+                        <SolidColorBrush Color="Black"/>
+                    </Button.BorderBrush>
+                    <Button.BorderThickness>
+                        <Thickness>1</Thickness>
+                    </Button.BorderThickness>
+                </Button>
+
+
+                <Button Content="Options" HorizontalAlignment="Left" Margin="1030,636,0,0" VerticalAlignment="Top" Height="47" Width="126" Click="OptionButton">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="Black"/>
                 </Button.BorderBrush>
                 <Button.BorderThickness>
-                    <Thickness>2</Thickness>
+                        <Thickness>1</Thickness>
                 </Button.BorderThickness>
                     <!--<Button.ToolTip>
                         <ToolTip>When clicked, it will appear details about tour</ToolTip>
                     </Button.ToolTip>-->
                 </Button>
+
+                <!--<Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="50,636,0,0" VerticalAlignment="Top" Height="47" Width="126">
+                    <Button Content="Generate report" Click="GeneratePDF"/>
+                </Border>-->
+
+                
 
 
             <!--<Label Content="Please select one tour and click OPTIONS button in right bottom corner for more details" HorizontalAlignment="Left" Margin="50,173,0,0" VerticalAlignment="Top" Width="481"/>-->

@@ -183,7 +183,7 @@ namespace InitialProject.View
 
         private void GoToSearchAndShowTourRequests(object sender, RoutedEventArgs e)
         {
-            SearchAndShowTourRequests window = new SearchAndShowTourRequests();
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests(Guide);
             window.Show();
         }
 
@@ -195,7 +195,7 @@ namespace InitialProject.View
 
         private void GoToTourRequests(object sender, RoutedEventArgs e)
         {
-            SearchAndShowTourRequests window = new SearchAndShowTourRequests();
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests(Guide);
             window.Show();
         }
 

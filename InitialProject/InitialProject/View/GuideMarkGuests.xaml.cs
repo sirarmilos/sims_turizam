@@ -66,9 +66,7 @@ namespace InitialProject.View
 
         private void GoToBack(object sender, RoutedEventArgs e)
         {
-            GuideMarkKeyPoints window = new GuideMarkKeyPoints(TourGuidence, Guide);
             this.Close();
-            window.Show();
         }
 
         private void GoToAddGuest(object sender, RoutedEventArgs e)
@@ -77,6 +75,59 @@ namespace InitialProject.View
             Dto.ReservationDisplayDto selectedItem = (Dto.ReservationDisplayDto)allGuests.SelectedItem;
             users.Add(userService.FindByUsername(selectedItem.userId));
             addedGuest.ItemsSource = users;
+        }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
+        private void GoToMostPopularTour(object sender, RoutedEventArgs e)
+        {
+            ShowMostPopularTour window = new ShowMostPopularTour();
+            window.Show();
+            Close();
+        }
+
+        private void GoToAllTourOccurences(object sender, RoutedEventArgs e)
+        {
+            AllTourOccurences window = new AllTourOccurences();
+            window.Show();
+            Close();
+        }
+
+        private void GoToHomePage(object sender, RoutedEventArgs e)
+        {
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+            TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+            if (tg != null)
+            {
+                GuideStart2 window = new GuideStart2(Guide, tg);
+                window.Show();
+                Close();
+            }
+            else
+            {
+                GuideStart1 window = new GuideStart1(Guide);
+                window.Show();
+                Close();
+            }
+        }
+
+        private void GoToCreateNewTour(object sender, RoutedEventArgs e)
+        {
+            GuideCreateNewTour window = new GuideCreateNewTour(Guide);
+            window.Show();
+            Close();
+        }
+
+        private void GoToTourRequests(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests(Guide);
+            window.Show();
+            Close();
         }
     }
 }

@@ -82,17 +82,21 @@ namespace InitialProject.View
                 window.Show();
             }
             else*/
+            try
             {
                 TourGuidence selectedItem = (TourGuidence)dgStart1.SelectedItem;
                 tourGuidenceService.UpdateStartedField(selectedItem.Id);
                 MessageBox.Show("Tour successfully started");
-                selectedItem = tourGuidenceService.FindById(selectedItem.Id);   
+                selectedItem = tourGuidenceService.FindById(selectedItem.Id);
                 //ShowKeyPointsInStartedTourGuidence window = new(TourGuidence, TourGuidences);
                 GuideStart2 window = new GuideStart2(Guide, selectedItem);
                 window.Show();
                 this.Close();
                 //window.Show();
-                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("You did not select any tour!");
             }
         }
 
@@ -120,7 +124,7 @@ namespace InitialProject.View
             }
         }
 
-        private void PdfClick(object sender, RoutedEventArgs e)
+        /*private void PdfClick(object sender, RoutedEventArgs e)
         {
             // Create a new PDF document
             Document document = new Document();
@@ -138,7 +142,7 @@ namespace InitialProject.View
             MessageBox.Show("PDF Created!");
 
 
-        }
+        }*/
 
         private void GoToAddNewTour(object sender, RoutedEventArgs e)
         {
@@ -147,6 +151,12 @@ namespace InitialProject.View
             Close();
         }
 
+        private void GoToTourRequests(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests(Guide);
+            window.Show();
+            Close();
+        }
 
     }
 }

@@ -23,7 +23,13 @@
 	<None Remove="Resources\Images\wizard_help.png" />
 	<None Remove="Resources\Images\quidehomescreen1.png" />
 	<None Remove="Resources\Images\quidehomescreen2.png" />
-	<None Remove="Resources\Images\main_menu.png" />  
+	<None Remove="Resources\Images\main_menu.png" />
+	<None Remove="Resources\Images\tour1.jpg" />
+	<None Remove="Resources\Images\tour2.jpg" />
+	<None Remove="Resources\Images\tour3.jpg" />
+	<None Remove="Resources\Images\tour4.jpg" />
+	<None Remove="Resources\Images\tour5.jpg" />
+	<None Remove="Resources\Images\tour6.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -74,6 +80,12 @@
 	<Resource Include="Resources\Images\main_menu.png">
 		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</Resource>
+	<Resource Include="Resources\Images\tour1.jpg" />
+    <Resource Include="Resources\Images\tour2.jpg" />
+	<Resource Include="Resources\Images\tour3.jpg" />
+	<Resource Include="Resources\Images\tour4.jpg" />
+	<Resource Include="Resources\Images\tour5.jpg" />
+	<Resource Include="Resources\Images\tour6.jpg" />
   </ItemGroup>
 
   <ItemGroup>

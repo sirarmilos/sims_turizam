@@ -3,6 +3,7 @@ using InitialProject.Model;
 using InitialProject.Repository;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace InitialProject.Service
 
             foreach (RateGuide rate in rates)
             {
-                if (rate.GuideId == guide)
+                /*if (rate.GuideId == guide)
                 {
                     Dto.RateGuideDisplayDto rateGuide = new Dto.RateGuideDisplayDto();
                     TourReservation tourReservation = tourReservationService.FindByGuestAndGuidence(rate.UserId, rate.tourGuidenceId);
@@ -54,7 +55,18 @@ namespace InitialProject.Service
                     rateGuide.OrderNumberKeyPoint = counter;
 
                     retVal.Add(rateGuide);
-                }
+                }*/
+                Dto.RateGuideDisplayDto rateGuide = new Dto.RateGuideDisplayDto();
+                rateGuide.UserId = rate.UserId;
+                rateGuide.tourGuidenceId = rate.tourGuidenceId;
+                rateGuide.GuideKnowledge = rate.GuideKnowledge;
+                rateGuide.GuideLanguage = rate.GuideLanguage;
+                rateGuide.TourExperience = rate.TourExperience;
+                rateGuide.Comment = rate.Comment;
+                rateGuide.Valid = rate.Valid;
+                rateGuide.OrderNumberKeyPoint = 2;
+
+                retVal.Add(rateGuide);
             }
             return retVal;
 

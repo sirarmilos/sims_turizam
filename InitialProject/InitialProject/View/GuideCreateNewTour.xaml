@@ -38,13 +38,13 @@
                 <StackPanel>
                     <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
                     <MenuItem Header="Profile" Margin="0,5,0,0"/>
-                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToCreateNewTour"/>
                     <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
                     <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
-                    <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
                 </StackPanel>
                 <Grid>
-                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
+                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,475,0,-465" Click="GoToLogout" Width="80"/>
                 </Grid>
             </StackPanel>
         </Border>
@@ -67,13 +67,12 @@
                     </Image>
 
 
-                    <Button Height="20" Margin="523,193,584,619" Click="AddDateToList" Content="Add Date"/>
-                    <Button Height="20" Margin="502,234,605,578" Click="AddTourKeyPoints" Content="Add Key Point"/>
+                    <Button Height="30" Width="97" Margin="860,147,1032,859" Click="AddDateToList" Content="Add Date"/>
 
 
 
 
-                    <Button Content="CREATE" HorizontalAlignment="Left" VerticalAlignment="Top" Width="192" Height="46" Margin="468,660,0,0" Click="SaveTour"/>
+                    <Button Content="CREATE" HorizontalAlignment="Left" VerticalAlignment="Top" Width="192" Height="46" Margin="509,742,0,0" Click="SaveTour"/>
                     <TextBox HorizontalAlignment="Left" Margin="73,81,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="322" Height="307" IsReadOnly="True" />
                     <Label Content="Name:"  HorizontalAlignment="Left" Margin="95,119,0,0" VerticalAlignment="Top" Width="56" Height="23"/>
                     <Label Content="Language:" HorizontalAlignment="Left" Margin="95,155,0,0" VerticalAlignment="Top" Width="71" Height="30"/>
@@ -81,9 +80,10 @@
                     <Label Content="Duration:" HorizontalAlignment="Left" Margin="95,228,0,0" VerticalAlignment="Top" Width="60" Height="23"/>
                     <Label Content="Description:" HorizontalAlignment="Left" Margin="95,268,0,0" VerticalAlignment="Top" Width="82" Height="23"/>
                     <TextBox x:Name="tbName" Text="{Binding Path=TourName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="245,125,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96"/>
-                    <TextBox x:Name="tbLanguages" Text="{Binding Path=Languages, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="245,160,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96"/>
+                    <!--<TextBox x:Name="tbLanguages" Text="{Binding Path=Languages, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="245,160,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96"/>-->
+                    <ComboBox x:Name="cb1" Margin="245,155,1648,859" ItemsSource="{Binding Years, Mode=TwoWay}" SelectedItem="{Binding SelectedYear}"/>
                     <!--<TextBox HorizontalAlignment="Left" Margin="245,195,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96"/>-->
-                    <TextBox x:Name="tbMaxGuests" PreviewTextInput="AllowOnlyDigits" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="96" Margin="245,194,0,0">
+                    <TextBox x:Name="tbMaxGuests" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="96" Margin="245,194,0,0">
                         <TextBox.Text>
                             <Binding Path="MaxGuests" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
@@ -112,7 +112,7 @@
 
                     <!--<TextBox x:Name="tbDuration" HorizontalAlignment="Left" Margin="245,230,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96"/>-->
 
-                    <TextBox x:Name="tbDuration" PreviewTextInput="AllowOnlyDigits" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="96" Margin="245,231,0,0">
+                    <TextBox x:Name="tbDuration" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="96" Margin="245,231,0,0">
                         <TextBox.Text>
                             <Binding Path="Duration" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
@@ -146,8 +146,8 @@
                     <Label Content="City:" HorizontalAlignment="Left" Margin="95,490,0,0" VerticalAlignment="Top" Width="71" Height="27"/>
                     <Label Content="Address:" HorizontalAlignment="Left" Margin="95,527,0,0" VerticalAlignment="Top" Width="71" Height="23"/>
                     <Label Content="Latitude:" HorizontalAlignment="Left" Margin="95,561,0,0" VerticalAlignment="Top" Width="56" Height="23"/>
-                    <TextBox x:Name="tbLatitude" Text="{Binding ElementName=sliderLatitude, Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={cvt:DecimalStringConverter}}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="28" IsReadOnly="True" Margin="352,0,0,252"/>
-                    <Slider x:Name="sliderLatitude" Minimum="-90" Maximum="90" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="5" Foreground="Blue" ValueChanged="SliderLatitudeValueChange" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="96" Margin="243,0,0,238"/>
+                    <TextBox x:Name="tbLatitude" Text="{Binding ElementName=sliderLatitude, Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={cvt:DecimalStringConverter}}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="28" IsReadOnly="True" Margin="352,0,0,450"/>
+                    <Slider x:Name="sliderLatitude" Minimum="-90" Maximum="90" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="5" Foreground="Blue" ValueChanged="SliderLatitudeValueChange" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="96" Margin="240,0,0,440"/>
 
                     <TextBox x:Name="tbCountry" Text="{Binding Path=Country, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="245,460,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96"/>
                     <TextBox x:Name="tbCity" Text="{Binding Path=City, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="245,495,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96"/>
@@ -155,19 +155,18 @@
                     <!--<TextBox HorizontalAlignment="Left" Margin="245,565,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96"/>-->
                     <Label Content="Longitude:" HorizontalAlignment="Left" Margin="95,595,0,0" VerticalAlignment="Top" Width="71" Height="27"/>
                     <!--<TextBox HorizontalAlignment="Left" Margin="245,600,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96"/>-->
-                    <TextBox x:Name="tbLongitude" Text="{Binding ElementName=sliderLongitude, Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={cvt:DecimalStringConverter}}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="28" IsReadOnly="True" Margin="352,0,0,212"/>
-                    <Slider x:Name="sliderLongitude" Minimum="-180" Maximum="180" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="10" Foreground="Blue" ValueChanged="SliderLongitudeValueChange" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="94" Margin="245,0,0,198"/>
+                    <TextBox x:Name="tbLongitude" Text="{Binding ElementName=sliderLongitude, Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={cvt:DecimalStringConverter}}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="28" IsReadOnly="True" Margin="352,0,0,412"/>
+                    <Slider x:Name="sliderLongitude" Minimum="-180" Maximum="180" IsSnapToTickEnabled="True" TickPlacement="BottomRight" TickFrequency="10" Foreground="Blue" ValueChanged="SliderLongitudeValueChange" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="94" Margin="242,0,0,400"/>
 
 
-                    <TextBox HorizontalAlignment="Left" Margin="782,81,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="198" IsReadOnly="True" Height="49"/>
-                    <DatePicker x:Name="date" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="129" FontSize="13" SelectedDate="{Binding TourDate, Mode=TwoWay}" Margin="820,93,0,0">
+                    <TextBox HorizontalAlignment="Left" Margin="776,81,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="288" IsReadOnly="True" Height="49"/>
+                    <DatePicker x:Name="date" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="129" FontSize="13" SelectedDate="{Binding TourDate, Mode=OneWayToSource}" Margin="852,93,0,0">
                         <DatePicker.Resources>
                             <Style TargetType="DatePickerTextBox">
                                 <Setter Property="IsReadOnly" Value="True"/>
                             </Style>
                         </DatePicker.Resources>
                     </DatePicker>
-                    <Button Content="Confirm Date" HorizontalAlignment="Left" Margin="1038,91,0,0" VerticalAlignment="Top" Width="90" Height="30"/>
 
                     <Grid x:Name="textBoxContainer" HorizontalAlignment="Left" Margin="782,181,0,0">
 
@@ -177,20 +176,21 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <TextBox x:Name="box3" HorizontalAlignment="Center" VerticalAlignment="Top" Width="292" Height="162" IsReadOnly="True" Margin="0,-23,0,0"/>
-                        <Label x:Name="lab1" Content="Name:" HorizontalAlignment="Left" Margin="30,0,0,0" VerticalAlignment="Top" Width="56" Height="29"/>
-                        <Label x:Name="lab2" Content="Country:" HorizontalAlignment="Left" Margin="30,30,0,0" VerticalAlignment="Top" Width="71" Height="26"/>
-                        <Label x:Name="lab3" Content="City:" HorizontalAlignment="Left" Margin="30,60,0,0" VerticalAlignment="Top" Width="71" Height="30"/>
-                        <Label x:Name="lab4" Content="Address:" HorizontalAlignment="Left" Margin="30,90,0,0" VerticalAlignment="Top" Width="56" Height="23"/>
-                        <TextBox x:Name="tx1" Text="{Binding Path=KeyPointName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="180,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
-                        <TextBox x:Name="tx2" Text="{Binding Path=KeyPointCountry, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="180,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
-                        <TextBox x:Name="tx3" Text="{Binding Path=KeyPointCity, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="180,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
-                        <TextBox x:Name="tx4" Text="{Binding Path=KeyPointAddress, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="180,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
+                        <TextBox x:Name="box3" HorizontalAlignment="Left" VerticalAlignment="Top" Width="292" Height="212" IsReadOnly="True" Margin="-6,48,0,0" Grid.RowSpan="2"/>
+                        <Label x:Name="lab1" Content="Name:" HorizontalAlignment="Left" Margin="24,71,0,0" VerticalAlignment="Top" Width="56" Height="29"/>
+                        <Label x:Name="lab2" Content="Country:" HorizontalAlignment="Left" Margin="24,101,0,0" VerticalAlignment="Top" Width="71" Height="26"/>
+                        <Label x:Name="lab3" Content="City:" HorizontalAlignment="Left" Margin="24,131,0,0" VerticalAlignment="Top" Width="71" Height="30"/>
+                        <Label x:Name="lab4" Content="Address:" HorizontalAlignment="Left" Margin="24,161,0,0" VerticalAlignment="Top" Width="56" Height="23"/>
+                        <TextBox x:Name="tx1" Text="{Binding Path=KeyPointName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="174,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
+                        <TextBox x:Name="tx2" Text="{Binding Path=KeyPointCountry, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="174,-630,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="96"/>
+                        <TextBox x:Name="tx3" Text="{Binding Path=KeyPointCity, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="174,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
+                        <TextBox x:Name="tx4" Text="{Binding Path=KeyPointAddress, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="AllowOnlyCharacters" HorizontalAlignment="Left" Margin="174,161,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96"/>
+                        <Button Height="30" Width="97" Margin="86,218,1022,603" Click="AddTourKeyPoints" Content="Add Key Point"/>
                     </Grid>
-                    <Button Content="New Key Point" HorizontalAlignment="Left" Margin="1098,258,0,0" VerticalAlignment="Top" Width="90" Height="30" Click="PlaceNewKeyPoint"/>
-                    <Button Content="Upload Image" HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Height="29" Margin="83,683,0,0" Click="ChooseImage" />
+                    <!--<Button Content="New Key Point" HorizontalAlignment="Left" Margin="1098,258,0,0" VerticalAlignment="Top" Width="90" Height="30" Click="PlaceNewKeyPoint"/>-->
+                    <Button Content="Upload Image" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Height="30" Margin="1096,543,0,0" Click="ChooseImage" />
 
-                    <DataGrid x:Name="dgImages" LoadingRow="LoadingRowForDgImages" ItemsSource="{Binding Images, Mode=OneWay}" SelectedItem="{Binding Path=SelectedImage, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RemoveImageButtonEnable" HorizontalAlignment="Left" Height="90" VerticalAlignment="Top" Width="200" Margin="460,370,0,0">
+                    <DataGrid x:Name="dgImages" LoadingRow="LoadingRowForDgImages" ItemsSource="{Binding Images, Mode=OneWay}" SelectedItem="{Binding Path=SelectedImage, Mode=TwoWay}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" SelectionChanged="RemoveImageButtonEnable" HorizontalAlignment="Left" Height="121" VerticalAlignment="Top" Width="273" Margin="782,629,0,0">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="Images" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -202,10 +202,14 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Button x:Name="buttonAddImage" Content="Add image" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="125" Click="AddImageToList" Margin="406,706,0,0"/>
-                    <TextBox x:Name="tbImage" Text="{Binding Path=Image, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="273" Margin="83,0,0,62"/>
-                    <Button x:Name="buttonRemoveImage" Content="Remove image" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="125" Click="RemoveImageFromList" Margin="502,292,0,0"/>
-
+                    <Button x:Name="buttonAddImage" Content="Add image" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="97" Click="AddImageToList" Margin="782,583,0,0"/>
+                    <TextBox x:Name="tbImage" Text="{Binding Path=Image, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom" Width="273" Margin="780,0,0,468"/>
+                    <Button x:Name="buttonRemoveImage" Content="Remove image" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="97" Click="RemoveImageFromList" Margin="958,583,0,0"/>
+                    <Label Margin="73,57,1752,956" Content="Basic Info"/>
+                    <Label Margin="73,411,1752,602" Content="Location Info"/>
+                    <Label Margin="773,207,1052,806" Content="Key Points "/>
+                    <Label Margin="783,527,1042,486" Content="Images "/>
+                    <Label Margin="773,60,1052,953" Content="Date"/>
 
 
 

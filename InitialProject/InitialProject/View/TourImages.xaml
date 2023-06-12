@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
+        xmlns:vm="clr-namespace:InitialProject.ViewModel"
         mc:Ignorable="d"
         Title="Tour Images" Height="775" Width="1400"
         WindowStartupLocation="CenterScreen">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -20,28 +22,38 @@
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
                 <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                 <StackPanel>
-                    <MenuItem Header="Home Page" Margin="0,25,0,0"/>
+                    <MenuItem Header="Home Page" Margin="0,25,0,0" />
+                    <MenuItem Header="Profile" Margin="0,5,0,0" />
                     <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
-                    <MenuItem Header="Profile" Margin="0,5,0,0"/>
-                    <MenuItem Header="Future Tours" Margin="0,5,0,0"/>
-                    <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
-                    <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
+                    <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Command="{Binding AllTourOccurencesCommand}"/>
+                    <MenuItem Header="Most Popular Tour" Command="{Binding MostPopularTourCommand}" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" />
                 </StackPanel>
                 <Grid>
-                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
+                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Command="{Binding LogoutCommand}" Width="80"/>
                 </Grid>
             </StackPanel>
         </Border>
-        
+
 
 
         <!-- Main content -->
         <Grid Grid.Column="1">
-            <Button Content="BACK" HorizontalAlignment="Left" Margin="98,655,0,0" VerticalAlignment="Top" Height="38" Width="97" Click="GoToPreviousWindow"/>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="40,655,0,0" VerticalAlignment="Top" Height="38" Width="97">
+                <Button Content="BACK" Command="{Binding PreviousWindowCommand}"/>
+            </Border>
+            
             <!--<Image Source="https://www.google.rs/url?sa=i&url=https%3A%2F%2Fwww.trolleytours.com%2F&psig=AOvVaw14BD9b1QHJypaKrt2InEYB&ust=1684169541936000&source=images&cd=vfe&ved=0CA4QjRxqFwoTCLjsqs2i9f4CFQAAAAAdAAAAABAD" Width="300" Height="200" Margin="50" />
             <Image Source="https://example.com/image1.jpg" Width="300" Height="200" Margin="400,50,50,0" />
             <Image Source="https://example.com/image1.jpg" Height="200" Margin="50,300,50,0" />
             <Image Source="https://example.com/image1.jpg" Width="300" Height="200" Margin="400,300,50,0" />-->
+            <Image Source="/Resources/Images/tour1.jpg" Width="325" HorizontalAlignment="Left" Margin="40,63,0,480"/>
+            <Image Source="/Resources/Images/tour2.jpg" Width="325" HorizontalAlignment="Left" Margin="440,61,0,479"/>
+            <Image Source="/Resources/Images/tour3.jpg" Width="325" HorizontalAlignment="Left" Margin="840,61,0,479"/>
+            
+            <Image Source="/Resources/Images/tour4.jpg" Width="325" HorizontalAlignment="Left" Margin="40,363,0,178"/>
+            <Image Source="/Resources/Images/tour5.jpg" Width="325" HorizontalAlignment="Left" Margin="440,363,0,178"/>
+            <Image Source="/Resources/Images/tour6.jpg" Width="302" HorizontalAlignment="Left" Margin="840,363,0,179"/>
         </Grid>
 
 

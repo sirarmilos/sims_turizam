@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="CreateTourForRequestStatistics" Height="400" Width="300">
+        Title="CreateTourForRequestStatistics" Height="200" Width="200"
+        WindowStartupLocation="CenterScreen">
     <Grid>
-        <Label Content="Choose option to create Tour from request &#xD;&#xA;statistics." HorizontalAlignment="Left" Margin="42,52,0,0" VerticalAlignment="Top" Width="239" Height="40"/>
-        <Button Content="LOCATION" HorizontalAlignment="Left" Margin="42,187,0,0" VerticalAlignment="Top" Click="MostPopularLocationTourRequest"/>
-        <Button Content="LANGUAGE" HorizontalAlignment="Left" Margin="203,187,0,0" VerticalAlignment="Top" Click="MostPopularLanguageTourRequest"/>
+        <Label Content="Choose option to create Tour &#x0a;from request statistics" HorizontalAlignment="Center" Margin="0,26,0,0" VerticalAlignment="Top" Width="179" Height="40"/>
+        <Button Content="LOCATION" HorizontalAlignment="Left" Margin="16,116,0,0" VerticalAlignment="Top" Click="MostPopularLocationTourRequest"/>
+        <Button Content="LANGUAGE"  HorizontalAlignment="Left" Margin="105,116,0,0" VerticalAlignment="Top" Click="MostPopularLanguageTourRequest"/>
 
     </Grid>
 </Window>

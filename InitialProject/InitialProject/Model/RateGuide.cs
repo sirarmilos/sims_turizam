@@ -40,7 +40,7 @@ namespace InitialProject.Model
 
         public string[] ToCSV()
         {
-            string imageToString = "";
+            /*string imageToString = "";
 
             foreach(string image in Images)
             {
@@ -51,9 +51,9 @@ namespace InitialProject.Model
             if (Images.Count>=1)
             {
                 imageToString = imageToString.Substring(0, imageToString.Length - 2);
-            }
+            }*/
 
-            string[] csvValues = { UserId.ToString(), GuideId.ToString(), tourGuidenceId.ToString(), GuideKnowledge.ToString(), GuideKnowledge.ToString(), TourExperience.ToString(), Comment.ToString(), imageToString.ToString(), Valid.ToString() };
+            string[] csvValues = { UserId.ToString(), GuideId.ToString(), tourGuidenceId.ToString(), GuideKnowledge.ToString(), GuideKnowledge.ToString(), TourExperience.ToString(), Comment.ToString(), /*imageToString.ToString(), */Valid.ToString() };
 
             return csvValues;
         }
@@ -69,7 +69,7 @@ namespace InitialProject.Model
             TourExperience = Convert.ToInt32(values[5]);
             Comment = values[6];
 
-            string[] ImagesSplit = values[7].Split(',');
+            /*string[] ImagesSplit = values[7].Split(',');
 
             List<string> images = new List<string>();
 
@@ -78,9 +78,9 @@ namespace InitialProject.Model
                 images.Add(image);
             }
 
-            Images = images;
+            Images = images;*/
 
-            Valid = Convert.ToBoolean(values[8]);
+            Valid = Convert.ToBoolean(values[7]);
         }
 
     }

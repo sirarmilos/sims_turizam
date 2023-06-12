@@ -33,10 +33,10 @@
                 <StackPanel>
                     <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
                     <MenuItem Header="Profile" Margin="0,5,0,0"/>
-                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" />
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToAddNewTour"/>
                     <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
                     <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
-                    <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
                 </StackPanel>
                 <Grid>
                     <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
@@ -125,7 +125,10 @@
 
 
 
-                <Button Content="BACK" HorizontalAlignment="Left" Margin="202,627,0,0" VerticalAlignment="Top" Height="38" Width="97" Click="GoToPreviousWindow"/>
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="202,627,0,0" VerticalAlignment="Top" Height="38" Width="97" >
+                    <Button Content="BACK" Click="GoToPreviousWindow"/>
+                </Border>
+                
                 <Label x:Name="Label1" Content="There are no guests for this key point" HorizontalAlignment="Left" Margin="790,585,0,0" VerticalAlignment="Top" Width="226"/>
 
 

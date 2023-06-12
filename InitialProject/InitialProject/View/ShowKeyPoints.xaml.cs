@@ -119,6 +119,20 @@ namespace InitialProject.View
             
         }
 
-        
+        private void GoToAddNewTour(object sender, RoutedEventArgs e)
+        {
+            GuideCreateNewTour window = new GuideCreateNewTour("Guide1");
+            window.Show();
+            Close();
+        }
+
+        private void GoToTourRequests(object sender, RoutedEventArgs e)
+        {
+            SearchAndShowTourRequests window = new SearchAndShowTourRequests("Guide1");
+            window.Show();
+            Close();
+        }
+
+
     }
 }

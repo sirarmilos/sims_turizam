@@ -44,7 +44,7 @@ namespace InitialProject.Service
             
         }
 
-        public List<double> GetVoucherPercentage(int tourId)
+        public double GetWithVoucherPercentage(int tourId)
         {
             List<double> retVal = new List<double>(new double[2]);
 
@@ -78,8 +78,46 @@ namespace InitialProject.Service
                 retVal[0] = Math.Round((withVoucher / count) * 100, 2);
                 retVal[1] = Math.Round((1 - (withVoucher / count)) * 100, 2);
             } 
-            return retVal;
+            return retVal[0];
         
+        }
+
+        public double GetWithoutVoucherPercentage(int tourId)
+        {
+            List<double> retVal = new List<double>(new double[2]);
+
+            TourGuidenceService tourGuidanceService = new TourGuidenceService();
+            TourReservationService tourReservationService = new TourReservationService();
+
+            List<TourGuidence> tourGuidences = tourGuidanceService.FindAll();
+
+            double withVoucher = 0, count = 0;
+
+            foreach (TourGuidence tg in tourGuidences)
+            {
+                if (tg.Finished == true && tg.Tour.Id == tourId)
+                {
+                    foreach (Model.TourReservation tr in tourReservationService.FindAll())
+                    {
+                        if (tg.Id == tr.tourGuidenceId && tr.Confirmed == true)
+                        {
+                            if (tr.VoucherId != 0)
+                            {
+                                withVoucher++;
+                            }
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            if (count != 0)
+            {
+                retVal[0] = Math.Round((withVoucher / count) * 100, 2);
+                retVal[1] = Math.Round((1 - (withVoucher / count)) * 100, 2);
+            }
+            return retVal[1];
+
         }
 
         public bool CheckForNewVoucher(string username)

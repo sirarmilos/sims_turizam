@@ -44,7 +44,7 @@ namespace InitialProject.View
             if (result == MessageBoxResult.Yes)
             {
                 Location location = tourRequestService.FindMostFrequentLocationInLastYear();
-                AddNewTour window = new AddNewTour(GuideUsername, location);
+                GuideCreateNewTour window = new GuideCreateNewTour(GuideUsername, location);
                 window.Show();
                 Close();
             }
@@ -61,7 +61,7 @@ namespace InitialProject.View
             if (result == MessageBoxResult.Yes)
             {
                 Language language = tourRequestService.FindMostFrequentLanguageInLastYear();
-                AddNewTour window = new AddNewTour(GuideUsername, language);
+                GuideCreateNewTour window = new GuideCreateNewTour(GuideUsername, language);
                 window.Show();
                 Close();
             }

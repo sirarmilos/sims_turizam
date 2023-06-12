@@ -5,91 +5,175 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InitialProject.View"
         mc:Ignorable="d"
-        Title="Search and show tour requests" Height="775" Width="1400">
-    <Grid Margin="0,0,0,-6">
+        Title="Search and show tour requests" Height="775" Width="1400"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Yellow" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <!-- Add more setters for other properties as needed -->
+        </Style>
+    </Window.Resources>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="299" />
-            <RowDefinition Height="3.281"/>
-            <RowDefinition Height="287.719"/>
 
-        </Grid.RowDefinitions>
-
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1100" />
-            <ColumnDefinition Width="950"/>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Menu column -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content column -->
         </Grid.ColumnDefinitions>
 
-        <!--<DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,281">
-            <Menu DockPanel.Dock ="Top">
-                <MenuItem Header="Home" Click="GoToGuest1Start"/>
-                <MenuItem Header="Create Review" Click="GoToCreateReview"/>
-                <MenuItem Header="My reservations" Click="GoToShowReservations"/>
-                <MenuItem Header="My requests" Click="GoToGuest1Requests"/>
-                <MenuItem Header="Logout" Click="GoToLogout"/>
-                <MenuItem x:Name="NotificationMenuItem" Background="Green" Header="You have notification!" Click="GoToGuest1Requests" Visibility="Collapsed"/>
-            </Menu>
-        </DockPanel>-->
 
-        <Button Content="Search"  Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Height="30" Click="Search"  Margin="45,240,703,0"/>
-        <TextBox PreviewTextInput="AllowOnlyDigits" Height="20" TextWrapping="Wrap" Text="{Binding GuestNumber,TargetNullValue=''}" Validation.ErrorTemplate="{x:Null}" Margin="27,214,738,65" Grid.Column="1" />
-        <TextBlock Grid.Column="1" Margin="102,108,808,169" Text="City" />
-        <TextBlock  Text="Country"  Grid.Column="1" Grid.Row="0" Margin="102,45,794,236"/>
-        <TextBox PreviewTextInput="AllowOnlyCharacters" TextWrapping="Wrap" Height="20" Text="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}"  Grid.Column="1" Grid.Row="0" Margin="27,130,738,149"  />
-        <TextBox PreviewTextInput="AllowOnlyCharacters" TextWrapping="Wrap" Text="{Binding Path=Country, UpdateSourceTrigger=PropertyChanged}"  Grid.Column="1" Grid.Row="0" Height="20" Margin="27,78,738,201" />
-        <TextBlock  Text="Language"  Grid.Column="1" Grid.Row="2" Margin="80,10,738,260"/>
-        <TextBox PreviewTextInput="AllowOnlyCharacters" TextWrapping="Wrap" Text="{Binding Path=Jezik, UpdateSourceTrigger=PropertyChanged}" Height="20" Margin="27,33,738,235" Grid.Column="1" Grid.Row="2"/>
-        <TextBlock Grid.Column="1" Text="Number of Guests" Margin="61,193,794,90"/>
 
-        <DataGrid SelectionUnit="FullRow"  Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" x:Name="ListTourRequests" Margin="40,40,40,150" CanUserAddRows="False" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="False" SelectionMode="Single">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Guest2 Name" Binding="{Binding User.Username}" Width="140">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+        <!-- Menu -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0">
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <StackPanel>
+                    <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
+                    <MenuItem Header="Profile" Margin="0,5,0,0"/>
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToAddNewTour"/>
+                    <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
+                    <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" />
+                </StackPanel>
+                <Grid>
+                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+
+        <!-- Main content -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
+            <Grid Grid.Column="1">
+
+                <TextBlock Text="Tour Requests" Margin="87,41,0,576" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left"/>
+                <!--<TextBlock Text="Select row of tour You want to start and press START button" Margin="106,125,0,0" FontSize="16" FontWeight="Normal" Width="423" HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
+
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/question_mark.png" Width="16" Height="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="259,49,0,0" Panel.ZIndex="999">
+                    <Image.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Select Tour you want to accept and press button ACCEPT. &#x0a; You can also filter your search."/>
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
+
+                <Border BorderBrush="Black" BorderThickness="1" Height="30" Width="97"   Margin="900,100,0,0">
+                    <Button Content="Search" Click="Search"/>
+                </Border>
+
+
+                <TextBlock Margin="900,211,225,509" Text="City:" />
+                <TextBlock  Text="Country:" Margin="898,179,222,517"/>
+                <TextBlock  Text="Language:" Margin="899,243,223,469"/>
+                <TextBlock Text="Guest number:" Margin="899,277,178,425"/>
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="993,180,0,0"  VerticalAlignment="Top" Width="120">
+                    <TextBox  TextWrapping="Wrap" Text="{Binding Path=Country, UpdateSourceTrigger=PropertyChanged}"/>
+                </Border>
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="993,210,0,0" VerticalAlignment="Top" Width="120">
+                    <TextBox  TextWrapping="Wrap" Text="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}" />
+                </Border>
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="993,244,0,0" VerticalAlignment="Top" Width="120">
+                    <TextBox  TextWrapping="Wrap" Text="{Binding Path=Jezik, UpdateSourceTrigger=PropertyChanged}" />
+                </Border>
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="993,276,0,0" VerticalAlignment="Top" Width="120">
+                    <TextBox  TextWrapping="Wrap" Text="{Binding Path=GuestNumber, UpdateSourceTrigger=PropertyChanged}" />
+                </Border>
+
+
+
+
+                <Label Content="From:" HorizontalAlignment="Left" Margin="896,308,0,0" VerticalAlignment="Top" Width="53"/>
+                <Label Content="To:" HorizontalAlignment="Left" Margin="896,340,0,0" VerticalAlignment="Top"/>
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="120" Margin="993,308,0,0">
+                    <DatePicker x:Name="dpFilterStartDate"  FontSize="13" SelectedDate="{Binding FilterStartDate, Mode=TwoWay}" >
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="IsReadOnly" Value="True"/>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                </Border>
+
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="120" Margin="993,342,0,0">
+                    <DatePicker x:Name="dpFilterEndDate"  FontSize="13" SelectedDate="{Binding FilterEndDate, Mode=TwoWay}" >
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="IsReadOnly" Value="True"/>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                </Border>
+
+
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="87,666,0,0" VerticalAlignment="Top" Width="97" Height="30">
+                    <Button Content="Accept"  Click="ProceedTourRequest"/>
+                </Border>
+
+
+                <DataGrid SelectionUnit="FullRow"  Grid.Row="0" Grid.Column="0" x:Name="ListTourRequests" Margin="87,110,388,226" CanUserAddRows="False" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="False" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Guest2 Name" Binding="{Binding User.Username}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Guest number" Binding="{Binding GuestNumber}" Width="*"/>
+                        <DataGridTextColumn Header="Language" Binding="{Binding Language}" Width="*"/>
+                        <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate.Date}" Width="*"/>
+                        <DataGridTextColumn Header="End Date" Binding="{Binding EndDate.Date}" Width="*"/>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Label x:Name="label1" Content="Choose Date when tour will occur:" HorizontalAlignment="Left" Margin="320,663,0,0" VerticalAlignment="Top" Width="224" Height="29"/>
+
+                <DatePicker x:Name="dpStartDate" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="200" FontSize="13" SelectedDate="{Binding SelectedStartDate, Mode=TwoWay}" Margin="544,666,0,0">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="IsReadOnly" Value="True"/>
                         </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="60">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="60">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Guest number" Binding="{Binding GuestNumber}" Width="135"/>
-                <DataGridTextColumn Header="Language" Binding="{Binding Language}" Width="210"/>
-                <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate.Date}" Width="210"/>
-                <DataGridTextColumn Header="End Date" Binding="{Binding EndDate.Date}" Width="210"/>
+                    </DatePicker.Resources>
+                </DatePicker>
+                <Button x:Name="button1" Content="Confirm" HorizontalAlignment="Left" Margin="795,662,0,0" VerticalAlignment="Top" Width="97" Height="30" Click="ConfirmTourRequest"/>
+                <Label Content="FILTERS" HorizontalAlignment="Left" Margin="1011,111,0,0" VerticalAlignment="Top" Width="151" FontSize="15" FontWeight="Bold"/>
 
-            </DataGrid.Columns>
-        </DataGrid>
-        <Button Content="PROCEED" HorizontalAlignment="Left" Margin="510,240,0,0" Grid.Row="2" VerticalAlignment="Top" Width="172" Height="30" Click="ProceedTourRequest"/>
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="1000,666,0,0" VerticalAlignment="Top" Width="97" Height="30">
+                    <Button Content="Offer tour"  Click="OfferTour"/>
+                </Border>
 
-        <DatePicker x:Name="dpFilterStartDate" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="109" FontSize="13" SelectedDate="{Binding FilterStartDate, Mode=TwoWay}" Margin="27,144,0,0" Grid.Column="1" Grid.Row="2">
-            <DatePicker.Resources>
-                <Style TargetType="DatePickerTextBox">
-                    <Setter Property="IsReadOnly" Value="True"/>
-                </Style>
-            </DatePicker.Resources>
-        </DatePicker>
 
-        <DatePicker x:Name="dpFilterEndDate" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="109" FontSize="13" SelectedDate="{Binding FilterEndDate, Mode=TwoWay}" Margin="159,144,0,0" Grid.Column="1" Grid.Row="2">
-            <DatePicker.Resources>
-                <Style TargetType="DatePickerTextBox">
-                    <Setter Property="IsReadOnly" Value="True"/>
-                </Style>
-            </DatePicker.Resources>
-        </DatePicker>
-        <Label Grid.Column="1" Content="From:" HorizontalAlignment="Left" Margin="67,108,0,0" Grid.Row="2" VerticalAlignment="Top" Width="53"/>
-        <Label Grid.Column="1" Content="To:" HorizontalAlignment="Left" Margin="196,109,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+
+
+
+
+            </Grid>
+        </Border>
+
 
 
     </Grid>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InitialProject.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,26 +23,8 @@ namespace InitialProject.View
         public TourImages()
         {
             InitializeComponent();
-            DataContext = this;
+            this.DataContext = new TourImagesViewModel();
 
-        }
-
-        private void GoToLogout(object sender, RoutedEventArgs e)
-        {
-            LoginForm window = new LoginForm();
-            window.Show();
-            Close();
-        }
-
-        private void GoToMostPopularTour(object sender, RoutedEventArgs e)
-        {
-            ShowMostPopularTour window = new ShowMostPopularTour();
-            window.Show();
-        }
-
-        private void GoToPreviousWindow(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

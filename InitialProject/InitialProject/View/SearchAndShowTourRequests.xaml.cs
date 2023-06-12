@@ -33,6 +33,17 @@ namespace InitialProject.View
         private int? guestNumber;
         private string jezik;
 
+        private string guide;
+
+        public string Guide
+        {
+            get { return guide; }
+            set
+            {
+                guide = value;
+            }
+        }
+
         public string Country
         {
             get { return country; }
@@ -94,14 +105,31 @@ namespace InitialProject.View
             }
         }
 
-        public SearchAndShowTourRequests()
+        private DateTime selectedStartDate;
+        public DateTime SelectedStartDate
+        {
+            get { return selectedStartDate; }
+            set
+            {
+                selectedStartDate = value;
+            }
+        }
+
+        public TourRequest TourRequest { get; set; }
+
+        public SearchAndShowTourRequests(string guideUsername)
         {
             InitializeComponent();
             DataContext = this;
+            Guide = guideUsername;
             tourRequestService = new TourRequestService();
             //Jezik = null;
             FilterStartDate = DateTime.Today;
             FilterEndDate = DateTime.Today;
+            label1.Visibility = Visibility.Hidden;
+            button1.Visibility = Visibility.Hidden;
+            dpStartDate.Visibility = Visibility.Hidden;
+            SelectedStartDate = DateTime.Today;
         }
 
 
@@ -155,12 +183,98 @@ namespace InitialProject.View
             /*TourRequest selectedItem = (TourRequest)ListTourRequests.SelectedItem;
             tourRequestService.UpdateStatusToAccepted(selectedItem);
             MessageBox.Show("Successfully accepted!");*/
+           
             TourRequest selectedItem = (TourRequest)ListTourRequests.SelectedItem;
-            ChooseDateForTourRequest window = new ChooseDateForTourRequest("Guide1", selectedItem);
-            window.ShowDialog();
+            if(selectedItem != null)
+            {
+                label1.Visibility = Visibility.Visible;
+                button1.Visibility = Visibility.Visible;
+                dpStartDate.Visibility = Visibility.Visible;
+                TourRequest = selectedItem;
+                //ConfirmTourRequest(selectedItem);
+                /*ChooseDateForTourRequest window = new ChooseDateForTourRequest("Guide1", selectedItem);
+                window.ShowDialog();*/
+            }
+            else
+            {
+                MessageBox.Show("Select one row from data grid!");
+            }
+                
+       
+            
+               
+            
             //ListTourRequests.Items.Refresh();
 
 
+        }
+
+        private void ConfirmTourRequest(object sender, RoutedEventArgs e)
+        {
+            if (tourRequestService.AcceptTourRequest(Guide, TourRequest, SelectedStartDate))
+            {
+                MessageBox.Show("Succesfull");
+                tourRequestService.UpdateStatusToAccepted(TourRequest);
+                GuideCreateNewTour window = new GuideCreateNewTour(Guide, TourRequest, SelectedStartDate);
+                window.Show();
+            }
+            else
+            {
+                MessageBox.Show("Error");
+            }
+        }
+
+        private void GoToLogout(object sender, RoutedEventArgs e)
+        {
+            LoginForm window = new LoginForm();
+            window.Show();
+            Close();
+        }
+
+        private void GoToMostPopularTour(object sender, RoutedEventArgs e)
+        {
+            ShowMostPopularTour window = new ShowMostPopularTour();
+            window.Show();
+            Close();
+        }
+
+        private void GoToAllTourOccurences(object sender, RoutedEventArgs e)
+        {
+            AllTourOccurences window = new AllTourOccurences();
+            window.Show();
+            Close();
+        }
+
+        private void GoToHomePage(object sender, RoutedEventArgs e)
+        {
+            TourGuidenceService tourGuidenceService = new TourGuidenceService();
+
+            TourGuidence tg = tourGuidenceService.CheckIfStartedAndNotFinished();
+            if (tg != null)
+            {
+                GuideStart2 window = new GuideStart2(Guide, tg);
+                window.Show();
+                Close();
+            }
+            else
+            {
+                GuideStart1 window = new GuideStart1(Guide);
+                window.Show();
+                Close();
+            }
+        }
+
+        private void GoToAddNewTour(object sender, RoutedEventArgs e)
+        {
+            GuideCreateNewTour window = new GuideCreateNewTour(Guide);
+            window.Show();
+            Close();
+        }
+
+        private void OfferTour(object sender, RoutedEventArgs e)
+        {
+            CreateTourForRequestStatistics window = new CreateTourForRequestStatistics(Guide);
+            window.ShowDialog();
         }
     }
 }

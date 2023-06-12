@@ -40,8 +40,8 @@
                     <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToAddNewTour"/>
                     <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences"/>
                     <MenuItem Header="Most Popular Tour" Click="GoToMostPopularTour" Margin="0,5,0,0"/>
-                    <MenuItem Header="TourRequests" Margin="0,5,0,0"/>
-                    <MenuItem Header="PDF" Margin="0,5,0,0" Click="PdfClick"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
+
                 </StackPanel>
                 <Grid>
                     <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Click="GoToLogout" Width="80"/>
@@ -119,8 +119,10 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-
-                <Button Content="START" HorizontalAlignment="Left" VerticalAlignment="Top" Width="192" Height="46" Margin="108,650,0,0" Click="StartTourGuidence"/>
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Height="30" Margin="108,650,0,0" >
+                    <Button Content="START" Click="StartTourGuidence"/>
+                </Border>
+                
 
             </Grid>
         </Border>

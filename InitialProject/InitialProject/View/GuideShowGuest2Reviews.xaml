@@ -1,0 +1,143 @@
+﻿<Window x:Class="InitialProject.View.GuideShowGuest2Reviews"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:InitialProject.View"
+        mc:Ignorable="d"
+        Title="GuideShowGuest2Reviews" Height="775" Width="1400"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Yellow" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <!-- Add more setters for other properties as needed -->
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Menu column -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content column -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Menu -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0">
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/profileIcon.png" Width="100" Height="100" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <StackPanel>
+                    <MenuItem Header="Home Page" Margin="0,25,0,0" Click="GoToHomePage"/>
+                    <MenuItem Header="Profile" Margin="0,5,0,0" />
+                    <MenuItem Header="Create New Tour" Margin="0,5,0,0" Click="GoToCreateNewTour" />
+                    <MenuItem Header="All Tour Occurences" Margin="0,5,0,0" Click="GoToAllTourOccurences" />
+                    <MenuItem Header="Most Popular Tour"  Margin="0,5,0,0" Click="GoToMostPopularTour"/>
+                    <MenuItem Header="TourRequests" Margin="0,5,0,0" Click="GoToTourRequests"/>
+                </StackPanel>
+                <Grid>
+                    <Button Content="LOG OUT" HorizontalAlignment="Center" Margin="0,411,0,-401" Width="80" Click="GoToLogout"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+
+        <!-- Main content -->
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
+            <Grid Grid.Column="1">
+
+                <TextBlock Text="Statistics and Reviews" Margin="106,40,10,0" FontSize="20" FontWeight="Bold" />
+                <!--<TextBlock Text="Select row of tour You want to start and press START button" Margin="106,125,0,0" FontSize="16" FontWeight="Normal" Width="423" HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
+
+                <Image Source="pack://application:,,,/InitialProject;component/Resources/Images/question_mark.png" Width="16" Height="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="331,47,0,0" Panel.ZIndex="999">
+                    <Image.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="You can see all your comment and disabled it by pressing a button"/>
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
+
+                <lvc:PieChart x:Name="pieChart" RenderTransformOrigin="0.506,0.512" Margin="308,73,302,439">
+                    <lvc:PieChart.ChartLegend>
+                        <lvc:DefaultLegend/>
+                    </lvc:PieChart.ChartLegend>
+                </lvc:PieChart>
+
+
+
+
+                <DockPanel HorizontalAlignment="Left" Height="288" VerticalAlignment="Top" Width="951" Margin="110,350,0,0">
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                        <StackPanel VerticalAlignment="Top" Margin="0,0,0,0" Width="951">
+                            <ItemsControl x:Name="itemsControlShowGuideComments" Visibility="Visible">
+
+                                <ItemsControl.ItemTemplate>
+
+                                    <DataTemplate>
+
+                                        <Grid Margin="0,0,0,20">
+
+                                            <TextBlock Text="{Binding UserId}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" FontSize="16"/>
+
+                                            <Border HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="825" Margin="100,0,0,0" BorderBrush="Gray" BorderThickness="0.2">
+
+                                                <Grid>
+                                                    <TextBlock Text="{Binding Comment}" HorizontalAlignment="Left" VerticalAlignment="center" Margin="25,25,25,25" FontSize="13">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="IsEnabled" Value="True" />
+                                                                <Setter Property="Foreground" Value="Black" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Valid}" Value="False">
+                                                                        <Setter Property="IsEnabled" Value="False" />
+                                                                        <Setter Property="Foreground" Value="Gray" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Grid>
+
+                                            </Border>
+
+                                            <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,0" Click="DeleteRateLogical">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Content" Value="Disable" />
+                                                        <Setter Property="IsEnabled" Value="True" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Valid}" Value="False">
+                                                                <Setter Property="Content" Value="DISABLED" />
+                                                                <Setter Property="IsEnabled" Value="False" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+
+                                        </Grid>
+
+                                    </DataTemplate>
+
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+
+                        </StackPanel>
+
+                    </ScrollViewer>
+
+                </DockPanel>
+                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="40,680,0,0" VerticalAlignment="Top" Height="38" Width="97">
+                    <Button Content="BACK" Click="GoToPreviousPage"/>
+                </Border>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
