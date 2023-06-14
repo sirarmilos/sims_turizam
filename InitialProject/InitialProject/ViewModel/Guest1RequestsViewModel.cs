@@ -343,18 +343,18 @@ namespace InitialProject.View
             {
                 if (parameter.Equals("Create review"))
                 {
+                    SelectedComboBox1Index = 0;
                     GoToCreateReview(null, null);
-
                 }
                 else if (parameter.Equals("Reviews"))
                 {
+                    SelectedComboBox1Index = 1;
                     GoToShowOwnerReviews(null, null);
-
                 }
                 else if (parameter.Equals("Requests"))
                 {
+                    SelectedComboBox1Index = 2;
                     GoToGuest1Requests();
-
                 }
             }
         }
@@ -410,7 +410,8 @@ namespace InitialProject.View
         public ICommand GoToShowOwnerReviewsCommand { get; set; }
         private void GoToShowOwnerReviews(object sender, RoutedEventArgs e)
         {
-            NavService?.Navigate(new ShowOwnerReviews(Guest1, this));
+            NavService?.Navigate(new ShowOwnerReviewsView(Guest1, this, NavService));
+
         }
 
         public ICommand GoToForumCommand { get; set; }
@@ -525,22 +526,9 @@ namespace InitialProject.View
         }
 
 
+
         private void SetComboBoxes(Page page)
         {
-            //{
-            //    var comboBox = searchAndShowPage.SelectedComboBox1Index;
-            //    if (comboBox != null)
-            //    {
-            //        SelectedComboBox1Index = comboBox;
-            //    }
-
-            //    comboBox = searchAndShowPage.SelectedComboBox2Index;
-            //    if (comboBox != null)
-            //    {
-            //        SelectedComboBox2Index = comboBox;
-            //    }
-            //}
-
             if (page is SearchAndShowAccommodations searchAndShowPage)
             {
                 var comboBox = searchAndShowPage.CBCreateReview;
@@ -555,119 +543,150 @@ namespace InitialProject.View
                     SelectedComboBox2Index = comboBox.SelectedIndex;
                 }
             }
-            //else if (page is AccommodationReservation accommodationReservationPage)
-            //{
-            //    //var comboBox = accommodationReservationPage.CBCreateReview;
-            //    //if (comboBox != null)
-            //    //{
-            //    //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
-            //    //}
+            else if (page is AccommodationReservation accommodationReservationPage)
+            {
+                var comboBox = accommodationReservationPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    SelectedComboBox1Index = comboBox.SelectedIndex;
+                }
 
-            //    //comboBox = accommodationReservationPage.CBSuperGuest;
-            //    //if (comboBox != null)
-            //    //{
-            //    //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
-            //    //}
-            //}
-            //else if (page is CreateReservationReschedulingRequest createReschedulingRequestPage)
-            //{
-            //    var comboBox = createReschedulingRequestPage.CBCreateReview;
-            //    if (comboBox != null)
-            //    {
-            //        CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
-            //    }
+                comboBox = accommodationReservationPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    SelectedComboBox2Index = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is CreateReservationReschedulingRequest createReschedulingRequestPage)
+            {
+                var comboBox = createReschedulingRequestPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    SelectedComboBox1Index = comboBox.SelectedIndex;
+                }
 
-            //    comboBox = createReschedulingRequestPage.CBSuperGuest;
-            //    if (comboBox != null)
-            //    {
-            //        CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
-            //    }
-            //}
-            //else if (page is CreateReview createReviewPage)
-            //{
-            //    //var comboBox = createReviewPage.CBCreateReview;
-            //    //if (comboBox != null)
-            //    //{
-            //    //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
-            //    //}
+                comboBox = createReschedulingRequestPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    SelectedComboBox2Index = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is CreateReview createReviewPage)
+            {
+                var comboBox = createReviewPage.CBCreateReview;
+                if (comboBox != null)
+                {
+                    SelectedComboBox1Index = comboBox.SelectedIndex;
+                }
 
-            //    //comboBox = createReviewPage.CBSuperGuest;
-            //    //if (comboBox != null)
-            //    //{
-            //    //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
-            //    //}
-            //}
-            //else if (page is Guest1RequestPreview guest1RequestPreviewPage)
-            //{
-            //    var comboBox = guest1RequestPreviewPage.CBCreateReview;
-            //    if (comboBox != null)
-            //    {
-            //        CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
-            //    }
+                comboBox = createReviewPage.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    SelectedComboBox2Index = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is Guest1GenerateReport guest1GenerateReport)
+            {
+                var comboBox = guest1GenerateReport.CBCreateReview;
+                if (comboBox != null)
+                {
+                    SelectedComboBox1Index = comboBox.SelectedIndex;
+                }
 
-            //    comboBox = guest1RequestPreviewPage.CBSuperGuest;
-            //    if (comboBox != null)
-            //    {
-            //        CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
-            //    }
-            //}
-            //else if (page is Guest1Requests guest1RequestsPage)
-            //{
-            //    var comboBox = guest1RequestsPage.CBCreateReview;
-            //    if (comboBox != null)
-            //    {
-            //        CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
-            //    }
+                comboBox = guest1GenerateReport.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    SelectedComboBox2Index = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is Guest1AnywhereAnytime anywhereAnytime)
+            {
+                var comboBox = anywhereAnytime.CBCreateReview;
+                if (comboBox != null)
+                {
+                    SelectedComboBox1Index = comboBox.SelectedIndex;
+                }
 
-            //    comboBox = guest1RequestsPage.CBSuperGuest;
-            //    if (comboBox != null)
-            //    {
-            //        CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
-            //    }
-            //}
-            //else if (page is ShowGuest1Notifications showGuest1NotificationsPage)
-            //{
-            //    var comboBox = showGuest1NotificationsPage.CBCreateReview;
-            //    if (comboBox != null)
-            //    {
-            //        CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
-            //    }
+                comboBox = anywhereAnytime.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    SelectedComboBox2Index = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is ShowSuperGuest showSuperGuest)
+            {
+                var comboBox = showSuperGuest.CBCreateReview;
+                if (comboBox != null)
+                {
+                    SelectedComboBox1Index = comboBox.SelectedIndex;
+                }
 
-            //    comboBox = showGuest1NotificationsPage.CBSuperGuest;
-            //    if (comboBox != null)
-            //    {
-            //        CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
-            //    }
-            //}
-            //else if (page is ShowOwnerReviews showOwnerReviewsPage)
-            //{
-            //    //var comboBox = showOwnerReviewsPage.CBCreateReview;
-            //    //if (comboBox != null)
-            //    //{
-            //    //    CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
-            //    //}
+                comboBox = showSuperGuest.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    SelectedComboBox2Index = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is Guest1CreateForum guest1CreateForum)
+            {
+                var comboBox = guest1CreateForum.CBCreateReview;
+                if (comboBox != null)
+                {
+                    SelectedComboBox1Index = comboBox.SelectedIndex;
+                }
 
-            //    //comboBox = showOwnerReviewsPage.CBSuperGuest;
-            //    //if (comboBox != null)
-            //    //{
-            //    //    CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
-            //    //}
-            //}
-            //else if (page is ShowReservations showReservationsPage)
-            //{
-            //    var comboBox = showReservationsPage.CBCreateReview;
-            //    if (comboBox != null)
-            //    {
-            //        CBCreateReview.SelectedIndex = comboBox.SelectedIndex;
-            //    }
+                comboBox = guest1CreateForum.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    SelectedComboBox2Index = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is Guest1ForumPreview guest1ForumPreview)
+            {
+                var comboBox = guest1ForumPreview.CBCreateReview;
+                if (comboBox != null)
+                {
+                    SelectedComboBox1Index = comboBox.SelectedIndex;
+                }
 
-            //    comboBox = showReservationsPage.CBSuperGuest;
-            //    if (comboBox != null)
-            //    {
-            //        CBSuperGuest.SelectedIndex = comboBox.SelectedIndex;
-            //    }
-            //}
+                comboBox = guest1ForumPreview.CBSuperGuest;
+                if (comboBox != null)
+                {
+                    SelectedComboBox2Index = comboBox.SelectedIndex;
+                }
+            }
+            else if (page is Guest1RequestPreviewViewModel guest1RequestPreviewPage) // 6. MVVM 
+            {
+                SelectedComboBox1Index = guest1RequestPreviewPage.SelectedComboBox1Index;
+                SelectedComboBox2Index = guest1RequestPreviewPage.SelectedComboBox2Index;
+            }
+            else if (page is Guest1RequestsViewModel guest1RequestsPage) // 5. MVVM
+            {
+                SelectedComboBox1Index = guest1RequestsPage.SelectedComboBox1Index;
+                SelectedComboBox2Index = guest1RequestsPage.SelectedComboBox2Index;
+            }
+            else if (page is ShowGuest1NotificationsViewModel showGuest1NotificationsPage) // 2. MVVM
+            {
+                SelectedComboBox1Index = showGuest1NotificationsPage.SelectedComboBox1Index;
+                SelectedComboBox2Index = showGuest1NotificationsPage.SelectedComboBox2Index;
+            }
+            else if (page is ShowOwnerReviewsViewModel showOwnerReviewsPage) // 4. MVVM
+            {
+                SelectedComboBox1Index = showOwnerReviewsPage.SelectedComboBox1Index;
+                SelectedComboBox2Index = showOwnerReviewsPage.SelectedComboBox2Index;
+            }
+            else if (page is ShowReservationsViewModel showReservationsPage) // 1. MVVM
+            {
+                SelectedComboBox1Index = showReservationsPage.SelectedComboBox1Index;
+                SelectedComboBox2Index = showReservationsPage.SelectedComboBox2Index;
+            }
+            else if (page is Guest1ForumViewModel guest1ForumViewModel) // 3. MVVM
+            {
+                SelectedComboBox1Index = guest1ForumViewModel.SelectedComboBox1Index;
+                SelectedComboBox2Index = guest1ForumViewModel.SelectedComboBox2Index;
+            }
         }
+
 
 
 

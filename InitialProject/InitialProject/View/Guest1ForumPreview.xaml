@@ -43,10 +43,15 @@
                 <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0" />
                 <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
 
-                <StackPanel Grid.Column="1" Orientation="Vertical">
-                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="22" />
-                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" FontSize="20"  FontWeight="Bold" Height="28" />
-                </StackPanel>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+
+                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" Margin="0,0,0,0" FontWeight="Bold" />
+                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" Margin="0,22,0,0" FontSize="20" FontWeight="Bold" Grid.Row="1" />
+                </Grid>
 
             </Grid>
 
@@ -64,6 +69,14 @@
             </Button>
 
             <ComboBox x:Name="CBCreateReview" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBCreateReviewDropDownClosed" FontSize="20" FontWeight="Bold" Width="160" Height="50" Margin="9,0,9,0" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBox.Resources>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="BorderBrush" Value="Gray" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Foreground" Value="Black" />
+                    </Style>
+                </ComboBox.Resources>
                 <ComboBoxItem Content="Create review" PreviewMouseDown="CBItemPreviewMouseDown" />
                 <ComboBoxItem Content="Reviews" PreviewMouseDown="CBItemPreviewMouseDown" />
                 <ComboBoxItem Content="Requests" PreviewMouseDown="CBItemPreviewMouseDown" />
@@ -77,9 +90,18 @@
                 </StackPanel>
             </Button>
 
+
             <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC" Click="GoToForum" />
 
-            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBox.Resources>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="BorderBrush" Value="Gray" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Foreground" Value="Black" />
+                    </Style>
+                </ComboBox.Resources>
                 <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
                 <ComboBoxItem Content="Logout" PreviewMouseDown="CBItemPreviewMouseDown" />
             </ComboBox>
@@ -87,258 +109,151 @@
         </DockPanel>
 
 
-        <StackPanel>
 
-            <Label HorizontalAlignment="Center" Margin="0,0,0,15" FontSize="40" FontWeight="Bold" Width="Auto">
-                <TextBlock>
+        <ScrollViewer>
+            <StackPanel Margin="0,0,0,20">
+
+                <Label HorizontalAlignment="Center" Margin="0,0,0,15" FontSize="40" FontWeight="Bold" Width="Auto">
+                    <TextBlock>
                     <Run Text="Forum #" />
                     <Run Text="{Binding ShowGuest1ForumsDTO.ForumId}" />
-                </TextBlock>
-            </Label>
+                    </TextBlock>
+                </Label>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition MinHeight="70"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition MinHeight="70"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" FontWeight="Bold">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0} &#x0a; (guest)">
-                            <Binding Path="ShowGuest1ForumsDTO.CreatorUsername" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" FontWeight="Bold">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} &#x0a; (guest)">
+                                <Binding Path="ShowGuest1ForumsDTO.CreatorUsername" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
 
-                <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,0" HorizontalAlignment="Left" Height="Auto" Width="600" BorderThickness="2" BorderBrush="Gray">
-                    <TextBlock Text="{Binding ShowGuest1ForumsDTO.Question}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Height="Auto" Width="Auto" Margin="8,8,8,8" FontSize="20" FontWeight="Bold"/>
-                </Border>
+                    <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,0" HorizontalAlignment="Left" Height="Auto" Width="600" BorderThickness="2" BorderBrush="Gray">
+                        <TextBlock Text="{Binding ShowGuest1ForumsDTO.Question}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Height="Auto" Width="Auto" Margin="8,8,8,8" FontSize="20" FontWeight="Bold"/>
+                    </Border>
 
 
-                <DockPanel Grid.Row="1" Grid.Column="1" MaxHeight="180" Width="Auto" Margin="0,15,0,0">
+                    <DockPanel Grid.Row="1" Grid.Column="1" MaxHeight="180" Width="Auto" Margin="0,15,0,0">
 
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,38,0">
 
-                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Width="Auto">
+                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Width="Auto">
 
-                            <ItemsControl Visibility="Visible" x:Name="ShowGuest1ForumCommentsDTOsItems" ItemsSource="{Binding ShowGuest1ForumCommentsDTOs, Mode=TwoWay}">
+                                <ItemsControl Visibility="Visible" x:Name="ShowGuest1ForumCommentsDTOsItems" ItemsSource="{Binding ShowGuest1ForumCommentsDTOs, Mode=TwoWay}">
 
-                                <ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemTemplate>
 
-                                    <DataTemplate>
+                                        <DataTemplate>
 
-                                        <Grid>
+                                            <Grid>
 
-                                            <StackPanel HorizontalAlignment="Left">
-                                                <TextBlock Text="{Binding CommenterUsername, StringFormat='{}{0}:'}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,7,0,0" FontWeight="Bold" FontSize="20"/>
+                                                <StackPanel HorizontalAlignment="Left">
+                                                    <TextBlock Text="{Binding CommenterUsername, StringFormat='{}{0}:'}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,7,0,0" FontWeight="Bold" FontSize="20"/>
 
-                                                <TextBlock Text="{Binding CommenterType, StringFormat='({0})'}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" FontWeight="Bold" FontSize="20"/>
-                                            </StackPanel>
+                                                    <TextBlock Text="{Binding CommenterType, StringFormat='({0})'}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" FontWeight="Bold" FontSize="20"/>
+                                                </StackPanel>
 
-                                            <Border HorizontalAlignment="Left" MinHeight="80" Width="500" BorderThickness="2" BorderBrush="Gray" Margin="100,0,0,11">
+                                                <Border HorizontalAlignment="Left" MinHeight="80" Width="500" BorderThickness="2" BorderBrush="Gray" Margin="100,0,0,11">
 
-                                                <Grid>
-                                                    <TextBlock Text="{Binding Answer}" TextWrapping="Wrap" HorizontalAlignment="Left" MinHeight="50" MaxWidth="300" VerticalAlignment="Center" Margin="10,5,0,0" FontWeight="Bold" FontSize="20" Width="301"/>
+                                                    <Grid>
+                                                        <TextBlock Text="{Binding Answer}" TextWrapping="Wrap" HorizontalAlignment="Left" MinHeight="50" MaxWidth="300" VerticalAlignment="Center" Margin="10,5,0,0" FontWeight="Bold" FontSize="20" Width="301"/>
 
-                                                    <TextBlock Text="{Binding Visited}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,5,15,5" FontSize="20">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="Foreground" Value="Green" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding Visited}" Value="unvisited">
-                                                                        <Setter Property="Foreground" Value="Red" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
+                                                        <TextBlock Text="{Binding Visited}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,5,15,5" FontSize="20">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Foreground" Value="Green" />
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Visited}" Value="unvisited">
+                                                                            <Setter Property="Foreground" Value="Red" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
 
-                                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,5,16,5" FontWeight="Bold" FontSize="20">
+                                                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,5,16,5" FontWeight="Bold" FontSize="20">
                                                         <Run Text="{Binding NumberOfReports}" Foreground="Red" />
-                                                    </TextBlock>
+                                                        </TextBlock>
 
 
-                                                </Grid>
+                                                    </Grid>
 
-                                            </Border>
-                                        </Grid>
+                                                </Border>
+                                            </Grid>
 
-                                    </DataTemplate>
+                                        </DataTemplate>
 
-                                </ItemsControl.ItemTemplate>
+                                    </ItemsControl.ItemTemplate>
 
-                            </ItemsControl>
+                                </ItemsControl>
 
-                        </StackPanel>
+                            </StackPanel>
 
-                    </ScrollViewer>
+                        </ScrollViewer>
 
-                </DockPanel>
-
-
+                    </DockPanel>
 
 
-                <Grid x:Name="AddCommentGrid" Visibility="Visible" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="0,15,0,15">
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="370"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0" HorizontalAlignment="Left">
-                            <TextBlock Text="{Binding Guest1UsernameShow}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock Text="(guest)" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="20" FontWeight="Bold"/>
-                        </StackPanel>
+                    <Grid x:Name="AddCommentGrid" Visibility="Visible" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="0,15,0,15">
 
-                        <Border Grid.Column="1" BorderThickness="2" BorderBrush="Gray" HorizontalAlignment="Left" MinHeight="50"  Height="Auto" VerticalAlignment="Top" Width="370" Margin="0,0,0,0">
-                            <TextBox x:Name="tbComment" Text="{Binding Path=Comment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" FontSize="20" FontWeight="Bold"/>
-                        </Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="370"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="2" Click="AddComment" HorizontalAlignment="Right" FontWeight="Bold" Content="Add" FontSize="24" Height="50" VerticalAlignment="Top" Width="120" Margin="10,0,0,0"/>
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Left">
+                                <TextBlock Text="{Binding Guest1UsernameShow}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="(guest)" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="20" FontWeight="Bold"/>
+                            </StackPanel>
+
+                            <Border Grid.Column="1" BorderThickness="2" BorderBrush="Gray" HorizontalAlignment="Left" MinHeight="50"  Height="Auto" VerticalAlignment="Top" Width="370" Margin="0,0,0,0">
+                                <TextBox x:Name="tbComment" Text="{Binding Path=Comment, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" FontSize="20" FontWeight="Bold"/>
+                            </Border>
+
+                            <Button Grid.Column="2" Click="AddComment" HorizontalAlignment="Right" FontWeight="Bold" Content="Add" FontSize="24" Height="50" VerticalAlignment="Top" Width="120" Margin="10,0,0,0" Background="Black" Foreground="White"/>
+
+                        </Grid>
 
                     </Grid>
-                   
+
+                    <Label x:Name="ForumIsClosedMessage" Visibility="Collapsed" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Forum is closed. Further comments no longer accepted." FontSize="24" FontWeight="Bold" HorizontalContentAlignment="Center"  Margin="0,20,0,30"/>
+
+                    <Button x:Name="OneButtonMode" Visibility="Collapsed"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Click="BackToCaller"  Content="Back" FontWeight="Bold" FontSize="24" Height="50" HorizontalAlignment="Center" VerticalAlignment="Top" Width="175"  Margin="0,0,0,0"/>
+
+                    <StackPanel x:Name="TwoButtonsMode" Visibility="Visible" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"  Margin="0,15,0,15">
+                        <Button x:Name="buttonBack" Click="BackToCaller"  Content="Back" FontWeight="Bold" FontSize="24" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175"  Margin="73,0,327,0"/>
+
+                        <Button x:Name="buttonClose" Click="CloseForum"  Content="Close forum" FontWeight="Bold" FontSize="24" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Width="175"  Margin="0,0,0,0" Foreground="White" Background="Black"/>
+
+                    </StackPanel>
+
+
                 </Grid>
 
-                <Label x:Name="ForumIsClosedMessage" Visibility="Collapsed" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Forum is closed. Further comments no longer accepted." FontSize="24" FontWeight="Bold" HorizontalContentAlignment="Center"  Margin="0,20,0,30"/>
 
-                <Button x:Name="OneButtonMode" Visibility="Collapsed"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Click="BackToCaller"  Content="Back" FontWeight="Bold" FontSize="24" Height="50" HorizontalAlignment="Center" VerticalAlignment="Top" Width="175"  Margin="0,0,0,0"/>
-
-                <StackPanel x:Name="TwoButtonsMode" Visibility="Visible" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"  Margin="0,15,0,15">
-                    <Button x:Name="buttonBack" Click="BackToCaller"  Content="Back" FontWeight="Bold" FontSize="24" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175"  Margin="73,0,327,0"/>
-
-                    <Button x:Name="buttonClose" Click="CloseForum"  Content="Close forum" FontWeight="Bold" FontSize="24" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Width="175"  Margin="0,0,0,0"/>
-
-                </StackPanel>
+            </StackPanel>
 
 
-            </Grid>
 
+        </ScrollViewer>
 
-        </StackPanel>
-
-        <!-- 
-            <DockPanel VerticalAlignment="Top" Height="130" Margin="0,25,0,0" HorizontalAlignment="Center">
-
-            <Label Content="Forum  #" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,25,0,0" FontSize="24" Width="Auto"></Label>
-            <Label Content="{Binding ShowGuest1ForumsDTO.ForumId}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,25,0,0" FontSize="24" Width="200"/>
-
-            <Label Content="{Binding ShowGuest1ForumsDTO.Location}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,65,0,0" FontSize="24" Width="200"/>
-
-        </DockPanel>
-
-        <DockPanel VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Left" Width="95">
-
-            <TextBlock Text="{Binding ShowGuest1ForumsDTO.CreatorUsername}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Margin="5,25,25,25" FontSize="16"/>
-
-        </DockPanel>
-
-        <DockPanel VerticalAlignment="Top" Margin="25,0,0,0" HorizontalAlignment="Left" Width="95">
-
-            <TextBlock Text="(guest)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Margin="10,30,25,25" FontSize="16"/>
-
-        </DockPanel>
-
-        <DockPanel VerticalAlignment="Top" MinHeight="80" Margin="0,0,0,0" HorizontalAlignment="Left" Width="Auto">
-            <GroupBox Margin="0,0,0,0">
-                <Grid>
-                    <TextBlock Text="{Binding ShowGuest1ForumsDTO.Question}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="25,25,25,25" FontSize="13"/>
-                </Grid>
-            </GroupBox>
-        </DockPanel>
-
-        <DockPanel VerticalAlignment="Bottom" Height="208" Margin="0,0,0,0" HorizontalAlignment="Left" Width="100">
-            <GroupBox Header="Comment" Height="208" Margin="0,0,0,0" FontSize="16" Width="198">
-                <Grid>
-                    <TextBlock Text="{Binding Guest1UsernameShow}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="25,18,25,25" FontSize="16"/>
-                    <TextBlock Text="(owner)" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="27,43,25,25" FontSize="16"/>
-
-                    <TextBox x:Name="tbComment" Text="{Binding Path=Comment, Mode=OneWayToSource}" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="200" Margin="0,25,0,0" FontSize="13"/>
-
-                    <Button x:Name="buttonAddComment" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Margin="0,28,25,0">
-                        <TextBlock TextAlignment="Center" FontSize="14">Add comment<LineBreak/>(CTRL + R)</TextBlock>
-                    </Button>
-
-                    <Button x:Name="buttonClose" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" Width="175" Margin="0,100,25,0">
-                        <TextBlock TextAlignment="Center" FontSize="14">Close<LineBreak/>(ESC)</TextBlock>
-                    </Button>
-                </Grid>
-            </GroupBox>
-        </DockPanel>
-
-        <DockPanel HorizontalAlignment="Left" Height="180" VerticalAlignment="Top" Width="200" Margin="0,0,0,0">
-
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-
-                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Width="200">
-
-                    <ItemsControl Visibility="Visible" ItemsSource="{Binding ShowGuest1ForumCommentsDTOs}">
-
-                        <ItemsControl.ItemTemplate>
-
-                            <DataTemplate>
-
-                                <Grid Margin="0,0,0,20">
-
-                                    <TextBlock Text="{Binding CommenterUsername}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" FontSize="16"/>
-                                    <TextBlock Text="{Binding CommenterType}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,20,25,25" FontSize="16"/>
-
-                                    <GroupBox HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="200" Margin="0,0,0,0">
-
-                                        <Grid>
-
-                                            <TextBlock Text="{Binding Answer}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,25,25" FontSize="13"/>
-
-                                        </Grid>
-
-                                    </GroupBox>
-
-                                    <TextBlock Text="{Binding IsStillOwner}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,5,0,0" FontSize="13"/>
-
-                                    <TextBlock Text="{Binding Visited}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,5,0,0" FontSize="13"/>
-
-                                    <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,50,0,0" FontSize="13">
-
-                                        <TextBlock.Style>
-
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Text" Value="{Binding NumberOfReports}"/>
-                                                <Setter Property="Visibility" Value="Visible" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding NumberOfReports, Converter={StaticResource NumberOfUserReportVisibility}}" Value="Hidden">
-                                                        <Setter Property="Visibility" Value="Hidden" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-
-                                        </TextBlock.Style>
-
-                                    </TextBlock>
-
-                                </Grid>
-
-                            </DataTemplate>
-
-                        </ItemsControl.ItemTemplate>
-
-                    </ItemsControl>
-
-                </StackPanel>
-
-            </ScrollViewer>
-
-        </DockPanel>
-            
-        -->
 
     </DockPanel>
 

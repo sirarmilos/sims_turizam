@@ -106,5 +106,12 @@ namespace InitialProject.Service
 
             return false;
         }
+
+        public int CalculateNumberOfReservationsLeftToBecomeSuperGuest()
+        {
+            reservationService = new ReservationService(Guest1);
+
+            return 10 - reservationService.FindNumberOfReservationsInPastYear();
+        }
     }
 }

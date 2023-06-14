@@ -1,58 +1,42 @@
 ﻿using InitialProject.DTO;
 using InitialProject.Service;
+using InitialProject.View;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
+using Prism.Commands;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
 using System.Windows.Controls;
 using InitialProject.Model;
 using System.Windows.Navigation;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using GalaSoft.MvvmLight;
-using Prism.Commands;
+using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
+using System.ComponentModel;
+using InitialProject.Repository;
+using LiveCharts.Wpf;
+using LiveCharts;
+using System.Diagnostics;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace InitialProject.View
 {
-    public partial class ShowGuest1NotificationsViewModel : Page, INotifyPropertyChanged
+
+    public partial class ShowOwnerReviewsViewModel : Page, INotifyPropertyChanged
     {
-        private ReservationReschedulingRequestService reservationReschedulingRequestService;
-        private string accommodationName;
-        private DateTime startDate;
-        private DateTime endDate;
-        private int guestsNumber;
+        private readonly ReviewService reviewService;
+
         private string guest1;
-
-
-        public int GuestsNumber
-        {
-            get { return guestsNumber; }
-            set
-            {
-                guestsNumber = value;
-            }
-        }
-
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set
-            {
-                startDate = value;
-            }
-        }
-
-        public DateTime EndDate
-        {
-            get { return endDate; }
-            set
-            {
-                endDate = value;
-            }
-        }
 
         public string Guest1
         {
@@ -63,59 +47,35 @@ namespace InitialProject.View
             }
         }
 
-        public string AccommodationName
+        public List<ShowOwnerReviewsDTO> ShowOwnerReviewsDTOs
         {
-            get { return accommodationName; }
+            get;
+            set;
+        }
+
+
+
+
+        private bool notification;
+        public bool Notification
+        {
+            get { return notification; }
             set
             {
-                accommodationName = value;
+                notification = value;
             }
         }
 
-        public ObservableCollection<Guest1NotificationDTO> Guest1NotificationDTOs
+        private Brush _labelColor;
+        public Brush LabelColor
         {
-            get;
-            set;
+            get { return _labelColor; }
+            set
+            {
+                _labelColor = value;
+                OnPropertyChanged(nameof(LabelColor));
+            }
         }
-
-        //private bool notification;
-        //public bool Notification
-        //{
-        //    get { return notification; }
-        //    set
-        //    {
-        //        notification = value;
-        //    }
-        //}
-
-
-
-        //public string NotificationEnable
-        //{
-        //    get;
-        //    set;
-        //}
-
-
-        public ICommand ReadMoreCommand
-        {
-            get;
-            set;
-        }
-
-        //public ICommand RescheduleCommand { get; set; }
-
-        //public DelegateCommand GoToGuest1StartCommand { get; }
-
-        //public DelegateCommand GoToSearchAndShowAccommodationsCommand { get; }
-
-        //public DelegateCommand GoToCreateReviewCommand { get; }
-
-        //public DelegateCommand GoToGuest1RequestsCommand { get; }
-
-        //public DelegateCommand GoToLogoutCommand { get; }
-
-        //public DelegateCommand CheckNotificationCommand { get; }
 
         private Visibility isNotificationVisible;
 
@@ -149,16 +109,6 @@ namespace InitialProject.View
 
         public NavigationService NavService { get; set; }
 
-        private bool notification;
-        public bool Notification
-        {
-            get { return notification; }
-            set
-            {
-                notification = value;
-            }
-        }
-
         private void CheckNotification()
         {
             if (Notification)
@@ -182,18 +132,23 @@ namespace InitialProject.View
 
         Page ViewPage { get; set; }
 
-        public ShowGuest1NotificationsViewModel(string username, ShowGuest1NotificationsView showGuest1NotificationsView, Page page, NavigationService navService)
+        public ShowOwnerReviewsViewModel(string username, ShowOwnerReviewsView showOwnerReviewsView, Page page, NavigationService navService)
         {
             Guest1 = username;
-            reservationReschedulingRequestService = new ReservationReschedulingRequestService(Guest1);
 
-            //ShowReservationDTOs = new ObservableCollection<ShowReservationDTO>(reservationService.FindAll(Guest1));
-            //CancelCommand = new RelayCommand<ShowReservationDTO>(Cancel);
-            ReadMoreCommand = new RelayCommand<Guest1NotificationDTO>(ReadMore);
+            reviewService = new ReviewService(Guest1);
 
-            Guest1NotificationDTOs = new ObservableCollection<Guest1NotificationDTO>(reservationReschedulingRequestService.FindAllNotificationsByGuest1Username());
+            ShowOwnerReviewsDTOs = new List<ShowOwnerReviewsDTO>();
 
-            reservationReschedulingRequestService.UpdateViewedRequestsByGuest1();
+            // charts
+            SetFirstChart(); // sporo
+
+            SetSecondChart(); // sporo
+
+            ShowOwnerReviewsDTOs = reviewService.FindAllOwnerReviews(); // sporo
+
+
+
 
 
 
@@ -203,7 +158,7 @@ namespace InitialProject.View
 
             NavService = navService;
 
-            ViewPage = showGuest1NotificationsView;
+            ViewPage = showOwnerReviewsView;
 
             ComboBoxCommand = new DelegateCommand<object>(ComboBoxAction);
             ComboBoxSGCommand = new DelegateCommand<object>(ComboBoxSuperGuestAction);
@@ -213,18 +168,98 @@ namespace InitialProject.View
             GoToAnywhereAnytimeCommand = new RelayCommand(GoToAnywhereAnytime);
             GoToSearchAndShowAccommodationsCommand = new RelayCommand(GoToSearchAndShowAccommodations);
             GoToForumCommand = new RelayCommand(GoToForum);
+
+            GoToGenerateReportCommand = new RelayCommand(GoToGuest1GenerateReport);
+
         }
-
-
-        private void ReadMore(Guest1NotificationDTO guest1NotificationDTO)
+        public ICommand GoToGenerateReportCommand { get; set; }
+        private void GoToGuest1GenerateReport()
         {
-            Guest1RebookingRequestsDTO guest1RebookingRequestsDTO = 
-                reservationReschedulingRequestService.FindRebookingRequestByRequestId(guest1NotificationDTO.RequestId);
-
-            //NavService?.Navigate(new Guest1RequestPreview(Guest1, guest1RebookingRequestsDTO, "ShowGuest1Notifications", this));
-            NavService?.Navigate(new Guest1RequestPreviewView(Guest1, this, NavService, guest1RebookingRequestsDTO, "ShowGuest1Notifications"));
-
+            NavService?.Navigate(new Guest1GenerateReport(Guest1, this));
         }
+
+        public List<string> ChartPeriodTime { get; set; }
+        public SeriesCollection SeriesCollectionNumberOfReviewsPerMonth { get; set; }
+
+
+
+        public void SetFirstChart()
+        {
+            // set periods
+            ChartPeriodTime = new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+            SeriesCollectionNumberOfReviewsPerMonth = new SeriesCollection
+            {
+                new ColumnSeries
+                {
+                    Title = "Number of reviews",
+                    DataLabels = true,
+                    Values = new ChartValues<int>(reviewService.FindNumberOfRatesInLastYearPerMonth(Guest1))
+                }
+            };
+
+            //labelXAxisReviewsFirstChart.Labels = ChartPeriodTime;
+            //firstChart.Series = SeriesCollectionNumberOfReviewsPerMonth;
+        }
+
+        public SeriesCollection ScatterReviewsAverage { get; set; }
+        public void SetSecondChart()
+        {
+            // Set periods
+            ChartPeriodTime = new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+            ScatterReviewsAverage = new SeriesCollection
+            {
+                new ScatterSeries
+                {
+                    Title = "Average of reviews",
+                    DataLabels = true,
+                    // Values = new ChartValues<int>(reviewService.FindNumberOfRatesInLastYearPerMonth(Guest1))
+                    Values = new ChartValues<double>(reviewService.FindAvgRateInLastYearPerMonth(Guest1))
+                }
+            };
+
+            //labelXAxisReviewsSecondChart.Labels = ChartPeriodTime;
+            //secondChart.Series = ScatterReviewsAverage;
+        }
+
+        /*F
+        public SeriesCollection SeriesCollectionReviewsAverage { get; set; }
+        public void SetSecondChart()
+        {
+	        //set periods
+	        ChartPeriodTime = new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+	        SeriesCollectionReviewsAverage = new SeriesCollection
+	        {
+		        new ColumnSeries
+		        {
+			        Title = "Average of reviews",
+			        DataLabels = true,
+			        //Values = new ChartValues<int>(reviewService.FindNumberOfRatesInLastYearPerMonth(Guest1))
+			        Values = new ChartValues<double>(reviewService.FindAvgRateInLastYearPerMonth(Guest1))
+		        }
+	        };
+
+	        labelXAxisReviewsSecondChart.Labels = ChartPeriodTime;
+	        secondChart.Series = SeriesCollectionReviewsAverage;
+        }
+
+
+		<Label x:Name="labelRenovationRecommendationTitle" Grid.Column="2" Grid.Row="2" Content="Number of renovation recommendation" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,325,23,0" FontSize="16"/>
+        <lvc:CartesianChart x:Name="chartRenovationRecommendation" Series="{Binding SeriesCollectionRenovationRecommedation}" Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" HorizontalAlignment="Left" Height="220" VerticalAlignment="Bottom" Width="350" Margin="42,0,0,154" FontSize="14">
+
+	        <lvc:CartesianChart.AxisX>
+		        <lvc:Axis x:Name="labelXAxisRenovationRecommendation" Labels="{Binding ChartPeriodTime}"></lvc:Axis>
+	        </lvc:CartesianChart.AxisX>
+
+	        <lvc:CartesianChart.AxisY>
+		        <lvc:Axis Title="Renovation recommedation count" MinValue="0" MaxValue="10"></lvc:Axis>
+	        </lvc:CartesianChart.AxisY>
+
+        </lvc:CartesianChart> 
+        */
+
 
         private string usernameAndSuperGuestText;
 
@@ -252,7 +287,7 @@ namespace InitialProject.View
 
         private void SetUsernameHeader()
         {
-            Notification = reservationReschedulingRequestService.Guest1HasNotification();
+            Notification = reviewService.Guest1HasNotification();
             CheckNotification();
             UsernameAndSuperGuestText = Guest1;
             SuperGuestText = CheckSuperType();
@@ -262,7 +297,7 @@ namespace InitialProject.View
         {
             string superType = string.Empty;
 
-            if (reservationReschedulingRequestService.IsSuperGuest(Guest1))
+            if (reviewService.IsSuperGuest(Guest1))
             {
                 superType = "(Super guest)";
             }
@@ -295,7 +330,7 @@ namespace InitialProject.View
                 else if (parameter.Equals("Requests"))
                 {
                     SelectedComboBox1Index = 2;
-                    GoToGuest1Requests(null,null);
+                    GoToGuest1Requests(null, null);
                 }
             }
         }
@@ -582,6 +617,7 @@ namespace InitialProject.View
                 SelectedComboBox2Index = guest1ForumViewModel.SelectedComboBox2Index;
             }
         }
+
 
 
     }

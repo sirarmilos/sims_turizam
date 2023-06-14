@@ -147,6 +147,37 @@ namespace InitialProject.Service
         }
 
 
+        //public List<ShowOwnerReviewsDTO> FindAllOwnerReviews()
+        //{
+            //return FindShowOwnerReviewsDTOs(reviewRepository.FindReviewsByGuest1Username(Guest1));
+        //}
+
+        //public List<ShowOwnerReviewsDTO> FindShowOwnerReviewsDTOs(List<Review> guest1Reviews)
+        //{
+        //    List<ShowOwnerReviewsDTO> showOwnerReviewsDTOs = new List<ShowOwnerReviewsDTO>();
+
+        //    Parallel.ForEach(guest1Reviews, temporaryReview =>
+        //    {
+        //        RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(temporaryReview.Reservation.ReservationId);
+
+        //        if (rateGuest != null)
+        //        {
+        //            ShowOwnerReviewsDTO showOwnerReviewsDTO = new ShowOwnerReviewsDTO(rateGuest)
+        //            {
+        //                Image = temporaryReview.Reservation.Accommodation.Images[0]
+        //            };
+
+        //            lock (showOwnerReviewsDTOs)
+        //            {
+        //                showOwnerReviewsDTOs.Add(showOwnerReviewsDTO);
+        //            }
+        //        }
+        //    });
+
+        //    return showOwnerReviewsDTOs;
+        //}
+
+
         public List<ShowOwnerReviewsDTO> FindAllOwnerReviews()
         {
             return FindShowOwnerReviewsDTOs(reviewRepository.FindReviewsByGuest1Username(Guest1));
@@ -156,7 +187,7 @@ namespace InitialProject.Service
         {
             List<ShowOwnerReviewsDTO> showOwnerReviewsDTOs = new List<ShowOwnerReviewsDTO>();
 
-            Parallel.ForEach(guest1Reviews, temporaryReview =>
+            foreach (Review temporaryReview in guest1Reviews.ToList())
             {
                 RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(temporaryReview.Reservation.ReservationId);
 
@@ -167,12 +198,9 @@ namespace InitialProject.Service
                         Image = temporaryReview.Reservation.Accommodation.Images[0]
                     };
 
-                    lock (showOwnerReviewsDTOs)
-                    {
-                        showOwnerReviewsDTOs.Add(showOwnerReviewsDTO);
-                    }
+                    showOwnerReviewsDTOs.Add(showOwnerReviewsDTO);
                 }
-            });
+            }
 
             return showOwnerReviewsDTOs;
         }
@@ -393,11 +421,10 @@ namespace InitialProject.Service
                 guest1PDFReport.CleanlinessAverage /= guest1PDFReport.NumberOfReservations;
                 guest1PDFReport.FollowRulesAverage /= guest1PDFReport.NumberOfReservations;
                 guest1PDFReport.BehaviorAverage /= guest1PDFReport.NumberOfReservations;
-                guest1PDFReport.CleanlinessAverage /= guest1PDFReport.NumberOfReservations;
                 guest1PDFReport.CommunicativenessAverage /= guest1PDFReport.NumberOfReservations;
 
-                guest1PDFReport.AllAverage =
-                    (guest1PDFReport.CleanlinessAverage + guest1PDFReport.FollowRulesAverage + guest1PDFReport.BehaviorAverage + guest1PDFReport.CleanlinessAverage) / 4;
+                guest1PDFReport.AllAverage = (guest1PDFReport.CleanlinessAverage + guest1PDFReport.FollowRulesAverage + guest1PDFReport.BehaviorAverage + guest1PDFReport.CommunicativenessAverage) / 4;
+
 
                 guest1PDFReportDTOs.Add(guest1PDFReport);
             }
@@ -425,7 +452,9 @@ namespace InitialProject.Service
             {
                 RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(reservation.ReservationId);
 
-                if (rateGuest != null)
+                Review temporaryReview = reviewRepository.FindGuest1ReviewByReservationId(Guest1, reservation.ReservationId); //
+
+                if (rateGuest != null && temporaryReview != null) //
                 {
                     DateTime endDate = rateGuest.Reservation.EndDate;
                     DateTime currentDate = DateTime.Now;
@@ -465,7 +494,9 @@ namespace InitialProject.Service
             {
                 RateGuest rateGuest = rateGuestsService.FindRateGuestByReservation(reservation.ReservationId);
 
-                if (rateGuest != null)
+                Review temporaryReview = reviewRepository.FindGuest1ReviewByReservationId(Guest1, reservation.ReservationId); //
+
+                if (rateGuest != null && temporaryReview != null)
                 {
                     DateTime endDate = rateGuest.Reservation.EndDate;
                     DateTime currentDate = DateTime.Now;
@@ -480,6 +511,11 @@ namespace InitialProject.Service
             }
 
             CalculateAverageRatePerMonth(ref numberOfAvgRateInLastYear, ref sumOfAvgRateInLastYearPerMonth, ref numberOfRatesPerMonth);
+
+            for (int i = 0; i < 12; i++)
+            {
+                numberOfAvgRateInLastYear[i] = Math.Round(numberOfAvgRateInLastYear[i], 2);
+            }
 
             return numberOfAvgRateInLastYear;
         }
@@ -497,7 +533,7 @@ namespace InitialProject.Service
 
         private double CalculateRateGuestAvgRate(RateGuest rateGuest)
         {
-            return (rateGuest.FollowRules + rateGuest.Cleanliness + rateGuest.Communicativeness + rateGuest.Behavior) / 4;
+            return (rateGuest.FollowRules + rateGuest.Cleanliness + rateGuest.Communicativeness + rateGuest.Behavior ) / 4.0;
         }
 
         private void CalculateAverageRatePerMonth(ref List<double> numberOfAvgRateInLastYear, ref List<double> sumOfAvgRateInLastYearPerMonth, ref List<int> numberOfRatesPerMonth)

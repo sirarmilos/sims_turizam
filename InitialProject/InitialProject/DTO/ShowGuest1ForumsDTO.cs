@@ -42,14 +42,17 @@ namespace InitialProject.DTO
             CreatorUsername = forum.CreatorUsername + " asked:";
             Location = forum.ForumLocationDTO.City + ", " + forum.ForumLocationDTO.Country;
 
-            if(forum.Question.Length > 80)
-            {
-                Question = forum.Question.Substring(0, 80) + "...";
-            }
-            else
-            {
-                Question = forum.Question;
-            }
+            //if (forum.Question.Length > 80)
+            //{
+            //    Question = forum.Question.Substring(0, 80) + "...";
+            //}
+            //else
+            //{
+            //    Question = forum.Question;
+            //}
+            Question = forum.Question;
+
+
 
             if (forum.IsUseful == true)
             {

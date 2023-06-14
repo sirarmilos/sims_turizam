@@ -25,7 +25,7 @@
                 <Image Source="https://img001.prntscr.com/file/img001/AboPt71lRn6VPLBmk3xMmA.png" Width="88" Height="50" Margin="0,0,0,0" />
             </StackPanel>
 
-            <Grid HorizontalAlignment="Right">
+            <Grid HorizontalAlignment="Right" >
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -35,10 +35,15 @@
                 <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0" />
                 <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
 
-                <StackPanel Grid.Column="1" Orientation="Vertical">
-                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="22" />
-                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" FontSize="20"  FontWeight="Bold" Height="28" />
-                </StackPanel>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+
+                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" Margin="0,0,0,0" FontWeight="Bold" />
+                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" Margin="0,22,0,0" FontSize="20" FontWeight="Bold" Grid.Row="1" />
+                </Grid>
 
             </Grid>
 
@@ -56,6 +61,14 @@
             </Button>
 
             <ComboBox x:Name="CBCreateReview" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBCreateReviewDropDownClosed" FontSize="20" FontWeight="Bold" Width="160" Height="50" Margin="9,0,9,0" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBox.Resources>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="BorderBrush" Value="Gray" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Foreground" Value="Black" />
+                    </Style>
+                </ComboBox.Resources>
                 <ComboBoxItem Content="Create review" PreviewMouseDown="CBItemPreviewMouseDown" />
                 <ComboBoxItem Content="Reviews" PreviewMouseDown="CBItemPreviewMouseDown" />
                 <ComboBoxItem Content="Requests" PreviewMouseDown="CBItemPreviewMouseDown" />
@@ -69,14 +82,24 @@
                 </StackPanel>
             </Button>
 
-            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Click="GoToForum" Background="#FFF0F0F0" BorderBrush="#FFACACAC" />
 
-            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC" Click="GoToForum" />
+
+            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBox.Resources>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="BorderBrush" Value="Gray" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Foreground" Value="Black" />
+                    </Style>
+                </ComboBox.Resources>
                 <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
                 <ComboBoxItem Content="Logout" PreviewMouseDown="CBItemPreviewMouseDown" />
             </ComboBox>
 
         </DockPanel>
+
 
 
 
@@ -121,7 +144,7 @@
                                         <TextBox Grid.Row="2" PreviewTextInput="AllowOnlyDigits" FontSize="20" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="{Binding CalendarReservationDays, Mode = OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" Height="30" Width="280" Margin="0,38,0,0"/>
                                         <TextBlock Grid.Row="2" Text="required" VerticalAlignment="Top" HorizontalAlignment="Center"  Height="30" FontSize="20" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,64,0,0" Grid.RowSpan="2"  />
 
-                                        <Button Grid.Row="3" Content="Check" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="Search" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
+                                        <Button Grid.Row="3" Content="Check" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="Search" FontSize="24" FontWeight="Bold" Margin="0,14,0,0" Foreground="White" Background="Black"/>
 
                                         <Button Grid.Row="4" Content="Back" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="GoToSearchAndShowAccommodations" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
                                     </Grid>
@@ -164,7 +187,7 @@
 
 
 
-                                        <Button Grid.Row="4" Content="Book" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="CreateReservation" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
+                                        <Button Grid.Row="4" Content="Book" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="CreateReservation" FontSize="24" FontWeight="Bold" Margin="0,14,0,0" Background="Black" Foreground="White"/>
 
                                         <Button Grid.Row="5" Content="Back" VerticalAlignment="Top"  HorizontalAlignment="Center" Width="178" Height="55"  Click="Back" FontSize="24" FontWeight="Bold" Margin="0,14,0,0"/>
                                     </Grid>

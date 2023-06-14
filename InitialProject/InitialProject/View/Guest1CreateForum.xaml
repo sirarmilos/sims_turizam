@@ -25,16 +25,19 @@ Background="White"
                 <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0" />
                 <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
 
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
 
-                <StackPanel Grid.Column="1" Orientation="Vertical">
-                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" FontWeight="Bold" Height="22" />
-                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" FontSize="20"  FontWeight="Bold" Height="28" />
-                </StackPanel>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="usernameAndSuperGuest" Text="" TextAlignment="Center" FontSize="20" Margin="0,0,0,0" FontWeight="Bold" />
+                    <TextBlock x:Name="superGuest" Text="" Foreground="Green" TextAlignment="Center" Margin="0,22,0,0" FontSize="20" FontWeight="Bold" Grid.Row="1" />
+                </Grid>
 
             </Grid>
 
         </DockPanel>
-
 
         <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Width="834" Height="67" Margin="4,0,4,0">
 
@@ -48,6 +51,14 @@ Background="White"
             </Button>
 
             <ComboBox x:Name="CBCreateReview" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBCreateReviewDropDownClosed" FontSize="20" FontWeight="Bold" Width="160" Height="50" Margin="9,0,9,0" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBox.Resources>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="BorderBrush" Value="Gray" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Foreground" Value="Black" />
+                    </Style>
+                </ComboBox.Resources>
                 <ComboBoxItem Content="Create review" PreviewMouseDown="CBItemPreviewMouseDown" />
                 <ComboBoxItem Content="Reviews" PreviewMouseDown="CBItemPreviewMouseDown" />
                 <ComboBoxItem Content="Requests" PreviewMouseDown="CBItemPreviewMouseDown" />
@@ -61,9 +72,18 @@ Background="White"
                 </StackPanel>
             </Button>
 
-            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" Click="GoToForum" BorderBrush="#FFACACAC" />
 
-            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+            <Button Content="Forum" Width="82" Height="50" Margin="9,0,9,0" FontSize="20" FontWeight="Bold" Background="#FFF0F0F0" BorderBrush="#FFACACAC" Click="GoToForum" />
+
+            <ComboBox x:Name="CBSuperGuest" PreviewMouseDown="CBPreviewMouseDown" DropDownClosed="CBSuperGuestDropDownClosed" FontSize="20" Margin="5,0,8,0" FontWeight="Bold" Width="145" Height="50" SelectedIndex="0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBox.Resources>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="BorderBrush" Value="Gray" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Foreground" Value="Black" />
+                    </Style>
+                </ComboBox.Resources>
                 <ComboBoxItem Content="Super-guest" PreviewMouseDown="CBItemPreviewMouseDown" />
                 <ComboBoxItem Content="Logout" PreviewMouseDown="CBItemPreviewMouseDown" />
             </ComboBox>
@@ -71,14 +91,17 @@ Background="White"
         </DockPanel>
 
 
+        <ScrollViewer>
+            
+        
         <StackPanel Margin="60,0,60,20">
             <!-- margina skroz dole je 20 -->
-            <Label Content="Create Forum" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
-
+                <Label Content="Create Forum" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0" />
+    
 
             <Border BorderBrush="Gray" BorderThickness="2" Margin="0,20,0,0" MinHeight="200" Width="684">
-
-                <StackPanel>
+                
+                    <StackPanel>
                     
                     <Grid x:Name="FirstWindow" Visibility="Visible">
                         <Grid.RowDefinitions>
@@ -106,7 +129,7 @@ Background="White"
                         </StackPanel>
                         
                         <Button HorizontalAlignment="Left" Grid.Row="2" FontSize="24" FontWeight="Bold" Height="55" Width="177" Content="Back" Click="ReturnBackToCaller" VerticalAlignment="Center" Margin="30,0,0,0"/>
-                        <Button HorizontalAlignment="Right"  Grid.Row="2" FontSize="24" FontWeight="Bold" Height="55" Width="177" Content="Create Forum" Click="CreateForum" VerticalAlignment="Center" Margin="0,0,30,0"/>
+                        <Button HorizontalAlignment="Right"  Grid.Row="2" FontSize="24" FontWeight="Bold" Height="55" Width="177" Content="Create Forum" Click="CreateForum" VerticalAlignment="Center" Margin="0,0,30,0" Background="Black" Foreground="White"/>
 
                     </Grid>
 
@@ -118,14 +141,12 @@ Background="White"
                     </StackPanel>
                     
                 </StackPanel>
-                
             </Border>
 
             
 
-
         </StackPanel>
-        
+        </ScrollViewer>
         
     </DockPanel>
 
