@@ -173,7 +173,10 @@ namespace InitialProject.View
                 PdfWriter writer = PdfWriter.GetInstance(document, stream);
                 document.Open();
 
-                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance("https://i.ibb.co/WFdc6pB/logo.png");
+                string basePath = AppDomain.CurrentDomain.BaseDirectory;
+                string imagePath = Path.Combine(basePath, "Resources", "Images", "logo.png");
+
+                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(imagePath);
                 logo.ScaleAbsoluteWidth(100);
                 logo.ScaleAbsoluteHeight(80);
 

@@ -16,6 +16,9 @@
     <None Remove="Resources\Images\logo.jpg" />
     <None Remove="Resources\Images\logo.png" />
     <None Remove="Resources\Images\logo_icon.ico" />
+    <None Remove="Resources\Images\notification_bell2.png" />
+    <None Remove="Resources\Images\regularbell.png" />
+    <None Remove="Resources\Images\regular_bell.png" />
     <None Remove="Resources\Images\turtle_tourism_logo_2.png" />
     <None Remove="Resources\Images\view.png" />
 	<None Remove="Resources\Images\profileIcon.png" />
@@ -45,13 +48,21 @@
     </Resource>
     <Resource Include="Resources\Images\choose_image.png" />
     <Resource Include="Resources\Images\logo.jpg" />
-    <Resource Include="Resources\Images\logo.png" />
+    <Content Include="Resources\Images\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\Images\logo_icon.ico" />
     <Content Include="Resources\Images\delete.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Images\edit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\notification_bell2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\regular_bell.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Images\view.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

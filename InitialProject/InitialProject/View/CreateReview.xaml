@@ -29,7 +29,7 @@
 
         <DockPanel DockPanel.Dock="Top" Margin="0,2,15,0">
             <StackPanel Orientation="Horizontal">
-                <Image Source="https://img001.prntscr.com/file/img001/AboPt71lRn6VPLBmk3xMmA.png" Width="88" Height="50" Margin="0,0,0,0" />
+                <Image Source="../Resources/Images/logo.png" Width="88" Height="50" Margin="0,0,0,0" />
             </StackPanel>
 
             <Grid HorizontalAlignment="Right">
@@ -39,8 +39,8 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/mDNZfF8/regular-bell.png" Width="45" Height="46" Margin="0,0,15,0" />
-                <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="https://i.ibb.co/6whbL1B/notification-bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
+                <Image x:Name="NotificationMenuItemImageRegularBell" Visibility="Visible" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="../Resources/Images/regular_bell.png" Width="45" Height="46" Margin="0,0,15,0" />
+                <Image x:Name="NotificationMenuItemImageNotificationBell" Visibility="Collapsed" MouseLeftButtonDown="GoToShowGuest1Notifications" Source="../Resources/Images/notification_bell2.png" Width="45" Height="46" Margin="0,0,15,0" />
 
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
